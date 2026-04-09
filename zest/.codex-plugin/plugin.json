@@ -1,0 +1,39 @@
+{
+  "name": "zest",
+  "version": "0.0.1-alpha.2",
+  "description": "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
+  "author": {
+    "name": "Zest",
+    "email": "support@meetzest.com",
+    "url": "https://meetzest.com"
+  },
+  "homepage": "https://meetzest.com",
+  "repository": "https://github.com/Winding-Labs/zest",
+  "license": "MIT",
+  "keywords": [
+    "zest",
+    "codex",
+    "productivity",
+    "developer-tools",
+    "telemetry",
+    "standup"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Zest",
+    "shortDescription": "AI workflow telemetry and standups for Codex.",
+    "longDescription": "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
+    "developerName": "Zest",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://meetzest.com",
+    "privacyPolicyURL": "https://meetzest.com/privacy",
+    "termsOfServiceURL": "https://meetzest.com/terms",
+    "defaultPrompt": "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
+    "brandColor": "#D4FF3D",
+    "composerIcon": "./assets/zest-icon.svg",
+    "logo": "./assets/zest.png",
+    "screenshots": []
+  }
+}

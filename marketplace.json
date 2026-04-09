@@ -1,0 +1,20 @@
+{
+  "name": "zest-alpha",
+  "interface": {
+    "displayName": "Zest Alpha"
+  },
+  "plugins": [
+    {
+      "name": "zest",
+      "source": {
+        "source": "local",
+        "path": "./zest"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
