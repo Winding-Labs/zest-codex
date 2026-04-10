@@ -36777,17 +36777,17 @@ function resolveConfigValue({
 }
 var CLIENT_ID = "codex-cli";
 var WEB_APP_URL = resolveConfigValue({
-  bundledValue: "http://localhost:3000",
+  bundledValue: "https://app.meetzest.com",
   runtimeValue: process.env.ZEST_WEB_APP_URL,
   fallback: "http://localhost:3000"
 });
 var SUPABASE_URL = resolveConfigValue({
-  bundledValue: "",
+  bundledValue: "https://fnnlebrtmlxxjwdvngck.supabase.co",
   runtimeValue: process.env.ZEST_SUPABASE_URL,
   fallback: ""
 });
 var SUPABASE_ANON_KEY = resolveConfigValue({
-  bundledValue: "",
+  bundledValue: "sb_publishable_gJsE8TaVHipVQfLNDFV3tA_z7SRAZBY",
   runtimeValue: process.env.ZEST_SUPABASE_ANON_KEY,
   fallback: ""
 });
@@ -43262,4 +43262,4 @@ main().catch((error46) => {
   process.exit(1);
 });
 
-//# debugId=C6BACF727892BEC964756E2164756E21
+//# debugId=0CFA79628C0ED2DB64756E2164756E21
