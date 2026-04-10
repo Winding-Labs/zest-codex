@@ -39,45 +39,6 @@ fi
 
 PLUGIN_NAME="$(node -p "const fs = require('node:fs'); JSON.parse(fs.readFileSync(process.argv[1], 'utf8')).name" "${SOURCE_PLUGIN_MANIFEST}")"
 
-prompt_scope() {
-  echo "Choose install scope:"
-  echo "  1) Workspace level (current repo only)"
-  echo "  2) Personal level (all repos for this user)"
-  printf "Enter 1 or 2: "
-  read -r selection
-
-  case "${selection}" in
-    1) INSTALL_SCOPE="workspace" ;;
-    2) INSTALL_SCOPE="personal" ;;
-    *)
-      echo "error: invalid selection" >&2
-      exit 1
-      ;;
-  esac
-}
-
-prompt_workspace_root() {
-  local default_root
-  default_root="$(pwd)"
-
-  echo
-  echo "Workspace install selected."
-  echo "Paste the target repository path."
-  printf "Repository path [%s]: " "${default_root}"
-  read -r input_path
-
-  if [[ -z "${input_path}" ]]; then
-    WORKSPACE_ROOT="${default_root}"
-  else
-    WORKSPACE_ROOT="${input_path/#\~/${HOME}}"
-  fi
-
-  if [[ ! -d "${WORKSPACE_ROOT}" ]]; then
-    echo "error: repository path does not exist: ${WORKSPACE_ROOT}" >&2
-    exit 1
-  fi
-}
-
 confirm_replace_plugin_dir() {
   local target_plugin_dir="$1"
 
@@ -219,33 +180,16 @@ clear_plugin_cache() {
   fi
 }
 
-install_workspace() {
-  prompt_workspace_root
-  TARGET_PLUGIN_DIR="${WORKSPACE_ROOT}/plugins/${PLUGIN_NAME}"
-  TARGET_MARKETPLACE="${WORKSPACE_ROOT}/.agents/plugins/marketplace.json"
-  TARGET_PLUGIN_PATH="./plugins/${PLUGIN_NAME}"
-}
-
 install_personal() {
   TARGET_PLUGIN_DIR="${HOME}/.codex/plugins/${PLUGIN_NAME}"
   TARGET_MARKETPLACE="${HOME}/.agents/plugins/marketplace.json"
   TARGET_PLUGIN_PATH="./.codex/plugins/${PLUGIN_NAME}"
 }
 
-prompt_scope
-
-case "${INSTALL_SCOPE}" in
-  workspace)
-    install_workspace
-    ;;
-  personal)
-    install_personal
-    ;;
-esac
+install_personal
 
 echo
 echo "Installing Zest plugin..."
-echo "  Scope:       ${INSTALL_SCOPE}"
 echo "  Plugin dir:  ${TARGET_PLUGIN_DIR}"
 echo "  Marketplace: ${TARGET_MARKETPLACE}"
 

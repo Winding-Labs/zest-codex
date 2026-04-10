@@ -1,42 +1,18 @@
 # Zest Codex Plugin Installation
 
-## What You Received
-
-You should have received a zip file that contains:
-
-- `install.sh`
-- `marketplace.json`
-- a `zest/` folder
-
-You do not need to build anything.
-
 ## Recommended Install
 
-This is the easiest path for most users.
+As long as the official public Plugin Directory is not supported ([docs](https://developers.openai.com/codex/plugins/build#publish-official-public-plugins)) this is the easiest path for most users.
 
-### 1. Open the release folder
+### 1. Run the installer
 
-Inside the release folder, you should see:
-
-```text
-install.sh
-marketplace.json
-zest/
-INSTALLATION.md
-```
-
-### 2. Run the installer
-
-From Terminal, go into the release folder and run:
+Either double-click the `install.sh` or go into the release folder and run:
 
 ```bash
 bash install.sh
 ```
 
-The installer is interactive and lets you choose:
-
-- `Workspace level`
-- `Personal level`
+The installer installs the plugin at personal level for the current user.
 
 What it does for you:
 
@@ -47,34 +23,31 @@ What it does for you:
 - preserves other plugin entries already present in that marketplace
 - creates a backup before changing an existing marketplace file
 
-### 3. Restart Codex
+### 2. Restart Codex
 
 Completely quit Codex, then open it again.
 
 This refreshes the local plugin marketplace.
 
-### 4. Install or enable the plugin
+### 3. Install or enable the plugin
 
 After restart, Codex should see the local Zest plugin.
 
+- Codex desktop app: Go to plugins and select the `Zest Alpha` marketplace. Zest plugin should appear - install it.
+- Codex CLI - run `/plugins` and install.
+
 If Codex shows plugin installation options, install or enable `Zest`.
 
-## Install Locations
+### 4. Make sure the local Zest MCP is enabled
+
+Sometimes, after fresh install, the plugin's MCP server isn't enabled. Verify this using `/mcp` - if Zest doesn't appear as enabled - restart Codex. 
+
+## Install Location
 
 As of April 2, 2026, the official Codex docs split local installs into plugin files and marketplace files:
 
 - plugin payload goes into `.codex/plugins`
 - marketplace configuration lives in `.agents/plugins/marketplace.json`
-
-The installer supports these two install modes.
-
-### Workspace level
-
-Use this when the plugin should be available only in one repository.
-
-- plugin files: `$REPO_ROOT/plugins/zest`
-- marketplace file: `$REPO_ROOT/.agents/plugins/marketplace.json`
-- marketplace path: `./plugins/zest`
 
 ### Personal level
 
@@ -98,56 +71,63 @@ Example prompt:
 Log me into Zest
 ```
 
-## If You Already Use Other Local Plugins
+## Using The Bundled Skills
 
-The installer does not replace your whole marketplace file. It updates or inserts the `zest` entry and keeps other entries intact.
+The plugin ships with built-in Zest skills so you can trigger common actions from the Codex prompt box.
 
-If you also use the repository-linked development plugin, it should appear separately as `Zestdev` / `zestdev`. The release installer intentionally leaves that local dev plugin alone so you can test both on one machine.
+In Codex, type `$` to open the skill picker. You should see the Zest skills after the plugin is installed and Codex has been restarted.
 
-If you prefer to edit the marketplace file manually, add this plugin entry into your existing `plugins` array.
+Available skills in this package:
 
-For workspace installs use:
+- `login`
+- `logout`
+- `status`
+- `workspace`
+- `sync`
+- `privacy`
+- `health`
 
-```json
-{
-  "name": "zest",
-  "source": {
-    "source": "local",
-    "path": "./plugins/zest"
-  },
-  "policy": {
-    "installation": "AVAILABLE",
-    "authentication": "ON_INSTALL"
-  },
-  "category": "Productivity"
-}
+You can use them in two simple ways:
+
+- natural language, for example: `@Zest Log me in`
+- explicit skill selection by typing `$` and choosing the matching Zest skill
+
+Example prompts:
+
+```text
+Check my Zest status
+// or
+$Zest:status
+// or
+@Zest check my status
 ```
 
-For personal installs use:
-
-```json
-{
-  "name": "zest",
-  "source": {
-    "source": "local",
-    "path": "./.codex/plugins/zest"
-  },
-  "policy": {
-    "installation": "AVAILABLE",
-    "authentication": "ON_INSTALL"
-  },
-  "category": "Productivity"
-}
+```text
+Sync my Codex activity to Zest
+// or
+$Zest:sync
+// or
+@Zest sync my activity
 ```
+
+```text
+Explain what the Zest plugin can read and how privacy filtering works
+```
+
+If the Zest skills do not appear after installation, fully quit and reopen Codex once more, then verify that the plugin is installed or enabled.
 
 ## Troubleshooting
+
+### The MCP is not enabled
+
+Sometimes, after fresh installation, the plugin's MCP server isn't enabled. Verify this using `/mcp` - if Zest doesn't appear as enabled - restart Codex. 
 
 ### The plugin does not appear in Codex
 
 Check all of these:
 
-- the plugin files were copied to the correct location for your selected install scope
-- the matching marketplace file exists
+- the plugin files were copied to `~/.codex/plugins/zest`
+- `~/.agents/plugins/marketplace.json` exists and includes the Zest entry
 - you restarted Codex after installing
 
 If you are reinstalling over an older alpha build, the installer also clears the legacy `~/.codex/plugins/cache/zest-alpha/...` cache to avoid Codex starting a stale copy of the plugin.
@@ -162,7 +142,7 @@ The plugin runs a local Node-based MCP server. Install Node and then restart Cod
 
 ### I want to install manually instead of using `install.sh`
 
-You can do that, but make sure you keep the plugin files and the marketplace file in the correct locations for either workspace or personal install.
+You can do that, but make sure you keep the plugin files and the marketplace file in the correct personal-install locations.
 
 If you install manually, update the plugin's `.mcp.json` so the `node` argument points to the absolute path of `dist/mcp/server.js`. Leaving it as `./dist/mcp/server.js` can fail when Codex starts the MCP server from the repository working directory instead of the plugin directory.
 
