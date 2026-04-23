@@ -1,6 +1,6 @@
 {
   "name": "zest",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "description": "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   "author": {
     "name": "Zest",

@@ -8694,11 +8694,11 @@ var require_tslib = __commonJS((exports2, module2) => {
     };
     __awaiter = function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve3) {
-          resolve3(value);
+        return value instanceof P ? value : new P(function(resolve2) {
+          resolve2(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve3, reject) {
+      return new (P || (P = Promise))(function(resolve2, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -8714,7 +8714,7 @@ var require_tslib = __commonJS((exports2, module2) => {
           }
         }
         function step(result) {
-          result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -8943,14 +8943,14 @@ var require_tslib = __commonJS((exports2, module2) => {
       }, i);
       function verb(n) {
         i[n] = o[n] && function(v) {
-          return new Promise(function(resolve3, reject) {
-            v = o[n](v), settle(resolve3, reject, v.done, v.value);
+          return new Promise(function(resolve2, reject) {
+            v = o[n](v), settle(resolve2, reject, v.done, v.value);
           });
         };
       }
-      function settle(resolve3, reject, d, v) {
+      function settle(resolve2, reject, d, v) {
         Promise.resolve(v).then(function(v2) {
-          resolve3({ value: v2, done: d });
+          resolve2({ value: v2, done: d });
         }, reject);
       }
     };
@@ -10345,15 +10345,15 @@ var require_RealtimeChannel = __commonJS((exports2) => {
           }
         }
       } else {
-        return new Promise((resolve3) => {
+        return new Promise((resolve2) => {
           var _a2, _b2, _c;
           const push = this._push(args.type, args, opts.timeout || this.timeout);
           if (args.type === "broadcast" && !((_c = (_b2 = (_a2 = this.params) === null || _a2 === undefined ? undefined : _a2.config) === null || _b2 === undefined ? undefined : _b2.broadcast) === null || _c === undefined ? undefined : _c.ack)) {
-            resolve3("ok");
+            resolve2("ok");
           }
-          push.receive("ok", () => resolve3("ok"));
-          push.receive("error", () => resolve3("error"));
-          push.receive("timeout", () => resolve3("timed out"));
+          push.receive("ok", () => resolve2("ok"));
+          push.receive("error", () => resolve2("error"));
+          push.receive("timeout", () => resolve2("timed out"));
         });
       }
     }
@@ -10368,16 +10368,16 @@ var require_RealtimeChannel = __commonJS((exports2) => {
       };
       this.joinPush.destroy();
       let leavePush = null;
-      return new Promise((resolve3) => {
+      return new Promise((resolve2) => {
         leavePush = new push_1.default(this, constants_1.CHANNEL_EVENTS.leave, {}, timeout);
         leavePush.receive("ok", () => {
           onClose();
-          resolve3("ok");
+          resolve2("ok");
         }).receive("timeout", () => {
           onClose();
-          resolve3("timed out");
+          resolve2("timed out");
         }).receive("error", () => {
-          resolve3("error");
+          resolve2("error");
         });
         leavePush.send();
         if (!this._canPush()) {
@@ -10437,8 +10437,8 @@ var require_RealtimeChannel = __commonJS((exports2) => {
     _trigger(type, payload, ref) {
       var _a, _b;
       const typeLower = type.toLocaleLowerCase();
-      const { close, error: error46, leave, join: join5 } = constants_1.CHANNEL_EVENTS;
-      const events = [close, error46, leave, join5];
+      const { close, error: error46, leave, join: join3 } = constants_1.CHANNEL_EVENTS;
+      const events = [close, error46, leave, join3];
       if (ref && events.indexOf(typeLower) >= 0 && ref !== this._joinRef()) {
         return;
       }
@@ -32728,7 +32728,7 @@ function isTerminal(status) {
   return status === "completed" || status === "failed" || status === "cancelled";
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/Options.js
+// ../../node_modules/zod-to-json-schema/dist/esm/Options.js
 var ignoreOverride = Symbol("Let zodToJsonSchema decide on which parser to use");
 var defaultOptions = {
   name: undefined,
@@ -32761,7 +32761,7 @@ var getDefaultOptions = (options) => typeof options === "string" ? {
   ...defaultOptions,
   ...options
 };
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/Refs.js
+// ../../node_modules/zod-to-json-schema/dist/esm/Refs.js
 var getRefs = (options) => {
   const _options = getDefaultOptions(options);
   const currentPath = _options.name !== undefined ? [..._options.basePath, _options.definitionPath, _options.name] : _options.basePath;
@@ -32780,7 +32780,7 @@ var getRefs = (options) => {
     ]))
   };
 };
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/errorMessages.js
+// ../../node_modules/zod-to-json-schema/dist/esm/errorMessages.js
 function addErrorMessage(res, key, errorMessage, refs) {
   if (!refs?.errorMessages)
     return;
@@ -32795,7 +32795,7 @@ function setResponseValueAndErrors(res, key, value, errorMessage, refs) {
   res[key] = value;
   addErrorMessage(res, key, errorMessage, refs);
 }
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/getRelativePath.js
+// ../../node_modules/zod-to-json-schema/dist/esm/getRelativePath.js
 var getRelativePath = (pathA, pathB) => {
   let i = 0;
   for (;i < pathA.length && i < pathB.length; i++) {
@@ -32804,7 +32804,7 @@ var getRelativePath = (pathA, pathB) => {
   }
   return [(pathA.length - i).toString(), ...pathB.slice(i)].join("/");
 };
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/any.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/any.js
 function parseAnyDef(refs) {
   if (refs.target !== "openAi") {
     return {};
@@ -32820,7 +32820,7 @@ function parseAnyDef(refs) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/array.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/array.js
 function parseArrayDef(def, refs) {
   const res = {
     type: "array"
@@ -32844,7 +32844,7 @@ function parseArrayDef(def, refs) {
   return res;
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/bigint.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/bigint.js
 function parseBigintDef(def, refs) {
   const res = {
     type: "integer",
@@ -32890,24 +32890,24 @@ function parseBigintDef(def, refs) {
   return res;
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/boolean.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/boolean.js
 function parseBooleanDef() {
   return {
     type: "boolean"
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/branded.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/branded.js
 function parseBrandedDef(_def, refs) {
   return parseDef(_def.type._def, refs);
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/catch.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/catch.js
 var parseCatchDef = (def, refs) => {
   return parseDef(def.innerType._def, refs);
 };
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/date.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/date.js
 function parseDateDef(def, refs, overrideDateStrategy) {
   const strategy = overrideDateStrategy ?? refs.dateStrategy;
   if (Array.isArray(strategy)) {
@@ -32952,7 +32952,7 @@ var integerDateParser = (def, refs) => {
   return res;
 };
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/default.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/default.js
 function parseDefaultDef(_def, refs) {
   return {
     ...parseDef(_def.innerType._def, refs),
@@ -32960,12 +32960,12 @@ function parseDefaultDef(_def, refs) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/effects.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/effects.js
 function parseEffectsDef(_def, refs) {
   return refs.effectStrategy === "input" ? parseDef(_def.schema._def, refs) : parseAnyDef(refs);
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/enum.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/enum.js
 function parseEnumDef(def) {
   return {
     type: "string",
@@ -32973,7 +32973,7 @@ function parseEnumDef(def) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/intersection.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/intersection.js
 var isJsonSchema7AllOfType = (type) => {
   if ("type" in type && type.type === "string")
     return false;
@@ -33015,7 +33015,7 @@ function parseIntersectionDef(def, refs) {
   } : undefined;
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/literal.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/literal.js
 function parseLiteralDef(def, refs) {
   const parsedType8 = typeof def.value;
   if (parsedType8 !== "bigint" && parsedType8 !== "number" && parsedType8 !== "boolean" && parsedType8 !== "string") {
@@ -33035,7 +33035,7 @@ function parseLiteralDef(def, refs) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/string.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/string.js
 var emojiRegex2 = undefined;
 var zodPatterns = {
   cuid: /^[cC][^\s-]{8,}$/,
@@ -33332,7 +33332,7 @@ function stringifyRegExpWithFlags(regex, refs) {
   return pattern;
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/record.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/record.js
 function parseRecordDef(def, refs) {
   if (refs.target === "openAi") {
     console.warn("Warning: OpenAI may not support records in schemas! Try an array of key-value pairs instead.");
@@ -33384,7 +33384,7 @@ function parseRecordDef(def, refs) {
   return schema;
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/map.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/map.js
 function parseMapDef(def, refs) {
   if (refs.mapStrategy === "record") {
     return parseRecordDef(def, refs);
@@ -33409,7 +33409,7 @@ function parseMapDef(def, refs) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/nativeEnum.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/nativeEnum.js
 function parseNativeEnumDef(def) {
   const object3 = def.values;
   const actualKeys = Object.keys(def.values).filter((key) => {
@@ -33423,7 +33423,7 @@ function parseNativeEnumDef(def) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/never.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/never.js
 function parseNeverDef(refs) {
   return refs.target === "openAi" ? undefined : {
     not: parseAnyDef({
@@ -33433,7 +33433,7 @@ function parseNeverDef(refs) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/null.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/null.js
 function parseNullDef(refs) {
   return refs.target === "openApi3" ? {
     enum: ["null"],
@@ -33443,7 +33443,7 @@ function parseNullDef(refs) {
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/union.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/union.js
 var primitiveMappings = {
   ZodString: "string",
   ZodNumber: "number",
@@ -33511,7 +33511,7 @@ var asAnyOf = (def, refs) => {
   return anyOf.length ? { anyOf } : undefined;
 };
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/nullable.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/nullable.js
 function parseNullableDef(def, refs) {
   if (["ZodString", "ZodNumber", "ZodBigInt", "ZodBoolean", "ZodNull"].includes(def.innerType._def.typeName) && (!def.innerType._def.checks || !def.innerType._def.checks.length)) {
     if (refs.target === "openApi3") {
@@ -33543,7 +33543,7 @@ function parseNullableDef(def, refs) {
   return base && { anyOf: [base, { type: "null" }] };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/number.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/number.js
 function parseNumberDef(def, refs) {
   const res = {
     type: "number"
@@ -33592,7 +33592,7 @@ function parseNumberDef(def, refs) {
   return res;
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/object.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/object.js
 function parseObjectDef(def, refs) {
   const forceOptionalIntoNullable = refs.target === "openAi";
   const result = {
@@ -33662,7 +33662,7 @@ function safeIsOptional(schema) {
   }
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/optional.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/optional.js
 var parseOptionalDef = (def, refs) => {
   if (refs.currentPath.toString() === refs.propertyPath?.toString()) {
     return parseDef(def.innerType._def, refs);
@@ -33681,7 +33681,7 @@ var parseOptionalDef = (def, refs) => {
   } : parseAnyDef(refs);
 };
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/pipeline.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/pipeline.js
 var parsePipelineDef = (def, refs) => {
   if (refs.pipeStrategy === "input") {
     return parseDef(def.in._def, refs);
@@ -33701,12 +33701,12 @@ var parsePipelineDef = (def, refs) => {
   };
 };
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/promise.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/promise.js
 function parsePromiseDef(def, refs) {
   return parseDef(def.type._def, refs);
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/set.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/set.js
 function parseSetDef(def, refs) {
   const items = parseDef(def.valueType._def, {
     ...refs,
@@ -33726,7 +33726,7 @@ function parseSetDef(def, refs) {
   return schema;
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/tuple.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/tuple.js
 function parseTupleDef(def, refs) {
   if (def.rest) {
     return {
@@ -33754,24 +33754,24 @@ function parseTupleDef(def, refs) {
   }
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/undefined.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/undefined.js
 function parseUndefinedDef(refs) {
   return {
     not: parseAnyDef(refs)
   };
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/unknown.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/unknown.js
 function parseUnknownDef(refs) {
   return parseAnyDef(refs);
 }
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parsers/readonly.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/readonly.js
 var parseReadonlyDef = (def, refs) => {
   return parseDef(def.innerType._def, refs);
 };
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/selectParser.js
+// ../../node_modules/zod-to-json-schema/dist/esm/selectParser.js
 var selectParser = (def, typeName, refs) => {
   switch (typeName) {
     case ZodFirstPartyTypeKind.ZodString:
@@ -33849,7 +33849,7 @@ var selectParser = (def, typeName, refs) => {
   }
 };
 
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/parseDef.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parseDef.js
 function parseDef(def, refs, forceResolution = false) {
   const seenItem = refs.seen.get(def);
   if (refs.override) {
@@ -33904,7 +33904,7 @@ var addMeta = (def, refs, jsonSchema) => {
   }
   return jsonSchema;
 };
-// ../../node_modules/@modelcontextprotocol/sdk/node_modules/zod-to-json-schema/dist/esm/zodToJsonSchema.js
+// ../../node_modules/zod-to-json-schema/dist/esm/zodToJsonSchema.js
 var zodToJsonSchema = (schema, options) => {
   const refs = getRefs(options);
   let definitions = typeof options === "object" && options.definitions ? Object.entries(options.definitions).reduce((acc, [name2, schema2]) => ({
@@ -36238,7 +36238,7 @@ class StdioServerTransport {
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.0.1-alpha.2",
+  version: "0.0.1-alpha.3",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -36517,7 +36517,7 @@ async function defaultBrowser2() {
 
 // ../../node_modules/open/index.js
 var execFile5 = import_node_util5.promisify(import_node_child_process5.default.execFile);
-var __dirname2 = import_node_path.default.dirname(import_node_url.fileURLToPath("file:///home/runner/work/zest-workflow-test/zest-workflow-test/monorepo/node_modules/open/index.js"));
+var __dirname2 = import_node_path.default.dirname(import_node_url.fileURLToPath("file:///home/runner/work/zest/zest/monorepo/node_modules/open/index.js"));
 var localXdgOpenPath = import_node_path.default.join(__dirname2, "xdg-open");
 var { platform, arch } = import_node_process7.default;
 async function getWindowsDefaultBrowserFromWsl() {
@@ -36782,12 +36782,12 @@ var WEB_APP_URL = resolveConfigValue({
   fallback: "http://localhost:3000"
 });
 var SUPABASE_URL = resolveConfigValue({
-  bundledValue: "https://fnnlebrtmlxxjwdvngck.supabase.co",
+  bundledValue: "",
   runtimeValue: process.env.ZEST_SUPABASE_URL,
   fallback: ""
 });
 var SUPABASE_ANON_KEY = resolveConfigValue({
-  bundledValue: "sb_publishable_gJsE8TaVHipVQfLNDFV3tA_z7SRAZBY",
+  bundledValue: "",
   runtimeValue: process.env.ZEST_SUPABASE_ANON_KEY,
   fallback: ""
 });
@@ -36796,6 +36796,9 @@ var DEBUG_MODE_ENABLED = resolveConfigValue({
   runtimeValue: process.env.ZEST_CODEX_DEBUG,
   fallback: ""
 }) === "1";
+if (DEBUG_MODE_ENABLED) {
+  console.warn("[zest-codex] WARNING: Debug mode is active. URLs point to localhost. Do not use in production.");
+}
 var SYNC_DEBUG_LOGGING_ENABLED = resolveConfigValue({
   bundledValue: "",
   runtimeValue: process.env.ZEST_CODEX_ENABLE_LOGS,
@@ -38388,7 +38391,7 @@ class PrivacyService {
     return this.detector.getCacheSize();
   }
 }
-// src/privacy/node-fs-adapter.ts
+// ../../packages/privacy-redaction/src/manager/node-fs-adapter.ts
 var import_promises4 = require("node:fs/promises");
 function createNodeFsAdapter(workspaceRoot) {
   return {
@@ -38499,1131 +38502,6 @@ async function sanitizeNormalizedPayloads(inputs) {
 }
 function formatExclusionReason(reason) {
   return reason;
-}
-
-// src/codex/discovery.ts
-var import_promises5 = require("node:fs/promises");
-var import_node_path6 = require("node:path");
-
-// src/codex/paths.ts
-var import_node_os3 = require("node:os");
-var import_node_path5 = require("node:path");
-var DEFAULT_CODEX_DIR_NAME = ".codex";
-var ALLOWLISTED_TOP_LEVEL_FILES = new Set([
-  "config.toml",
-  "session_index.jsonl",
-  "history.jsonl"
-]);
-function getCodexRootDir() {
-  return process.env.ZEST_CODEX_ROOT_DIR ?? import_node_path5.join(import_node_os3.homedir(), DEFAULT_CODEX_DIR_NAME);
-}
-function isWithinRoot(rootDir, targetPath) {
-  const rel = import_node_path5.relative(rootDir, targetPath);
-  if (rel.length === 0)
-    return false;
-  return !(rel === ".." || rel.startsWith("../") || import_node_path5.isAbsolute(rel));
-}
-function matchesAllowlist(relativePath) {
-  if (ALLOWLISTED_TOP_LEVEL_FILES.has(relativePath)) {
-    return true;
-  }
-  if (relativePath.startsWith("sessions/") && relativePath.endsWith(".jsonl")) {
-    const inner = relativePath.slice("sessions/".length);
-    return inner.length > ".jsonl".length && !inner.includes("..");
-  }
-  return false;
-}
-function resolveCodexPath(...segments) {
-  const rootDir = getCodexRootDir();
-  const resolvedPath = import_node_path5.resolve(rootDir, ...segments);
-  if (!isWithinRoot(rootDir, resolvedPath)) {
-    throw new Error(`Codex path must stay within ${rootDir}`);
-  }
-  const rel = import_node_path5.relative(rootDir, resolvedPath);
-  if (!matchesAllowlist(rel)) {
-    throw new Error(`Codex path is not allowlisted: ${rel}`);
-  }
-  return resolvedPath;
-}
-function isAllowlistedCodexPath(absolutePath) {
-  const rootDir = getCodexRootDir();
-  if (!isWithinRoot(rootDir, absolutePath)) {
-    return false;
-  }
-  return matchesAllowlist(import_node_path5.relative(rootDir, absolutePath));
-}
-
-// src/codex/discovery.ts
-async function directoryExists(path2) {
-  try {
-    await import_promises5.readdir(path2);
-    return true;
-  } catch {
-    return false;
-  }
-}
-async function pathExists(path2) {
-  try {
-    await import_promises5.access(path2);
-    return true;
-  } catch {
-    return false;
-  }
-}
-function formatDatePath(now) {
-  const year = String(now.getFullYear());
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return import_node_path6.join("sessions", year, month, day);
-}
-function isCurrentDayTranscript(path2, rootDir, now) {
-  const relativePath = import_node_path6.relative(rootDir, path2);
-  const currentDayPrefix = `${formatDatePath(now)}/`;
-  return relativePath.startsWith(currentDayPrefix);
-}
-async function collectTranscriptPaths(dirPath) {
-  const entries = await import_promises5.readdir(dirPath, { recursive: true, withFileTypes: true });
-  const transcriptPaths = [];
-  const rootDir = getCodexRootDir();
-  const now = new Date;
-  for (const entry of entries) {
-    if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
-      continue;
-    }
-    const parentPath = typeof entry.parentPath === "string" ? entry.parentPath : ("path" in entry) && typeof entry.path === "string" ? import_node_path6.join(dirPath, entry.path) : dirPath;
-    const absolutePath = import_node_path6.join(parentPath, entry.name);
-    if (isAllowlistedCodexPath(absolutePath) && isCurrentDayTranscript(absolutePath, rootDir, now)) {
-      transcriptPaths.push(absolutePath);
-    }
-  }
-  return transcriptPaths.sort((left, right) => left.localeCompare(right));
-}
-async function discoverCodexRuntimeFiles() {
-  const rootDir = getCodexRootDir();
-  const transcriptDir = import_node_path6.join(rootDir, "sessions");
-  const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir) : [];
-  const sessionIndexPath = resolveCodexPath("session_index.jsonl");
-  const historyPath = resolveCodexPath("history.jsonl");
-  return {
-    ...await pathExists(historyPath) ? { historyPath } : {},
-    ...await pathExists(sessionIndexPath) ? { sessionIndexPath } : {},
-    transcriptPaths
-  };
-}
-
-// src/collector/session-references.ts
-var import_node_fs4 = require("node:fs");
-var import_node_readline = __toESM(require("node:readline"));
-function isRecord(value) {
-  return typeof value === "object" && value !== null;
-}
-function isNonEmptyString3(value) {
-  return typeof value === "string" && value.trim().length > 0;
-}
-function isFiniteNumber(value) {
-  return typeof value === "number" && Number.isFinite(value);
-}
-async function readJsonLines(filePath, parseLine) {
-  const stream = import_node_fs4.createReadStream(filePath, { encoding: "utf-8" });
-  const lines = import_node_readline.default.createInterface({
-    crlfDelay: Number.POSITIVE_INFINITY,
-    input: stream
-  });
-  const entries = [];
-  try {
-    for await (const rawLine of lines) {
-      const line = rawLine.trim();
-      if (line.length === 0) {
-        continue;
-      }
-      let parsed;
-      try {
-        parsed = JSON.parse(line);
-      } catch {
-        continue;
-      }
-      const entry = parseLine(parsed);
-      if (entry !== null) {
-        entries.push(entry);
-      }
-    }
-  } finally {
-    lines.close();
-    stream.destroy();
-  }
-  return entries;
-}
-function parseSessionIndexEntry(value) {
-  if (!isRecord(value) || !isNonEmptyString3(value.id) || !isNonEmptyString3(value.updated_at)) {
-    return null;
-  }
-  if (value.thread_name !== undefined && !isNonEmptyString3(value.thread_name)) {
-    return null;
-  }
-  return {
-    id: value.id,
-    ...value.thread_name ? { threadName: value.thread_name } : {},
-    updatedAt: value.updated_at
-  };
-}
-function parseHistoryEntry(value) {
-  if (!isRecord(value)) {
-    return null;
-  }
-  if (!isNonEmptyString3(value.session_id) || !isFiniteNumber(value.ts) || !isNonEmptyString3(value.text)) {
-    return null;
-  }
-  return {
-    sessionId: value.session_id,
-    text: value.text,
-    timestamp: value.ts
-  };
-}
-async function readSessionIndex(filePath) {
-  return readJsonLines(filePath, parseSessionIndexEntry);
-}
-async function readHistory(filePath) {
-  return readJsonLines(filePath, parseHistoryEntry);
-}
-async function buildSessionReferences(input) {
-  const [sessionIndexEntries, historyEntries] = await Promise.all([
-    readSessionIndex(input.sessionIndexPath),
-    readHistory(input.historyPath)
-  ]);
-  const latestHistoryBySessionId = new Map;
-  for (const entry of historyEntries) {
-    const existing = latestHistoryBySessionId.get(entry.sessionId);
-    if (!existing || entry.timestamp >= existing.timestamp) {
-      latestHistoryBySessionId.set(entry.sessionId, {
-        text: entry.text,
-        timestamp: entry.timestamp
-      });
-    }
-  }
-  return sessionIndexEntries.map((entry) => {
-    const latestHistory = latestHistoryBySessionId.get(entry.id);
-    return {
-      ...latestHistory ? {
-        latestPromptAt: new Date(latestHistory.timestamp * 1000).toISOString(),
-        latestPromptText: latestHistory.text
-      } : {},
-      ...entry.threadName ? { title: entry.threadName } : {},
-      sessionId: entry.id,
-      updatedAt: entry.updatedAt
-    };
-  });
-}
-function buildSessionReferenceMap(references) {
-  return new Map(references.map((reference) => [reference.sessionId, reference]));
-}
-
-// src/collector/transcript-parser.ts
-var import_node_fs5 = require("node:fs");
-var import_node_readline2 = __toESM(require("node:readline"));
-
-// src/collector/session-signals.ts
-var BUILTIN_FUNCTION_CALL_NAMES = new Set([
-  "Bash",
-  "Read",
-  "Edit",
-  "Write",
-  "MultiEdit",
-  "Glob",
-  "Grep",
-  "LS",
-  "WebFetch",
-  "WebSearch",
-  "LSP",
-  "NotebookEdit"
-]);
-var AGENT_FUNCTION_CALL_NAMES = new Set(["Task", "Agent"]);
-var MCP_TOOL_NAME_PATTERN = /^mcp__[^_]+(?:_[^_]+)*__[^_]+(?:_[^_]+)*$/;
-function incrementMap(map3, key) {
-  map3[key] = (map3[key] ?? 0) + 1;
-}
-function recordFunctionCallSignal(record3, signals) {
-  if (MCP_TOOL_NAME_PATTERN.test(record3.name)) {
-    incrementMap(signals.mcp_usage, record3.name);
-    return;
-  }
-  if (BUILTIN_FUNCTION_CALL_NAMES.has(record3.name)) {
-    incrementMap(signals.builtin_usage, record3.name);
-    return;
-  }
-  if (AGENT_FUNCTION_CALL_NAMES.has(record3.name)) {
-    incrementMap(signals.agent_usage, record3.name);
-    return;
-  }
-  incrementMap(signals.unknown_usage, record3.name);
-}
-function recordCustomToolSignal(record3, signals) {
-  incrementMap(signals.builtin_usage, record3.name);
-}
-function recordWebSearchSignal(_record2, signals) {
-  incrementMap(signals.builtin_usage, "web_search");
-}
-function recordMessageSignal(record3, signals) {
-  for (const block of record3.content) {
-    if (block.type === "input_image") {
-      signals.image_count += 1;
-    }
-  }
-}
-function extractSessionSignals(records) {
-  const signals = {
-    mcp_usage: {},
-    skill_usage: {},
-    agent_usage: {},
-    builtin_usage: {},
-    unknown_usage: {},
-    image_count: 0
-  };
-  for (const record3 of records) {
-    if (record3.recordType !== "response_item") {
-      continue;
-    }
-    switch (record3.itemType) {
-      case "function_call":
-        recordFunctionCallSignal(record3, signals);
-        break;
-      case "custom_tool_call":
-        recordCustomToolSignal(record3, signals);
-        break;
-      case "web_search_call":
-        recordWebSearchSignal(record3, signals);
-        break;
-      case "message":
-        recordMessageSignal(record3, signals);
-        break;
-      default:
-        break;
-    }
-  }
-  return signals;
-}
-
-// src/collector/transcript-parser/message-mappers.ts
-function messageFromEvent(record3) {
-  if (record3.eventType === "user_message") {
-    return {
-      role: "user",
-      textParts: [record3.message, ...record3.textElements].filter((entry) => entry.length > 0),
-      imageCount: record3.imagesCount + record3.localImagesCount,
-      timestamp: record3.timestamp,
-      lineNumber: record3.lineNumber,
-      source: "event_msg"
-    };
-  }
-  if (record3.eventType === "agent_message") {
-    return {
-      role: "assistant",
-      ...record3.phase ? { phase: record3.phase } : {},
-      textParts: record3.message.length > 0 ? [record3.message] : [],
-      imageCount: 0,
-      timestamp: record3.timestamp,
-      lineNumber: record3.lineNumber,
-      source: "event_msg"
-    };
-  }
-  return null;
-}
-
-// src/collector/transcript-parser/guards.ts
-function isRecord2(value) {
-  return typeof value === "object" && value !== null;
-}
-function isString(value) {
-  return typeof value === "string";
-}
-function isNonEmptyString4(value) {
-  return isString(value) && value.trim().length > 0;
-}
-function isNumber(value) {
-  return typeof value === "number" && Number.isFinite(value);
-}
-function isBoolean(value) {
-  return typeof value === "boolean";
-}
-function isArray(value) {
-  return Array.isArray(value);
-}
-function toStringArray(value) {
-  if (!isArray(value)) {
-    return [];
-  }
-  return value.filter(isString);
-}
-
-// src/collector/transcript-parser/field-parsers.ts
-function parseDuration(value) {
-  if (!isRecord2(value)) {
-    return;
-  }
-  const secs = isNumber(value.secs) ? value.secs : undefined;
-  const nanos = isNumber(value.nanos) ? value.nanos : undefined;
-  if (secs === undefined && nanos === undefined) {
-    return;
-  }
-  return { ...secs !== undefined ? { secs } : {}, ...nanos !== undefined ? { nanos } : {} };
-}
-function parseTokenUsage(value) {
-  if (!isRecord2(value)) {
-    return;
-  }
-  const inputTokens = isNumber(value.input_tokens) ? value.input_tokens : undefined;
-  const cachedInputTokens = isNumber(value.cached_input_tokens) ? value.cached_input_tokens : undefined;
-  const outputTokens = isNumber(value.output_tokens) ? value.output_tokens : undefined;
-  const reasoningOutputTokens = isNumber(value.reasoning_output_tokens) ? value.reasoning_output_tokens : undefined;
-  const totalTokens = isNumber(value.total_tokens) ? value.total_tokens : undefined;
-  if (inputTokens === undefined && cachedInputTokens === undefined && outputTokens === undefined && reasoningOutputTokens === undefined && totalTokens === undefined) {
-    return;
-  }
-  return {
-    ...inputTokens !== undefined ? { inputTokens } : {},
-    ...cachedInputTokens !== undefined ? { cachedInputTokens } : {},
-    ...outputTokens !== undefined ? { outputTokens } : {},
-    ...reasoningOutputTokens !== undefined ? { reasoningOutputTokens } : {},
-    ...totalTokens !== undefined ? { totalTokens } : {}
-  };
-}
-function parseRateLimitWindow(value) {
-  if (!isRecord2(value)) {
-    return;
-  }
-  const usedPercent = isNumber(value.used_percent) ? value.used_percent : undefined;
-  const windowMinutes = isNumber(value.window_minutes) ? value.window_minutes : undefined;
-  const resetsAt = isNumber(value.resets_at) ? value.resets_at : undefined;
-  if (usedPercent === undefined && windowMinutes === undefined && resetsAt === undefined) {
-    return;
-  }
-  return {
-    ...usedPercent !== undefined ? { usedPercent } : {},
-    ...windowMinutes !== undefined ? { windowMinutes } : {},
-    ...resetsAt !== undefined ? { resetsAt } : {}
-  };
-}
-function parseGitContext(value) {
-  if (!isRecord2(value)) {
-    return;
-  }
-  const branch = isNonEmptyString4(value.branch) ? value.branch : undefined;
-  const commitHash = isNonEmptyString4(value.commit_hash) ? value.commit_hash : undefined;
-  const repositoryUrl = isNonEmptyString4(value.repository_url) ? value.repository_url : undefined;
-  if (branch === undefined && commitHash === undefined && repositoryUrl === undefined) {
-    return;
-  }
-  return {
-    ...branch ? { branch } : {},
-    ...commitHash ? { commitHash } : {},
-    ...repositoryUrl ? { repositoryUrl } : {}
-  };
-}
-function parseSandboxPolicy(value) {
-  if (!isRecord2(value) || !isNonEmptyString4(value.type)) {
-    return;
-  }
-  return {
-    type: value.type,
-    writableRoots: toStringArray(value.writable_roots),
-    ...isBoolean(value.network_access) ? { networkAccess: value.network_access } : {},
-    ...isBoolean(value.exclude_tmpdir_env_var) ? { excludeTmpdirEnvVar: value.exclude_tmpdir_env_var } : {},
-    ...isBoolean(value.exclude_slash_tmp) ? { excludeSlashTmp: value.exclude_slash_tmp } : {}
-  };
-}
-function parseCollaborationMode(value) {
-  if (!isRecord2(value) || !isNonEmptyString4(value.mode)) {
-    return;
-  }
-  const settings = isRecord2(value.settings) ? value.settings : undefined;
-  return {
-    mode: value.mode,
-    ...settings && isNonEmptyString4(settings.model) ? { model: settings.model } : {},
-    ...settings && isNonEmptyString4(settings.reasoning_effort) ? { reasoningEffort: settings.reasoning_effort } : {}
-  };
-}
-function parseMessageContentBlocks(value) {
-  if (!isArray(value)) {
-    return null;
-  }
-  const blocks = [];
-  for (const entry of value) {
-    if (!isRecord2(entry) || !isNonEmptyString4(entry.type)) {
-      return null;
-    }
-    if (entry.type === "input_text" || entry.type === "output_text") {
-      if (!isString(entry.text)) {
-        return null;
-      }
-      blocks.push({
-        type: entry.type,
-        text: entry.text
-      });
-      continue;
-    }
-    if (entry.type === "input_image") {
-      blocks.push({ type: "input_image" });
-      continue;
-    }
-    return null;
-  }
-  return blocks;
-}
-
-// src/collector/transcript-parser/record-parsers.ts
-function parseSessionMetaRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.id) || !isNonEmptyString4(payload.cwd) || !isNonEmptyString4(payload.originator) || !isNonEmptyString4(payload.source) || !isNonEmptyString4(payload.cli_version) || !isNonEmptyString4(payload.model_provider)) {
-    return null;
-  }
-  const git = parseGitContext(payload.git);
-  return {
-    recordType: "session_meta",
-    lineNumber,
-    timestamp,
-    sessionId: payload.id,
-    cwd: payload.cwd,
-    originator: payload.originator,
-    source: payload.source,
-    cliVersion: payload.cli_version,
-    modelProvider: payload.model_provider,
-    ...git ? { git } : {}
-  };
-}
-function parseEventRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.type)) {
-    return null;
-  }
-  switch (payload.type) {
-    case "task_started":
-      if (!isNonEmptyString4(payload.turn_id)) {
-        return null;
-      }
-      return {
-        recordType: "event_msg",
-        eventType: "task_started",
-        lineNumber,
-        timestamp,
-        turnId: payload.turn_id,
-        ...isNumber(payload.model_context_window) ? { modelContextWindow: payload.model_context_window } : {},
-        ...isNonEmptyString4(payload.collaboration_mode_kind) ? { collaborationModeKind: payload.collaboration_mode_kind } : {}
-      };
-    case "task_complete":
-      if (!isNonEmptyString4(payload.turn_id)) {
-        return null;
-      }
-      return {
-        recordType: "event_msg",
-        eventType: "task_complete",
-        lineNumber,
-        timestamp,
-        turnId: payload.turn_id,
-        ...isString(payload.last_agent_message) ? { lastAgentMessage: payload.last_agent_message } : {}
-      };
-    case "turn_aborted":
-      if (!isNonEmptyString4(payload.turn_id)) {
-        return null;
-      }
-      return {
-        recordType: "event_msg",
-        eventType: "turn_aborted",
-        lineNumber,
-        timestamp,
-        turnId: payload.turn_id,
-        ...isNonEmptyString4(payload.reason) ? { reason: payload.reason } : {}
-      };
-    case "user_message":
-      if (!isString(payload.message)) {
-        return null;
-      }
-      return {
-        recordType: "event_msg",
-        eventType: "user_message",
-        lineNumber,
-        timestamp,
-        message: payload.message,
-        imagesCount: isArray(payload.images) ? payload.images.length : 0,
-        localImagesCount: isArray(payload.local_images) ? payload.local_images.length : 0,
-        textElements: toStringArray(payload.text_elements)
-      };
-    case "agent_message":
-      if (!isString(payload.message)) {
-        return null;
-      }
-      return {
-        recordType: "event_msg",
-        eventType: "agent_message",
-        lineNumber,
-        timestamp,
-        message: payload.message,
-        ...isNonEmptyString4(payload.phase) ? { phase: payload.phase } : {},
-        hasMemoryCitation: payload.memory_citation !== null && payload.memory_citation !== undefined
-      };
-    case "token_count": {
-      const info = isRecord2(payload.info) ? {
-        ...parseTokenUsage(payload.info.total_token_usage) ? { totalTokenUsage: parseTokenUsage(payload.info.total_token_usage) } : {},
-        ...parseTokenUsage(payload.info.last_token_usage) ? { lastTokenUsage: parseTokenUsage(payload.info.last_token_usage) } : {},
-        ...isNumber(payload.info.model_context_window) ? { modelContextWindow: payload.info.model_context_window } : {}
-      } : undefined;
-      const rateLimits = isRecord2(payload.rate_limits) ? {
-        ...isNonEmptyString4(payload.rate_limits.limit_id) ? { limitId: payload.rate_limits.limit_id } : {},
-        ...isNonEmptyString4(payload.rate_limits.plan_type) ? { planType: payload.rate_limits.plan_type } : {},
-        ...parseRateLimitWindow(payload.rate_limits.primary) ? { primary: parseRateLimitWindow(payload.rate_limits.primary) } : {},
-        ...parseRateLimitWindow(payload.rate_limits.secondary) ? { secondary: parseRateLimitWindow(payload.rate_limits.secondary) } : {}
-      } : undefined;
-      return {
-        recordType: "event_msg",
-        eventType: "token_count",
-        lineNumber,
-        timestamp,
-        ...info && Object.keys(info).length > 0 ? { info } : {},
-        ...rateLimits && Object.keys(rateLimits).length > 0 ? { rateLimits } : {}
-      };
-    }
-    case "exec_command_end": {
-      if (!isArray(payload.command)) {
-        return null;
-      }
-      const duration3 = parseDuration(payload.duration);
-      return {
-        recordType: "event_msg",
-        eventType: "exec_command_end",
-        lineNumber,
-        timestamp,
-        command: toStringArray(payload.command),
-        parsedCmd: toStringArray(payload.parsed_cmd),
-        ...isNonEmptyString4(payload.call_id) ? { callId: payload.call_id } : {},
-        ...isNonEmptyString4(payload.turn_id) ? { turnId: payload.turn_id } : {},
-        ...isNonEmptyString4(payload.cwd) ? { cwd: payload.cwd } : {},
-        ...isNumber(payload.exit_code) ? { exitCode: payload.exit_code } : {},
-        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {},
-        ...duration3 ? { duration: duration3 } : {}
-      };
-    }
-    case "mcp_tool_call_end": {
-      const invocation = isRecord2(payload.invocation) ? payload.invocation : undefined;
-      if (!invocation || !isNonEmptyString4(invocation.server) || !isNonEmptyString4(invocation.tool)) {
-        return null;
-      }
-      const duration3 = parseDuration(payload.duration);
-      const resultKind = isRecord2(payload.result) ? "Ok" in payload.result ? "ok" : ("Err" in payload.result) ? "err" : undefined : undefined;
-      return {
-        recordType: "event_msg",
-        eventType: "mcp_tool_call_end",
-        lineNumber,
-        timestamp,
-        server: invocation.server,
-        tool: invocation.tool,
-        ...isNonEmptyString4(payload.call_id) ? { callId: payload.call_id } : {},
-        ...duration3 ? { duration: duration3 } : {},
-        ...resultKind ? { resultKind } : {}
-      };
-    }
-    case "item_completed": {
-      const item = isRecord2(payload.item) ? payload.item : undefined;
-      return {
-        recordType: "event_msg",
-        eventType: "item_completed",
-        lineNumber,
-        timestamp,
-        ...isNonEmptyString4(payload.thread_id) ? { threadId: payload.thread_id } : {},
-        ...isNonEmptyString4(payload.turn_id) ? { turnId: payload.turn_id } : {},
-        ...item && isNonEmptyString4(item.type) ? { itemType: item.type } : {},
-        ...item && isNonEmptyString4(item.id) ? { itemId: item.id } : {}
-      };
-    }
-    case "context_compacted":
-      return {
-        recordType: "event_msg",
-        eventType: "context_compacted",
-        lineNumber,
-        timestamp
-      };
-    case "thread_rolled_back":
-      return {
-        recordType: "event_msg",
-        eventType: "thread_rolled_back",
-        lineNumber,
-        timestamp,
-        ...isNumber(payload.num_turns) ? { numTurns: payload.num_turns } : {}
-      };
-    default:
-      return null;
-  }
-}
-function parseResponseItemRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.type)) {
-    return null;
-  }
-  switch (payload.type) {
-    case "message": {
-      if (!isNonEmptyString4(payload.role)) {
-        return null;
-      }
-      const content = parseMessageContentBlocks(payload.content);
-      if (content === null) {
-        return null;
-      }
-      return {
-        recordType: "response_item",
-        itemType: "message",
-        lineNumber,
-        timestamp,
-        role: payload.role,
-        content,
-        ...isNonEmptyString4(payload.phase) ? { phase: payload.phase } : {}
-      };
-    }
-    case "reasoning": {
-      const summary = isArray(payload.summary) ? payload.summary.filter(isRecord2).map((entry) => isString(entry.text) ? entry.text : null).filter((entry) => entry !== null) : [];
-      return {
-        recordType: "response_item",
-        itemType: "reasoning",
-        lineNumber,
-        timestamp,
-        summaryText: summary,
-        hasEncryptedContent: isNonEmptyString4(payload.encrypted_content)
-      };
-    }
-    case "function_call":
-      if (!isNonEmptyString4(payload.name) || !isNonEmptyString4(payload.call_id) || !isString(payload.arguments)) {
-        return null;
-      }
-      return {
-        recordType: "response_item",
-        itemType: "function_call",
-        lineNumber,
-        timestamp,
-        name: payload.name,
-        callId: payload.call_id,
-        arguments: payload.arguments
-      };
-    case "function_call_output":
-      if (!isNonEmptyString4(payload.call_id) || !isString(payload.output)) {
-        return null;
-      }
-      return {
-        recordType: "response_item",
-        itemType: "function_call_output",
-        lineNumber,
-        timestamp,
-        callId: payload.call_id,
-        output: payload.output
-      };
-    case "custom_tool_call":
-      if (!isNonEmptyString4(payload.call_id) || !isNonEmptyString4(payload.name) || !isString(payload.input)) {
-        return null;
-      }
-      return {
-        recordType: "response_item",
-        itemType: "custom_tool_call",
-        lineNumber,
-        timestamp,
-        callId: payload.call_id,
-        name: payload.name,
-        input: payload.input,
-        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {}
-      };
-    case "custom_tool_call_output":
-      if (!isNonEmptyString4(payload.call_id) || !isString(payload.output)) {
-        return null;
-      }
-      return {
-        recordType: "response_item",
-        itemType: "custom_tool_call_output",
-        lineNumber,
-        timestamp,
-        callId: payload.call_id,
-        output: payload.output
-      };
-    case "web_search_call": {
-      const action = isRecord2(payload.action) ? payload.action : undefined;
-      return {
-        recordType: "response_item",
-        itemType: "web_search_call",
-        lineNumber,
-        timestamp,
-        queries: action ? toStringArray(action.queries) : [],
-        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {},
-        ...action && isNonEmptyString4(action.type) ? { actionType: action.type } : {},
-        ...action && isNonEmptyString4(action.query) ? { query: action.query } : {}
-      };
-    }
-    default:
-      return null;
-  }
-}
-function parseTurnContextRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.turn_id) || !isNonEmptyString4(payload.cwd)) {
-    return null;
-  }
-  const sandboxPolicy = parseSandboxPolicy(payload.sandbox_policy);
-  const collaborationMode = parseCollaborationMode(payload.collaboration_mode);
-  return {
-    recordType: "turn_context",
-    lineNumber,
-    timestamp,
-    turnId: payload.turn_id,
-    cwd: payload.cwd,
-    ...isNonEmptyString4(payload.current_date) ? { currentDate: payload.current_date } : {},
-    ...isNonEmptyString4(payload.timezone) ? { timezone: payload.timezone } : {},
-    ...isNonEmptyString4(payload.approval_policy) ? { approvalPolicy: payload.approval_policy } : {},
-    ...sandboxPolicy ? { sandboxPolicy } : {},
-    ...isNonEmptyString4(payload.model) ? { model: payload.model } : {},
-    ...isNonEmptyString4(payload.personality) ? { personality: payload.personality } : {},
-    ...collaborationMode ? { collaborationMode } : {},
-    ...isNonEmptyString4(payload.effort) ? { effort: payload.effort } : {},
-    ...isNonEmptyString4(payload.summary) ? { summary: payload.summary } : {},
-    ...isRecord2(payload.truncation_policy) ? {
-      truncationPolicy: {
-        ...isNonEmptyString4(payload.truncation_policy.mode) ? { mode: payload.truncation_policy.mode } : {},
-        ...isNumber(payload.truncation_policy.limit) ? { limit: payload.truncation_policy.limit } : {}
-      }
-    } : {}
-  };
-}
-function parseCompactedRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload)) {
-    return null;
-  }
-  return {
-    recordType: "compacted",
-    lineNumber,
-    timestamp,
-    replacementHistoryCount: isArray(payload.replacement_history) ? payload.replacement_history.length : 0
-  };
-}
-function parseTopLevelRecord(value, lineNumber) {
-  if (!isRecord2(value) || !isNonEmptyString4(value.type) || !isNonEmptyString4(value.timestamp)) {
-    return null;
-  }
-  switch (value.type) {
-    case "session_meta":
-      return parseSessionMetaRecord(value.payload, value.timestamp, lineNumber);
-    case "event_msg":
-      return parseEventRecord(value.payload, value.timestamp, lineNumber);
-    case "response_item":
-      return parseResponseItemRecord(value.payload, value.timestamp, lineNumber);
-    case "turn_context":
-      return parseTurnContextRecord(value.payload, value.timestamp, lineNumber);
-    case "compacted":
-      return parseCompactedRecord(value.payload, value.timestamp, lineNumber);
-    default:
-      return null;
-  }
-}
-
-// src/collector/transcript-parser.ts
-function createAccumulator() {
-  return {
-    records: [],
-    messages: [],
-    malformedLineCount: 0,
-    skippedRecordCount: 0
-  };
-}
-function collectRecord(accumulator, record3) {
-  accumulator.records.push(record3);
-  if (record3.recordType === "session_meta" && accumulator.sessionMeta === undefined) {
-    accumulator.sessionMeta = record3;
-  }
-  if (record3.recordType === "event_msg") {
-    const message = messageFromEvent(record3);
-    if (message) {
-      accumulator.messages.push(message);
-    }
-  }
-  return accumulator;
-}
-async function readTranscript(filePath) {
-  const stream = import_node_fs5.createReadStream(filePath, { encoding: "utf-8" });
-  const lines = import_node_readline2.default.createInterface({
-    crlfDelay: Number.POSITIVE_INFINITY,
-    input: stream
-  });
-  let lineNumber = 0;
-  const accumulator = createAccumulator();
-  try {
-    for await (const rawLine of lines) {
-      lineNumber += 1;
-      const line = rawLine.trim();
-      if (line.length === 0) {
-        continue;
-      }
-      let parsed;
-      try {
-        parsed = JSON.parse(line);
-      } catch {
-        accumulator.malformedLineCount += 1;
-        continue;
-      }
-      const record3 = parseTopLevelRecord(parsed, lineNumber);
-      if (record3 === null) {
-        accumulator.skippedRecordCount += 1;
-        continue;
-      }
-      collectRecord(accumulator, record3);
-    }
-  } finally {
-    lines.close();
-    stream.destroy();
-  }
-  if (!accumulator.sessionMeta?.sessionId) {
-    return null;
-  }
-  return {
-    sessionId: accumulator.sessionMeta.sessionId,
-    filePath,
-    sessionMeta: accumulator.sessionMeta,
-    records: accumulator.records,
-    messages: accumulator.messages,
-    signals: extractSessionSignals(accumulator.records),
-    malformedLineCount: accumulator.malformedLineCount,
-    skippedRecordCount: accumulator.skippedRecordCount
-  };
-}
-async function readTranscripts(filePaths) {
-  const parsed = await Promise.all(filePaths.map((filePath) => readTranscript(filePath)));
-  return parsed.filter((entry) => entry !== null);
-}
-
-// src/sync/normalize.ts
-var import_node_path7 = require("node:path");
-function normalizeSignals(signals) {
-  return {
-    mcp_usage: { ...signals.mcp_usage },
-    skill_usage: {},
-    agent_usage: { ...signals.agent_usage },
-    builtin_usage: { ...signals.builtin_usage },
-    unknown_usage: { ...signals.unknown_usage },
-    image_count: signals.image_count
-  };
-}
-function resolveCreatedAt(transcript) {
-  if (transcript.sessionMeta?.timestamp) {
-    return { createdAt: transcript.sessionMeta.timestamp, source: "session_meta" };
-  }
-  const firstRecordTimestamp = transcript.records[0]?.timestamp;
-  if (firstRecordTimestamp) {
-    return { createdAt: firstRecordTimestamp, source: "first_record" };
-  }
-  return {
-    createdAt: transcript.messages[0]?.timestamp ?? new Date(0).toISOString(),
-    source: "first_message"
-  };
-}
-function resolvePlatform(originator) {
-  if (originator === "Codex Desktop") {
-    return {
-      platform: PLATFORM_CODEX_APP,
-      source: "originator"
-    };
-  }
-  if (originator === "codex_cli_rs") {
-    return {
-      platform: PLATFORM_TERMINAL,
-      source: "originator"
-    };
-  }
-  return {
-    platform: PLATFORM_TERMINAL,
-    source: "fallback"
-  };
-}
-function normalizeMessageContent(message) {
-  return message.textParts.map((part) => part.trim()).filter((part) => part.length > 0).join(`
-
-`);
-}
-function normalizeMessageMetadata(message) {
-  const metadata = {};
-  if (message.phase) {
-    metadata.phase = message.phase;
-  }
-  metadata.source = message.source;
-  metadata.line_number = message.lineNumber;
-  return Object.keys(metadata).length > 0 ? metadata : null;
-}
-var CONVERSATIONAL_ROLES = new Set(["user", "assistant"]);
-function normalizeMessages(transcript, userId) {
-  return transcript.messages.filter((message) => CONVERSATIONAL_ROLES.has(message.role)).map((message) => ({
-    role: message.role,
-    content: normalizeMessageContent(message),
-    created_at: message.timestamp,
-    session_id: transcript.sessionId,
-    user_id: userId,
-    code_diffs: null,
-    metadata: normalizeMessageMetadata(message),
-    imageCount: message.imageCount
-  })).filter((message) => message.content.length > 0 || message.imageCount > 0).map(({ imageCount: _imageCount, ...message }, index) => ({
-    ...message,
-    message_index: index
-  }));
-}
-function normalizeTranscriptToZestPayload(input) {
-  const { transcript, sessionRef, userId, workspaceId } = input;
-  const { createdAt, source: createdAtSource } = resolveCreatedAt(transcript);
-  const { platform: platform2, source: platformSource } = resolvePlatform(transcript.sessionMeta?.originator);
-  const title = sessionRef?.title ?? null;
-  const session = {
-    id: transcript.sessionId,
-    title,
-    created_at: createdAt,
-    user_id: userId,
-    workspace_id: workspaceId ?? null,
-    analysis_status: "pending",
-    metadata: null,
-    project_id: null,
-    project_name: transcript.sessionMeta?.cwd ? import_node_path7.basename(transcript.sessionMeta.cwd) : null,
-    platform: platform2,
-    source: SOURCE,
-    signals: normalizeSignals(transcript.signals)
-  };
-  return {
-    session,
-    messages: normalizeMessages(transcript, userId),
-    decisions: {
-      titleSource: sessionRef?.title ? "session_index" : "missing",
-      createdAtSource,
-      platformSource,
-      sourceDetailsOmitted: true
-    }
-  };
-}
-function normalizeTranscriptToPreparedPayload(input) {
-  const { transcript } = input;
-  return {
-    payload: normalizeTranscriptToZestPayload(input),
-    privacy: {
-      sourceKind: "transcript",
-      sourcePath: transcript.filePath,
-      sourcePathAllowlisted: isAllowlistedCodexPath(transcript.filePath)
-    }
-  };
-}
-function normalizeTranscriptsToPreparedPayloads(input) {
-  const { transcripts, sessionRefsById, userId, workspaceId } = input;
-  return transcripts.map((transcript) => normalizeTranscriptToPreparedPayload({
-    transcript,
-    sessionRef: sessionRefsById?.get(transcript.sessionId),
-    userId,
-    workspaceId
-  }));
-}
-
-// src/sync/queue.ts
-var MAX_RETRY_ATTEMPTS = 3;
-function getNowIso(now = new Date) {
-  return now.toISOString();
-}
-function resolveQueueFilePath() {
-  return resolveStatePath("queue", "transcripts.json");
-}
-function sortQueueEntries(entries) {
-  return [...entries].sort((left, right) => left.createdAt.localeCompare(right.createdAt) || left.id.localeCompare(right.id));
-}
-function dedupeDroppedPayloads(results) {
-  return results.filter((result) => result.status === "sanitized");
-}
-function createQueueEntry(payload, now = new Date) {
-  const timestamp = getNowIso(now);
-  const id = payload.payload.session.id;
-  if (!id) {
-    throw new Error("Queue entries require a session id");
-  }
-  return {
-    id,
-    dedupeKey: id,
-    status: "pending",
-    attemptCount: 0,
-    lastAttemptAt: null,
-    lastFailureAt: null,
-    lastError: null,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-    payload
-  };
-}
-function buildQueueEntriesFromResults(results, existingEntries = [], now = new Date) {
-  const existingKeys = new Set(existingEntries.map((entry) => entry.dedupeKey));
-  const nextEntries = [...existingEntries];
-  for (const payload of dedupeDroppedPayloads(results)) {
-    const entry = createQueueEntry(payload, now);
-    if (existingKeys.has(entry.dedupeKey)) {
-      continue;
-    }
-    existingKeys.add(entry.dedupeKey);
-    nextEntries.push(entry);
-  }
-  return sortQueueEntries(nextEntries);
-}
-async function loadQueueEntries() {
-  const entries = await readJsonFile(resolveQueueFilePath());
-  return sortQueueEntries(entries ?? []);
-}
-async function saveQueueEntries(entries) {
-  await writeJsonFileAtomic(resolveQueueFilePath(), sortQueueEntries(entries));
-}
-async function enqueueSanitizedPayloads(results, now = new Date) {
-  const existingEntries = await loadQueueEntries();
-  const nextEntries = buildQueueEntriesFromResults(results, existingEntries, now);
-  await saveQueueEntries(nextEntries);
-  return nextEntries;
-}
-async function getReplayableQueueEntries() {
-  const entries = await loadQueueEntries();
-  return entries.filter((entry) => {
-    if (entry.status === "synced" || entry.status === "failed") {
-      return false;
-    }
-    if (entry.status === "retrying") {
-      return entry.attemptCount < MAX_RETRY_ATTEMPTS;
-    }
-    return true;
-  });
-}
-async function markQueueEntriesRetrying(ids, error46, now = new Date) {
-  const idSet = new Set(ids);
-  const timestamp = getNowIso(now);
-  const entries = await loadQueueEntries();
-  const nextEntries = entries.map((entry) => {
-    if (!idSet.has(entry.id)) {
-      return entry;
-    }
-    return {
-      ...entry,
-      status: "retrying",
-      attemptCount: entry.attemptCount + 1,
-      lastAttemptAt: timestamp,
-      lastError: error46 ?? entry.lastError,
-      updatedAt: timestamp
-    };
-  });
-  await saveQueueEntries(nextEntries);
-  return nextEntries;
-}
-async function markQueueEntriesSynced(ids) {
-  const idSet = new Set(ids);
-  const nextEntries = (await loadQueueEntries()).filter((entry) => !idSet.has(entry.id));
-  await saveQueueEntries(nextEntries);
-  return nextEntries;
-}
-async function recordQueueFailure(ids, error46, now = new Date) {
-  const idSet = new Set(ids);
-  const timestamp = getNowIso(now);
-  const entries = await loadQueueEntries();
-  const nextEntries = entries.map((entry) => {
-    if (!idSet.has(entry.id)) {
-      return entry;
-    }
-    return {
-      ...entry,
-      status: entry.attemptCount >= MAX_RETRY_ATTEMPTS ? "failed" : "retrying",
-      lastFailureAt: timestamp,
-      lastError: error46,
-      updatedAt: timestamp
-    };
-  });
-  await saveQueueEntries(nextEntries);
-  return nextEntries;
 }
 
 // ../../node_modules/@supabase/supabase-js/dist/index.mjs
@@ -40716,14 +39594,14 @@ var _getRequestParams$1 = (method, options, parameters, body) => {
   return _objectSpread2(_objectSpread2({}, params), parameters);
 };
 async function _handleRequest$1(fetcher, method, url2, options, parameters, body) {
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     fetcher(url2, _getRequestParams$1(method, options, parameters, body)).then((result) => {
       if (!result.ok)
         throw result;
       if (options === null || options === undefined ? undefined : options.noResolveJson)
         return result;
       return result.json();
-    }).then((data) => resolve3(data)).catch((error46) => handleError$1(error46, reject, options));
+    }).then((data) => resolve2(data)).catch((error46) => handleError$1(error46, reject, options));
   });
 }
 async function get(fetcher, url2, options, parameters) {
@@ -41584,7 +40462,7 @@ var _getRequestParams = (method, options, parameters, body) => {
   return _objectSpread2(_objectSpread2({}, params), parameters);
 };
 async function _handleRequest(fetcher, method, url2, options, parameters, body) {
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve2, reject) => {
     fetcher(url2, _getRequestParams(method, options, parameters, body)).then((result) => {
       if (!result.ok)
         throw result;
@@ -41594,7 +40472,7 @@ async function _handleRequest(fetcher, method, url2, options, parameters, body) 
       if (!contentType || !contentType.includes("application/json"))
         return {};
       return result.json();
-    }).then((data) => resolve3(data)).catch((error46) => handleError(error46, reject, options));
+    }).then((data) => resolve2(data)).catch((error46) => handleError(error46, reject, options));
   });
 }
 async function post(fetcher, url2, body, options, parameters) {
@@ -42318,6 +41196,1157 @@ async function createOnDemandClient(options = {}) {
     }
   };
 }
+
+// src/codex/discovery.ts
+var import_promises5 = require("node:fs/promises");
+var import_node_path6 = require("node:path");
+
+// src/codex/paths.ts
+var import_node_os3 = require("node:os");
+var import_node_path5 = require("node:path");
+var DEFAULT_CODEX_DIR_NAME = ".codex";
+var ALLOWLISTED_TOP_LEVEL_FILES = new Set([
+  "config.toml",
+  "session_index.jsonl",
+  "history.jsonl"
+]);
+function getCodexRootDir() {
+  return process.env.ZEST_CODEX_ROOT_DIR ?? import_node_path5.join(import_node_os3.homedir(), DEFAULT_CODEX_DIR_NAME);
+}
+function isWithinRoot(rootDir, targetPath) {
+  const rel = import_node_path5.relative(rootDir, targetPath);
+  if (rel.length === 0)
+    return false;
+  return !(rel === ".." || rel.startsWith("../") || import_node_path5.isAbsolute(rel));
+}
+function matchesAllowlist(relativePath) {
+  if (ALLOWLISTED_TOP_LEVEL_FILES.has(relativePath)) {
+    return true;
+  }
+  if (relativePath.startsWith("sessions/") && relativePath.endsWith(".jsonl")) {
+    const inner = relativePath.slice("sessions/".length);
+    return inner.length > ".jsonl".length && !inner.includes("..");
+  }
+  return false;
+}
+function resolveCodexPath(...segments) {
+  const rootDir = getCodexRootDir();
+  const resolvedPath = import_node_path5.resolve(rootDir, ...segments);
+  if (!isWithinRoot(rootDir, resolvedPath)) {
+    throw new Error(`Codex path must stay within ${rootDir}`);
+  }
+  const rel = import_node_path5.relative(rootDir, resolvedPath);
+  if (!matchesAllowlist(rel)) {
+    throw new Error(`Codex path is not allowlisted: ${rel}`);
+  }
+  return resolvedPath;
+}
+function isAllowlistedCodexPath(absolutePath) {
+  const rootDir = getCodexRootDir();
+  if (!isWithinRoot(rootDir, absolutePath)) {
+    return false;
+  }
+  return matchesAllowlist(import_node_path5.relative(rootDir, absolutePath));
+}
+
+// src/codex/discovery.ts
+async function directoryExists(path2) {
+  try {
+    await import_promises5.readdir(path2);
+    return true;
+  } catch {
+    return false;
+  }
+}
+async function pathExists(path2) {
+  try {
+    await import_promises5.access(path2);
+    return true;
+  } catch {
+    return false;
+  }
+}
+function formatDatePath(now) {
+  const year = String(now.getFullYear());
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return import_node_path6.join("sessions", year, month, day);
+}
+function isCurrentDayTranscript(path2, rootDir, now) {
+  const relativePath = import_node_path6.relative(rootDir, path2);
+  const currentDayPrefix = `${formatDatePath(now)}/`;
+  return relativePath.startsWith(currentDayPrefix);
+}
+async function collectTranscriptPaths(dirPath) {
+  const entries = await import_promises5.readdir(dirPath, { recursive: true, withFileTypes: true });
+  const transcriptPaths = [];
+  const rootDir = getCodexRootDir();
+  const now = new Date;
+  for (const entry of entries) {
+    if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
+      continue;
+    }
+    const parentPath = typeof entry.parentPath === "string" ? entry.parentPath : ("path" in entry) && typeof entry.path === "string" ? import_node_path6.join(dirPath, entry.path) : dirPath;
+    const absolutePath = import_node_path6.join(parentPath, entry.name);
+    if (isAllowlistedCodexPath(absolutePath) && isCurrentDayTranscript(absolutePath, rootDir, now)) {
+      transcriptPaths.push(absolutePath);
+    }
+  }
+  return transcriptPaths.sort((left, right) => left.localeCompare(right));
+}
+async function discoverCodexRuntimeFiles() {
+  const rootDir = getCodexRootDir();
+  const transcriptDir = import_node_path6.join(rootDir, "sessions");
+  const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir) : [];
+  const sessionIndexPath = resolveCodexPath("session_index.jsonl");
+  const historyPath = resolveCodexPath("history.jsonl");
+  return {
+    ...await pathExists(historyPath) ? { historyPath } : {},
+    ...await pathExists(sessionIndexPath) ? { sessionIndexPath } : {},
+    transcriptPaths
+  };
+}
+
+// src/collector/session-references.ts
+var import_node_fs4 = require("node:fs");
+var import_node_readline = __toESM(require("node:readline"));
+function isRecord(value) {
+  return typeof value === "object" && value !== null;
+}
+function isNonEmptyString3(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+function isFiniteNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+async function readJsonLines(filePath, parseLine) {
+  const stream = import_node_fs4.createReadStream(filePath, { encoding: "utf-8" });
+  const lines = import_node_readline.default.createInterface({
+    crlfDelay: Number.POSITIVE_INFINITY,
+    input: stream
+  });
+  const entries = [];
+  try {
+    for await (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (line.length === 0) {
+        continue;
+      }
+      let parsed;
+      try {
+        parsed = JSON.parse(line);
+      } catch {
+        continue;
+      }
+      const entry = parseLine(parsed);
+      if (entry !== null) {
+        entries.push(entry);
+      }
+    }
+  } finally {
+    lines.close();
+    stream.destroy();
+  }
+  return entries;
+}
+function parseSessionIndexEntry(value) {
+  if (!isRecord(value) || !isNonEmptyString3(value.id) || !isNonEmptyString3(value.updated_at)) {
+    return null;
+  }
+  if (value.thread_name !== undefined && !isNonEmptyString3(value.thread_name)) {
+    return null;
+  }
+  return {
+    id: value.id,
+    ...value.thread_name ? { threadName: value.thread_name } : {},
+    updatedAt: value.updated_at
+  };
+}
+function parseHistoryEntry(value) {
+  if (!isRecord(value)) {
+    return null;
+  }
+  if (!isNonEmptyString3(value.session_id) || !isFiniteNumber(value.ts) || !isNonEmptyString3(value.text)) {
+    return null;
+  }
+  return {
+    sessionId: value.session_id,
+    text: value.text,
+    timestamp: value.ts
+  };
+}
+async function readSessionIndex(filePath) {
+  return readJsonLines(filePath, parseSessionIndexEntry);
+}
+async function readHistory(filePath) {
+  return readJsonLines(filePath, parseHistoryEntry);
+}
+async function buildSessionReferences(input) {
+  const [sessionIndexEntries, historyEntries] = await Promise.all([
+    readSessionIndex(input.sessionIndexPath),
+    readHistory(input.historyPath)
+  ]);
+  const latestHistoryBySessionId = new Map;
+  for (const entry of historyEntries) {
+    const existing = latestHistoryBySessionId.get(entry.sessionId);
+    if (!existing || entry.timestamp >= existing.timestamp) {
+      latestHistoryBySessionId.set(entry.sessionId, {
+        text: entry.text,
+        timestamp: entry.timestamp
+      });
+    }
+  }
+  return sessionIndexEntries.map((entry) => {
+    const latestHistory = latestHistoryBySessionId.get(entry.id);
+    return {
+      ...latestHistory ? {
+        latestPromptAt: new Date(latestHistory.timestamp * 1000).toISOString(),
+        latestPromptText: latestHistory.text
+      } : {},
+      ...entry.threadName ? { title: entry.threadName } : {},
+      sessionId: entry.id,
+      updatedAt: entry.updatedAt
+    };
+  });
+}
+function buildSessionReferenceMap(references) {
+  return new Map(references.map((reference) => [reference.sessionId, reference]));
+}
+
+// src/collector/transcript-parser.ts
+var import_node_fs5 = require("node:fs");
+var import_node_readline2 = __toESM(require("node:readline"));
+
+// src/collector/session-signals.ts
+var BUILTIN_FUNCTION_CALL_NAMES = new Set([
+  "Bash",
+  "Read",
+  "Edit",
+  "Write",
+  "MultiEdit",
+  "Glob",
+  "Grep",
+  "LS",
+  "WebFetch",
+  "WebSearch",
+  "LSP",
+  "NotebookEdit"
+]);
+var AGENT_FUNCTION_CALL_NAMES = new Set(["Task", "Agent"]);
+var MCP_TOOL_NAME_PATTERN = /^mcp__[^_]+(?:_[^_]+)*__[^_]+(?:_[^_]+)*$/;
+var MCP_NAMESPACE_PATTERN = /^mcp__[^_]+(?:_[^_]+)*__$/;
+function incrementMap(map3, key) {
+  map3[key] = (map3[key] ?? 0) + 1;
+}
+function recordFunctionCallSignal(record3, signals) {
+  const normalizedMcpToolName = normalizeMcpToolName(record3);
+  if (normalizedMcpToolName) {
+    incrementMap(signals.mcp_usage, normalizedMcpToolName);
+    return;
+  }
+  if (BUILTIN_FUNCTION_CALL_NAMES.has(record3.name)) {
+    incrementMap(signals.builtin_usage, record3.name);
+    return;
+  }
+  if (AGENT_FUNCTION_CALL_NAMES.has(record3.name)) {
+    incrementMap(signals.agent_usage, record3.name);
+    return;
+  }
+  incrementMap(signals.unknown_usage, record3.name);
+}
+function normalizeMcpToolName(record3) {
+  if (MCP_TOOL_NAME_PATTERN.test(record3.name)) {
+    return record3.name;
+  }
+  if (record3.namespace && MCP_NAMESPACE_PATTERN.test(record3.namespace)) {
+    return `${record3.namespace}${record3.name}`;
+  }
+  return null;
+}
+function recordCustomToolSignal(record3, signals) {
+  incrementMap(signals.builtin_usage, record3.name);
+}
+function recordWebSearchSignal(_record2, signals) {
+  incrementMap(signals.builtin_usage, "web_search");
+}
+function recordMessageSignal(record3, signals) {
+  for (const block of record3.content) {
+    if (block.type === "input_image") {
+      signals.image_count += 1;
+    }
+  }
+}
+function extractSessionSignals(records) {
+  const signals = {
+    mcp_usage: {},
+    skill_usage: {},
+    agent_usage: {},
+    builtin_usage: {},
+    unknown_usage: {},
+    image_count: 0
+  };
+  for (const record3 of records) {
+    if (record3.recordType !== "response_item") {
+      continue;
+    }
+    switch (record3.itemType) {
+      case "function_call":
+        recordFunctionCallSignal(record3, signals);
+        break;
+      case "custom_tool_call":
+        recordCustomToolSignal(record3, signals);
+        break;
+      case "web_search_call":
+        recordWebSearchSignal(record3, signals);
+        break;
+      case "message":
+        recordMessageSignal(record3, signals);
+        break;
+      default:
+        break;
+    }
+  }
+  return signals;
+}
+
+// src/collector/transcript-parser/message-mappers.ts
+function messageFromEvent(record3) {
+  if (record3.eventType === "user_message") {
+    return {
+      role: "user",
+      textParts: [record3.message, ...record3.textElements].filter((entry) => entry.length > 0),
+      imageCount: record3.imagesCount + record3.localImagesCount,
+      timestamp: record3.timestamp,
+      lineNumber: record3.lineNumber,
+      source: "event_msg"
+    };
+  }
+  if (record3.eventType === "agent_message") {
+    return {
+      role: "assistant",
+      ...record3.phase ? { phase: record3.phase } : {},
+      textParts: record3.message.length > 0 ? [record3.message] : [],
+      imageCount: 0,
+      timestamp: record3.timestamp,
+      lineNumber: record3.lineNumber,
+      source: "event_msg"
+    };
+  }
+  return null;
+}
+
+// src/collector/transcript-parser/guards.ts
+function isRecord2(value) {
+  return typeof value === "object" && value !== null;
+}
+function isString(value) {
+  return typeof value === "string";
+}
+function isNonEmptyString4(value) {
+  return isString(value) && value.trim().length > 0;
+}
+function isNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+function isBoolean(value) {
+  return typeof value === "boolean";
+}
+function isArray(value) {
+  return Array.isArray(value);
+}
+function toStringArray(value) {
+  if (!isArray(value)) {
+    return [];
+  }
+  return value.filter(isString);
+}
+
+// src/collector/transcript-parser/field-parsers.ts
+function parseDuration(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const secs = isNumber(value.secs) ? value.secs : undefined;
+  const nanos = isNumber(value.nanos) ? value.nanos : undefined;
+  if (secs === undefined && nanos === undefined) {
+    return;
+  }
+  return { ...secs !== undefined ? { secs } : {}, ...nanos !== undefined ? { nanos } : {} };
+}
+function parseTokenUsage(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const inputTokens = isNumber(value.input_tokens) ? value.input_tokens : undefined;
+  const cachedInputTokens = isNumber(value.cached_input_tokens) ? value.cached_input_tokens : undefined;
+  const outputTokens = isNumber(value.output_tokens) ? value.output_tokens : undefined;
+  const reasoningOutputTokens = isNumber(value.reasoning_output_tokens) ? value.reasoning_output_tokens : undefined;
+  const totalTokens = isNumber(value.total_tokens) ? value.total_tokens : undefined;
+  if (inputTokens === undefined && cachedInputTokens === undefined && outputTokens === undefined && reasoningOutputTokens === undefined && totalTokens === undefined) {
+    return;
+  }
+  return {
+    ...inputTokens !== undefined ? { inputTokens } : {},
+    ...cachedInputTokens !== undefined ? { cachedInputTokens } : {},
+    ...outputTokens !== undefined ? { outputTokens } : {},
+    ...reasoningOutputTokens !== undefined ? { reasoningOutputTokens } : {},
+    ...totalTokens !== undefined ? { totalTokens } : {}
+  };
+}
+function parseRateLimitWindow(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const usedPercent = isNumber(value.used_percent) ? value.used_percent : undefined;
+  const windowMinutes = isNumber(value.window_minutes) ? value.window_minutes : undefined;
+  const resetsAt = isNumber(value.resets_at) ? value.resets_at : undefined;
+  if (usedPercent === undefined && windowMinutes === undefined && resetsAt === undefined) {
+    return;
+  }
+  return {
+    ...usedPercent !== undefined ? { usedPercent } : {},
+    ...windowMinutes !== undefined ? { windowMinutes } : {},
+    ...resetsAt !== undefined ? { resetsAt } : {}
+  };
+}
+function parseGitContext(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const branch = isNonEmptyString4(value.branch) ? value.branch : undefined;
+  const commitHash = isNonEmptyString4(value.commit_hash) ? value.commit_hash : undefined;
+  const repositoryUrl = isNonEmptyString4(value.repository_url) ? value.repository_url : undefined;
+  if (branch === undefined && commitHash === undefined && repositoryUrl === undefined) {
+    return;
+  }
+  return {
+    ...branch ? { branch } : {},
+    ...commitHash ? { commitHash } : {},
+    ...repositoryUrl ? { repositoryUrl } : {}
+  };
+}
+function parseSandboxPolicy(value) {
+  if (!isRecord2(value) || !isNonEmptyString4(value.type)) {
+    return;
+  }
+  return {
+    type: value.type,
+    writableRoots: toStringArray(value.writable_roots),
+    ...isBoolean(value.network_access) ? { networkAccess: value.network_access } : {},
+    ...isBoolean(value.exclude_tmpdir_env_var) ? { excludeTmpdirEnvVar: value.exclude_tmpdir_env_var } : {},
+    ...isBoolean(value.exclude_slash_tmp) ? { excludeSlashTmp: value.exclude_slash_tmp } : {}
+  };
+}
+function parseCollaborationMode(value) {
+  if (!isRecord2(value) || !isNonEmptyString4(value.mode)) {
+    return;
+  }
+  const settings = isRecord2(value.settings) ? value.settings : undefined;
+  return {
+    mode: value.mode,
+    ...settings && isNonEmptyString4(settings.model) ? { model: settings.model } : {},
+    ...settings && isNonEmptyString4(settings.reasoning_effort) ? { reasoningEffort: settings.reasoning_effort } : {}
+  };
+}
+function parseMessageContentBlocks(value) {
+  if (!isArray(value)) {
+    return null;
+  }
+  const blocks = [];
+  for (const entry of value) {
+    if (!isRecord2(entry) || !isNonEmptyString4(entry.type)) {
+      return null;
+    }
+    if (entry.type === "input_text" || entry.type === "output_text") {
+      if (!isString(entry.text)) {
+        return null;
+      }
+      blocks.push({
+        type: entry.type,
+        text: entry.text
+      });
+      continue;
+    }
+    if (entry.type === "input_image") {
+      blocks.push({ type: "input_image" });
+      continue;
+    }
+    return null;
+  }
+  return blocks;
+}
+
+// src/collector/transcript-parser/record-parsers.ts
+function parseSessionMetaRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString4(payload.id) || !isNonEmptyString4(payload.cwd) || !isNonEmptyString4(payload.originator) || !isNonEmptyString4(payload.source) || !isNonEmptyString4(payload.cli_version) || !isNonEmptyString4(payload.model_provider)) {
+    return null;
+  }
+  const git = parseGitContext(payload.git);
+  return {
+    recordType: "session_meta",
+    lineNumber,
+    timestamp,
+    sessionId: payload.id,
+    cwd: payload.cwd,
+    originator: payload.originator,
+    source: payload.source,
+    cliVersion: payload.cli_version,
+    modelProvider: payload.model_provider,
+    ...git ? { git } : {}
+  };
+}
+function parseEventRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString4(payload.type)) {
+    return null;
+  }
+  switch (payload.type) {
+    case "task_started":
+      if (!isNonEmptyString4(payload.turn_id)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "task_started",
+        lineNumber,
+        timestamp,
+        turnId: payload.turn_id,
+        ...isNumber(payload.model_context_window) ? { modelContextWindow: payload.model_context_window } : {},
+        ...isNonEmptyString4(payload.collaboration_mode_kind) ? { collaborationModeKind: payload.collaboration_mode_kind } : {}
+      };
+    case "task_complete":
+      if (!isNonEmptyString4(payload.turn_id)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "task_complete",
+        lineNumber,
+        timestamp,
+        turnId: payload.turn_id,
+        ...isString(payload.last_agent_message) ? { lastAgentMessage: payload.last_agent_message } : {}
+      };
+    case "turn_aborted":
+      if (!isNonEmptyString4(payload.turn_id)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "turn_aborted",
+        lineNumber,
+        timestamp,
+        turnId: payload.turn_id,
+        ...isNonEmptyString4(payload.reason) ? { reason: payload.reason } : {}
+      };
+    case "user_message":
+      if (!isString(payload.message)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "user_message",
+        lineNumber,
+        timestamp,
+        message: payload.message,
+        imagesCount: isArray(payload.images) ? payload.images.length : 0,
+        localImagesCount: isArray(payload.local_images) ? payload.local_images.length : 0,
+        textElements: toStringArray(payload.text_elements)
+      };
+    case "agent_message":
+      if (!isString(payload.message)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "agent_message",
+        lineNumber,
+        timestamp,
+        message: payload.message,
+        ...isNonEmptyString4(payload.phase) ? { phase: payload.phase } : {},
+        hasMemoryCitation: payload.memory_citation !== null && payload.memory_citation !== undefined
+      };
+    case "token_count": {
+      const info = isRecord2(payload.info) ? {
+        ...parseTokenUsage(payload.info.total_token_usage) ? { totalTokenUsage: parseTokenUsage(payload.info.total_token_usage) } : {},
+        ...parseTokenUsage(payload.info.last_token_usage) ? { lastTokenUsage: parseTokenUsage(payload.info.last_token_usage) } : {},
+        ...isNumber(payload.info.model_context_window) ? { modelContextWindow: payload.info.model_context_window } : {}
+      } : undefined;
+      const rateLimits = isRecord2(payload.rate_limits) ? {
+        ...isNonEmptyString4(payload.rate_limits.limit_id) ? { limitId: payload.rate_limits.limit_id } : {},
+        ...isNonEmptyString4(payload.rate_limits.plan_type) ? { planType: payload.rate_limits.plan_type } : {},
+        ...parseRateLimitWindow(payload.rate_limits.primary) ? { primary: parseRateLimitWindow(payload.rate_limits.primary) } : {},
+        ...parseRateLimitWindow(payload.rate_limits.secondary) ? { secondary: parseRateLimitWindow(payload.rate_limits.secondary) } : {}
+      } : undefined;
+      return {
+        recordType: "event_msg",
+        eventType: "token_count",
+        lineNumber,
+        timestamp,
+        ...info && Object.keys(info).length > 0 ? { info } : {},
+        ...rateLimits && Object.keys(rateLimits).length > 0 ? { rateLimits } : {}
+      };
+    }
+    case "exec_command_end": {
+      if (!isArray(payload.command)) {
+        return null;
+      }
+      const duration3 = parseDuration(payload.duration);
+      return {
+        recordType: "event_msg",
+        eventType: "exec_command_end",
+        lineNumber,
+        timestamp,
+        command: toStringArray(payload.command),
+        parsedCmd: toStringArray(payload.parsed_cmd),
+        ...isNonEmptyString4(payload.call_id) ? { callId: payload.call_id } : {},
+        ...isNonEmptyString4(payload.turn_id) ? { turnId: payload.turn_id } : {},
+        ...isNonEmptyString4(payload.cwd) ? { cwd: payload.cwd } : {},
+        ...isNumber(payload.exit_code) ? { exitCode: payload.exit_code } : {},
+        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {},
+        ...duration3 ? { duration: duration3 } : {}
+      };
+    }
+    case "mcp_tool_call_end": {
+      const invocation = isRecord2(payload.invocation) ? payload.invocation : undefined;
+      if (!invocation || !isNonEmptyString4(invocation.server) || !isNonEmptyString4(invocation.tool)) {
+        return null;
+      }
+      const duration3 = parseDuration(payload.duration);
+      const resultKind = isRecord2(payload.result) ? "Ok" in payload.result ? "ok" : ("Err" in payload.result) ? "err" : undefined : undefined;
+      return {
+        recordType: "event_msg",
+        eventType: "mcp_tool_call_end",
+        lineNumber,
+        timestamp,
+        server: invocation.server,
+        tool: invocation.tool,
+        ...isNonEmptyString4(payload.call_id) ? { callId: payload.call_id } : {},
+        ...duration3 ? { duration: duration3 } : {},
+        ...resultKind ? { resultKind } : {}
+      };
+    }
+    case "item_completed": {
+      const item = isRecord2(payload.item) ? payload.item : undefined;
+      return {
+        recordType: "event_msg",
+        eventType: "item_completed",
+        lineNumber,
+        timestamp,
+        ...isNonEmptyString4(payload.thread_id) ? { threadId: payload.thread_id } : {},
+        ...isNonEmptyString4(payload.turn_id) ? { turnId: payload.turn_id } : {},
+        ...item && isNonEmptyString4(item.type) ? { itemType: item.type } : {},
+        ...item && isNonEmptyString4(item.id) ? { itemId: item.id } : {}
+      };
+    }
+    case "context_compacted":
+      return {
+        recordType: "event_msg",
+        eventType: "context_compacted",
+        lineNumber,
+        timestamp
+      };
+    case "thread_rolled_back":
+      return {
+        recordType: "event_msg",
+        eventType: "thread_rolled_back",
+        lineNumber,
+        timestamp,
+        ...isNumber(payload.num_turns) ? { numTurns: payload.num_turns } : {}
+      };
+    default:
+      return null;
+  }
+}
+function parseResponseItemRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString4(payload.type)) {
+    return null;
+  }
+  switch (payload.type) {
+    case "message": {
+      if (!isNonEmptyString4(payload.role)) {
+        return null;
+      }
+      const content = parseMessageContentBlocks(payload.content);
+      if (content === null) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "message",
+        lineNumber,
+        timestamp,
+        role: payload.role,
+        content,
+        ...isNonEmptyString4(payload.phase) ? { phase: payload.phase } : {}
+      };
+    }
+    case "reasoning": {
+      const summary = isArray(payload.summary) ? payload.summary.filter(isRecord2).map((entry) => isString(entry.text) ? entry.text : null).filter((entry) => entry !== null) : [];
+      return {
+        recordType: "response_item",
+        itemType: "reasoning",
+        lineNumber,
+        timestamp,
+        summaryText: summary,
+        hasEncryptedContent: isNonEmptyString4(payload.encrypted_content)
+      };
+    }
+    case "function_call":
+      if (!isNonEmptyString4(payload.name) || !isNonEmptyString4(payload.call_id) || !isString(payload.arguments)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "function_call",
+        lineNumber,
+        timestamp,
+        name: payload.name,
+        ...isNonEmptyString4(payload.namespace) ? { namespace: payload.namespace } : {},
+        callId: payload.call_id,
+        arguments: payload.arguments
+      };
+    case "function_call_output":
+      if (!isNonEmptyString4(payload.call_id) || !isString(payload.output)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "function_call_output",
+        lineNumber,
+        timestamp,
+        callId: payload.call_id,
+        output: payload.output
+      };
+    case "custom_tool_call":
+      if (!isNonEmptyString4(payload.call_id) || !isNonEmptyString4(payload.name) || !isString(payload.input)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "custom_tool_call",
+        lineNumber,
+        timestamp,
+        callId: payload.call_id,
+        name: payload.name,
+        input: payload.input,
+        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {}
+      };
+    case "custom_tool_call_output":
+      if (!isNonEmptyString4(payload.call_id) || !isString(payload.output)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "custom_tool_call_output",
+        lineNumber,
+        timestamp,
+        callId: payload.call_id,
+        output: payload.output
+      };
+    case "web_search_call": {
+      const action = isRecord2(payload.action) ? payload.action : undefined;
+      return {
+        recordType: "response_item",
+        itemType: "web_search_call",
+        lineNumber,
+        timestamp,
+        queries: action ? toStringArray(action.queries) : [],
+        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {},
+        ...action && isNonEmptyString4(action.type) ? { actionType: action.type } : {},
+        ...action && isNonEmptyString4(action.query) ? { query: action.query } : {}
+      };
+    }
+    default:
+      return null;
+  }
+}
+function parseTurnContextRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString4(payload.turn_id) || !isNonEmptyString4(payload.cwd)) {
+    return null;
+  }
+  const sandboxPolicy = parseSandboxPolicy(payload.sandbox_policy);
+  const collaborationMode = parseCollaborationMode(payload.collaboration_mode);
+  return {
+    recordType: "turn_context",
+    lineNumber,
+    timestamp,
+    turnId: payload.turn_id,
+    cwd: payload.cwd,
+    ...isNonEmptyString4(payload.current_date) ? { currentDate: payload.current_date } : {},
+    ...isNonEmptyString4(payload.timezone) ? { timezone: payload.timezone } : {},
+    ...isNonEmptyString4(payload.approval_policy) ? { approvalPolicy: payload.approval_policy } : {},
+    ...sandboxPolicy ? { sandboxPolicy } : {},
+    ...isNonEmptyString4(payload.model) ? { model: payload.model } : {},
+    ...isNonEmptyString4(payload.personality) ? { personality: payload.personality } : {},
+    ...collaborationMode ? { collaborationMode } : {},
+    ...isNonEmptyString4(payload.effort) ? { effort: payload.effort } : {},
+    ...isNonEmptyString4(payload.summary) ? { summary: payload.summary } : {},
+    ...isRecord2(payload.truncation_policy) ? {
+      truncationPolicy: {
+        ...isNonEmptyString4(payload.truncation_policy.mode) ? { mode: payload.truncation_policy.mode } : {},
+        ...isNumber(payload.truncation_policy.limit) ? { limit: payload.truncation_policy.limit } : {}
+      }
+    } : {}
+  };
+}
+function parseCompactedRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload)) {
+    return null;
+  }
+  return {
+    recordType: "compacted",
+    lineNumber,
+    timestamp,
+    replacementHistoryCount: isArray(payload.replacement_history) ? payload.replacement_history.length : 0
+  };
+}
+function parseTopLevelRecord(value, lineNumber) {
+  if (!isRecord2(value) || !isNonEmptyString4(value.type) || !isNonEmptyString4(value.timestamp)) {
+    return null;
+  }
+  switch (value.type) {
+    case "session_meta":
+      return parseSessionMetaRecord(value.payload, value.timestamp, lineNumber);
+    case "event_msg":
+      return parseEventRecord(value.payload, value.timestamp, lineNumber);
+    case "response_item":
+      return parseResponseItemRecord(value.payload, value.timestamp, lineNumber);
+    case "turn_context":
+      return parseTurnContextRecord(value.payload, value.timestamp, lineNumber);
+    case "compacted":
+      return parseCompactedRecord(value.payload, value.timestamp, lineNumber);
+    default:
+      return null;
+  }
+}
+
+// src/collector/transcript-parser.ts
+function createAccumulator() {
+  return {
+    records: [],
+    messages: [],
+    malformedLineCount: 0,
+    skippedRecordCount: 0
+  };
+}
+function collectRecord(accumulator, record3) {
+  accumulator.records.push(record3);
+  if (record3.recordType === "session_meta" && accumulator.sessionMeta === undefined) {
+    accumulator.sessionMeta = record3;
+  }
+  if (record3.recordType === "event_msg") {
+    const message = messageFromEvent(record3);
+    if (message) {
+      accumulator.messages.push(message);
+    }
+  }
+  return accumulator;
+}
+async function readTranscript(filePath) {
+  const stream = import_node_fs5.createReadStream(filePath, { encoding: "utf-8" });
+  const lines = import_node_readline2.default.createInterface({
+    crlfDelay: Number.POSITIVE_INFINITY,
+    input: stream
+  });
+  let lineNumber = 0;
+  const accumulator = createAccumulator();
+  try {
+    for await (const rawLine of lines) {
+      lineNumber += 1;
+      const line = rawLine.trim();
+      if (line.length === 0) {
+        continue;
+      }
+      let parsed;
+      try {
+        parsed = JSON.parse(line);
+      } catch {
+        accumulator.malformedLineCount += 1;
+        continue;
+      }
+      const record3 = parseTopLevelRecord(parsed, lineNumber);
+      if (record3 === null) {
+        accumulator.skippedRecordCount += 1;
+        continue;
+      }
+      collectRecord(accumulator, record3);
+    }
+  } finally {
+    lines.close();
+    stream.destroy();
+  }
+  if (!accumulator.sessionMeta?.sessionId) {
+    return null;
+  }
+  return {
+    sessionId: accumulator.sessionMeta.sessionId,
+    filePath,
+    sessionMeta: accumulator.sessionMeta,
+    records: accumulator.records,
+    messages: accumulator.messages,
+    signals: extractSessionSignals(accumulator.records),
+    malformedLineCount: accumulator.malformedLineCount,
+    skippedRecordCount: accumulator.skippedRecordCount
+  };
+}
+async function readTranscripts(filePaths) {
+  const parsed = await Promise.all(filePaths.map((filePath) => readTranscript(filePath)));
+  return parsed.filter((entry) => entry !== null);
+}
+
+// src/sync/normalize.ts
+var import_node_path7 = require("node:path");
+function normalizeSignals(signals) {
+  return {
+    mcp_usage: { ...signals.mcp_usage },
+    skill_usage: {},
+    agent_usage: { ...signals.agent_usage },
+    builtin_usage: { ...signals.builtin_usage },
+    unknown_usage: { ...signals.unknown_usage },
+    image_count: signals.image_count
+  };
+}
+function resolveCreatedAt(transcript) {
+  if (transcript.sessionMeta?.timestamp) {
+    return { createdAt: transcript.sessionMeta.timestamp, source: "session_meta" };
+  }
+  const firstRecordTimestamp = transcript.records[0]?.timestamp;
+  if (firstRecordTimestamp) {
+    return { createdAt: firstRecordTimestamp, source: "first_record" };
+  }
+  return {
+    createdAt: transcript.messages[0]?.timestamp ?? new Date(0).toISOString(),
+    source: "first_message"
+  };
+}
+function resolvePlatform(originator) {
+  if (originator === "Codex Desktop") {
+    return {
+      platform: PLATFORM_CODEX_APP,
+      source: "originator"
+    };
+  }
+  if (originator === "codex_cli_rs") {
+    return {
+      platform: PLATFORM_TERMINAL,
+      source: "originator"
+    };
+  }
+  return {
+    platform: PLATFORM_TERMINAL,
+    source: "fallback"
+  };
+}
+function normalizeMessageContent(message) {
+  return message.textParts.map((part) => part.trim()).filter((part) => part.length > 0).join(`
+
+`);
+}
+function normalizeMessageMetadata(message) {
+  const metadata = {};
+  if (message.phase) {
+    metadata.phase = message.phase;
+  }
+  metadata.source = message.source;
+  metadata.line_number = message.lineNumber;
+  return Object.keys(metadata).length > 0 ? metadata : null;
+}
+var CONVERSATIONAL_ROLES = new Set(["user", "assistant"]);
+function resolveTranscriptModels(transcript) {
+  const models = new Set;
+  for (const record3 of transcript.records) {
+    if (record3.recordType !== "turn_context") {
+      continue;
+    }
+    const model = resolveTurnContextModel(record3);
+    if (model) {
+      models.add(model);
+    }
+  }
+  return Array.from(models);
+}
+function resolveTurnContextModel(record3) {
+  if (record3.model) {
+    return record3.model;
+  }
+  return record3.collaborationMode?.model ?? null;
+}
+function normalizeMessages(transcript, userId) {
+  const transcriptModels = resolveTranscriptModels(transcript);
+  const primaryModel = transcriptModels[0];
+  return transcript.messages.filter((message) => CONVERSATIONAL_ROLES.has(message.role)).map((message) => ({
+    role: message.role,
+    content: normalizeMessageContent(message),
+    created_at: message.timestamp,
+    session_id: transcript.sessionId,
+    user_id: userId,
+    code_diffs: null,
+    metadata: normalizeMessageMetadataWithModel(message, primaryModel),
+    imageCount: message.imageCount
+  })).filter((message) => message.content.length > 0 || message.imageCount > 0).map(({ imageCount: _imageCount, ...message }, index) => ({
+    ...message,
+    message_index: index
+  }));
+}
+function normalizeMessageMetadataWithModel(message, modelName) {
+  const metadata = normalizeMessageMetadata(message);
+  if (!modelName) {
+    return metadata;
+  }
+  return {
+    ...metadata ?? {},
+    modelName
+  };
+}
+function normalizeTranscriptToZestPayload(input) {
+  const { transcript, sessionRef, userId, workspaceId } = input;
+  const { createdAt, source: createdAtSource } = resolveCreatedAt(transcript);
+  const { platform: platform2, source: platformSource } = resolvePlatform(transcript.sessionMeta?.originator);
+  const title = sessionRef?.title ?? null;
+  const session = {
+    id: transcript.sessionId,
+    title,
+    created_at: createdAt,
+    user_id: userId,
+    workspace_id: workspaceId ?? null,
+    analysis_status: "pending",
+    metadata: null,
+    project_id: null,
+    project_name: transcript.sessionMeta?.cwd ? import_node_path7.basename(transcript.sessionMeta.cwd) : null,
+    platform: platform2,
+    source: SOURCE,
+    signals: normalizeSignals(transcript.signals)
+  };
+  return {
+    session,
+    messages: normalizeMessages(transcript, userId),
+    decisions: {
+      titleSource: sessionRef?.title ? "session_index" : "missing",
+      createdAtSource,
+      platformSource,
+      sourceDetailsOmitted: true
+    }
+  };
+}
+function normalizeTranscriptToPreparedPayload(input) {
+  const { transcript } = input;
+  return {
+    payload: normalizeTranscriptToZestPayload(input),
+    privacy: {
+      sourceKind: "transcript",
+      sourcePath: transcript.filePath,
+      sourcePathAllowlisted: isAllowlistedCodexPath(transcript.filePath)
+    }
+  };
+}
+function normalizeTranscriptsToPreparedPayloads(input) {
+  const { transcripts, sessionRefsById, userId, workspaceId } = input;
+  return transcripts.map((transcript) => normalizeTranscriptToPreparedPayload({
+    transcript,
+    sessionRef: sessionRefsById?.get(transcript.sessionId),
+    userId,
+    workspaceId
+  }));
+}
+
+// src/sync/queue.ts
+var MAX_RETRY_ATTEMPTS = 3;
+function getNowIso(now = new Date) {
+  return now.toISOString();
+}
+function resolveQueueFilePath() {
+  return resolveStatePath("queue", "transcripts.json");
+}
+function sortQueueEntries(entries) {
+  return [...entries].sort((left, right) => left.createdAt.localeCompare(right.createdAt) || left.id.localeCompare(right.id));
+}
+function dedupeDroppedPayloads(results) {
+  return results.filter((result) => result.status === "sanitized");
+}
+function createQueueEntry(payload, now = new Date) {
+  const timestamp = getNowIso(now);
+  const id = payload.payload.session.id;
+  if (!id) {
+    throw new Error("Queue entries require a session id");
+  }
+  return {
+    id,
+    dedupeKey: id,
+    status: "pending",
+    attemptCount: 0,
+    lastAttemptAt: null,
+    lastFailureAt: null,
+    lastError: null,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    payload
+  };
+}
+function buildQueueEntriesFromResults(results, existingEntries = [], now = new Date) {
+  const existingKeys = new Set(existingEntries.map((entry) => entry.dedupeKey));
+  const nextEntries = [...existingEntries];
+  for (const payload of dedupeDroppedPayloads(results)) {
+    const entry = createQueueEntry(payload, now);
+    if (existingKeys.has(entry.dedupeKey)) {
+      continue;
+    }
+    existingKeys.add(entry.dedupeKey);
+    nextEntries.push(entry);
+  }
+  return sortQueueEntries(nextEntries);
+}
+async function loadQueueEntries() {
+  const entries = await readJsonFile(resolveQueueFilePath());
+  return sortQueueEntries(entries ?? []);
+}
+async function saveQueueEntries(entries) {
+  await writeJsonFileAtomic(resolveQueueFilePath(), sortQueueEntries(entries));
+}
+async function enqueueSanitizedPayloads(results, now = new Date) {
+  const existingEntries = await loadQueueEntries();
+  const nextEntries = buildQueueEntriesFromResults(results, existingEntries, now);
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
+async function getReplayableQueueEntries() {
+  const entries = await loadQueueEntries();
+  return entries.filter((entry) => {
+    if (entry.status === "synced" || entry.status === "failed") {
+      return false;
+    }
+    if (entry.status === "retrying") {
+      return entry.attemptCount < MAX_RETRY_ATTEMPTS;
+    }
+    return true;
+  });
+}
+async function markQueueEntriesSynced(ids) {
+  const idSet = new Set(ids);
+  const nextEntries = (await loadQueueEntries()).filter((entry) => !idSet.has(entry.id));
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
+async function recordQueueFailure(ids, error46, now = new Date) {
+  const idSet = new Set(ids);
+  const timestamp = getNowIso(now);
+  const entries = await loadQueueEntries();
+  const nextEntries = entries.map((entry) => {
+    if (!idSet.has(entry.id)) {
+      return entry;
+    }
+    const nextAttemptCount = entry.attemptCount + 1;
+    return {
+      ...entry,
+      status: nextAttemptCount >= MAX_RETRY_ATTEMPTS ? "failed" : "retrying",
+      attemptCount: nextAttemptCount,
+      lastAttemptAt: timestamp,
+      lastFailureAt: timestamp,
+      lastError: error46,
+      updatedAt: timestamp
+    };
+  });
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
 // ../../packages/types/data-controls.ts
 var RETENTION_PERIODS = ["12h", "1d", "7d", "30d", "90d", "1y", "forever"];
 var RETENTION_PERIOD_ORDER = {
@@ -42554,7 +42583,6 @@ async function uploadQueuedTranscripts(dependencies = {}) {
   const getQueueEntries = dependencies.getQueueEntries ?? getReplayableQueueEntries;
   const createClient2 = dependencies.createClient ?? (() => createOnDemandClient());
   const dataControls = dependencies.dataControls ?? defaultDataControls;
-  const markRetrying = dependencies.markRetrying ?? markQueueEntriesRetrying;
   const recordFailure = dependencies.recordFailure ?? recordQueueFailure;
   const markSynced = dependencies.markSynced ?? markQueueEntriesSynced;
   const now = dependencies.now ?? (() => new Date);
@@ -42648,13 +42676,11 @@ async function uploadQueuedTranscripts(dependencies = {}) {
       allowedSessionIds.add(message.session_id);
     }
     const sessions = deduplicateSessions(queuedEntries, workspace.active.id, allowedSessionIds);
-    const attemptTime = now();
     await debugSyncLog("uploading queued payloads", {
       messages: filteredMessages.length,
       sessions: sessions.length,
       workspaceId: workspace.active.id
     });
-    await markRetrying(ids, null, attemptTime);
     await upsertSessions(onDemand.client, sessions);
     await upsertMessages(onDemand.client, filteredMessages);
     await markSynced(ids);
@@ -43133,12 +43159,30 @@ async function createPrivacyResponse() {
     }
   };
 }
+async function verifyWorkspaceMembership(workspaceId) {
+  const onDemand = await createOnDemandClient();
+  if (!onDemand) {
+    return;
+  }
+  try {
+    const { data, error: error46 } = await onDemand.client.from("workspace_memberships").select("id").eq("workspace_id", workspaceId).limit(1).maybeSingle();
+    if (error46) {
+      throw new Error(`Workspace membership check failed: ${error46.message}`);
+    }
+    if (!data) {
+      throw new Error("You are not a member of this workspace");
+    }
+  } finally {
+    await onDemand.dispose();
+  }
+}
 async function createWorkspaceResponse(input) {
   if (input?.workspaceId !== undefined) {
     const trimmedWorkspaceId = input.workspaceId.trim();
     if (trimmedWorkspaceId.length === 0) {
       throw new Error("workspaceId must be a non-empty string");
     }
+    await verifyWorkspaceMembership(trimmedWorkspaceId);
     await saveActiveWorkspaceBinding(trimmedWorkspaceId);
   }
   const [authSession, workspaceBinding] = await Promise.all([
@@ -43262,4 +43306,4 @@ main().catch((error46) => {
   process.exit(1);
 });
 
-//# debugId=0CFA79628C0ED2DB64756E2164756E21
+//# debugId=ED1233A5CDB7EC6E64756E2164756E21
