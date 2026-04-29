@@ -6524,2001 +6524,6 @@ var require_dist = __commonJS((exports2, module2) => {
   exports2.default = formatsPlugin;
 });
 
-// ../../node_modules/@iarna/toml/lib/parser.js
-var require_parser = __commonJS((exports2, module2) => {
-  var ParserEND = 1114112;
-
-  class ParserError extends Error {
-    constructor(msg, filename, linenumber) {
-      super("[ParserError] " + msg, filename, linenumber);
-      this.name = "ParserError";
-      this.code = "ParserError";
-      if (Error.captureStackTrace)
-        Error.captureStackTrace(this, ParserError);
-    }
-  }
-
-  class State {
-    constructor(parser) {
-      this.parser = parser;
-      this.buf = "";
-      this.returned = null;
-      this.result = null;
-      this.resultTable = null;
-      this.resultArr = null;
-    }
-  }
-
-  class Parser {
-    constructor() {
-      this.pos = 0;
-      this.col = 0;
-      this.line = 0;
-      this.obj = {};
-      this.ctx = this.obj;
-      this.stack = [];
-      this._buf = "";
-      this.char = null;
-      this.ii = 0;
-      this.state = new State(this.parseStart);
-    }
-    parse(str) {
-      if (str.length === 0 || str.length == null)
-        return;
-      this._buf = String(str);
-      this.ii = -1;
-      this.char = -1;
-      let getNext;
-      while (getNext === false || this.nextChar()) {
-        getNext = this.runOne();
-      }
-      this._buf = null;
-    }
-    nextChar() {
-      if (this.char === 10) {
-        ++this.line;
-        this.col = -1;
-      }
-      ++this.ii;
-      this.char = this._buf.codePointAt(this.ii);
-      ++this.pos;
-      ++this.col;
-      return this.haveBuffer();
-    }
-    haveBuffer() {
-      return this.ii < this._buf.length;
-    }
-    runOne() {
-      return this.state.parser.call(this, this.state.returned);
-    }
-    finish() {
-      this.char = ParserEND;
-      let last;
-      do {
-        last = this.state.parser;
-        this.runOne();
-      } while (this.state.parser !== last);
-      this.ctx = null;
-      this.state = null;
-      this._buf = null;
-      return this.obj;
-    }
-    next(fn) {
-      if (typeof fn !== "function")
-        throw new ParserError("Tried to set state to non-existent state: " + JSON.stringify(fn));
-      this.state.parser = fn;
-    }
-    goto(fn) {
-      this.next(fn);
-      return this.runOne();
-    }
-    call(fn, returnWith) {
-      if (returnWith)
-        this.next(returnWith);
-      this.stack.push(this.state);
-      this.state = new State(fn);
-    }
-    callNow(fn, returnWith) {
-      this.call(fn, returnWith);
-      return this.runOne();
-    }
-    return(value) {
-      if (this.stack.length === 0)
-        throw this.error(new ParserError("Stack underflow"));
-      if (value === undefined)
-        value = this.state.buf;
-      this.state = this.stack.pop();
-      this.state.returned = value;
-    }
-    returnNow(value) {
-      this.return(value);
-      return this.runOne();
-    }
-    consume() {
-      if (this.char === ParserEND)
-        throw this.error(new ParserError("Unexpected end-of-buffer"));
-      this.state.buf += this._buf[this.ii];
-    }
-    error(err) {
-      err.line = this.line;
-      err.col = this.col;
-      err.pos = this.pos;
-      return err;
-    }
-    parseStart() {
-      throw new ParserError("Must declare a parseStart method");
-    }
-  }
-  Parser.END = ParserEND;
-  Parser.Error = ParserError;
-  module2.exports = Parser;
-});
-
-// ../../node_modules/@iarna/toml/lib/create-datetime.js
-var require_create_datetime = __commonJS((exports2, module2) => {
-  module2.exports = (value) => {
-    const date6 = new Date(value);
-    if (isNaN(date6)) {
-      throw new TypeError("Invalid Datetime");
-    } else {
-      return date6;
-    }
-  };
-});
-
-// ../../node_modules/@iarna/toml/lib/format-num.js
-var require_format_num = __commonJS((exports2, module2) => {
-  module2.exports = (d, num) => {
-    num = String(num);
-    while (num.length < d)
-      num = "0" + num;
-    return num;
-  };
-});
-
-// ../../node_modules/@iarna/toml/lib/create-datetime-float.js
-var require_create_datetime_float = __commonJS((exports2, module2) => {
-  var f = require_format_num();
-
-  class FloatingDateTime extends Date {
-    constructor(value) {
-      super(value + "Z");
-      this.isFloating = true;
-    }
-    toISOString() {
-      const date6 = `${this.getUTCFullYear()}-${f(2, this.getUTCMonth() + 1)}-${f(2, this.getUTCDate())}`;
-      const time3 = `${f(2, this.getUTCHours())}:${f(2, this.getUTCMinutes())}:${f(2, this.getUTCSeconds())}.${f(3, this.getUTCMilliseconds())}`;
-      return `${date6}T${time3}`;
-    }
-  }
-  module2.exports = (value) => {
-    const date6 = new FloatingDateTime(value);
-    if (isNaN(date6)) {
-      throw new TypeError("Invalid Datetime");
-    } else {
-      return date6;
-    }
-  };
-});
-
-// ../../node_modules/@iarna/toml/lib/create-date.js
-var require_create_date = __commonJS((exports2, module2) => {
-  var f = require_format_num();
-  var DateTime = global.Date;
-
-  class Date2 extends DateTime {
-    constructor(value) {
-      super(value);
-      this.isDate = true;
-    }
-    toISOString() {
-      return `${this.getUTCFullYear()}-${f(2, this.getUTCMonth() + 1)}-${f(2, this.getUTCDate())}`;
-    }
-  }
-  module2.exports = (value) => {
-    const date6 = new Date2(value);
-    if (isNaN(date6)) {
-      throw new TypeError("Invalid Datetime");
-    } else {
-      return date6;
-    }
-  };
-});
-
-// ../../node_modules/@iarna/toml/lib/create-time.js
-var require_create_time = __commonJS((exports2, module2) => {
-  var f = require_format_num();
-
-  class Time extends Date {
-    constructor(value) {
-      super(`0000-01-01T${value}Z`);
-      this.isTime = true;
-    }
-    toISOString() {
-      return `${f(2, this.getUTCHours())}:${f(2, this.getUTCMinutes())}:${f(2, this.getUTCSeconds())}.${f(3, this.getUTCMilliseconds())}`;
-    }
-  }
-  module2.exports = (value) => {
-    const date6 = new Time(value);
-    if (isNaN(date6)) {
-      throw new TypeError("Invalid Datetime");
-    } else {
-      return date6;
-    }
-  };
-});
-
-// ../../node_modules/@iarna/toml/lib/toml-parser.js
-var require_toml_parser = __commonJS((exports2, module2) => {
-  module2.exports = makeParserClass(require_parser());
-  module2.exports.makeParserClass = makeParserClass;
-
-  class TomlError extends Error {
-    constructor(msg) {
-      super(msg);
-      this.name = "TomlError";
-      if (Error.captureStackTrace)
-        Error.captureStackTrace(this, TomlError);
-      this.fromTOML = true;
-      this.wrapped = null;
-    }
-  }
-  TomlError.wrap = (err) => {
-    const terr = new TomlError(err.message);
-    terr.code = err.code;
-    terr.wrapped = err;
-    return terr;
-  };
-  module2.exports.TomlError = TomlError;
-  var createDateTime = require_create_datetime();
-  var createDateTimeFloat = require_create_datetime_float();
-  var createDate = require_create_date();
-  var createTime = require_create_time();
-  var CTRL_I = 9;
-  var CTRL_J = 10;
-  var CTRL_M = 13;
-  var CTRL_CHAR_BOUNDARY = 31;
-  var CHAR_SP = 32;
-  var CHAR_QUOT = 34;
-  var CHAR_NUM = 35;
-  var CHAR_APOS = 39;
-  var CHAR_PLUS = 43;
-  var CHAR_COMMA = 44;
-  var CHAR_HYPHEN = 45;
-  var CHAR_PERIOD = 46;
-  var CHAR_0 = 48;
-  var CHAR_1 = 49;
-  var CHAR_7 = 55;
-  var CHAR_9 = 57;
-  var CHAR_COLON = 58;
-  var CHAR_EQUALS = 61;
-  var CHAR_A = 65;
-  var CHAR_E = 69;
-  var CHAR_F = 70;
-  var CHAR_T = 84;
-  var CHAR_U = 85;
-  var CHAR_Z = 90;
-  var CHAR_LOWBAR = 95;
-  var CHAR_a = 97;
-  var CHAR_b = 98;
-  var CHAR_e = 101;
-  var CHAR_f = 102;
-  var CHAR_i = 105;
-  var CHAR_l = 108;
-  var CHAR_n = 110;
-  var CHAR_o = 111;
-  var CHAR_r = 114;
-  var CHAR_s = 115;
-  var CHAR_t = 116;
-  var CHAR_u = 117;
-  var CHAR_x = 120;
-  var CHAR_z = 122;
-  var CHAR_LCUB = 123;
-  var CHAR_RCUB = 125;
-  var CHAR_LSQB = 91;
-  var CHAR_BSOL = 92;
-  var CHAR_RSQB = 93;
-  var CHAR_DEL = 127;
-  var SURROGATE_FIRST = 55296;
-  var SURROGATE_LAST = 57343;
-  var escapes = {
-    [CHAR_b]: "\b",
-    [CHAR_t]: "\t",
-    [CHAR_n]: `
-`,
-    [CHAR_f]: "\f",
-    [CHAR_r]: "\r",
-    [CHAR_QUOT]: '"',
-    [CHAR_BSOL]: "\\"
-  };
-  function isDigit(cp) {
-    return cp >= CHAR_0 && cp <= CHAR_9;
-  }
-  function isHexit(cp) {
-    return cp >= CHAR_A && cp <= CHAR_F || cp >= CHAR_a && cp <= CHAR_f || cp >= CHAR_0 && cp <= CHAR_9;
-  }
-  function isBit(cp) {
-    return cp === CHAR_1 || cp === CHAR_0;
-  }
-  function isOctit(cp) {
-    return cp >= CHAR_0 && cp <= CHAR_7;
-  }
-  function isAlphaNumQuoteHyphen(cp) {
-    return cp >= CHAR_A && cp <= CHAR_Z || cp >= CHAR_a && cp <= CHAR_z || cp >= CHAR_0 && cp <= CHAR_9 || cp === CHAR_APOS || cp === CHAR_QUOT || cp === CHAR_LOWBAR || cp === CHAR_HYPHEN;
-  }
-  function isAlphaNumHyphen(cp) {
-    return cp >= CHAR_A && cp <= CHAR_Z || cp >= CHAR_a && cp <= CHAR_z || cp >= CHAR_0 && cp <= CHAR_9 || cp === CHAR_LOWBAR || cp === CHAR_HYPHEN;
-  }
-  var _type = Symbol("type");
-  var _declared = Symbol("declared");
-  var hasOwnProperty = Object.prototype.hasOwnProperty;
-  var defineProperty = Object.defineProperty;
-  var descriptor = { configurable: true, enumerable: true, writable: true, value: undefined };
-  function hasKey(obj, key) {
-    if (hasOwnProperty.call(obj, key))
-      return true;
-    if (key === "__proto__")
-      defineProperty(obj, "__proto__", descriptor);
-    return false;
-  }
-  var INLINE_TABLE = Symbol("inline-table");
-  function InlineTable() {
-    return Object.defineProperties({}, {
-      [_type]: { value: INLINE_TABLE }
-    });
-  }
-  function isInlineTable(obj) {
-    if (obj === null || typeof obj !== "object")
-      return false;
-    return obj[_type] === INLINE_TABLE;
-  }
-  var TABLE = Symbol("table");
-  function Table() {
-    return Object.defineProperties({}, {
-      [_type]: { value: TABLE },
-      [_declared]: { value: false, writable: true }
-    });
-  }
-  function isTable(obj) {
-    if (obj === null || typeof obj !== "object")
-      return false;
-    return obj[_type] === TABLE;
-  }
-  var _contentType = Symbol("content-type");
-  var INLINE_LIST = Symbol("inline-list");
-  function InlineList(type) {
-    return Object.defineProperties([], {
-      [_type]: { value: INLINE_LIST },
-      [_contentType]: { value: type }
-    });
-  }
-  function isInlineList(obj) {
-    if (obj === null || typeof obj !== "object")
-      return false;
-    return obj[_type] === INLINE_LIST;
-  }
-  var LIST = Symbol("list");
-  function List() {
-    return Object.defineProperties([], {
-      [_type]: { value: LIST }
-    });
-  }
-  function isList(obj) {
-    if (obj === null || typeof obj !== "object")
-      return false;
-    return obj[_type] === LIST;
-  }
-  var _custom2;
-  try {
-    const utilInspect = eval("require('util').inspect");
-    _custom2 = utilInspect.custom;
-  } catch (_) {}
-  var _inspect = _custom2 || "inspect";
-
-  class BoxedBigInt {
-    constructor(value) {
-      try {
-        this.value = global.BigInt.asIntN(64, value);
-      } catch (_) {
-        this.value = null;
-      }
-      Object.defineProperty(this, _type, { value: INTEGER });
-    }
-    isNaN() {
-      return this.value === null;
-    }
-    toString() {
-      return String(this.value);
-    }
-    [_inspect]() {
-      return `[BigInt: ${this.toString()}]}`;
-    }
-    valueOf() {
-      return this.value;
-    }
-  }
-  var INTEGER = Symbol("integer");
-  function Integer(value) {
-    let num = Number(value);
-    if (Object.is(num, -0))
-      num = 0;
-    if (global.BigInt && !Number.isSafeInteger(num)) {
-      return new BoxedBigInt(value);
-    } else {
-      return Object.defineProperties(new Number(num), {
-        isNaN: { value: function() {
-          return isNaN(this);
-        } },
-        [_type]: { value: INTEGER },
-        [_inspect]: { value: () => `[Integer: ${value}]` }
-      });
-    }
-  }
-  function isInteger(obj) {
-    if (obj === null || typeof obj !== "object")
-      return false;
-    return obj[_type] === INTEGER;
-  }
-  var FLOAT = Symbol("float");
-  function Float(value) {
-    return Object.defineProperties(new Number(value), {
-      [_type]: { value: FLOAT },
-      [_inspect]: { value: () => `[Float: ${value}]` }
-    });
-  }
-  function isFloat(obj) {
-    if (obj === null || typeof obj !== "object")
-      return false;
-    return obj[_type] === FLOAT;
-  }
-  function tomlType(value) {
-    const type = typeof value;
-    if (type === "object") {
-      if (value === null)
-        return "null";
-      if (value instanceof Date)
-        return "datetime";
-      if (_type in value) {
-        switch (value[_type]) {
-          case INLINE_TABLE:
-            return "inline-table";
-          case INLINE_LIST:
-            return "inline-list";
-          case TABLE:
-            return "table";
-          case LIST:
-            return "list";
-          case FLOAT:
-            return "float";
-          case INTEGER:
-            return "integer";
-        }
-      }
-    }
-    return type;
-  }
-  function makeParserClass(Parser) {
-
-    class TOMLParser extends Parser {
-      constructor() {
-        super();
-        this.ctx = this.obj = Table();
-      }
-      atEndOfWord() {
-        return this.char === CHAR_NUM || this.char === CTRL_I || this.char === CHAR_SP || this.atEndOfLine();
-      }
-      atEndOfLine() {
-        return this.char === Parser.END || this.char === CTRL_J || this.char === CTRL_M;
-      }
-      parseStart() {
-        if (this.char === Parser.END) {
-          return null;
-        } else if (this.char === CHAR_LSQB) {
-          return this.call(this.parseTableOrList);
-        } else if (this.char === CHAR_NUM) {
-          return this.call(this.parseComment);
-        } else if (this.char === CTRL_J || this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M) {
-          return null;
-        } else if (isAlphaNumQuoteHyphen(this.char)) {
-          return this.callNow(this.parseAssignStatement);
-        } else {
-          throw this.error(new TomlError(`Unknown character "${this.char}"`));
-        }
-      }
-      parseWhitespaceToEOL() {
-        if (this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M) {
-          return null;
-        } else if (this.char === CHAR_NUM) {
-          return this.goto(this.parseComment);
-        } else if (this.char === Parser.END || this.char === CTRL_J) {
-          return this.return();
-        } else {
-          throw this.error(new TomlError("Unexpected character, expected only whitespace or comments till end of line"));
-        }
-      }
-      parseAssignStatement() {
-        return this.callNow(this.parseAssign, this.recordAssignStatement);
-      }
-      recordAssignStatement(kv) {
-        let target = this.ctx;
-        let finalKey = kv.key.pop();
-        for (let kw of kv.key) {
-          if (hasKey(target, kw) && (!isTable(target[kw]) || target[kw][_declared])) {
-            throw this.error(new TomlError("Can't redefine existing key"));
-          }
-          target = target[kw] = target[kw] || Table();
-        }
-        if (hasKey(target, finalKey)) {
-          throw this.error(new TomlError("Can't redefine existing key"));
-        }
-        if (isInteger(kv.value) || isFloat(kv.value)) {
-          target[finalKey] = kv.value.valueOf();
-        } else {
-          target[finalKey] = kv.value;
-        }
-        return this.goto(this.parseWhitespaceToEOL);
-      }
-      parseAssign() {
-        return this.callNow(this.parseKeyword, this.recordAssignKeyword);
-      }
-      recordAssignKeyword(key) {
-        if (this.state.resultTable) {
-          this.state.resultTable.push(key);
-        } else {
-          this.state.resultTable = [key];
-        }
-        return this.goto(this.parseAssignKeywordPreDot);
-      }
-      parseAssignKeywordPreDot() {
-        if (this.char === CHAR_PERIOD) {
-          return this.next(this.parseAssignKeywordPostDot);
-        } else if (this.char !== CHAR_SP && this.char !== CTRL_I) {
-          return this.goto(this.parseAssignEqual);
-        }
-      }
-      parseAssignKeywordPostDot() {
-        if (this.char !== CHAR_SP && this.char !== CTRL_I) {
-          return this.callNow(this.parseKeyword, this.recordAssignKeyword);
-        }
-      }
-      parseAssignEqual() {
-        if (this.char === CHAR_EQUALS) {
-          return this.next(this.parseAssignPreValue);
-        } else {
-          throw this.error(new TomlError('Invalid character, expected "="'));
-        }
-      }
-      parseAssignPreValue() {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else {
-          return this.callNow(this.parseValue, this.recordAssignValue);
-        }
-      }
-      recordAssignValue(value) {
-        return this.returnNow({ key: this.state.resultTable, value });
-      }
-      parseComment() {
-        do {
-          if (this.char === Parser.END || this.char === CTRL_J) {
-            return this.return();
-          }
-        } while (this.nextChar());
-      }
-      parseTableOrList() {
-        if (this.char === CHAR_LSQB) {
-          this.next(this.parseList);
-        } else {
-          return this.goto(this.parseTable);
-        }
-      }
-      parseTable() {
-        this.ctx = this.obj;
-        return this.goto(this.parseTableNext);
-      }
-      parseTableNext() {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else {
-          return this.callNow(this.parseKeyword, this.parseTableMore);
-        }
-      }
-      parseTableMore(keyword) {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else if (this.char === CHAR_RSQB) {
-          if (hasKey(this.ctx, keyword) && (!isTable(this.ctx[keyword]) || this.ctx[keyword][_declared])) {
-            throw this.error(new TomlError("Can't redefine existing key"));
-          } else {
-            this.ctx = this.ctx[keyword] = this.ctx[keyword] || Table();
-            this.ctx[_declared] = true;
-          }
-          return this.next(this.parseWhitespaceToEOL);
-        } else if (this.char === CHAR_PERIOD) {
-          if (!hasKey(this.ctx, keyword)) {
-            this.ctx = this.ctx[keyword] = Table();
-          } else if (isTable(this.ctx[keyword])) {
-            this.ctx = this.ctx[keyword];
-          } else if (isList(this.ctx[keyword])) {
-            this.ctx = this.ctx[keyword][this.ctx[keyword].length - 1];
-          } else {
-            throw this.error(new TomlError("Can't redefine existing key"));
-          }
-          return this.next(this.parseTableNext);
-        } else {
-          throw this.error(new TomlError("Unexpected character, expected whitespace, . or ]"));
-        }
-      }
-      parseList() {
-        this.ctx = this.obj;
-        return this.goto(this.parseListNext);
-      }
-      parseListNext() {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else {
-          return this.callNow(this.parseKeyword, this.parseListMore);
-        }
-      }
-      parseListMore(keyword) {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else if (this.char === CHAR_RSQB) {
-          if (!hasKey(this.ctx, keyword)) {
-            this.ctx[keyword] = List();
-          }
-          if (isInlineList(this.ctx[keyword])) {
-            throw this.error(new TomlError("Can't extend an inline array"));
-          } else if (isList(this.ctx[keyword])) {
-            const next = Table();
-            this.ctx[keyword].push(next);
-            this.ctx = next;
-          } else {
-            throw this.error(new TomlError("Can't redefine an existing key"));
-          }
-          return this.next(this.parseListEnd);
-        } else if (this.char === CHAR_PERIOD) {
-          if (!hasKey(this.ctx, keyword)) {
-            this.ctx = this.ctx[keyword] = Table();
-          } else if (isInlineList(this.ctx[keyword])) {
-            throw this.error(new TomlError("Can't extend an inline array"));
-          } else if (isInlineTable(this.ctx[keyword])) {
-            throw this.error(new TomlError("Can't extend an inline table"));
-          } else if (isList(this.ctx[keyword])) {
-            this.ctx = this.ctx[keyword][this.ctx[keyword].length - 1];
-          } else if (isTable(this.ctx[keyword])) {
-            this.ctx = this.ctx[keyword];
-          } else {
-            throw this.error(new TomlError("Can't redefine an existing key"));
-          }
-          return this.next(this.parseListNext);
-        } else {
-          throw this.error(new TomlError("Unexpected character, expected whitespace, . or ]"));
-        }
-      }
-      parseListEnd(keyword) {
-        if (this.char === CHAR_RSQB) {
-          return this.next(this.parseWhitespaceToEOL);
-        } else {
-          throw this.error(new TomlError("Unexpected character, expected whitespace, . or ]"));
-        }
-      }
-      parseValue() {
-        if (this.char === Parser.END) {
-          throw this.error(new TomlError("Key without value"));
-        } else if (this.char === CHAR_QUOT) {
-          return this.next(this.parseDoubleString);
-        }
-        if (this.char === CHAR_APOS) {
-          return this.next(this.parseSingleString);
-        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
-          return this.goto(this.parseNumberSign);
-        } else if (this.char === CHAR_i) {
-          return this.next(this.parseInf);
-        } else if (this.char === CHAR_n) {
-          return this.next(this.parseNan);
-        } else if (isDigit(this.char)) {
-          return this.goto(this.parseNumberOrDateTime);
-        } else if (this.char === CHAR_t || this.char === CHAR_f) {
-          return this.goto(this.parseBoolean);
-        } else if (this.char === CHAR_LSQB) {
-          return this.call(this.parseInlineList, this.recordValue);
-        } else if (this.char === CHAR_LCUB) {
-          return this.call(this.parseInlineTable, this.recordValue);
-        } else {
-          throw this.error(new TomlError("Unexpected character, expecting string, number, datetime, boolean, inline array or inline table"));
-        }
-      }
-      recordValue(value) {
-        return this.returnNow(value);
-      }
-      parseInf() {
-        if (this.char === CHAR_n) {
-          return this.next(this.parseInf2);
-        } else {
-          throw this.error(new TomlError('Unexpected character, expected "inf", "+inf" or "-inf"'));
-        }
-      }
-      parseInf2() {
-        if (this.char === CHAR_f) {
-          if (this.state.buf === "-") {
-            return this.return(-Infinity);
-          } else {
-            return this.return(Infinity);
-          }
-        } else {
-          throw this.error(new TomlError('Unexpected character, expected "inf", "+inf" or "-inf"'));
-        }
-      }
-      parseNan() {
-        if (this.char === CHAR_a) {
-          return this.next(this.parseNan2);
-        } else {
-          throw this.error(new TomlError('Unexpected character, expected "nan"'));
-        }
-      }
-      parseNan2() {
-        if (this.char === CHAR_n) {
-          return this.return(NaN);
-        } else {
-          throw this.error(new TomlError('Unexpected character, expected "nan"'));
-        }
-      }
-      parseKeyword() {
-        if (this.char === CHAR_QUOT) {
-          return this.next(this.parseBasicString);
-        } else if (this.char === CHAR_APOS) {
-          return this.next(this.parseLiteralString);
-        } else {
-          return this.goto(this.parseBareKey);
-        }
-      }
-      parseBareKey() {
-        do {
-          if (this.char === Parser.END) {
-            throw this.error(new TomlError("Key ended without value"));
-          } else if (isAlphaNumHyphen(this.char)) {
-            this.consume();
-          } else if (this.state.buf.length === 0) {
-            throw this.error(new TomlError("Empty bare keys are not allowed"));
-          } else {
-            return this.returnNow();
-          }
-        } while (this.nextChar());
-      }
-      parseSingleString() {
-        if (this.char === CHAR_APOS) {
-          return this.next(this.parseLiteralMultiStringMaybe);
-        } else {
-          return this.goto(this.parseLiteralString);
-        }
-      }
-      parseLiteralString() {
-        do {
-          if (this.char === CHAR_APOS) {
-            return this.return();
-          } else if (this.atEndOfLine()) {
-            throw this.error(new TomlError("Unterminated string"));
-          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I) {
-            throw this.errorControlCharInString();
-          } else {
-            this.consume();
-          }
-        } while (this.nextChar());
-      }
-      parseLiteralMultiStringMaybe() {
-        if (this.char === CHAR_APOS) {
-          return this.next(this.parseLiteralMultiString);
-        } else {
-          return this.returnNow();
-        }
-      }
-      parseLiteralMultiString() {
-        if (this.char === CTRL_M) {
-          return null;
-        } else if (this.char === CTRL_J) {
-          return this.next(this.parseLiteralMultiStringContent);
-        } else {
-          return this.goto(this.parseLiteralMultiStringContent);
-        }
-      }
-      parseLiteralMultiStringContent() {
-        do {
-          if (this.char === CHAR_APOS) {
-            return this.next(this.parseLiteralMultiEnd);
-          } else if (this.char === Parser.END) {
-            throw this.error(new TomlError("Unterminated multi-line string"));
-          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I && this.char !== CTRL_J && this.char !== CTRL_M) {
-            throw this.errorControlCharInString();
-          } else {
-            this.consume();
-          }
-        } while (this.nextChar());
-      }
-      parseLiteralMultiEnd() {
-        if (this.char === CHAR_APOS) {
-          return this.next(this.parseLiteralMultiEnd2);
-        } else {
-          this.state.buf += "'";
-          return this.goto(this.parseLiteralMultiStringContent);
-        }
-      }
-      parseLiteralMultiEnd2() {
-        if (this.char === CHAR_APOS) {
-          return this.return();
-        } else {
-          this.state.buf += "''";
-          return this.goto(this.parseLiteralMultiStringContent);
-        }
-      }
-      parseDoubleString() {
-        if (this.char === CHAR_QUOT) {
-          return this.next(this.parseMultiStringMaybe);
-        } else {
-          return this.goto(this.parseBasicString);
-        }
-      }
-      parseBasicString() {
-        do {
-          if (this.char === CHAR_BSOL) {
-            return this.call(this.parseEscape, this.recordEscapeReplacement);
-          } else if (this.char === CHAR_QUOT) {
-            return this.return();
-          } else if (this.atEndOfLine()) {
-            throw this.error(new TomlError("Unterminated string"));
-          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I) {
-            throw this.errorControlCharInString();
-          } else {
-            this.consume();
-          }
-        } while (this.nextChar());
-      }
-      recordEscapeReplacement(replacement) {
-        this.state.buf += replacement;
-        return this.goto(this.parseBasicString);
-      }
-      parseMultiStringMaybe() {
-        if (this.char === CHAR_QUOT) {
-          return this.next(this.parseMultiString);
-        } else {
-          return this.returnNow();
-        }
-      }
-      parseMultiString() {
-        if (this.char === CTRL_M) {
-          return null;
-        } else if (this.char === CTRL_J) {
-          return this.next(this.parseMultiStringContent);
-        } else {
-          return this.goto(this.parseMultiStringContent);
-        }
-      }
-      parseMultiStringContent() {
-        do {
-          if (this.char === CHAR_BSOL) {
-            return this.call(this.parseMultiEscape, this.recordMultiEscapeReplacement);
-          } else if (this.char === CHAR_QUOT) {
-            return this.next(this.parseMultiEnd);
-          } else if (this.char === Parser.END) {
-            throw this.error(new TomlError("Unterminated multi-line string"));
-          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I && this.char !== CTRL_J && this.char !== CTRL_M) {
-            throw this.errorControlCharInString();
-          } else {
-            this.consume();
-          }
-        } while (this.nextChar());
-      }
-      errorControlCharInString() {
-        let displayCode = "\\u00";
-        if (this.char < 16) {
-          displayCode += "0";
-        }
-        displayCode += this.char.toString(16);
-        return this.error(new TomlError(`Control characters (codes < 0x1f and 0x7f) are not allowed in strings, use ${displayCode} instead`));
-      }
-      recordMultiEscapeReplacement(replacement) {
-        this.state.buf += replacement;
-        return this.goto(this.parseMultiStringContent);
-      }
-      parseMultiEnd() {
-        if (this.char === CHAR_QUOT) {
-          return this.next(this.parseMultiEnd2);
-        } else {
-          this.state.buf += '"';
-          return this.goto(this.parseMultiStringContent);
-        }
-      }
-      parseMultiEnd2() {
-        if (this.char === CHAR_QUOT) {
-          return this.return();
-        } else {
-          this.state.buf += '""';
-          return this.goto(this.parseMultiStringContent);
-        }
-      }
-      parseMultiEscape() {
-        if (this.char === CTRL_M || this.char === CTRL_J) {
-          return this.next(this.parseMultiTrim);
-        } else if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return this.next(this.parsePreMultiTrim);
-        } else {
-          return this.goto(this.parseEscape);
-        }
-      }
-      parsePreMultiTrim() {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else if (this.char === CTRL_M || this.char === CTRL_J) {
-          return this.next(this.parseMultiTrim);
-        } else {
-          throw this.error(new TomlError("Can't escape whitespace"));
-        }
-      }
-      parseMultiTrim() {
-        if (this.char === CTRL_J || this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M) {
-          return null;
-        } else {
-          return this.returnNow();
-        }
-      }
-      parseEscape() {
-        if (this.char in escapes) {
-          return this.return(escapes[this.char]);
-        } else if (this.char === CHAR_u) {
-          return this.call(this.parseSmallUnicode, this.parseUnicodeReturn);
-        } else if (this.char === CHAR_U) {
-          return this.call(this.parseLargeUnicode, this.parseUnicodeReturn);
-        } else {
-          throw this.error(new TomlError("Unknown escape character: " + this.char));
-        }
-      }
-      parseUnicodeReturn(char) {
-        try {
-          const codePoint = parseInt(char, 16);
-          if (codePoint >= SURROGATE_FIRST && codePoint <= SURROGATE_LAST) {
-            throw this.error(new TomlError("Invalid unicode, character in range 0xD800 - 0xDFFF is reserved"));
-          }
-          return this.returnNow(String.fromCodePoint(codePoint));
-        } catch (err) {
-          throw this.error(TomlError.wrap(err));
-        }
-      }
-      parseSmallUnicode() {
-        if (!isHexit(this.char)) {
-          throw this.error(new TomlError("Invalid character in unicode sequence, expected hex"));
-        } else {
-          this.consume();
-          if (this.state.buf.length >= 4)
-            return this.return();
-        }
-      }
-      parseLargeUnicode() {
-        if (!isHexit(this.char)) {
-          throw this.error(new TomlError("Invalid character in unicode sequence, expected hex"));
-        } else {
-          this.consume();
-          if (this.state.buf.length >= 8)
-            return this.return();
-        }
-      }
-      parseNumberSign() {
-        this.consume();
-        return this.next(this.parseMaybeSignedInfOrNan);
-      }
-      parseMaybeSignedInfOrNan() {
-        if (this.char === CHAR_i) {
-          return this.next(this.parseInf);
-        } else if (this.char === CHAR_n) {
-          return this.next(this.parseNan);
-        } else {
-          return this.callNow(this.parseNoUnder, this.parseNumberIntegerStart);
-        }
-      }
-      parseNumberIntegerStart() {
-        if (this.char === CHAR_0) {
-          this.consume();
-          return this.next(this.parseNumberIntegerExponentOrDecimal);
-        } else {
-          return this.goto(this.parseNumberInteger);
-        }
-      }
-      parseNumberIntegerExponentOrDecimal() {
-        if (this.char === CHAR_PERIOD) {
-          this.consume();
-          return this.call(this.parseNoUnder, this.parseNumberFloat);
-        } else if (this.char === CHAR_E || this.char === CHAR_e) {
-          this.consume();
-          return this.next(this.parseNumberExponentSign);
-        } else {
-          return this.returnNow(Integer(this.state.buf));
-        }
-      }
-      parseNumberInteger() {
-        if (isDigit(this.char)) {
-          this.consume();
-        } else if (this.char === CHAR_LOWBAR) {
-          return this.call(this.parseNoUnder);
-        } else if (this.char === CHAR_E || this.char === CHAR_e) {
-          this.consume();
-          return this.next(this.parseNumberExponentSign);
-        } else if (this.char === CHAR_PERIOD) {
-          this.consume();
-          return this.call(this.parseNoUnder, this.parseNumberFloat);
-        } else {
-          const result = Integer(this.state.buf);
-          if (result.isNaN()) {
-            throw this.error(new TomlError("Invalid number"));
-          } else {
-            return this.returnNow(result);
-          }
-        }
-      }
-      parseNoUnder() {
-        if (this.char === CHAR_LOWBAR || this.char === CHAR_PERIOD || this.char === CHAR_E || this.char === CHAR_e) {
-          throw this.error(new TomlError("Unexpected character, expected digit"));
-        } else if (this.atEndOfWord()) {
-          throw this.error(new TomlError("Incomplete number"));
-        }
-        return this.returnNow();
-      }
-      parseNoUnderHexOctBinLiteral() {
-        if (this.char === CHAR_LOWBAR || this.char === CHAR_PERIOD) {
-          throw this.error(new TomlError("Unexpected character, expected digit"));
-        } else if (this.atEndOfWord()) {
-          throw this.error(new TomlError("Incomplete number"));
-        }
-        return this.returnNow();
-      }
-      parseNumberFloat() {
-        if (this.char === CHAR_LOWBAR) {
-          return this.call(this.parseNoUnder, this.parseNumberFloat);
-        } else if (isDigit(this.char)) {
-          this.consume();
-        } else if (this.char === CHAR_E || this.char === CHAR_e) {
-          this.consume();
-          return this.next(this.parseNumberExponentSign);
-        } else {
-          return this.returnNow(Float(this.state.buf));
-        }
-      }
-      parseNumberExponentSign() {
-        if (isDigit(this.char)) {
-          return this.goto(this.parseNumberExponent);
-        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
-          this.consume();
-          this.call(this.parseNoUnder, this.parseNumberExponent);
-        } else {
-          throw this.error(new TomlError("Unexpected character, expected -, + or digit"));
-        }
-      }
-      parseNumberExponent() {
-        if (isDigit(this.char)) {
-          this.consume();
-        } else if (this.char === CHAR_LOWBAR) {
-          return this.call(this.parseNoUnder);
-        } else {
-          return this.returnNow(Float(this.state.buf));
-        }
-      }
-      parseNumberOrDateTime() {
-        if (this.char === CHAR_0) {
-          this.consume();
-          return this.next(this.parseNumberBaseOrDateTime);
-        } else {
-          return this.goto(this.parseNumberOrDateTimeOnly);
-        }
-      }
-      parseNumberOrDateTimeOnly() {
-        if (this.char === CHAR_LOWBAR) {
-          return this.call(this.parseNoUnder, this.parseNumberInteger);
-        } else if (isDigit(this.char)) {
-          this.consume();
-          if (this.state.buf.length > 4)
-            this.next(this.parseNumberInteger);
-        } else if (this.char === CHAR_E || this.char === CHAR_e) {
-          this.consume();
-          return this.next(this.parseNumberExponentSign);
-        } else if (this.char === CHAR_PERIOD) {
-          this.consume();
-          return this.call(this.parseNoUnder, this.parseNumberFloat);
-        } else if (this.char === CHAR_HYPHEN) {
-          return this.goto(this.parseDateTime);
-        } else if (this.char === CHAR_COLON) {
-          return this.goto(this.parseOnlyTimeHour);
-        } else {
-          return this.returnNow(Integer(this.state.buf));
-        }
-      }
-      parseDateTimeOnly() {
-        if (this.state.buf.length < 4) {
-          if (isDigit(this.char)) {
-            return this.consume();
-          } else if (this.char === CHAR_COLON) {
-            return this.goto(this.parseOnlyTimeHour);
-          } else {
-            throw this.error(new TomlError("Expected digit while parsing year part of a date"));
-          }
-        } else {
-          if (this.char === CHAR_HYPHEN) {
-            return this.goto(this.parseDateTime);
-          } else {
-            throw this.error(new TomlError("Expected hyphen (-) while parsing year part of date"));
-          }
-        }
-      }
-      parseNumberBaseOrDateTime() {
-        if (this.char === CHAR_b) {
-          this.consume();
-          return this.call(this.parseNoUnderHexOctBinLiteral, this.parseIntegerBin);
-        } else if (this.char === CHAR_o) {
-          this.consume();
-          return this.call(this.parseNoUnderHexOctBinLiteral, this.parseIntegerOct);
-        } else if (this.char === CHAR_x) {
-          this.consume();
-          return this.call(this.parseNoUnderHexOctBinLiteral, this.parseIntegerHex);
-        } else if (this.char === CHAR_PERIOD) {
-          return this.goto(this.parseNumberInteger);
-        } else if (isDigit(this.char)) {
-          return this.goto(this.parseDateTimeOnly);
-        } else {
-          return this.returnNow(Integer(this.state.buf));
-        }
-      }
-      parseIntegerHex() {
-        if (isHexit(this.char)) {
-          this.consume();
-        } else if (this.char === CHAR_LOWBAR) {
-          return this.call(this.parseNoUnderHexOctBinLiteral);
-        } else {
-          const result = Integer(this.state.buf);
-          if (result.isNaN()) {
-            throw this.error(new TomlError("Invalid number"));
-          } else {
-            return this.returnNow(result);
-          }
-        }
-      }
-      parseIntegerOct() {
-        if (isOctit(this.char)) {
-          this.consume();
-        } else if (this.char === CHAR_LOWBAR) {
-          return this.call(this.parseNoUnderHexOctBinLiteral);
-        } else {
-          const result = Integer(this.state.buf);
-          if (result.isNaN()) {
-            throw this.error(new TomlError("Invalid number"));
-          } else {
-            return this.returnNow(result);
-          }
-        }
-      }
-      parseIntegerBin() {
-        if (isBit(this.char)) {
-          this.consume();
-        } else if (this.char === CHAR_LOWBAR) {
-          return this.call(this.parseNoUnderHexOctBinLiteral);
-        } else {
-          const result = Integer(this.state.buf);
-          if (result.isNaN()) {
-            throw this.error(new TomlError("Invalid number"));
-          } else {
-            return this.returnNow(result);
-          }
-        }
-      }
-      parseDateTime() {
-        if (this.state.buf.length < 4) {
-          throw this.error(new TomlError("Years less than 1000 must be zero padded to four characters"));
-        }
-        this.state.result = this.state.buf;
-        this.state.buf = "";
-        return this.next(this.parseDateMonth);
-      }
-      parseDateMonth() {
-        if (this.char === CHAR_HYPHEN) {
-          if (this.state.buf.length < 2) {
-            throw this.error(new TomlError("Months less than 10 must be zero padded to two characters"));
-          }
-          this.state.result += "-" + this.state.buf;
-          this.state.buf = "";
-          return this.next(this.parseDateDay);
-        } else if (isDigit(this.char)) {
-          this.consume();
-        } else {
-          throw this.error(new TomlError("Incomplete datetime"));
-        }
-      }
-      parseDateDay() {
-        if (this.char === CHAR_T || this.char === CHAR_SP) {
-          if (this.state.buf.length < 2) {
-            throw this.error(new TomlError("Days less than 10 must be zero padded to two characters"));
-          }
-          this.state.result += "-" + this.state.buf;
-          this.state.buf = "";
-          return this.next(this.parseStartTimeHour);
-        } else if (this.atEndOfWord()) {
-          return this.returnNow(createDate(this.state.result + "-" + this.state.buf));
-        } else if (isDigit(this.char)) {
-          this.consume();
-        } else {
-          throw this.error(new TomlError("Incomplete datetime"));
-        }
-      }
-      parseStartTimeHour() {
-        if (this.atEndOfWord()) {
-          return this.returnNow(createDate(this.state.result));
-        } else {
-          return this.goto(this.parseTimeHour);
-        }
-      }
-      parseTimeHour() {
-        if (this.char === CHAR_COLON) {
-          if (this.state.buf.length < 2) {
-            throw this.error(new TomlError("Hours less than 10 must be zero padded to two characters"));
-          }
-          this.state.result += "T" + this.state.buf;
-          this.state.buf = "";
-          return this.next(this.parseTimeMin);
-        } else if (isDigit(this.char)) {
-          this.consume();
-        } else {
-          throw this.error(new TomlError("Incomplete datetime"));
-        }
-      }
-      parseTimeMin() {
-        if (this.state.buf.length < 2 && isDigit(this.char)) {
-          this.consume();
-        } else if (this.state.buf.length === 2 && this.char === CHAR_COLON) {
-          this.state.result += ":" + this.state.buf;
-          this.state.buf = "";
-          return this.next(this.parseTimeSec);
-        } else {
-          throw this.error(new TomlError("Incomplete datetime"));
-        }
-      }
-      parseTimeSec() {
-        if (isDigit(this.char)) {
-          this.consume();
-          if (this.state.buf.length === 2) {
-            this.state.result += ":" + this.state.buf;
-            this.state.buf = "";
-            return this.next(this.parseTimeZoneOrFraction);
-          }
-        } else {
-          throw this.error(new TomlError("Incomplete datetime"));
-        }
-      }
-      parseOnlyTimeHour() {
-        if (this.char === CHAR_COLON) {
-          if (this.state.buf.length < 2) {
-            throw this.error(new TomlError("Hours less than 10 must be zero padded to two characters"));
-          }
-          this.state.result = this.state.buf;
-          this.state.buf = "";
-          return this.next(this.parseOnlyTimeMin);
-        } else {
-          throw this.error(new TomlError("Incomplete time"));
-        }
-      }
-      parseOnlyTimeMin() {
-        if (this.state.buf.length < 2 && isDigit(this.char)) {
-          this.consume();
-        } else if (this.state.buf.length === 2 && this.char === CHAR_COLON) {
-          this.state.result += ":" + this.state.buf;
-          this.state.buf = "";
-          return this.next(this.parseOnlyTimeSec);
-        } else {
-          throw this.error(new TomlError("Incomplete time"));
-        }
-      }
-      parseOnlyTimeSec() {
-        if (isDigit(this.char)) {
-          this.consume();
-          if (this.state.buf.length === 2) {
-            return this.next(this.parseOnlyTimeFractionMaybe);
-          }
-        } else {
-          throw this.error(new TomlError("Incomplete time"));
-        }
-      }
-      parseOnlyTimeFractionMaybe() {
-        this.state.result += ":" + this.state.buf;
-        if (this.char === CHAR_PERIOD) {
-          this.state.buf = "";
-          this.next(this.parseOnlyTimeFraction);
-        } else {
-          return this.return(createTime(this.state.result));
-        }
-      }
-      parseOnlyTimeFraction() {
-        if (isDigit(this.char)) {
-          this.consume();
-        } else if (this.atEndOfWord()) {
-          if (this.state.buf.length === 0)
-            throw this.error(new TomlError("Expected digit in milliseconds"));
-          return this.returnNow(createTime(this.state.result + "." + this.state.buf));
-        } else {
-          throw this.error(new TomlError("Unexpected character in datetime, expected period (.), minus (-), plus (+) or Z"));
-        }
-      }
-      parseTimeZoneOrFraction() {
-        if (this.char === CHAR_PERIOD) {
-          this.consume();
-          this.next(this.parseDateTimeFraction);
-        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
-          this.consume();
-          this.next(this.parseTimeZoneHour);
-        } else if (this.char === CHAR_Z) {
-          this.consume();
-          return this.return(createDateTime(this.state.result + this.state.buf));
-        } else if (this.atEndOfWord()) {
-          return this.returnNow(createDateTimeFloat(this.state.result + this.state.buf));
-        } else {
-          throw this.error(new TomlError("Unexpected character in datetime, expected period (.), minus (-), plus (+) or Z"));
-        }
-      }
-      parseDateTimeFraction() {
-        if (isDigit(this.char)) {
-          this.consume();
-        } else if (this.state.buf.length === 1) {
-          throw this.error(new TomlError("Expected digit in milliseconds"));
-        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
-          this.consume();
-          this.next(this.parseTimeZoneHour);
-        } else if (this.char === CHAR_Z) {
-          this.consume();
-          return this.return(createDateTime(this.state.result + this.state.buf));
-        } else if (this.atEndOfWord()) {
-          return this.returnNow(createDateTimeFloat(this.state.result + this.state.buf));
-        } else {
-          throw this.error(new TomlError("Unexpected character in datetime, expected period (.), minus (-), plus (+) or Z"));
-        }
-      }
-      parseTimeZoneHour() {
-        if (isDigit(this.char)) {
-          this.consume();
-          if (/\d\d$/.test(this.state.buf))
-            return this.next(this.parseTimeZoneSep);
-        } else {
-          throw this.error(new TomlError("Unexpected character in datetime, expected digit"));
-        }
-      }
-      parseTimeZoneSep() {
-        if (this.char === CHAR_COLON) {
-          this.consume();
-          this.next(this.parseTimeZoneMin);
-        } else {
-          throw this.error(new TomlError("Unexpected character in datetime, expected colon"));
-        }
-      }
-      parseTimeZoneMin() {
-        if (isDigit(this.char)) {
-          this.consume();
-          if (/\d\d$/.test(this.state.buf))
-            return this.return(createDateTime(this.state.result + this.state.buf));
-        } else {
-          throw this.error(new TomlError("Unexpected character in datetime, expected digit"));
-        }
-      }
-      parseBoolean() {
-        if (this.char === CHAR_t) {
-          this.consume();
-          return this.next(this.parseTrue_r);
-        } else if (this.char === CHAR_f) {
-          this.consume();
-          return this.next(this.parseFalse_a);
-        }
-      }
-      parseTrue_r() {
-        if (this.char === CHAR_r) {
-          this.consume();
-          return this.next(this.parseTrue_u);
-        } else {
-          throw this.error(new TomlError("Invalid boolean, expected true or false"));
-        }
-      }
-      parseTrue_u() {
-        if (this.char === CHAR_u) {
-          this.consume();
-          return this.next(this.parseTrue_e);
-        } else {
-          throw this.error(new TomlError("Invalid boolean, expected true or false"));
-        }
-      }
-      parseTrue_e() {
-        if (this.char === CHAR_e) {
-          return this.return(true);
-        } else {
-          throw this.error(new TomlError("Invalid boolean, expected true or false"));
-        }
-      }
-      parseFalse_a() {
-        if (this.char === CHAR_a) {
-          this.consume();
-          return this.next(this.parseFalse_l);
-        } else {
-          throw this.error(new TomlError("Invalid boolean, expected true or false"));
-        }
-      }
-      parseFalse_l() {
-        if (this.char === CHAR_l) {
-          this.consume();
-          return this.next(this.parseFalse_s);
-        } else {
-          throw this.error(new TomlError("Invalid boolean, expected true or false"));
-        }
-      }
-      parseFalse_s() {
-        if (this.char === CHAR_s) {
-          this.consume();
-          return this.next(this.parseFalse_e);
-        } else {
-          throw this.error(new TomlError("Invalid boolean, expected true or false"));
-        }
-      }
-      parseFalse_e() {
-        if (this.char === CHAR_e) {
-          return this.return(false);
-        } else {
-          throw this.error(new TomlError("Invalid boolean, expected true or false"));
-        }
-      }
-      parseInlineList() {
-        if (this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M || this.char === CTRL_J) {
-          return null;
-        } else if (this.char === Parser.END) {
-          throw this.error(new TomlError("Unterminated inline array"));
-        } else if (this.char === CHAR_NUM) {
-          return this.call(this.parseComment);
-        } else if (this.char === CHAR_RSQB) {
-          return this.return(this.state.resultArr || InlineList());
-        } else {
-          return this.callNow(this.parseValue, this.recordInlineListValue);
-        }
-      }
-      recordInlineListValue(value) {
-        if (this.state.resultArr) {
-          const listType = this.state.resultArr[_contentType];
-          const valueType = tomlType(value);
-          if (listType !== valueType) {
-            throw this.error(new TomlError(`Inline lists must be a single type, not a mix of ${listType} and ${valueType}`));
-          }
-        } else {
-          this.state.resultArr = InlineList(tomlType(value));
-        }
-        if (isFloat(value) || isInteger(value)) {
-          this.state.resultArr.push(value.valueOf());
-        } else {
-          this.state.resultArr.push(value);
-        }
-        return this.goto(this.parseInlineListNext);
-      }
-      parseInlineListNext() {
-        if (this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M || this.char === CTRL_J) {
-          return null;
-        } else if (this.char === CHAR_NUM) {
-          return this.call(this.parseComment);
-        } else if (this.char === CHAR_COMMA) {
-          return this.next(this.parseInlineList);
-        } else if (this.char === CHAR_RSQB) {
-          return this.goto(this.parseInlineList);
-        } else {
-          throw this.error(new TomlError("Invalid character, expected whitespace, comma (,) or close bracket (])"));
-        }
-      }
-      parseInlineTable() {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else if (this.char === Parser.END || this.char === CHAR_NUM || this.char === CTRL_J || this.char === CTRL_M) {
-          throw this.error(new TomlError("Unterminated inline array"));
-        } else if (this.char === CHAR_RCUB) {
-          return this.return(this.state.resultTable || InlineTable());
-        } else {
-          if (!this.state.resultTable)
-            this.state.resultTable = InlineTable();
-          return this.callNow(this.parseAssign, this.recordInlineTableValue);
-        }
-      }
-      recordInlineTableValue(kv) {
-        let target = this.state.resultTable;
-        let finalKey = kv.key.pop();
-        for (let kw of kv.key) {
-          if (hasKey(target, kw) && (!isTable(target[kw]) || target[kw][_declared])) {
-            throw this.error(new TomlError("Can't redefine existing key"));
-          }
-          target = target[kw] = target[kw] || Table();
-        }
-        if (hasKey(target, finalKey)) {
-          throw this.error(new TomlError("Can't redefine existing key"));
-        }
-        if (isInteger(kv.value) || isFloat(kv.value)) {
-          target[finalKey] = kv.value.valueOf();
-        } else {
-          target[finalKey] = kv.value;
-        }
-        return this.goto(this.parseInlineTableNext);
-      }
-      parseInlineTableNext() {
-        if (this.char === CHAR_SP || this.char === CTRL_I) {
-          return null;
-        } else if (this.char === Parser.END || this.char === CHAR_NUM || this.char === CTRL_J || this.char === CTRL_M) {
-          throw this.error(new TomlError("Unterminated inline array"));
-        } else if (this.char === CHAR_COMMA) {
-          return this.next(this.parseInlineTable);
-        } else if (this.char === CHAR_RCUB) {
-          return this.goto(this.parseInlineTable);
-        } else {
-          throw this.error(new TomlError("Invalid character, expected whitespace, comma (,) or close bracket (])"));
-        }
-      }
-    }
-    return TOMLParser;
-  }
-});
-
-// ../../node_modules/@iarna/toml/parse-pretty-error.js
-var require_parse_pretty_error = __commonJS((exports2, module2) => {
-  module2.exports = prettyError;
-  function prettyError(err, buf) {
-    if (err.pos == null || err.line == null)
-      return err;
-    let msg = err.message;
-    msg += ` at row ${err.line + 1}, col ${err.col + 1}, pos ${err.pos}:
-`;
-    if (buf && buf.split) {
-      const lines = buf.split(/\n/);
-      const lineNumWidth = String(Math.min(lines.length, err.line + 3)).length;
-      let linePadding = " ";
-      while (linePadding.length < lineNumWidth)
-        linePadding += " ";
-      for (let ii = Math.max(0, err.line - 1);ii < Math.min(lines.length, err.line + 2); ++ii) {
-        let lineNum = String(ii + 1);
-        if (lineNum.length < lineNumWidth)
-          lineNum = " " + lineNum;
-        if (err.line === ii) {
-          msg += lineNum + "> " + lines[ii] + `
-`;
-          msg += linePadding + "  ";
-          for (let hh = 0;hh < err.col; ++hh) {
-            msg += " ";
-          }
-          msg += `^
-`;
-        } else {
-          msg += lineNum + ": " + lines[ii] + `
-`;
-        }
-      }
-    }
-    err.message = msg + `
-`;
-    return err;
-  }
-});
-
-// ../../node_modules/@iarna/toml/parse-string.js
-var require_parse_string = __commonJS((exports2, module2) => {
-  module2.exports = parseString;
-  var TOMLParser = require_toml_parser();
-  var prettyError = require_parse_pretty_error();
-  function parseString(str) {
-    if (global.Buffer && global.Buffer.isBuffer(str)) {
-      str = str.toString("utf8");
-    }
-    const parser = new TOMLParser;
-    try {
-      parser.parse(str);
-      return parser.finish();
-    } catch (err) {
-      throw prettyError(err, str);
-    }
-  }
-});
-
-// ../../node_modules/@iarna/toml/parse-async.js
-var require_parse_async = __commonJS((exports2, module2) => {
-  module2.exports = parseAsync3;
-  var TOMLParser = require_toml_parser();
-  var prettyError = require_parse_pretty_error();
-  function parseAsync3(str, opts) {
-    if (!opts)
-      opts = {};
-    const index = 0;
-    const blocksize = opts.blocksize || 40960;
-    const parser = new TOMLParser;
-    return new Promise((resolve, reject) => {
-      setImmediate(parseAsyncNext, index, blocksize, resolve, reject);
-    });
-    function parseAsyncNext(index2, blocksize2, resolve, reject) {
-      if (index2 >= str.length) {
-        try {
-          return resolve(parser.finish());
-        } catch (err) {
-          return reject(prettyError(err, str));
-        }
-      }
-      try {
-        parser.parse(str.slice(index2, index2 + blocksize2));
-        setImmediate(parseAsyncNext, index2 + blocksize2, blocksize2, resolve, reject);
-      } catch (err) {
-        reject(prettyError(err, str));
-      }
-    }
-  }
-});
-
-// ../../node_modules/@iarna/toml/parse-stream.js
-var require_parse_stream = __commonJS((exports2, module2) => {
-  module2.exports = parseStream;
-  var stream = require("stream");
-  var TOMLParser = require_toml_parser();
-  function parseStream(stm) {
-    if (stm) {
-      return parseReadable(stm);
-    } else {
-      return parseTransform(stm);
-    }
-  }
-  function parseReadable(stm) {
-    const parser = new TOMLParser;
-    stm.setEncoding("utf8");
-    return new Promise((resolve, reject) => {
-      let readable;
-      let ended = false;
-      let errored = false;
-      function finish() {
-        ended = true;
-        if (readable)
-          return;
-        try {
-          resolve(parser.finish());
-        } catch (err) {
-          reject(err);
-        }
-      }
-      function error46(err) {
-        errored = true;
-        reject(err);
-      }
-      stm.once("end", finish);
-      stm.once("error", error46);
-      readNext();
-      function readNext() {
-        readable = true;
-        let data;
-        while ((data = stm.read()) !== null) {
-          try {
-            parser.parse(data);
-          } catch (err) {
-            return error46(err);
-          }
-        }
-        readable = false;
-        if (ended)
-          return finish();
-        if (errored)
-          return;
-        stm.once("readable", readNext);
-      }
-    });
-  }
-  function parseTransform() {
-    const parser = new TOMLParser;
-    return new stream.Transform({
-      objectMode: true,
-      transform(chunk, encoding, cb) {
-        try {
-          parser.parse(chunk.toString(encoding));
-        } catch (err) {
-          this.emit("error", err);
-        }
-        cb();
-      },
-      flush(cb) {
-        try {
-          this.push(parser.finish());
-        } catch (err) {
-          this.emit("error", err);
-        }
-        cb();
-      }
-    });
-  }
-});
-
-// ../../node_modules/@iarna/toml/parse.js
-var require_parse = __commonJS((exports2, module2) => {
-  module2.exports = require_parse_string();
-  module2.exports.async = require_parse_async();
-  module2.exports.stream = require_parse_stream();
-  module2.exports.prettyError = require_parse_pretty_error();
-});
-
-// ../../node_modules/@iarna/toml/stringify.js
-var require_stringify = __commonJS((exports2, module2) => {
-  module2.exports = stringify;
-  module2.exports.value = stringifyInline;
-  function stringify(obj) {
-    if (obj === null)
-      throw typeError("null");
-    if (obj === undefined)
-      throw typeError("undefined");
-    if (typeof obj !== "object")
-      throw typeError(typeof obj);
-    if (typeof obj.toJSON === "function")
-      obj = obj.toJSON();
-    if (obj == null)
-      return null;
-    const type = tomlType(obj);
-    if (type !== "table")
-      throw typeError(type);
-    return stringifyObject("", "", obj);
-  }
-  function typeError(type) {
-    return new Error("Can only stringify objects, not " + type);
-  }
-  function arrayOneTypeError() {
-    return new Error("Array values can't have mixed types");
-  }
-  function getInlineKeys(obj) {
-    return Object.keys(obj).filter((key) => isInline(obj[key]));
-  }
-  function getComplexKeys(obj) {
-    return Object.keys(obj).filter((key) => !isInline(obj[key]));
-  }
-  function toJSON(obj) {
-    let nobj = Array.isArray(obj) ? [] : Object.prototype.hasOwnProperty.call(obj, "__proto__") ? { ["__proto__"]: undefined } : {};
-    for (let prop of Object.keys(obj)) {
-      if (obj[prop] && typeof obj[prop].toJSON === "function" && !("toISOString" in obj[prop])) {
-        nobj[prop] = obj[prop].toJSON();
-      } else {
-        nobj[prop] = obj[prop];
-      }
-    }
-    return nobj;
-  }
-  function stringifyObject(prefix, indent, obj) {
-    obj = toJSON(obj);
-    var inlineKeys;
-    var complexKeys;
-    inlineKeys = getInlineKeys(obj);
-    complexKeys = getComplexKeys(obj);
-    var result = [];
-    var inlineIndent = indent || "";
-    inlineKeys.forEach((key) => {
-      var type = tomlType(obj[key]);
-      if (type !== "undefined" && type !== "null") {
-        result.push(inlineIndent + stringifyKey(key) + " = " + stringifyAnyInline(obj[key], true));
-      }
-    });
-    if (result.length > 0)
-      result.push("");
-    var complexIndent = prefix && inlineKeys.length > 0 ? indent + "  " : "";
-    complexKeys.forEach((key) => {
-      result.push(stringifyComplex(prefix, complexIndent, key, obj[key]));
-    });
-    return result.join(`
-`);
-  }
-  function isInline(value) {
-    switch (tomlType(value)) {
-      case "undefined":
-      case "null":
-      case "integer":
-      case "nan":
-      case "float":
-      case "boolean":
-      case "string":
-      case "datetime":
-        return true;
-      case "array":
-        return value.length === 0 || tomlType(value[0]) !== "table";
-      case "table":
-        return Object.keys(value).length === 0;
-      default:
-        return false;
-    }
-  }
-  function tomlType(value) {
-    if (value === undefined) {
-      return "undefined";
-    } else if (value === null) {
-      return "null";
-    } else if (typeof value === "bigint" || Number.isInteger(value) && !Object.is(value, -0)) {
-      return "integer";
-    } else if (typeof value === "number") {
-      return "float";
-    } else if (typeof value === "boolean") {
-      return "boolean";
-    } else if (typeof value === "string") {
-      return "string";
-    } else if ("toISOString" in value) {
-      return isNaN(value) ? "undefined" : "datetime";
-    } else if (Array.isArray(value)) {
-      return "array";
-    } else {
-      return "table";
-    }
-  }
-  function stringifyKey(key) {
-    var keyStr = String(key);
-    if (/^[-A-Za-z0-9_]+$/.test(keyStr)) {
-      return keyStr;
-    } else {
-      return stringifyBasicString(keyStr);
-    }
-  }
-  function stringifyBasicString(str) {
-    return '"' + escapeString(str).replace(/"/g, "\\\"") + '"';
-  }
-  function stringifyLiteralString(str) {
-    return "'" + str + "'";
-  }
-  function numpad(num, str) {
-    while (str.length < num)
-      str = "0" + str;
-    return str;
-  }
-  function escapeString(str) {
-    return str.replace(/\\/g, "\\\\").replace(/[\b]/g, "\\b").replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/\f/g, "\\f").replace(/\r/g, "\\r").replace(/([\u0000-\u001f\u007f])/, (c) => "\\u" + numpad(4, c.codePointAt(0).toString(16)));
-  }
-  function stringifyMultilineString(str) {
-    let escaped = str.split(/\n/).map((str2) => {
-      return escapeString(str2).replace(/"(?="")/g, "\\\"");
-    }).join(`
-`);
-    if (escaped.slice(-1) === '"')
-      escaped += "\\\n";
-    return `"""
-` + escaped + '"""';
-  }
-  function stringifyAnyInline(value, multilineOk) {
-    let type = tomlType(value);
-    if (type === "string") {
-      if (multilineOk && /\n/.test(value)) {
-        type = "string-multiline";
-      } else if (!/[\b\t\n\f\r']/.test(value) && /"/.test(value)) {
-        type = "string-literal";
-      }
-    }
-    return stringifyInline(value, type);
-  }
-  function stringifyInline(value, type) {
-    if (!type)
-      type = tomlType(value);
-    switch (type) {
-      case "string-multiline":
-        return stringifyMultilineString(value);
-      case "string":
-        return stringifyBasicString(value);
-      case "string-literal":
-        return stringifyLiteralString(value);
-      case "integer":
-        return stringifyInteger(value);
-      case "float":
-        return stringifyFloat(value);
-      case "boolean":
-        return stringifyBoolean(value);
-      case "datetime":
-        return stringifyDatetime(value);
-      case "array":
-        return stringifyInlineArray(value.filter((_) => tomlType(_) !== "null" && tomlType(_) !== "undefined" && tomlType(_) !== "nan"));
-      case "table":
-        return stringifyInlineTable(value);
-      default:
-        throw typeError(type);
-    }
-  }
-  function stringifyInteger(value) {
-    return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, "_");
-  }
-  function stringifyFloat(value) {
-    if (value === Infinity) {
-      return "inf";
-    } else if (value === -Infinity) {
-      return "-inf";
-    } else if (Object.is(value, NaN)) {
-      return "nan";
-    } else if (Object.is(value, -0)) {
-      return "-0.0";
-    }
-    var chunks = String(value).split(".");
-    var int2 = chunks[0];
-    var dec = chunks[1] || 0;
-    return stringifyInteger(int2) + "." + dec;
-  }
-  function stringifyBoolean(value) {
-    return String(value);
-  }
-  function stringifyDatetime(value) {
-    return value.toISOString();
-  }
-  function isNumber(type) {
-    return type === "float" || type === "integer";
-  }
-  function arrayType2(values) {
-    var contentType = tomlType(values[0]);
-    if (values.every((_) => tomlType(_) === contentType))
-      return contentType;
-    if (values.every((_) => isNumber(tomlType(_))))
-      return "float";
-    return "mixed";
-  }
-  function validateArray(values) {
-    const type = arrayType2(values);
-    if (type === "mixed") {
-      throw arrayOneTypeError();
-    }
-    return type;
-  }
-  function stringifyInlineArray(values) {
-    values = toJSON(values);
-    const type = validateArray(values);
-    var result = "[";
-    var stringified = values.map((_) => stringifyInline(_, type));
-    if (stringified.join(", ").length > 60 || /\n/.test(stringified)) {
-      result += `
-  ` + stringified.join(`,
-  `) + `
-`;
-    } else {
-      result += " " + stringified.join(", ") + (stringified.length > 0 ? " " : "");
-    }
-    return result + "]";
-  }
-  function stringifyInlineTable(value) {
-    value = toJSON(value);
-    var result = [];
-    Object.keys(value).forEach((key) => {
-      result.push(stringifyKey(key) + " = " + stringifyAnyInline(value[key], false));
-    });
-    return "{ " + result.join(", ") + (result.length > 0 ? " " : "") + "}";
-  }
-  function stringifyComplex(prefix, indent, key, value) {
-    var valueType = tomlType(value);
-    if (valueType === "array") {
-      return stringifyArrayOfTables(prefix, indent, key, value);
-    } else if (valueType === "table") {
-      return stringifyComplexTable(prefix, indent, key, value);
-    } else {
-      throw typeError(valueType);
-    }
-  }
-  function stringifyArrayOfTables(prefix, indent, key, values) {
-    values = toJSON(values);
-    validateArray(values);
-    var firstValueType = tomlType(values[0]);
-    if (firstValueType !== "table")
-      throw typeError(firstValueType);
-    var fullKey = prefix + stringifyKey(key);
-    var result = "";
-    values.forEach((table) => {
-      if (result.length > 0)
-        result += `
-`;
-      result += indent + "[[" + fullKey + `]]
-`;
-      result += stringifyObject(fullKey + ".", indent, table);
-    });
-    return result;
-  }
-  function stringifyComplexTable(prefix, indent, key, value) {
-    var fullKey = prefix + stringifyKey(key);
-    var result = "";
-    if (getInlineKeys(value).length > 0) {
-      result += indent + "[" + fullKey + `]
-`;
-    }
-    return result + stringifyObject(fullKey + ".", indent, value);
-  }
-});
-
-// ../../node_modules/@iarna/toml/toml.js
-var require_toml = __commonJS((exports2) => {
-  exports2.parse = require_parse();
-  exports2.stringify = require_stringify();
-});
-
 // ../../node_modules/tslib/tslib.js
 var require_tslib = __commonJS((exports2, module2) => {
   var __extends;
@@ -8694,11 +6699,11 @@ var require_tslib = __commonJS((exports2, module2) => {
     };
     __awaiter = function(thisArg, _arguments, P, generator) {
       function adopt(value) {
-        return value instanceof P ? value : new P(function(resolve2) {
-          resolve2(value);
+        return value instanceof P ? value : new P(function(resolve) {
+          resolve(value);
         });
       }
-      return new (P || (P = Promise))(function(resolve2, reject) {
+      return new (P || (P = Promise))(function(resolve, reject) {
         function fulfilled(value) {
           try {
             step(generator.next(value));
@@ -8714,7 +6719,7 @@ var require_tslib = __commonJS((exports2, module2) => {
           }
         }
         function step(result) {
-          result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
+          result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
         }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
       });
@@ -8943,14 +6948,14 @@ var require_tslib = __commonJS((exports2, module2) => {
       }, i);
       function verb(n) {
         i[n] = o[n] && function(v) {
-          return new Promise(function(resolve2, reject) {
-            v = o[n](v), settle(resolve2, reject, v.done, v.value);
+          return new Promise(function(resolve, reject) {
+            v = o[n](v), settle(resolve, reject, v.done, v.value);
           });
         };
       }
-      function settle(resolve2, reject, d, v) {
+      function settle(resolve, reject, d, v) {
         Promise.resolve(v).then(function(v2) {
-          resolve2({ value: v2, done: d });
+          resolve({ value: v2, done: d });
         }, reject);
       }
     };
@@ -10345,15 +8350,15 @@ var require_RealtimeChannel = __commonJS((exports2) => {
           }
         }
       } else {
-        return new Promise((resolve2) => {
+        return new Promise((resolve) => {
           var _a2, _b2, _c;
           const push = this._push(args.type, args, opts.timeout || this.timeout);
           if (args.type === "broadcast" && !((_c = (_b2 = (_a2 = this.params) === null || _a2 === undefined ? undefined : _a2.config) === null || _b2 === undefined ? undefined : _b2.broadcast) === null || _c === undefined ? undefined : _c.ack)) {
-            resolve2("ok");
+            resolve("ok");
           }
-          push.receive("ok", () => resolve2("ok"));
-          push.receive("error", () => resolve2("error"));
-          push.receive("timeout", () => resolve2("timed out"));
+          push.receive("ok", () => resolve("ok"));
+          push.receive("error", () => resolve("error"));
+          push.receive("timeout", () => resolve("timed out"));
         });
       }
     }
@@ -10368,16 +8373,16 @@ var require_RealtimeChannel = __commonJS((exports2) => {
       };
       this.joinPush.destroy();
       let leavePush = null;
-      return new Promise((resolve2) => {
+      return new Promise((resolve) => {
         leavePush = new push_1.default(this, constants_1.CHANNEL_EVENTS.leave, {}, timeout);
         leavePush.receive("ok", () => {
           onClose();
-          resolve2("ok");
+          resolve("ok");
         }).receive("timeout", () => {
           onClose();
-          resolve2("timed out");
+          resolve("timed out");
         }).receive("error", () => {
-          resolve2("error");
+          resolve("error");
         });
         leavePush.send();
         if (!this._canPush()) {
@@ -10437,8 +8442,8 @@ var require_RealtimeChannel = __commonJS((exports2) => {
     _trigger(type, payload, ref) {
       var _a, _b;
       const typeLower = type.toLocaleLowerCase();
-      const { close, error: error46, leave, join: join3 } = constants_1.CHANNEL_EVENTS;
-      const events = [close, error46, leave, join3];
+      const { close, error: error46, leave, join } = constants_1.CHANNEL_EVENTS;
+      const events = [close, error46, leave, join];
       if (ref && events.indexOf(typeLower) >= 0 && ref !== this._joinRef()) {
         return;
       }
@@ -15438,6 +13443,2001 @@ var require_main3 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "processLock", { enumerable: true, get: function() {
     return locks_1.processLock;
   } });
+});
+
+// ../../node_modules/@iarna/toml/lib/parser.js
+var require_parser = __commonJS((exports2, module2) => {
+  var ParserEND = 1114112;
+
+  class ParserError extends Error {
+    constructor(msg, filename, linenumber) {
+      super("[ParserError] " + msg, filename, linenumber);
+      this.name = "ParserError";
+      this.code = "ParserError";
+      if (Error.captureStackTrace)
+        Error.captureStackTrace(this, ParserError);
+    }
+  }
+
+  class State {
+    constructor(parser) {
+      this.parser = parser;
+      this.buf = "";
+      this.returned = null;
+      this.result = null;
+      this.resultTable = null;
+      this.resultArr = null;
+    }
+  }
+
+  class Parser {
+    constructor() {
+      this.pos = 0;
+      this.col = 0;
+      this.line = 0;
+      this.obj = {};
+      this.ctx = this.obj;
+      this.stack = [];
+      this._buf = "";
+      this.char = null;
+      this.ii = 0;
+      this.state = new State(this.parseStart);
+    }
+    parse(str) {
+      if (str.length === 0 || str.length == null)
+        return;
+      this._buf = String(str);
+      this.ii = -1;
+      this.char = -1;
+      let getNext;
+      while (getNext === false || this.nextChar()) {
+        getNext = this.runOne();
+      }
+      this._buf = null;
+    }
+    nextChar() {
+      if (this.char === 10) {
+        ++this.line;
+        this.col = -1;
+      }
+      ++this.ii;
+      this.char = this._buf.codePointAt(this.ii);
+      ++this.pos;
+      ++this.col;
+      return this.haveBuffer();
+    }
+    haveBuffer() {
+      return this.ii < this._buf.length;
+    }
+    runOne() {
+      return this.state.parser.call(this, this.state.returned);
+    }
+    finish() {
+      this.char = ParserEND;
+      let last;
+      do {
+        last = this.state.parser;
+        this.runOne();
+      } while (this.state.parser !== last);
+      this.ctx = null;
+      this.state = null;
+      this._buf = null;
+      return this.obj;
+    }
+    next(fn) {
+      if (typeof fn !== "function")
+        throw new ParserError("Tried to set state to non-existent state: " + JSON.stringify(fn));
+      this.state.parser = fn;
+    }
+    goto(fn) {
+      this.next(fn);
+      return this.runOne();
+    }
+    call(fn, returnWith) {
+      if (returnWith)
+        this.next(returnWith);
+      this.stack.push(this.state);
+      this.state = new State(fn);
+    }
+    callNow(fn, returnWith) {
+      this.call(fn, returnWith);
+      return this.runOne();
+    }
+    return(value) {
+      if (this.stack.length === 0)
+        throw this.error(new ParserError("Stack underflow"));
+      if (value === undefined)
+        value = this.state.buf;
+      this.state = this.stack.pop();
+      this.state.returned = value;
+    }
+    returnNow(value) {
+      this.return(value);
+      return this.runOne();
+    }
+    consume() {
+      if (this.char === ParserEND)
+        throw this.error(new ParserError("Unexpected end-of-buffer"));
+      this.state.buf += this._buf[this.ii];
+    }
+    error(err) {
+      err.line = this.line;
+      err.col = this.col;
+      err.pos = this.pos;
+      return err;
+    }
+    parseStart() {
+      throw new ParserError("Must declare a parseStart method");
+    }
+  }
+  Parser.END = ParserEND;
+  Parser.Error = ParserError;
+  module2.exports = Parser;
+});
+
+// ../../node_modules/@iarna/toml/lib/create-datetime.js
+var require_create_datetime = __commonJS((exports2, module2) => {
+  module2.exports = (value) => {
+    const date6 = new Date(value);
+    if (isNaN(date6)) {
+      throw new TypeError("Invalid Datetime");
+    } else {
+      return date6;
+    }
+  };
+});
+
+// ../../node_modules/@iarna/toml/lib/format-num.js
+var require_format_num = __commonJS((exports2, module2) => {
+  module2.exports = (d, num) => {
+    num = String(num);
+    while (num.length < d)
+      num = "0" + num;
+    return num;
+  };
+});
+
+// ../../node_modules/@iarna/toml/lib/create-datetime-float.js
+var require_create_datetime_float = __commonJS((exports2, module2) => {
+  var f = require_format_num();
+
+  class FloatingDateTime extends Date {
+    constructor(value) {
+      super(value + "Z");
+      this.isFloating = true;
+    }
+    toISOString() {
+      const date6 = `${this.getUTCFullYear()}-${f(2, this.getUTCMonth() + 1)}-${f(2, this.getUTCDate())}`;
+      const time3 = `${f(2, this.getUTCHours())}:${f(2, this.getUTCMinutes())}:${f(2, this.getUTCSeconds())}.${f(3, this.getUTCMilliseconds())}`;
+      return `${date6}T${time3}`;
+    }
+  }
+  module2.exports = (value) => {
+    const date6 = new FloatingDateTime(value);
+    if (isNaN(date6)) {
+      throw new TypeError("Invalid Datetime");
+    } else {
+      return date6;
+    }
+  };
+});
+
+// ../../node_modules/@iarna/toml/lib/create-date.js
+var require_create_date = __commonJS((exports2, module2) => {
+  var f = require_format_num();
+  var DateTime = global.Date;
+
+  class Date2 extends DateTime {
+    constructor(value) {
+      super(value);
+      this.isDate = true;
+    }
+    toISOString() {
+      return `${this.getUTCFullYear()}-${f(2, this.getUTCMonth() + 1)}-${f(2, this.getUTCDate())}`;
+    }
+  }
+  module2.exports = (value) => {
+    const date6 = new Date2(value);
+    if (isNaN(date6)) {
+      throw new TypeError("Invalid Datetime");
+    } else {
+      return date6;
+    }
+  };
+});
+
+// ../../node_modules/@iarna/toml/lib/create-time.js
+var require_create_time = __commonJS((exports2, module2) => {
+  var f = require_format_num();
+
+  class Time extends Date {
+    constructor(value) {
+      super(`0000-01-01T${value}Z`);
+      this.isTime = true;
+    }
+    toISOString() {
+      return `${f(2, this.getUTCHours())}:${f(2, this.getUTCMinutes())}:${f(2, this.getUTCSeconds())}.${f(3, this.getUTCMilliseconds())}`;
+    }
+  }
+  module2.exports = (value) => {
+    const date6 = new Time(value);
+    if (isNaN(date6)) {
+      throw new TypeError("Invalid Datetime");
+    } else {
+      return date6;
+    }
+  };
+});
+
+// ../../node_modules/@iarna/toml/lib/toml-parser.js
+var require_toml_parser = __commonJS((exports2, module2) => {
+  module2.exports = makeParserClass(require_parser());
+  module2.exports.makeParserClass = makeParserClass;
+
+  class TomlError extends Error {
+    constructor(msg) {
+      super(msg);
+      this.name = "TomlError";
+      if (Error.captureStackTrace)
+        Error.captureStackTrace(this, TomlError);
+      this.fromTOML = true;
+      this.wrapped = null;
+    }
+  }
+  TomlError.wrap = (err) => {
+    const terr = new TomlError(err.message);
+    terr.code = err.code;
+    terr.wrapped = err;
+    return terr;
+  };
+  module2.exports.TomlError = TomlError;
+  var createDateTime = require_create_datetime();
+  var createDateTimeFloat = require_create_datetime_float();
+  var createDate = require_create_date();
+  var createTime = require_create_time();
+  var CTRL_I = 9;
+  var CTRL_J = 10;
+  var CTRL_M = 13;
+  var CTRL_CHAR_BOUNDARY = 31;
+  var CHAR_SP = 32;
+  var CHAR_QUOT = 34;
+  var CHAR_NUM = 35;
+  var CHAR_APOS = 39;
+  var CHAR_PLUS = 43;
+  var CHAR_COMMA = 44;
+  var CHAR_HYPHEN = 45;
+  var CHAR_PERIOD = 46;
+  var CHAR_0 = 48;
+  var CHAR_1 = 49;
+  var CHAR_7 = 55;
+  var CHAR_9 = 57;
+  var CHAR_COLON = 58;
+  var CHAR_EQUALS = 61;
+  var CHAR_A = 65;
+  var CHAR_E = 69;
+  var CHAR_F = 70;
+  var CHAR_T = 84;
+  var CHAR_U = 85;
+  var CHAR_Z = 90;
+  var CHAR_LOWBAR = 95;
+  var CHAR_a = 97;
+  var CHAR_b = 98;
+  var CHAR_e = 101;
+  var CHAR_f = 102;
+  var CHAR_i = 105;
+  var CHAR_l = 108;
+  var CHAR_n = 110;
+  var CHAR_o = 111;
+  var CHAR_r = 114;
+  var CHAR_s = 115;
+  var CHAR_t = 116;
+  var CHAR_u = 117;
+  var CHAR_x = 120;
+  var CHAR_z = 122;
+  var CHAR_LCUB = 123;
+  var CHAR_RCUB = 125;
+  var CHAR_LSQB = 91;
+  var CHAR_BSOL = 92;
+  var CHAR_RSQB = 93;
+  var CHAR_DEL = 127;
+  var SURROGATE_FIRST = 55296;
+  var SURROGATE_LAST = 57343;
+  var escapes = {
+    [CHAR_b]: "\b",
+    [CHAR_t]: "\t",
+    [CHAR_n]: `
+`,
+    [CHAR_f]: "\f",
+    [CHAR_r]: "\r",
+    [CHAR_QUOT]: '"',
+    [CHAR_BSOL]: "\\"
+  };
+  function isDigit(cp) {
+    return cp >= CHAR_0 && cp <= CHAR_9;
+  }
+  function isHexit(cp) {
+    return cp >= CHAR_A && cp <= CHAR_F || cp >= CHAR_a && cp <= CHAR_f || cp >= CHAR_0 && cp <= CHAR_9;
+  }
+  function isBit(cp) {
+    return cp === CHAR_1 || cp === CHAR_0;
+  }
+  function isOctit(cp) {
+    return cp >= CHAR_0 && cp <= CHAR_7;
+  }
+  function isAlphaNumQuoteHyphen(cp) {
+    return cp >= CHAR_A && cp <= CHAR_Z || cp >= CHAR_a && cp <= CHAR_z || cp >= CHAR_0 && cp <= CHAR_9 || cp === CHAR_APOS || cp === CHAR_QUOT || cp === CHAR_LOWBAR || cp === CHAR_HYPHEN;
+  }
+  function isAlphaNumHyphen(cp) {
+    return cp >= CHAR_A && cp <= CHAR_Z || cp >= CHAR_a && cp <= CHAR_z || cp >= CHAR_0 && cp <= CHAR_9 || cp === CHAR_LOWBAR || cp === CHAR_HYPHEN;
+  }
+  var _type = Symbol("type");
+  var _declared = Symbol("declared");
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+  var defineProperty = Object.defineProperty;
+  var descriptor = { configurable: true, enumerable: true, writable: true, value: undefined };
+  function hasKey(obj, key) {
+    if (hasOwnProperty.call(obj, key))
+      return true;
+    if (key === "__proto__")
+      defineProperty(obj, "__proto__", descriptor);
+    return false;
+  }
+  var INLINE_TABLE = Symbol("inline-table");
+  function InlineTable() {
+    return Object.defineProperties({}, {
+      [_type]: { value: INLINE_TABLE }
+    });
+  }
+  function isInlineTable(obj) {
+    if (obj === null || typeof obj !== "object")
+      return false;
+    return obj[_type] === INLINE_TABLE;
+  }
+  var TABLE = Symbol("table");
+  function Table() {
+    return Object.defineProperties({}, {
+      [_type]: { value: TABLE },
+      [_declared]: { value: false, writable: true }
+    });
+  }
+  function isTable(obj) {
+    if (obj === null || typeof obj !== "object")
+      return false;
+    return obj[_type] === TABLE;
+  }
+  var _contentType = Symbol("content-type");
+  var INLINE_LIST = Symbol("inline-list");
+  function InlineList(type) {
+    return Object.defineProperties([], {
+      [_type]: { value: INLINE_LIST },
+      [_contentType]: { value: type }
+    });
+  }
+  function isInlineList(obj) {
+    if (obj === null || typeof obj !== "object")
+      return false;
+    return obj[_type] === INLINE_LIST;
+  }
+  var LIST = Symbol("list");
+  function List() {
+    return Object.defineProperties([], {
+      [_type]: { value: LIST }
+    });
+  }
+  function isList(obj) {
+    if (obj === null || typeof obj !== "object")
+      return false;
+    return obj[_type] === LIST;
+  }
+  var _custom2;
+  try {
+    const utilInspect = eval("require('util').inspect");
+    _custom2 = utilInspect.custom;
+  } catch (_) {}
+  var _inspect = _custom2 || "inspect";
+
+  class BoxedBigInt {
+    constructor(value) {
+      try {
+        this.value = global.BigInt.asIntN(64, value);
+      } catch (_) {
+        this.value = null;
+      }
+      Object.defineProperty(this, _type, { value: INTEGER });
+    }
+    isNaN() {
+      return this.value === null;
+    }
+    toString() {
+      return String(this.value);
+    }
+    [_inspect]() {
+      return `[BigInt: ${this.toString()}]}`;
+    }
+    valueOf() {
+      return this.value;
+    }
+  }
+  var INTEGER = Symbol("integer");
+  function Integer(value) {
+    let num = Number(value);
+    if (Object.is(num, -0))
+      num = 0;
+    if (global.BigInt && !Number.isSafeInteger(num)) {
+      return new BoxedBigInt(value);
+    } else {
+      return Object.defineProperties(new Number(num), {
+        isNaN: { value: function() {
+          return isNaN(this);
+        } },
+        [_type]: { value: INTEGER },
+        [_inspect]: { value: () => `[Integer: ${value}]` }
+      });
+    }
+  }
+  function isInteger(obj) {
+    if (obj === null || typeof obj !== "object")
+      return false;
+    return obj[_type] === INTEGER;
+  }
+  var FLOAT = Symbol("float");
+  function Float(value) {
+    return Object.defineProperties(new Number(value), {
+      [_type]: { value: FLOAT },
+      [_inspect]: { value: () => `[Float: ${value}]` }
+    });
+  }
+  function isFloat(obj) {
+    if (obj === null || typeof obj !== "object")
+      return false;
+    return obj[_type] === FLOAT;
+  }
+  function tomlType(value) {
+    const type = typeof value;
+    if (type === "object") {
+      if (value === null)
+        return "null";
+      if (value instanceof Date)
+        return "datetime";
+      if (_type in value) {
+        switch (value[_type]) {
+          case INLINE_TABLE:
+            return "inline-table";
+          case INLINE_LIST:
+            return "inline-list";
+          case TABLE:
+            return "table";
+          case LIST:
+            return "list";
+          case FLOAT:
+            return "float";
+          case INTEGER:
+            return "integer";
+        }
+      }
+    }
+    return type;
+  }
+  function makeParserClass(Parser) {
+
+    class TOMLParser extends Parser {
+      constructor() {
+        super();
+        this.ctx = this.obj = Table();
+      }
+      atEndOfWord() {
+        return this.char === CHAR_NUM || this.char === CTRL_I || this.char === CHAR_SP || this.atEndOfLine();
+      }
+      atEndOfLine() {
+        return this.char === Parser.END || this.char === CTRL_J || this.char === CTRL_M;
+      }
+      parseStart() {
+        if (this.char === Parser.END) {
+          return null;
+        } else if (this.char === CHAR_LSQB) {
+          return this.call(this.parseTableOrList);
+        } else if (this.char === CHAR_NUM) {
+          return this.call(this.parseComment);
+        } else if (this.char === CTRL_J || this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M) {
+          return null;
+        } else if (isAlphaNumQuoteHyphen(this.char)) {
+          return this.callNow(this.parseAssignStatement);
+        } else {
+          throw this.error(new TomlError(`Unknown character "${this.char}"`));
+        }
+      }
+      parseWhitespaceToEOL() {
+        if (this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M) {
+          return null;
+        } else if (this.char === CHAR_NUM) {
+          return this.goto(this.parseComment);
+        } else if (this.char === Parser.END || this.char === CTRL_J) {
+          return this.return();
+        } else {
+          throw this.error(new TomlError("Unexpected character, expected only whitespace or comments till end of line"));
+        }
+      }
+      parseAssignStatement() {
+        return this.callNow(this.parseAssign, this.recordAssignStatement);
+      }
+      recordAssignStatement(kv) {
+        let target = this.ctx;
+        let finalKey = kv.key.pop();
+        for (let kw of kv.key) {
+          if (hasKey(target, kw) && (!isTable(target[kw]) || target[kw][_declared])) {
+            throw this.error(new TomlError("Can't redefine existing key"));
+          }
+          target = target[kw] = target[kw] || Table();
+        }
+        if (hasKey(target, finalKey)) {
+          throw this.error(new TomlError("Can't redefine existing key"));
+        }
+        if (isInteger(kv.value) || isFloat(kv.value)) {
+          target[finalKey] = kv.value.valueOf();
+        } else {
+          target[finalKey] = kv.value;
+        }
+        return this.goto(this.parseWhitespaceToEOL);
+      }
+      parseAssign() {
+        return this.callNow(this.parseKeyword, this.recordAssignKeyword);
+      }
+      recordAssignKeyword(key) {
+        if (this.state.resultTable) {
+          this.state.resultTable.push(key);
+        } else {
+          this.state.resultTable = [key];
+        }
+        return this.goto(this.parseAssignKeywordPreDot);
+      }
+      parseAssignKeywordPreDot() {
+        if (this.char === CHAR_PERIOD) {
+          return this.next(this.parseAssignKeywordPostDot);
+        } else if (this.char !== CHAR_SP && this.char !== CTRL_I) {
+          return this.goto(this.parseAssignEqual);
+        }
+      }
+      parseAssignKeywordPostDot() {
+        if (this.char !== CHAR_SP && this.char !== CTRL_I) {
+          return this.callNow(this.parseKeyword, this.recordAssignKeyword);
+        }
+      }
+      parseAssignEqual() {
+        if (this.char === CHAR_EQUALS) {
+          return this.next(this.parseAssignPreValue);
+        } else {
+          throw this.error(new TomlError('Invalid character, expected "="'));
+        }
+      }
+      parseAssignPreValue() {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else {
+          return this.callNow(this.parseValue, this.recordAssignValue);
+        }
+      }
+      recordAssignValue(value) {
+        return this.returnNow({ key: this.state.resultTable, value });
+      }
+      parseComment() {
+        do {
+          if (this.char === Parser.END || this.char === CTRL_J) {
+            return this.return();
+          }
+        } while (this.nextChar());
+      }
+      parseTableOrList() {
+        if (this.char === CHAR_LSQB) {
+          this.next(this.parseList);
+        } else {
+          return this.goto(this.parseTable);
+        }
+      }
+      parseTable() {
+        this.ctx = this.obj;
+        return this.goto(this.parseTableNext);
+      }
+      parseTableNext() {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else {
+          return this.callNow(this.parseKeyword, this.parseTableMore);
+        }
+      }
+      parseTableMore(keyword) {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else if (this.char === CHAR_RSQB) {
+          if (hasKey(this.ctx, keyword) && (!isTable(this.ctx[keyword]) || this.ctx[keyword][_declared])) {
+            throw this.error(new TomlError("Can't redefine existing key"));
+          } else {
+            this.ctx = this.ctx[keyword] = this.ctx[keyword] || Table();
+            this.ctx[_declared] = true;
+          }
+          return this.next(this.parseWhitespaceToEOL);
+        } else if (this.char === CHAR_PERIOD) {
+          if (!hasKey(this.ctx, keyword)) {
+            this.ctx = this.ctx[keyword] = Table();
+          } else if (isTable(this.ctx[keyword])) {
+            this.ctx = this.ctx[keyword];
+          } else if (isList(this.ctx[keyword])) {
+            this.ctx = this.ctx[keyword][this.ctx[keyword].length - 1];
+          } else {
+            throw this.error(new TomlError("Can't redefine existing key"));
+          }
+          return this.next(this.parseTableNext);
+        } else {
+          throw this.error(new TomlError("Unexpected character, expected whitespace, . or ]"));
+        }
+      }
+      parseList() {
+        this.ctx = this.obj;
+        return this.goto(this.parseListNext);
+      }
+      parseListNext() {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else {
+          return this.callNow(this.parseKeyword, this.parseListMore);
+        }
+      }
+      parseListMore(keyword) {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else if (this.char === CHAR_RSQB) {
+          if (!hasKey(this.ctx, keyword)) {
+            this.ctx[keyword] = List();
+          }
+          if (isInlineList(this.ctx[keyword])) {
+            throw this.error(new TomlError("Can't extend an inline array"));
+          } else if (isList(this.ctx[keyword])) {
+            const next = Table();
+            this.ctx[keyword].push(next);
+            this.ctx = next;
+          } else {
+            throw this.error(new TomlError("Can't redefine an existing key"));
+          }
+          return this.next(this.parseListEnd);
+        } else if (this.char === CHAR_PERIOD) {
+          if (!hasKey(this.ctx, keyword)) {
+            this.ctx = this.ctx[keyword] = Table();
+          } else if (isInlineList(this.ctx[keyword])) {
+            throw this.error(new TomlError("Can't extend an inline array"));
+          } else if (isInlineTable(this.ctx[keyword])) {
+            throw this.error(new TomlError("Can't extend an inline table"));
+          } else if (isList(this.ctx[keyword])) {
+            this.ctx = this.ctx[keyword][this.ctx[keyword].length - 1];
+          } else if (isTable(this.ctx[keyword])) {
+            this.ctx = this.ctx[keyword];
+          } else {
+            throw this.error(new TomlError("Can't redefine an existing key"));
+          }
+          return this.next(this.parseListNext);
+        } else {
+          throw this.error(new TomlError("Unexpected character, expected whitespace, . or ]"));
+        }
+      }
+      parseListEnd(keyword) {
+        if (this.char === CHAR_RSQB) {
+          return this.next(this.parseWhitespaceToEOL);
+        } else {
+          throw this.error(new TomlError("Unexpected character, expected whitespace, . or ]"));
+        }
+      }
+      parseValue() {
+        if (this.char === Parser.END) {
+          throw this.error(new TomlError("Key without value"));
+        } else if (this.char === CHAR_QUOT) {
+          return this.next(this.parseDoubleString);
+        }
+        if (this.char === CHAR_APOS) {
+          return this.next(this.parseSingleString);
+        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
+          return this.goto(this.parseNumberSign);
+        } else if (this.char === CHAR_i) {
+          return this.next(this.parseInf);
+        } else if (this.char === CHAR_n) {
+          return this.next(this.parseNan);
+        } else if (isDigit(this.char)) {
+          return this.goto(this.parseNumberOrDateTime);
+        } else if (this.char === CHAR_t || this.char === CHAR_f) {
+          return this.goto(this.parseBoolean);
+        } else if (this.char === CHAR_LSQB) {
+          return this.call(this.parseInlineList, this.recordValue);
+        } else if (this.char === CHAR_LCUB) {
+          return this.call(this.parseInlineTable, this.recordValue);
+        } else {
+          throw this.error(new TomlError("Unexpected character, expecting string, number, datetime, boolean, inline array or inline table"));
+        }
+      }
+      recordValue(value) {
+        return this.returnNow(value);
+      }
+      parseInf() {
+        if (this.char === CHAR_n) {
+          return this.next(this.parseInf2);
+        } else {
+          throw this.error(new TomlError('Unexpected character, expected "inf", "+inf" or "-inf"'));
+        }
+      }
+      parseInf2() {
+        if (this.char === CHAR_f) {
+          if (this.state.buf === "-") {
+            return this.return(-Infinity);
+          } else {
+            return this.return(Infinity);
+          }
+        } else {
+          throw this.error(new TomlError('Unexpected character, expected "inf", "+inf" or "-inf"'));
+        }
+      }
+      parseNan() {
+        if (this.char === CHAR_a) {
+          return this.next(this.parseNan2);
+        } else {
+          throw this.error(new TomlError('Unexpected character, expected "nan"'));
+        }
+      }
+      parseNan2() {
+        if (this.char === CHAR_n) {
+          return this.return(NaN);
+        } else {
+          throw this.error(new TomlError('Unexpected character, expected "nan"'));
+        }
+      }
+      parseKeyword() {
+        if (this.char === CHAR_QUOT) {
+          return this.next(this.parseBasicString);
+        } else if (this.char === CHAR_APOS) {
+          return this.next(this.parseLiteralString);
+        } else {
+          return this.goto(this.parseBareKey);
+        }
+      }
+      parseBareKey() {
+        do {
+          if (this.char === Parser.END) {
+            throw this.error(new TomlError("Key ended without value"));
+          } else if (isAlphaNumHyphen(this.char)) {
+            this.consume();
+          } else if (this.state.buf.length === 0) {
+            throw this.error(new TomlError("Empty bare keys are not allowed"));
+          } else {
+            return this.returnNow();
+          }
+        } while (this.nextChar());
+      }
+      parseSingleString() {
+        if (this.char === CHAR_APOS) {
+          return this.next(this.parseLiteralMultiStringMaybe);
+        } else {
+          return this.goto(this.parseLiteralString);
+        }
+      }
+      parseLiteralString() {
+        do {
+          if (this.char === CHAR_APOS) {
+            return this.return();
+          } else if (this.atEndOfLine()) {
+            throw this.error(new TomlError("Unterminated string"));
+          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I) {
+            throw this.errorControlCharInString();
+          } else {
+            this.consume();
+          }
+        } while (this.nextChar());
+      }
+      parseLiteralMultiStringMaybe() {
+        if (this.char === CHAR_APOS) {
+          return this.next(this.parseLiteralMultiString);
+        } else {
+          return this.returnNow();
+        }
+      }
+      parseLiteralMultiString() {
+        if (this.char === CTRL_M) {
+          return null;
+        } else if (this.char === CTRL_J) {
+          return this.next(this.parseLiteralMultiStringContent);
+        } else {
+          return this.goto(this.parseLiteralMultiStringContent);
+        }
+      }
+      parseLiteralMultiStringContent() {
+        do {
+          if (this.char === CHAR_APOS) {
+            return this.next(this.parseLiteralMultiEnd);
+          } else if (this.char === Parser.END) {
+            throw this.error(new TomlError("Unterminated multi-line string"));
+          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I && this.char !== CTRL_J && this.char !== CTRL_M) {
+            throw this.errorControlCharInString();
+          } else {
+            this.consume();
+          }
+        } while (this.nextChar());
+      }
+      parseLiteralMultiEnd() {
+        if (this.char === CHAR_APOS) {
+          return this.next(this.parseLiteralMultiEnd2);
+        } else {
+          this.state.buf += "'";
+          return this.goto(this.parseLiteralMultiStringContent);
+        }
+      }
+      parseLiteralMultiEnd2() {
+        if (this.char === CHAR_APOS) {
+          return this.return();
+        } else {
+          this.state.buf += "''";
+          return this.goto(this.parseLiteralMultiStringContent);
+        }
+      }
+      parseDoubleString() {
+        if (this.char === CHAR_QUOT) {
+          return this.next(this.parseMultiStringMaybe);
+        } else {
+          return this.goto(this.parseBasicString);
+        }
+      }
+      parseBasicString() {
+        do {
+          if (this.char === CHAR_BSOL) {
+            return this.call(this.parseEscape, this.recordEscapeReplacement);
+          } else if (this.char === CHAR_QUOT) {
+            return this.return();
+          } else if (this.atEndOfLine()) {
+            throw this.error(new TomlError("Unterminated string"));
+          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I) {
+            throw this.errorControlCharInString();
+          } else {
+            this.consume();
+          }
+        } while (this.nextChar());
+      }
+      recordEscapeReplacement(replacement) {
+        this.state.buf += replacement;
+        return this.goto(this.parseBasicString);
+      }
+      parseMultiStringMaybe() {
+        if (this.char === CHAR_QUOT) {
+          return this.next(this.parseMultiString);
+        } else {
+          return this.returnNow();
+        }
+      }
+      parseMultiString() {
+        if (this.char === CTRL_M) {
+          return null;
+        } else if (this.char === CTRL_J) {
+          return this.next(this.parseMultiStringContent);
+        } else {
+          return this.goto(this.parseMultiStringContent);
+        }
+      }
+      parseMultiStringContent() {
+        do {
+          if (this.char === CHAR_BSOL) {
+            return this.call(this.parseMultiEscape, this.recordMultiEscapeReplacement);
+          } else if (this.char === CHAR_QUOT) {
+            return this.next(this.parseMultiEnd);
+          } else if (this.char === Parser.END) {
+            throw this.error(new TomlError("Unterminated multi-line string"));
+          } else if (this.char === CHAR_DEL || this.char <= CTRL_CHAR_BOUNDARY && this.char !== CTRL_I && this.char !== CTRL_J && this.char !== CTRL_M) {
+            throw this.errorControlCharInString();
+          } else {
+            this.consume();
+          }
+        } while (this.nextChar());
+      }
+      errorControlCharInString() {
+        let displayCode = "\\u00";
+        if (this.char < 16) {
+          displayCode += "0";
+        }
+        displayCode += this.char.toString(16);
+        return this.error(new TomlError(`Control characters (codes < 0x1f and 0x7f) are not allowed in strings, use ${displayCode} instead`));
+      }
+      recordMultiEscapeReplacement(replacement) {
+        this.state.buf += replacement;
+        return this.goto(this.parseMultiStringContent);
+      }
+      parseMultiEnd() {
+        if (this.char === CHAR_QUOT) {
+          return this.next(this.parseMultiEnd2);
+        } else {
+          this.state.buf += '"';
+          return this.goto(this.parseMultiStringContent);
+        }
+      }
+      parseMultiEnd2() {
+        if (this.char === CHAR_QUOT) {
+          return this.return();
+        } else {
+          this.state.buf += '""';
+          return this.goto(this.parseMultiStringContent);
+        }
+      }
+      parseMultiEscape() {
+        if (this.char === CTRL_M || this.char === CTRL_J) {
+          return this.next(this.parseMultiTrim);
+        } else if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return this.next(this.parsePreMultiTrim);
+        } else {
+          return this.goto(this.parseEscape);
+        }
+      }
+      parsePreMultiTrim() {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else if (this.char === CTRL_M || this.char === CTRL_J) {
+          return this.next(this.parseMultiTrim);
+        } else {
+          throw this.error(new TomlError("Can't escape whitespace"));
+        }
+      }
+      parseMultiTrim() {
+        if (this.char === CTRL_J || this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M) {
+          return null;
+        } else {
+          return this.returnNow();
+        }
+      }
+      parseEscape() {
+        if (this.char in escapes) {
+          return this.return(escapes[this.char]);
+        } else if (this.char === CHAR_u) {
+          return this.call(this.parseSmallUnicode, this.parseUnicodeReturn);
+        } else if (this.char === CHAR_U) {
+          return this.call(this.parseLargeUnicode, this.parseUnicodeReturn);
+        } else {
+          throw this.error(new TomlError("Unknown escape character: " + this.char));
+        }
+      }
+      parseUnicodeReturn(char) {
+        try {
+          const codePoint = parseInt(char, 16);
+          if (codePoint >= SURROGATE_FIRST && codePoint <= SURROGATE_LAST) {
+            throw this.error(new TomlError("Invalid unicode, character in range 0xD800 - 0xDFFF is reserved"));
+          }
+          return this.returnNow(String.fromCodePoint(codePoint));
+        } catch (err) {
+          throw this.error(TomlError.wrap(err));
+        }
+      }
+      parseSmallUnicode() {
+        if (!isHexit(this.char)) {
+          throw this.error(new TomlError("Invalid character in unicode sequence, expected hex"));
+        } else {
+          this.consume();
+          if (this.state.buf.length >= 4)
+            return this.return();
+        }
+      }
+      parseLargeUnicode() {
+        if (!isHexit(this.char)) {
+          throw this.error(new TomlError("Invalid character in unicode sequence, expected hex"));
+        } else {
+          this.consume();
+          if (this.state.buf.length >= 8)
+            return this.return();
+        }
+      }
+      parseNumberSign() {
+        this.consume();
+        return this.next(this.parseMaybeSignedInfOrNan);
+      }
+      parseMaybeSignedInfOrNan() {
+        if (this.char === CHAR_i) {
+          return this.next(this.parseInf);
+        } else if (this.char === CHAR_n) {
+          return this.next(this.parseNan);
+        } else {
+          return this.callNow(this.parseNoUnder, this.parseNumberIntegerStart);
+        }
+      }
+      parseNumberIntegerStart() {
+        if (this.char === CHAR_0) {
+          this.consume();
+          return this.next(this.parseNumberIntegerExponentOrDecimal);
+        } else {
+          return this.goto(this.parseNumberInteger);
+        }
+      }
+      parseNumberIntegerExponentOrDecimal() {
+        if (this.char === CHAR_PERIOD) {
+          this.consume();
+          return this.call(this.parseNoUnder, this.parseNumberFloat);
+        } else if (this.char === CHAR_E || this.char === CHAR_e) {
+          this.consume();
+          return this.next(this.parseNumberExponentSign);
+        } else {
+          return this.returnNow(Integer(this.state.buf));
+        }
+      }
+      parseNumberInteger() {
+        if (isDigit(this.char)) {
+          this.consume();
+        } else if (this.char === CHAR_LOWBAR) {
+          return this.call(this.parseNoUnder);
+        } else if (this.char === CHAR_E || this.char === CHAR_e) {
+          this.consume();
+          return this.next(this.parseNumberExponentSign);
+        } else if (this.char === CHAR_PERIOD) {
+          this.consume();
+          return this.call(this.parseNoUnder, this.parseNumberFloat);
+        } else {
+          const result = Integer(this.state.buf);
+          if (result.isNaN()) {
+            throw this.error(new TomlError("Invalid number"));
+          } else {
+            return this.returnNow(result);
+          }
+        }
+      }
+      parseNoUnder() {
+        if (this.char === CHAR_LOWBAR || this.char === CHAR_PERIOD || this.char === CHAR_E || this.char === CHAR_e) {
+          throw this.error(new TomlError("Unexpected character, expected digit"));
+        } else if (this.atEndOfWord()) {
+          throw this.error(new TomlError("Incomplete number"));
+        }
+        return this.returnNow();
+      }
+      parseNoUnderHexOctBinLiteral() {
+        if (this.char === CHAR_LOWBAR || this.char === CHAR_PERIOD) {
+          throw this.error(new TomlError("Unexpected character, expected digit"));
+        } else if (this.atEndOfWord()) {
+          throw this.error(new TomlError("Incomplete number"));
+        }
+        return this.returnNow();
+      }
+      parseNumberFloat() {
+        if (this.char === CHAR_LOWBAR) {
+          return this.call(this.parseNoUnder, this.parseNumberFloat);
+        } else if (isDigit(this.char)) {
+          this.consume();
+        } else if (this.char === CHAR_E || this.char === CHAR_e) {
+          this.consume();
+          return this.next(this.parseNumberExponentSign);
+        } else {
+          return this.returnNow(Float(this.state.buf));
+        }
+      }
+      parseNumberExponentSign() {
+        if (isDigit(this.char)) {
+          return this.goto(this.parseNumberExponent);
+        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
+          this.consume();
+          this.call(this.parseNoUnder, this.parseNumberExponent);
+        } else {
+          throw this.error(new TomlError("Unexpected character, expected -, + or digit"));
+        }
+      }
+      parseNumberExponent() {
+        if (isDigit(this.char)) {
+          this.consume();
+        } else if (this.char === CHAR_LOWBAR) {
+          return this.call(this.parseNoUnder);
+        } else {
+          return this.returnNow(Float(this.state.buf));
+        }
+      }
+      parseNumberOrDateTime() {
+        if (this.char === CHAR_0) {
+          this.consume();
+          return this.next(this.parseNumberBaseOrDateTime);
+        } else {
+          return this.goto(this.parseNumberOrDateTimeOnly);
+        }
+      }
+      parseNumberOrDateTimeOnly() {
+        if (this.char === CHAR_LOWBAR) {
+          return this.call(this.parseNoUnder, this.parseNumberInteger);
+        } else if (isDigit(this.char)) {
+          this.consume();
+          if (this.state.buf.length > 4)
+            this.next(this.parseNumberInteger);
+        } else if (this.char === CHAR_E || this.char === CHAR_e) {
+          this.consume();
+          return this.next(this.parseNumberExponentSign);
+        } else if (this.char === CHAR_PERIOD) {
+          this.consume();
+          return this.call(this.parseNoUnder, this.parseNumberFloat);
+        } else if (this.char === CHAR_HYPHEN) {
+          return this.goto(this.parseDateTime);
+        } else if (this.char === CHAR_COLON) {
+          return this.goto(this.parseOnlyTimeHour);
+        } else {
+          return this.returnNow(Integer(this.state.buf));
+        }
+      }
+      parseDateTimeOnly() {
+        if (this.state.buf.length < 4) {
+          if (isDigit(this.char)) {
+            return this.consume();
+          } else if (this.char === CHAR_COLON) {
+            return this.goto(this.parseOnlyTimeHour);
+          } else {
+            throw this.error(new TomlError("Expected digit while parsing year part of a date"));
+          }
+        } else {
+          if (this.char === CHAR_HYPHEN) {
+            return this.goto(this.parseDateTime);
+          } else {
+            throw this.error(new TomlError("Expected hyphen (-) while parsing year part of date"));
+          }
+        }
+      }
+      parseNumberBaseOrDateTime() {
+        if (this.char === CHAR_b) {
+          this.consume();
+          return this.call(this.parseNoUnderHexOctBinLiteral, this.parseIntegerBin);
+        } else if (this.char === CHAR_o) {
+          this.consume();
+          return this.call(this.parseNoUnderHexOctBinLiteral, this.parseIntegerOct);
+        } else if (this.char === CHAR_x) {
+          this.consume();
+          return this.call(this.parseNoUnderHexOctBinLiteral, this.parseIntegerHex);
+        } else if (this.char === CHAR_PERIOD) {
+          return this.goto(this.parseNumberInteger);
+        } else if (isDigit(this.char)) {
+          return this.goto(this.parseDateTimeOnly);
+        } else {
+          return this.returnNow(Integer(this.state.buf));
+        }
+      }
+      parseIntegerHex() {
+        if (isHexit(this.char)) {
+          this.consume();
+        } else if (this.char === CHAR_LOWBAR) {
+          return this.call(this.parseNoUnderHexOctBinLiteral);
+        } else {
+          const result = Integer(this.state.buf);
+          if (result.isNaN()) {
+            throw this.error(new TomlError("Invalid number"));
+          } else {
+            return this.returnNow(result);
+          }
+        }
+      }
+      parseIntegerOct() {
+        if (isOctit(this.char)) {
+          this.consume();
+        } else if (this.char === CHAR_LOWBAR) {
+          return this.call(this.parseNoUnderHexOctBinLiteral);
+        } else {
+          const result = Integer(this.state.buf);
+          if (result.isNaN()) {
+            throw this.error(new TomlError("Invalid number"));
+          } else {
+            return this.returnNow(result);
+          }
+        }
+      }
+      parseIntegerBin() {
+        if (isBit(this.char)) {
+          this.consume();
+        } else if (this.char === CHAR_LOWBAR) {
+          return this.call(this.parseNoUnderHexOctBinLiteral);
+        } else {
+          const result = Integer(this.state.buf);
+          if (result.isNaN()) {
+            throw this.error(new TomlError("Invalid number"));
+          } else {
+            return this.returnNow(result);
+          }
+        }
+      }
+      parseDateTime() {
+        if (this.state.buf.length < 4) {
+          throw this.error(new TomlError("Years less than 1000 must be zero padded to four characters"));
+        }
+        this.state.result = this.state.buf;
+        this.state.buf = "";
+        return this.next(this.parseDateMonth);
+      }
+      parseDateMonth() {
+        if (this.char === CHAR_HYPHEN) {
+          if (this.state.buf.length < 2) {
+            throw this.error(new TomlError("Months less than 10 must be zero padded to two characters"));
+          }
+          this.state.result += "-" + this.state.buf;
+          this.state.buf = "";
+          return this.next(this.parseDateDay);
+        } else if (isDigit(this.char)) {
+          this.consume();
+        } else {
+          throw this.error(new TomlError("Incomplete datetime"));
+        }
+      }
+      parseDateDay() {
+        if (this.char === CHAR_T || this.char === CHAR_SP) {
+          if (this.state.buf.length < 2) {
+            throw this.error(new TomlError("Days less than 10 must be zero padded to two characters"));
+          }
+          this.state.result += "-" + this.state.buf;
+          this.state.buf = "";
+          return this.next(this.parseStartTimeHour);
+        } else if (this.atEndOfWord()) {
+          return this.returnNow(createDate(this.state.result + "-" + this.state.buf));
+        } else if (isDigit(this.char)) {
+          this.consume();
+        } else {
+          throw this.error(new TomlError("Incomplete datetime"));
+        }
+      }
+      parseStartTimeHour() {
+        if (this.atEndOfWord()) {
+          return this.returnNow(createDate(this.state.result));
+        } else {
+          return this.goto(this.parseTimeHour);
+        }
+      }
+      parseTimeHour() {
+        if (this.char === CHAR_COLON) {
+          if (this.state.buf.length < 2) {
+            throw this.error(new TomlError("Hours less than 10 must be zero padded to two characters"));
+          }
+          this.state.result += "T" + this.state.buf;
+          this.state.buf = "";
+          return this.next(this.parseTimeMin);
+        } else if (isDigit(this.char)) {
+          this.consume();
+        } else {
+          throw this.error(new TomlError("Incomplete datetime"));
+        }
+      }
+      parseTimeMin() {
+        if (this.state.buf.length < 2 && isDigit(this.char)) {
+          this.consume();
+        } else if (this.state.buf.length === 2 && this.char === CHAR_COLON) {
+          this.state.result += ":" + this.state.buf;
+          this.state.buf = "";
+          return this.next(this.parseTimeSec);
+        } else {
+          throw this.error(new TomlError("Incomplete datetime"));
+        }
+      }
+      parseTimeSec() {
+        if (isDigit(this.char)) {
+          this.consume();
+          if (this.state.buf.length === 2) {
+            this.state.result += ":" + this.state.buf;
+            this.state.buf = "";
+            return this.next(this.parseTimeZoneOrFraction);
+          }
+        } else {
+          throw this.error(new TomlError("Incomplete datetime"));
+        }
+      }
+      parseOnlyTimeHour() {
+        if (this.char === CHAR_COLON) {
+          if (this.state.buf.length < 2) {
+            throw this.error(new TomlError("Hours less than 10 must be zero padded to two characters"));
+          }
+          this.state.result = this.state.buf;
+          this.state.buf = "";
+          return this.next(this.parseOnlyTimeMin);
+        } else {
+          throw this.error(new TomlError("Incomplete time"));
+        }
+      }
+      parseOnlyTimeMin() {
+        if (this.state.buf.length < 2 && isDigit(this.char)) {
+          this.consume();
+        } else if (this.state.buf.length === 2 && this.char === CHAR_COLON) {
+          this.state.result += ":" + this.state.buf;
+          this.state.buf = "";
+          return this.next(this.parseOnlyTimeSec);
+        } else {
+          throw this.error(new TomlError("Incomplete time"));
+        }
+      }
+      parseOnlyTimeSec() {
+        if (isDigit(this.char)) {
+          this.consume();
+          if (this.state.buf.length === 2) {
+            return this.next(this.parseOnlyTimeFractionMaybe);
+          }
+        } else {
+          throw this.error(new TomlError("Incomplete time"));
+        }
+      }
+      parseOnlyTimeFractionMaybe() {
+        this.state.result += ":" + this.state.buf;
+        if (this.char === CHAR_PERIOD) {
+          this.state.buf = "";
+          this.next(this.parseOnlyTimeFraction);
+        } else {
+          return this.return(createTime(this.state.result));
+        }
+      }
+      parseOnlyTimeFraction() {
+        if (isDigit(this.char)) {
+          this.consume();
+        } else if (this.atEndOfWord()) {
+          if (this.state.buf.length === 0)
+            throw this.error(new TomlError("Expected digit in milliseconds"));
+          return this.returnNow(createTime(this.state.result + "." + this.state.buf));
+        } else {
+          throw this.error(new TomlError("Unexpected character in datetime, expected period (.), minus (-), plus (+) or Z"));
+        }
+      }
+      parseTimeZoneOrFraction() {
+        if (this.char === CHAR_PERIOD) {
+          this.consume();
+          this.next(this.parseDateTimeFraction);
+        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
+          this.consume();
+          this.next(this.parseTimeZoneHour);
+        } else if (this.char === CHAR_Z) {
+          this.consume();
+          return this.return(createDateTime(this.state.result + this.state.buf));
+        } else if (this.atEndOfWord()) {
+          return this.returnNow(createDateTimeFloat(this.state.result + this.state.buf));
+        } else {
+          throw this.error(new TomlError("Unexpected character in datetime, expected period (.), minus (-), plus (+) or Z"));
+        }
+      }
+      parseDateTimeFraction() {
+        if (isDigit(this.char)) {
+          this.consume();
+        } else if (this.state.buf.length === 1) {
+          throw this.error(new TomlError("Expected digit in milliseconds"));
+        } else if (this.char === CHAR_HYPHEN || this.char === CHAR_PLUS) {
+          this.consume();
+          this.next(this.parseTimeZoneHour);
+        } else if (this.char === CHAR_Z) {
+          this.consume();
+          return this.return(createDateTime(this.state.result + this.state.buf));
+        } else if (this.atEndOfWord()) {
+          return this.returnNow(createDateTimeFloat(this.state.result + this.state.buf));
+        } else {
+          throw this.error(new TomlError("Unexpected character in datetime, expected period (.), minus (-), plus (+) or Z"));
+        }
+      }
+      parseTimeZoneHour() {
+        if (isDigit(this.char)) {
+          this.consume();
+          if (/\d\d$/.test(this.state.buf))
+            return this.next(this.parseTimeZoneSep);
+        } else {
+          throw this.error(new TomlError("Unexpected character in datetime, expected digit"));
+        }
+      }
+      parseTimeZoneSep() {
+        if (this.char === CHAR_COLON) {
+          this.consume();
+          this.next(this.parseTimeZoneMin);
+        } else {
+          throw this.error(new TomlError("Unexpected character in datetime, expected colon"));
+        }
+      }
+      parseTimeZoneMin() {
+        if (isDigit(this.char)) {
+          this.consume();
+          if (/\d\d$/.test(this.state.buf))
+            return this.return(createDateTime(this.state.result + this.state.buf));
+        } else {
+          throw this.error(new TomlError("Unexpected character in datetime, expected digit"));
+        }
+      }
+      parseBoolean() {
+        if (this.char === CHAR_t) {
+          this.consume();
+          return this.next(this.parseTrue_r);
+        } else if (this.char === CHAR_f) {
+          this.consume();
+          return this.next(this.parseFalse_a);
+        }
+      }
+      parseTrue_r() {
+        if (this.char === CHAR_r) {
+          this.consume();
+          return this.next(this.parseTrue_u);
+        } else {
+          throw this.error(new TomlError("Invalid boolean, expected true or false"));
+        }
+      }
+      parseTrue_u() {
+        if (this.char === CHAR_u) {
+          this.consume();
+          return this.next(this.parseTrue_e);
+        } else {
+          throw this.error(new TomlError("Invalid boolean, expected true or false"));
+        }
+      }
+      parseTrue_e() {
+        if (this.char === CHAR_e) {
+          return this.return(true);
+        } else {
+          throw this.error(new TomlError("Invalid boolean, expected true or false"));
+        }
+      }
+      parseFalse_a() {
+        if (this.char === CHAR_a) {
+          this.consume();
+          return this.next(this.parseFalse_l);
+        } else {
+          throw this.error(new TomlError("Invalid boolean, expected true or false"));
+        }
+      }
+      parseFalse_l() {
+        if (this.char === CHAR_l) {
+          this.consume();
+          return this.next(this.parseFalse_s);
+        } else {
+          throw this.error(new TomlError("Invalid boolean, expected true or false"));
+        }
+      }
+      parseFalse_s() {
+        if (this.char === CHAR_s) {
+          this.consume();
+          return this.next(this.parseFalse_e);
+        } else {
+          throw this.error(new TomlError("Invalid boolean, expected true or false"));
+        }
+      }
+      parseFalse_e() {
+        if (this.char === CHAR_e) {
+          return this.return(false);
+        } else {
+          throw this.error(new TomlError("Invalid boolean, expected true or false"));
+        }
+      }
+      parseInlineList() {
+        if (this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M || this.char === CTRL_J) {
+          return null;
+        } else if (this.char === Parser.END) {
+          throw this.error(new TomlError("Unterminated inline array"));
+        } else if (this.char === CHAR_NUM) {
+          return this.call(this.parseComment);
+        } else if (this.char === CHAR_RSQB) {
+          return this.return(this.state.resultArr || InlineList());
+        } else {
+          return this.callNow(this.parseValue, this.recordInlineListValue);
+        }
+      }
+      recordInlineListValue(value) {
+        if (this.state.resultArr) {
+          const listType = this.state.resultArr[_contentType];
+          const valueType = tomlType(value);
+          if (listType !== valueType) {
+            throw this.error(new TomlError(`Inline lists must be a single type, not a mix of ${listType} and ${valueType}`));
+          }
+        } else {
+          this.state.resultArr = InlineList(tomlType(value));
+        }
+        if (isFloat(value) || isInteger(value)) {
+          this.state.resultArr.push(value.valueOf());
+        } else {
+          this.state.resultArr.push(value);
+        }
+        return this.goto(this.parseInlineListNext);
+      }
+      parseInlineListNext() {
+        if (this.char === CHAR_SP || this.char === CTRL_I || this.char === CTRL_M || this.char === CTRL_J) {
+          return null;
+        } else if (this.char === CHAR_NUM) {
+          return this.call(this.parseComment);
+        } else if (this.char === CHAR_COMMA) {
+          return this.next(this.parseInlineList);
+        } else if (this.char === CHAR_RSQB) {
+          return this.goto(this.parseInlineList);
+        } else {
+          throw this.error(new TomlError("Invalid character, expected whitespace, comma (,) or close bracket (])"));
+        }
+      }
+      parseInlineTable() {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else if (this.char === Parser.END || this.char === CHAR_NUM || this.char === CTRL_J || this.char === CTRL_M) {
+          throw this.error(new TomlError("Unterminated inline array"));
+        } else if (this.char === CHAR_RCUB) {
+          return this.return(this.state.resultTable || InlineTable());
+        } else {
+          if (!this.state.resultTable)
+            this.state.resultTable = InlineTable();
+          return this.callNow(this.parseAssign, this.recordInlineTableValue);
+        }
+      }
+      recordInlineTableValue(kv) {
+        let target = this.state.resultTable;
+        let finalKey = kv.key.pop();
+        for (let kw of kv.key) {
+          if (hasKey(target, kw) && (!isTable(target[kw]) || target[kw][_declared])) {
+            throw this.error(new TomlError("Can't redefine existing key"));
+          }
+          target = target[kw] = target[kw] || Table();
+        }
+        if (hasKey(target, finalKey)) {
+          throw this.error(new TomlError("Can't redefine existing key"));
+        }
+        if (isInteger(kv.value) || isFloat(kv.value)) {
+          target[finalKey] = kv.value.valueOf();
+        } else {
+          target[finalKey] = kv.value;
+        }
+        return this.goto(this.parseInlineTableNext);
+      }
+      parseInlineTableNext() {
+        if (this.char === CHAR_SP || this.char === CTRL_I) {
+          return null;
+        } else if (this.char === Parser.END || this.char === CHAR_NUM || this.char === CTRL_J || this.char === CTRL_M) {
+          throw this.error(new TomlError("Unterminated inline array"));
+        } else if (this.char === CHAR_COMMA) {
+          return this.next(this.parseInlineTable);
+        } else if (this.char === CHAR_RCUB) {
+          return this.goto(this.parseInlineTable);
+        } else {
+          throw this.error(new TomlError("Invalid character, expected whitespace, comma (,) or close bracket (])"));
+        }
+      }
+    }
+    return TOMLParser;
+  }
+});
+
+// ../../node_modules/@iarna/toml/parse-pretty-error.js
+var require_parse_pretty_error = __commonJS((exports2, module2) => {
+  module2.exports = prettyError;
+  function prettyError(err, buf) {
+    if (err.pos == null || err.line == null)
+      return err;
+    let msg = err.message;
+    msg += ` at row ${err.line + 1}, col ${err.col + 1}, pos ${err.pos}:
+`;
+    if (buf && buf.split) {
+      const lines = buf.split(/\n/);
+      const lineNumWidth = String(Math.min(lines.length, err.line + 3)).length;
+      let linePadding = " ";
+      while (linePadding.length < lineNumWidth)
+        linePadding += " ";
+      for (let ii = Math.max(0, err.line - 1);ii < Math.min(lines.length, err.line + 2); ++ii) {
+        let lineNum = String(ii + 1);
+        if (lineNum.length < lineNumWidth)
+          lineNum = " " + lineNum;
+        if (err.line === ii) {
+          msg += lineNum + "> " + lines[ii] + `
+`;
+          msg += linePadding + "  ";
+          for (let hh = 0;hh < err.col; ++hh) {
+            msg += " ";
+          }
+          msg += `^
+`;
+        } else {
+          msg += lineNum + ": " + lines[ii] + `
+`;
+        }
+      }
+    }
+    err.message = msg + `
+`;
+    return err;
+  }
+});
+
+// ../../node_modules/@iarna/toml/parse-string.js
+var require_parse_string = __commonJS((exports2, module2) => {
+  module2.exports = parseString;
+  var TOMLParser = require_toml_parser();
+  var prettyError = require_parse_pretty_error();
+  function parseString(str) {
+    if (global.Buffer && global.Buffer.isBuffer(str)) {
+      str = str.toString("utf8");
+    }
+    const parser = new TOMLParser;
+    try {
+      parser.parse(str);
+      return parser.finish();
+    } catch (err) {
+      throw prettyError(err, str);
+    }
+  }
+});
+
+// ../../node_modules/@iarna/toml/parse-async.js
+var require_parse_async = __commonJS((exports2, module2) => {
+  module2.exports = parseAsync3;
+  var TOMLParser = require_toml_parser();
+  var prettyError = require_parse_pretty_error();
+  function parseAsync3(str, opts) {
+    if (!opts)
+      opts = {};
+    const index = 0;
+    const blocksize = opts.blocksize || 40960;
+    const parser = new TOMLParser;
+    return new Promise((resolve, reject) => {
+      setImmediate(parseAsyncNext, index, blocksize, resolve, reject);
+    });
+    function parseAsyncNext(index2, blocksize2, resolve, reject) {
+      if (index2 >= str.length) {
+        try {
+          return resolve(parser.finish());
+        } catch (err) {
+          return reject(prettyError(err, str));
+        }
+      }
+      try {
+        parser.parse(str.slice(index2, index2 + blocksize2));
+        setImmediate(parseAsyncNext, index2 + blocksize2, blocksize2, resolve, reject);
+      } catch (err) {
+        reject(prettyError(err, str));
+      }
+    }
+  }
+});
+
+// ../../node_modules/@iarna/toml/parse-stream.js
+var require_parse_stream = __commonJS((exports2, module2) => {
+  module2.exports = parseStream;
+  var stream = require("stream");
+  var TOMLParser = require_toml_parser();
+  function parseStream(stm) {
+    if (stm) {
+      return parseReadable(stm);
+    } else {
+      return parseTransform(stm);
+    }
+  }
+  function parseReadable(stm) {
+    const parser = new TOMLParser;
+    stm.setEncoding("utf8");
+    return new Promise((resolve, reject) => {
+      let readable;
+      let ended = false;
+      let errored = false;
+      function finish() {
+        ended = true;
+        if (readable)
+          return;
+        try {
+          resolve(parser.finish());
+        } catch (err) {
+          reject(err);
+        }
+      }
+      function error46(err) {
+        errored = true;
+        reject(err);
+      }
+      stm.once("end", finish);
+      stm.once("error", error46);
+      readNext();
+      function readNext() {
+        readable = true;
+        let data;
+        while ((data = stm.read()) !== null) {
+          try {
+            parser.parse(data);
+          } catch (err) {
+            return error46(err);
+          }
+        }
+        readable = false;
+        if (ended)
+          return finish();
+        if (errored)
+          return;
+        stm.once("readable", readNext);
+      }
+    });
+  }
+  function parseTransform() {
+    const parser = new TOMLParser;
+    return new stream.Transform({
+      objectMode: true,
+      transform(chunk, encoding, cb) {
+        try {
+          parser.parse(chunk.toString(encoding));
+        } catch (err) {
+          this.emit("error", err);
+        }
+        cb();
+      },
+      flush(cb) {
+        try {
+          this.push(parser.finish());
+        } catch (err) {
+          this.emit("error", err);
+        }
+        cb();
+      }
+    });
+  }
+});
+
+// ../../node_modules/@iarna/toml/parse.js
+var require_parse = __commonJS((exports2, module2) => {
+  module2.exports = require_parse_string();
+  module2.exports.async = require_parse_async();
+  module2.exports.stream = require_parse_stream();
+  module2.exports.prettyError = require_parse_pretty_error();
+});
+
+// ../../node_modules/@iarna/toml/stringify.js
+var require_stringify = __commonJS((exports2, module2) => {
+  module2.exports = stringify;
+  module2.exports.value = stringifyInline;
+  function stringify(obj) {
+    if (obj === null)
+      throw typeError("null");
+    if (obj === undefined)
+      throw typeError("undefined");
+    if (typeof obj !== "object")
+      throw typeError(typeof obj);
+    if (typeof obj.toJSON === "function")
+      obj = obj.toJSON();
+    if (obj == null)
+      return null;
+    const type = tomlType(obj);
+    if (type !== "table")
+      throw typeError(type);
+    return stringifyObject("", "", obj);
+  }
+  function typeError(type) {
+    return new Error("Can only stringify objects, not " + type);
+  }
+  function arrayOneTypeError() {
+    return new Error("Array values can't have mixed types");
+  }
+  function getInlineKeys(obj) {
+    return Object.keys(obj).filter((key) => isInline(obj[key]));
+  }
+  function getComplexKeys(obj) {
+    return Object.keys(obj).filter((key) => !isInline(obj[key]));
+  }
+  function toJSON(obj) {
+    let nobj = Array.isArray(obj) ? [] : Object.prototype.hasOwnProperty.call(obj, "__proto__") ? { ["__proto__"]: undefined } : {};
+    for (let prop of Object.keys(obj)) {
+      if (obj[prop] && typeof obj[prop].toJSON === "function" && !("toISOString" in obj[prop])) {
+        nobj[prop] = obj[prop].toJSON();
+      } else {
+        nobj[prop] = obj[prop];
+      }
+    }
+    return nobj;
+  }
+  function stringifyObject(prefix, indent, obj) {
+    obj = toJSON(obj);
+    var inlineKeys;
+    var complexKeys;
+    inlineKeys = getInlineKeys(obj);
+    complexKeys = getComplexKeys(obj);
+    var result = [];
+    var inlineIndent = indent || "";
+    inlineKeys.forEach((key) => {
+      var type = tomlType(obj[key]);
+      if (type !== "undefined" && type !== "null") {
+        result.push(inlineIndent + stringifyKey(key) + " = " + stringifyAnyInline(obj[key], true));
+      }
+    });
+    if (result.length > 0)
+      result.push("");
+    var complexIndent = prefix && inlineKeys.length > 0 ? indent + "  " : "";
+    complexKeys.forEach((key) => {
+      result.push(stringifyComplex(prefix, complexIndent, key, obj[key]));
+    });
+    return result.join(`
+`);
+  }
+  function isInline(value) {
+    switch (tomlType(value)) {
+      case "undefined":
+      case "null":
+      case "integer":
+      case "nan":
+      case "float":
+      case "boolean":
+      case "string":
+      case "datetime":
+        return true;
+      case "array":
+        return value.length === 0 || tomlType(value[0]) !== "table";
+      case "table":
+        return Object.keys(value).length === 0;
+      default:
+        return false;
+    }
+  }
+  function tomlType(value) {
+    if (value === undefined) {
+      return "undefined";
+    } else if (value === null) {
+      return "null";
+    } else if (typeof value === "bigint" || Number.isInteger(value) && !Object.is(value, -0)) {
+      return "integer";
+    } else if (typeof value === "number") {
+      return "float";
+    } else if (typeof value === "boolean") {
+      return "boolean";
+    } else if (typeof value === "string") {
+      return "string";
+    } else if ("toISOString" in value) {
+      return isNaN(value) ? "undefined" : "datetime";
+    } else if (Array.isArray(value)) {
+      return "array";
+    } else {
+      return "table";
+    }
+  }
+  function stringifyKey(key) {
+    var keyStr = String(key);
+    if (/^[-A-Za-z0-9_]+$/.test(keyStr)) {
+      return keyStr;
+    } else {
+      return stringifyBasicString(keyStr);
+    }
+  }
+  function stringifyBasicString(str) {
+    return '"' + escapeString(str).replace(/"/g, "\\\"") + '"';
+  }
+  function stringifyLiteralString(str) {
+    return "'" + str + "'";
+  }
+  function numpad(num, str) {
+    while (str.length < num)
+      str = "0" + str;
+    return str;
+  }
+  function escapeString(str) {
+    return str.replace(/\\/g, "\\\\").replace(/[\b]/g, "\\b").replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/\f/g, "\\f").replace(/\r/g, "\\r").replace(/([\u0000-\u001f\u007f])/, (c) => "\\u" + numpad(4, c.codePointAt(0).toString(16)));
+  }
+  function stringifyMultilineString(str) {
+    let escaped = str.split(/\n/).map((str2) => {
+      return escapeString(str2).replace(/"(?="")/g, "\\\"");
+    }).join(`
+`);
+    if (escaped.slice(-1) === '"')
+      escaped += "\\\n";
+    return `"""
+` + escaped + '"""';
+  }
+  function stringifyAnyInline(value, multilineOk) {
+    let type = tomlType(value);
+    if (type === "string") {
+      if (multilineOk && /\n/.test(value)) {
+        type = "string-multiline";
+      } else if (!/[\b\t\n\f\r']/.test(value) && /"/.test(value)) {
+        type = "string-literal";
+      }
+    }
+    return stringifyInline(value, type);
+  }
+  function stringifyInline(value, type) {
+    if (!type)
+      type = tomlType(value);
+    switch (type) {
+      case "string-multiline":
+        return stringifyMultilineString(value);
+      case "string":
+        return stringifyBasicString(value);
+      case "string-literal":
+        return stringifyLiteralString(value);
+      case "integer":
+        return stringifyInteger(value);
+      case "float":
+        return stringifyFloat(value);
+      case "boolean":
+        return stringifyBoolean(value);
+      case "datetime":
+        return stringifyDatetime(value);
+      case "array":
+        return stringifyInlineArray(value.filter((_) => tomlType(_) !== "null" && tomlType(_) !== "undefined" && tomlType(_) !== "nan"));
+      case "table":
+        return stringifyInlineTable(value);
+      default:
+        throw typeError(type);
+    }
+  }
+  function stringifyInteger(value) {
+    return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, "_");
+  }
+  function stringifyFloat(value) {
+    if (value === Infinity) {
+      return "inf";
+    } else if (value === -Infinity) {
+      return "-inf";
+    } else if (Object.is(value, NaN)) {
+      return "nan";
+    } else if (Object.is(value, -0)) {
+      return "-0.0";
+    }
+    var chunks = String(value).split(".");
+    var int2 = chunks[0];
+    var dec = chunks[1] || 0;
+    return stringifyInteger(int2) + "." + dec;
+  }
+  function stringifyBoolean(value) {
+    return String(value);
+  }
+  function stringifyDatetime(value) {
+    return value.toISOString();
+  }
+  function isNumber(type) {
+    return type === "float" || type === "integer";
+  }
+  function arrayType2(values) {
+    var contentType = tomlType(values[0]);
+    if (values.every((_) => tomlType(_) === contentType))
+      return contentType;
+    if (values.every((_) => isNumber(tomlType(_))))
+      return "float";
+    return "mixed";
+  }
+  function validateArray(values) {
+    const type = arrayType2(values);
+    if (type === "mixed") {
+      throw arrayOneTypeError();
+    }
+    return type;
+  }
+  function stringifyInlineArray(values) {
+    values = toJSON(values);
+    const type = validateArray(values);
+    var result = "[";
+    var stringified = values.map((_) => stringifyInline(_, type));
+    if (stringified.join(", ").length > 60 || /\n/.test(stringified)) {
+      result += `
+  ` + stringified.join(`,
+  `) + `
+`;
+    } else {
+      result += " " + stringified.join(", ") + (stringified.length > 0 ? " " : "");
+    }
+    return result + "]";
+  }
+  function stringifyInlineTable(value) {
+    value = toJSON(value);
+    var result = [];
+    Object.keys(value).forEach((key) => {
+      result.push(stringifyKey(key) + " = " + stringifyAnyInline(value[key], false));
+    });
+    return "{ " + result.join(", ") + (result.length > 0 ? " " : "") + "}";
+  }
+  function stringifyComplex(prefix, indent, key, value) {
+    var valueType = tomlType(value);
+    if (valueType === "array") {
+      return stringifyArrayOfTables(prefix, indent, key, value);
+    } else if (valueType === "table") {
+      return stringifyComplexTable(prefix, indent, key, value);
+    } else {
+      throw typeError(valueType);
+    }
+  }
+  function stringifyArrayOfTables(prefix, indent, key, values) {
+    values = toJSON(values);
+    validateArray(values);
+    var firstValueType = tomlType(values[0]);
+    if (firstValueType !== "table")
+      throw typeError(firstValueType);
+    var fullKey = prefix + stringifyKey(key);
+    var result = "";
+    values.forEach((table) => {
+      if (result.length > 0)
+        result += `
+`;
+      result += indent + "[[" + fullKey + `]]
+`;
+      result += stringifyObject(fullKey + ".", indent, table);
+    });
+    return result;
+  }
+  function stringifyComplexTable(prefix, indent, key, value) {
+    var fullKey = prefix + stringifyKey(key);
+    var result = "";
+    if (getInlineKeys(value).length > 0) {
+      result += indent + "[" + fullKey + `]
+`;
+    }
+    return result + stringifyObject(fullKey + ".", indent, value);
+  }
+});
+
+// ../../node_modules/@iarna/toml/toml.js
+var require_toml = __commonJS((exports2) => {
+  exports2.parse = require_parse();
+  exports2.stringify = require_stringify();
 });
 
 // ../../node_modules/zod/v3/helpers/util.js
@@ -36238,7 +36238,7 @@ class StdioServerTransport {
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.0.1-alpha.3",
+  version: "0.0.1-alpha.4",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -36810,6 +36810,2662 @@ var SOURCE = "codex";
 var DEVICE_AUTH_INITIATE_PATH = "/api/auth/device/initiate";
 var DEVICE_AUTH_POLL_PATH = "/api/auth/device/poll";
 
+// ../../node_modules/@supabase/supabase-js/dist/index.mjs
+var exports_dist3 = {};
+__export(exports_dist3, {
+  createClient: () => createClient,
+  SupabaseClient: () => SupabaseClient,
+  PostgrestError: () => PostgrestError,
+  FunctionsRelayError: () => import_functions_js.FunctionsRelayError,
+  FunctionsHttpError: () => import_functions_js.FunctionsHttpError,
+  FunctionsFetchError: () => import_functions_js.FunctionsFetchError,
+  FunctionsError: () => import_functions_js.FunctionsError,
+  FunctionRegion: () => import_functions_js.FunctionRegion
+});
+var import_functions_js = __toESM(require_main(), 1);
+
+// ../../node_modules/@supabase/postgrest-js/dist/index.mjs
+var exports_dist = {};
+__export(exports_dist, {
+  default: () => src_default,
+  PostgrestTransformBuilder: () => PostgrestTransformBuilder,
+  PostgrestQueryBuilder: () => PostgrestQueryBuilder,
+  PostgrestFilterBuilder: () => PostgrestFilterBuilder,
+  PostgrestError: () => PostgrestError,
+  PostgrestClient: () => PostgrestClient,
+  PostgrestBuilder: () => PostgrestBuilder
+});
+var PostgrestError = class extends Error {
+  constructor(context) {
+    super(context.message);
+    this.name = "PostgrestError";
+    this.details = context.details;
+    this.hint = context.hint;
+    this.code = context.code;
+  }
+};
+var PostgrestBuilder = class {
+  constructor(builder) {
+    var _builder$shouldThrowO, _builder$isMaybeSingl;
+    this.shouldThrowOnError = false;
+    this.method = builder.method;
+    this.url = builder.url;
+    this.headers = new Headers(builder.headers);
+    this.schema = builder.schema;
+    this.body = builder.body;
+    this.shouldThrowOnError = (_builder$shouldThrowO = builder.shouldThrowOnError) !== null && _builder$shouldThrowO !== undefined ? _builder$shouldThrowO : false;
+    this.signal = builder.signal;
+    this.isMaybeSingle = (_builder$isMaybeSingl = builder.isMaybeSingle) !== null && _builder$isMaybeSingl !== undefined ? _builder$isMaybeSingl : false;
+    if (builder.fetch)
+      this.fetch = builder.fetch;
+    else
+      this.fetch = fetch;
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  setHeader(name, value) {
+    this.headers = new Headers(this.headers);
+    this.headers.set(name, value);
+    return this;
+  }
+  then(onfulfilled, onrejected) {
+    var _this = this;
+    if (this.schema === undefined) {} else if (["GET", "HEAD"].includes(this.method))
+      this.headers.set("Accept-Profile", this.schema);
+    else
+      this.headers.set("Content-Profile", this.schema);
+    if (this.method !== "GET" && this.method !== "HEAD")
+      this.headers.set("Content-Type", "application/json");
+    const _fetch = this.fetch;
+    let res = _fetch(this.url.toString(), {
+      method: this.method,
+      headers: this.headers,
+      body: JSON.stringify(this.body),
+      signal: this.signal
+    }).then(async (res$1) => {
+      let error46 = null;
+      let data = null;
+      let count = null;
+      let status = res$1.status;
+      let statusText = res$1.statusText;
+      if (res$1.ok) {
+        var _this$headers$get2, _res$headers$get;
+        if (_this.method !== "HEAD") {
+          var _this$headers$get;
+          const body = await res$1.text();
+          if (body === "") {} else if (_this.headers.get("Accept") === "text/csv")
+            data = body;
+          else if (_this.headers.get("Accept") && ((_this$headers$get = _this.headers.get("Accept")) === null || _this$headers$get === undefined ? undefined : _this$headers$get.includes("application/vnd.pgrst.plan+text")))
+            data = body;
+          else
+            data = JSON.parse(body);
+        }
+        const countHeader = (_this$headers$get2 = _this.headers.get("Prefer")) === null || _this$headers$get2 === undefined ? undefined : _this$headers$get2.match(/count=(exact|planned|estimated)/);
+        const contentRange = (_res$headers$get = res$1.headers.get("content-range")) === null || _res$headers$get === undefined ? undefined : _res$headers$get.split("/");
+        if (countHeader && contentRange && contentRange.length > 1)
+          count = parseInt(contentRange[1]);
+        if (_this.isMaybeSingle && _this.method === "GET" && Array.isArray(data))
+          if (data.length > 1) {
+            error46 = {
+              code: "PGRST116",
+              details: `Results contain ${data.length} rows, application/vnd.pgrst.object+json requires 1 row`,
+              hint: null,
+              message: "JSON object requested, multiple (or no) rows returned"
+            };
+            data = null;
+            count = null;
+            status = 406;
+            statusText = "Not Acceptable";
+          } else if (data.length === 1)
+            data = data[0];
+          else
+            data = null;
+      } else {
+        var _error$details;
+        const body = await res$1.text();
+        try {
+          error46 = JSON.parse(body);
+          if (Array.isArray(error46) && res$1.status === 404) {
+            data = [];
+            error46 = null;
+            status = 200;
+            statusText = "OK";
+          }
+        } catch (_unused) {
+          if (res$1.status === 404 && body === "") {
+            status = 204;
+            statusText = "No Content";
+          } else
+            error46 = { message: body };
+        }
+        if (error46 && _this.isMaybeSingle && (error46 === null || error46 === undefined || (_error$details = error46.details) === null || _error$details === undefined ? undefined : _error$details.includes("0 rows"))) {
+          error46 = null;
+          status = 200;
+          statusText = "OK";
+        }
+        if (error46 && _this.shouldThrowOnError)
+          throw new PostgrestError(error46);
+      }
+      return {
+        error: error46,
+        data,
+        count,
+        status,
+        statusText
+      };
+    });
+    if (!this.shouldThrowOnError)
+      res = res.catch((fetchError) => {
+        var _fetchError$name2;
+        let errorDetails = "";
+        const cause = fetchError === null || fetchError === undefined ? undefined : fetchError.cause;
+        if (cause) {
+          var _cause$message, _cause$code, _fetchError$name, _cause$name;
+          const causeMessage = (_cause$message = cause === null || cause === undefined ? undefined : cause.message) !== null && _cause$message !== undefined ? _cause$message : "";
+          const causeCode = (_cause$code = cause === null || cause === undefined ? undefined : cause.code) !== null && _cause$code !== undefined ? _cause$code : "";
+          errorDetails = `${(_fetchError$name = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name !== undefined ? _fetchError$name : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`;
+          errorDetails += `
+
+Caused by: ${(_cause$name = cause === null || cause === undefined ? undefined : cause.name) !== null && _cause$name !== undefined ? _cause$name : "Error"}: ${causeMessage}`;
+          if (causeCode)
+            errorDetails += ` (${causeCode})`;
+          if (cause === null || cause === undefined ? undefined : cause.stack)
+            errorDetails += `
+${cause.stack}`;
+        } else {
+          var _fetchError$stack;
+          errorDetails = (_fetchError$stack = fetchError === null || fetchError === undefined ? undefined : fetchError.stack) !== null && _fetchError$stack !== undefined ? _fetchError$stack : "";
+        }
+        return {
+          error: {
+            message: `${(_fetchError$name2 = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name2 !== undefined ? _fetchError$name2 : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`,
+            details: errorDetails,
+            hint: "",
+            code: ""
+          },
+          data: null,
+          count: null,
+          status: 0,
+          statusText: ""
+        };
+      });
+    return res.then(onfulfilled, onrejected);
+  }
+  returns() {
+    return this;
+  }
+  overrideTypes() {
+    return this;
+  }
+};
+var PostgrestTransformBuilder = class extends PostgrestBuilder {
+  select(columns) {
+    let quoted = false;
+    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
+      if (/\s/.test(c) && !quoted)
+        return "";
+      if (c === '"')
+        quoted = !quoted;
+      return c;
+    }).join("");
+    this.url.searchParams.set("select", cleanedColumns);
+    this.headers.append("Prefer", "return=representation");
+    return this;
+  }
+  order(column, { ascending = true, nullsFirst, foreignTable, referencedTable = foreignTable } = {}) {
+    const key = referencedTable ? `${referencedTable}.order` : "order";
+    const existingOrder = this.url.searchParams.get(key);
+    this.url.searchParams.set(key, `${existingOrder ? `${existingOrder},` : ""}${column}.${ascending ? "asc" : "desc"}${nullsFirst === undefined ? "" : nullsFirst ? ".nullsfirst" : ".nullslast"}`);
+    return this;
+  }
+  limit(count, { foreignTable, referencedTable = foreignTable } = {}) {
+    const key = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
+    this.url.searchParams.set(key, `${count}`);
+    return this;
+  }
+  range(from, to, { foreignTable, referencedTable = foreignTable } = {}) {
+    const keyOffset = typeof referencedTable === "undefined" ? "offset" : `${referencedTable}.offset`;
+    const keyLimit = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
+    this.url.searchParams.set(keyOffset, `${from}`);
+    this.url.searchParams.set(keyLimit, `${to - from + 1}`);
+    return this;
+  }
+  abortSignal(signal) {
+    this.signal = signal;
+    return this;
+  }
+  single() {
+    this.headers.set("Accept", "application/vnd.pgrst.object+json");
+    return this;
+  }
+  maybeSingle() {
+    if (this.method === "GET")
+      this.headers.set("Accept", "application/json");
+    else
+      this.headers.set("Accept", "application/vnd.pgrst.object+json");
+    this.isMaybeSingle = true;
+    return this;
+  }
+  csv() {
+    this.headers.set("Accept", "text/csv");
+    return this;
+  }
+  geojson() {
+    this.headers.set("Accept", "application/geo+json");
+    return this;
+  }
+  explain({ analyze = false, verbose = false, settings = false, buffers = false, wal = false, format = "text" } = {}) {
+    var _this$headers$get;
+    const options = [
+      analyze ? "analyze" : null,
+      verbose ? "verbose" : null,
+      settings ? "settings" : null,
+      buffers ? "buffers" : null,
+      wal ? "wal" : null
+    ].filter(Boolean).join("|");
+    const forMediatype = (_this$headers$get = this.headers.get("Accept")) !== null && _this$headers$get !== undefined ? _this$headers$get : "application/json";
+    this.headers.set("Accept", `application/vnd.pgrst.plan+${format}; for="${forMediatype}"; options=${options};`);
+    if (format === "json")
+      return this;
+    else
+      return this;
+  }
+  rollback() {
+    this.headers.append("Prefer", "tx=rollback");
+    return this;
+  }
+  returns() {
+    return this;
+  }
+  maxAffected(value) {
+    this.headers.append("Prefer", "handling=strict");
+    this.headers.append("Prefer", `max-affected=${value}`);
+    return this;
+  }
+};
+var PostgrestReservedCharsRegexp = /* @__PURE__ */ new RegExp("[,()]");
+var PostgrestFilterBuilder = class extends PostgrestTransformBuilder {
+  eq(column, value) {
+    this.url.searchParams.append(column, `eq.${value}`);
+    return this;
+  }
+  neq(column, value) {
+    this.url.searchParams.append(column, `neq.${value}`);
+    return this;
+  }
+  gt(column, value) {
+    this.url.searchParams.append(column, `gt.${value}`);
+    return this;
+  }
+  gte(column, value) {
+    this.url.searchParams.append(column, `gte.${value}`);
+    return this;
+  }
+  lt(column, value) {
+    this.url.searchParams.append(column, `lt.${value}`);
+    return this;
+  }
+  lte(column, value) {
+    this.url.searchParams.append(column, `lte.${value}`);
+    return this;
+  }
+  like(column, pattern) {
+    this.url.searchParams.append(column, `like.${pattern}`);
+    return this;
+  }
+  likeAllOf(column, patterns) {
+    this.url.searchParams.append(column, `like(all).{${patterns.join(",")}}`);
+    return this;
+  }
+  likeAnyOf(column, patterns) {
+    this.url.searchParams.append(column, `like(any).{${patterns.join(",")}}`);
+    return this;
+  }
+  ilike(column, pattern) {
+    this.url.searchParams.append(column, `ilike.${pattern}`);
+    return this;
+  }
+  ilikeAllOf(column, patterns) {
+    this.url.searchParams.append(column, `ilike(all).{${patterns.join(",")}}`);
+    return this;
+  }
+  ilikeAnyOf(column, patterns) {
+    this.url.searchParams.append(column, `ilike(any).{${patterns.join(",")}}`);
+    return this;
+  }
+  regexMatch(column, pattern) {
+    this.url.searchParams.append(column, `match.${pattern}`);
+    return this;
+  }
+  regexIMatch(column, pattern) {
+    this.url.searchParams.append(column, `imatch.${pattern}`);
+    return this;
+  }
+  is(column, value) {
+    this.url.searchParams.append(column, `is.${value}`);
+    return this;
+  }
+  isDistinct(column, value) {
+    this.url.searchParams.append(column, `isdistinct.${value}`);
+    return this;
+  }
+  in(column, values) {
+    const cleanedValues = Array.from(new Set(values)).map((s) => {
+      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
+        return `"${s}"`;
+      else
+        return `${s}`;
+    }).join(",");
+    this.url.searchParams.append(column, `in.(${cleanedValues})`);
+    return this;
+  }
+  notIn(column, values) {
+    const cleanedValues = Array.from(new Set(values)).map((s) => {
+      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
+        return `"${s}"`;
+      else
+        return `${s}`;
+    }).join(",");
+    this.url.searchParams.append(column, `not.in.(${cleanedValues})`);
+    return this;
+  }
+  contains(column, value) {
+    if (typeof value === "string")
+      this.url.searchParams.append(column, `cs.${value}`);
+    else if (Array.isArray(value))
+      this.url.searchParams.append(column, `cs.{${value.join(",")}}`);
+    else
+      this.url.searchParams.append(column, `cs.${JSON.stringify(value)}`);
+    return this;
+  }
+  containedBy(column, value) {
+    if (typeof value === "string")
+      this.url.searchParams.append(column, `cd.${value}`);
+    else if (Array.isArray(value))
+      this.url.searchParams.append(column, `cd.{${value.join(",")}}`);
+    else
+      this.url.searchParams.append(column, `cd.${JSON.stringify(value)}`);
+    return this;
+  }
+  rangeGt(column, range) {
+    this.url.searchParams.append(column, `sr.${range}`);
+    return this;
+  }
+  rangeGte(column, range) {
+    this.url.searchParams.append(column, `nxl.${range}`);
+    return this;
+  }
+  rangeLt(column, range) {
+    this.url.searchParams.append(column, `sl.${range}`);
+    return this;
+  }
+  rangeLte(column, range) {
+    this.url.searchParams.append(column, `nxr.${range}`);
+    return this;
+  }
+  rangeAdjacent(column, range) {
+    this.url.searchParams.append(column, `adj.${range}`);
+    return this;
+  }
+  overlaps(column, value) {
+    if (typeof value === "string")
+      this.url.searchParams.append(column, `ov.${value}`);
+    else
+      this.url.searchParams.append(column, `ov.{${value.join(",")}}`);
+    return this;
+  }
+  textSearch(column, query, { config: config2, type } = {}) {
+    let typePart = "";
+    if (type === "plain")
+      typePart = "pl";
+    else if (type === "phrase")
+      typePart = "ph";
+    else if (type === "websearch")
+      typePart = "w";
+    const configPart = config2 === undefined ? "" : `(${config2})`;
+    this.url.searchParams.append(column, `${typePart}fts${configPart}.${query}`);
+    return this;
+  }
+  match(query) {
+    Object.entries(query).forEach(([column, value]) => {
+      this.url.searchParams.append(column, `eq.${value}`);
+    });
+    return this;
+  }
+  not(column, operator, value) {
+    this.url.searchParams.append(column, `not.${operator}.${value}`);
+    return this;
+  }
+  or(filters, { foreignTable, referencedTable = foreignTable } = {}) {
+    const key = referencedTable ? `${referencedTable}.or` : "or";
+    this.url.searchParams.append(key, `(${filters})`);
+    return this;
+  }
+  filter(column, operator, value) {
+    this.url.searchParams.append(column, `${operator}.${value}`);
+    return this;
+  }
+};
+var PostgrestQueryBuilder = class {
+  constructor(url2, { headers = {}, schema, fetch: fetch$1 }) {
+    this.url = url2;
+    this.headers = new Headers(headers);
+    this.schema = schema;
+    this.fetch = fetch$1;
+  }
+  select(columns, options) {
+    const { head = false, count } = options !== null && options !== undefined ? options : {};
+    const method = head ? "HEAD" : "GET";
+    let quoted = false;
+    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
+      if (/\s/.test(c) && !quoted)
+        return "";
+      if (c === '"')
+        quoted = !quoted;
+      return c;
+    }).join("");
+    this.url.searchParams.set("select", cleanedColumns);
+    if (count)
+      this.headers.append("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: this.url,
+      headers: this.headers,
+      schema: this.schema,
+      fetch: this.fetch
+    });
+  }
+  insert(values, { count, defaultToNull = true } = {}) {
+    var _this$fetch;
+    const method = "POST";
+    if (count)
+      this.headers.append("Prefer", `count=${count}`);
+    if (!defaultToNull)
+      this.headers.append("Prefer", `missing=default`);
+    if (Array.isArray(values)) {
+      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
+      if (columns.length > 0) {
+        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
+        this.url.searchParams.set("columns", uniqueColumns.join(","));
+      }
+    }
+    return new PostgrestFilterBuilder({
+      method,
+      url: this.url,
+      headers: this.headers,
+      schema: this.schema,
+      body: values,
+      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch
+    });
+  }
+  upsert(values, { onConflict, ignoreDuplicates = false, count, defaultToNull = true } = {}) {
+    var _this$fetch2;
+    const method = "POST";
+    this.headers.append("Prefer", `resolution=${ignoreDuplicates ? "ignore" : "merge"}-duplicates`);
+    if (onConflict !== undefined)
+      this.url.searchParams.set("on_conflict", onConflict);
+    if (count)
+      this.headers.append("Prefer", `count=${count}`);
+    if (!defaultToNull)
+      this.headers.append("Prefer", "missing=default");
+    if (Array.isArray(values)) {
+      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
+      if (columns.length > 0) {
+        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
+        this.url.searchParams.set("columns", uniqueColumns.join(","));
+      }
+    }
+    return new PostgrestFilterBuilder({
+      method,
+      url: this.url,
+      headers: this.headers,
+      schema: this.schema,
+      body: values,
+      fetch: (_this$fetch2 = this.fetch) !== null && _this$fetch2 !== undefined ? _this$fetch2 : fetch
+    });
+  }
+  update(values, { count } = {}) {
+    var _this$fetch3;
+    const method = "PATCH";
+    if (count)
+      this.headers.append("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: this.url,
+      headers: this.headers,
+      schema: this.schema,
+      body: values,
+      fetch: (_this$fetch3 = this.fetch) !== null && _this$fetch3 !== undefined ? _this$fetch3 : fetch
+    });
+  }
+  delete({ count } = {}) {
+    var _this$fetch4;
+    const method = "DELETE";
+    if (count)
+      this.headers.append("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: this.url,
+      headers: this.headers,
+      schema: this.schema,
+      fetch: (_this$fetch4 = this.fetch) !== null && _this$fetch4 !== undefined ? _this$fetch4 : fetch
+    });
+  }
+};
+var PostgrestClient = class PostgrestClient2 {
+  constructor(url2, { headers = {}, schema, fetch: fetch$1 } = {}) {
+    this.url = url2;
+    this.headers = new Headers(headers);
+    this.schemaName = schema;
+    this.fetch = fetch$1;
+  }
+  from(relation) {
+    if (!relation || typeof relation !== "string" || relation.trim() === "")
+      throw new Error("Invalid relation name: relation must be a non-empty string.");
+    return new PostgrestQueryBuilder(new URL(`${this.url}/${relation}`), {
+      headers: new Headers(this.headers),
+      schema: this.schemaName,
+      fetch: this.fetch
+    });
+  }
+  schema(schema) {
+    return new PostgrestClient2(this.url, {
+      headers: this.headers,
+      schema,
+      fetch: this.fetch
+    });
+  }
+  rpc(fn, args = {}, { head = false, get = false, count } = {}) {
+    var _this$fetch;
+    let method;
+    const url2 = new URL(`${this.url}/rpc/${fn}`);
+    let body;
+    if (head || get) {
+      method = head ? "HEAD" : "GET";
+      Object.entries(args).filter(([_, value]) => value !== undefined).map(([name, value]) => [name, Array.isArray(value) ? `{${value.join(",")}}` : `${value}`]).forEach(([name, value]) => {
+        url2.searchParams.append(name, value);
+      });
+    } else {
+      method = "POST";
+      body = args;
+    }
+    const headers = new Headers(this.headers);
+    if (count)
+      headers.set("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: url2,
+      headers,
+      schema: this.schemaName,
+      body,
+      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch
+    });
+  }
+};
+var src_default = {
+  PostgrestClient,
+  PostgrestQueryBuilder,
+  PostgrestFilterBuilder,
+  PostgrestTransformBuilder,
+  PostgrestBuilder,
+  PostgrestError
+};
+
+// ../../node_modules/@supabase/supabase-js/dist/index.mjs
+var import_realtime_js = __toESM(require_main2(), 1);
+
+// ../../node_modules/@supabase/storage-js/dist/index.mjs
+var exports_dist2 = {};
+__export(exports_dist2, {
+  validateVectorDimension: () => validateVectorDimension,
+  resolveResponse: () => resolveResponse,
+  resolveFetch: () => resolveFetch,
+  normalizeToFloat32: () => normalizeToFloat32,
+  isStorageVectorsError: () => isStorageVectorsError,
+  isStorageError: () => isStorageError,
+  isPlainObject: () => isPlainObject3,
+  VectorIndexScope: () => VectorIndexScope,
+  VectorIndexApi: () => VectorIndexApi,
+  VectorDataApi: () => VectorDataApi,
+  VectorBucketScope: () => VectorBucketScope,
+  VectorBucketApi: () => VectorBucketApi,
+  StorageVectorsUnknownError: () => StorageVectorsUnknownError,
+  StorageVectorsErrorCode: () => StorageVectorsErrorCode,
+  StorageVectorsError: () => StorageVectorsError,
+  StorageVectorsClient: () => StorageVectorsClient,
+  StorageVectorsApiError: () => StorageVectorsApiError,
+  StorageUnknownError: () => StorageUnknownError,
+  StorageError: () => StorageError,
+  StorageClient: () => StorageClient,
+  StorageApiError: () => StorageApiError,
+  StorageAnalyticsClient: () => StorageAnalyticsClient
+});
+
+// ../../node_modules/iceberg-js/dist/index.mjs
+var IcebergError = class extends Error {
+  constructor(message, opts) {
+    super(message);
+    this.name = "IcebergError";
+    this.status = opts.status;
+    this.icebergType = opts.icebergType;
+    this.icebergCode = opts.icebergCode;
+    this.details = opts.details;
+    this.isCommitStateUnknown = opts.icebergType === "CommitStateUnknownException" || [500, 502, 504].includes(opts.status) && opts.icebergType?.includes("CommitState") === true;
+  }
+  isNotFound() {
+    return this.status === 404;
+  }
+  isConflict() {
+    return this.status === 409;
+  }
+  isAuthenticationTimeout() {
+    return this.status === 419;
+  }
+};
+function buildUrl(baseUrl, path2, query) {
+  const url2 = new URL(path2, baseUrl);
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined) {
+        url2.searchParams.set(key, value);
+      }
+    }
+  }
+  return url2.toString();
+}
+async function buildAuthHeaders(auth) {
+  if (!auth || auth.type === "none") {
+    return {};
+  }
+  if (auth.type === "bearer") {
+    return { Authorization: `Bearer ${auth.token}` };
+  }
+  if (auth.type === "header") {
+    return { [auth.name]: auth.value };
+  }
+  if (auth.type === "custom") {
+    return await auth.getHeaders();
+  }
+  return {};
+}
+function createFetchClient(options) {
+  const fetchFn = options.fetchImpl ?? globalThis.fetch;
+  return {
+    async request({
+      method,
+      path: path2,
+      query,
+      body,
+      headers
+    }) {
+      const url2 = buildUrl(options.baseUrl, path2, query);
+      const authHeaders = await buildAuthHeaders(options.auth);
+      const res = await fetchFn(url2, {
+        method,
+        headers: {
+          ...body ? { "Content-Type": "application/json" } : {},
+          ...authHeaders,
+          ...headers
+        },
+        body: body ? JSON.stringify(body) : undefined
+      });
+      const text = await res.text();
+      const isJson = (res.headers.get("content-type") || "").includes("application/json");
+      const data = isJson && text ? JSON.parse(text) : text;
+      if (!res.ok) {
+        const errBody = isJson ? data : undefined;
+        const errorDetail = errBody?.error;
+        throw new IcebergError(errorDetail?.message ?? `Request failed with status ${res.status}`, {
+          status: res.status,
+          icebergType: errorDetail?.type,
+          icebergCode: errorDetail?.code,
+          details: errBody
+        });
+      }
+      return { status: res.status, headers: res.headers, data };
+    }
+  };
+}
+function namespaceToPath(namespace) {
+  return namespace.join("\x1F");
+}
+var NamespaceOperations = class {
+  constructor(client, prefix = "") {
+    this.client = client;
+    this.prefix = prefix;
+  }
+  async listNamespaces(parent) {
+    const query = parent ? { parent: namespaceToPath(parent.namespace) } : undefined;
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces`,
+      query
+    });
+    return response.data.namespaces.map((ns) => ({ namespace: ns }));
+  }
+  async createNamespace(id, metadata) {
+    const request = {
+      namespace: id.namespace,
+      properties: metadata?.properties
+    };
+    const response = await this.client.request({
+      method: "POST",
+      path: `${this.prefix}/namespaces`,
+      body: request
+    });
+    return response.data;
+  }
+  async dropNamespace(id) {
+    await this.client.request({
+      method: "DELETE",
+      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+    });
+  }
+  async loadNamespaceMetadata(id) {
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+    });
+    return {
+      properties: response.data.properties
+    };
+  }
+  async namespaceExists(id) {
+    try {
+      await this.client.request({
+        method: "HEAD",
+        path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+      });
+      return true;
+    } catch (error46) {
+      if (error46 instanceof IcebergError && error46.status === 404) {
+        return false;
+      }
+      throw error46;
+    }
+  }
+  async createNamespaceIfNotExists(id, metadata) {
+    try {
+      return await this.createNamespace(id, metadata);
+    } catch (error46) {
+      if (error46 instanceof IcebergError && error46.status === 409) {
+        return;
+      }
+      throw error46;
+    }
+  }
+};
+function namespaceToPath2(namespace) {
+  return namespace.join("\x1F");
+}
+var TableOperations = class {
+  constructor(client, prefix = "", accessDelegation) {
+    this.client = client;
+    this.prefix = prefix;
+    this.accessDelegation = accessDelegation;
+  }
+  async listTables(namespace) {
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`
+    });
+    return response.data.identifiers;
+  }
+  async createTable(namespace, request) {
+    const headers = {};
+    if (this.accessDelegation) {
+      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+    }
+    const response = await this.client.request({
+      method: "POST",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`,
+      body: request,
+      headers
+    });
+    return response.data.metadata;
+  }
+  async updateTable(id, request) {
+    const response = await this.client.request({
+      method: "POST",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+      body: request
+    });
+    return {
+      "metadata-location": response.data["metadata-location"],
+      metadata: response.data.metadata
+    };
+  }
+  async dropTable(id, options) {
+    await this.client.request({
+      method: "DELETE",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+      query: { purgeRequested: String(options?.purge ?? false) }
+    });
+  }
+  async loadTable(id) {
+    const headers = {};
+    if (this.accessDelegation) {
+      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+    }
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+      headers
+    });
+    return response.data.metadata;
+  }
+  async tableExists(id) {
+    const headers = {};
+    if (this.accessDelegation) {
+      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+    }
+    try {
+      await this.client.request({
+        method: "HEAD",
+        path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+        headers
+      });
+      return true;
+    } catch (error46) {
+      if (error46 instanceof IcebergError && error46.status === 404) {
+        return false;
+      }
+      throw error46;
+    }
+  }
+  async createTableIfNotExists(namespace, request) {
+    try {
+      return await this.createTable(namespace, request);
+    } catch (error46) {
+      if (error46 instanceof IcebergError && error46.status === 409) {
+        return await this.loadTable({ namespace: namespace.namespace, name: request.name });
+      }
+      throw error46;
+    }
+  }
+};
+var IcebergRestCatalog = class {
+  constructor(options) {
+    let prefix = "v1";
+    if (options.catalogName) {
+      prefix += `/${options.catalogName}`;
+    }
+    const baseUrl = options.baseUrl.endsWith("/") ? options.baseUrl : `${options.baseUrl}/`;
+    this.client = createFetchClient({
+      baseUrl,
+      auth: options.auth,
+      fetchImpl: options.fetch
+    });
+    this.accessDelegation = options.accessDelegation?.join(",");
+    this.namespaceOps = new NamespaceOperations(this.client, prefix);
+    this.tableOps = new TableOperations(this.client, prefix, this.accessDelegation);
+  }
+  async listNamespaces(parent) {
+    return this.namespaceOps.listNamespaces(parent);
+  }
+  async createNamespace(id, metadata) {
+    return this.namespaceOps.createNamespace(id, metadata);
+  }
+  async dropNamespace(id) {
+    await this.namespaceOps.dropNamespace(id);
+  }
+  async loadNamespaceMetadata(id) {
+    return this.namespaceOps.loadNamespaceMetadata(id);
+  }
+  async listTables(namespace) {
+    return this.tableOps.listTables(namespace);
+  }
+  async createTable(namespace, request) {
+    return this.tableOps.createTable(namespace, request);
+  }
+  async updateTable(id, request) {
+    return this.tableOps.updateTable(id, request);
+  }
+  async dropTable(id, options) {
+    await this.tableOps.dropTable(id, options);
+  }
+  async loadTable(id) {
+    return this.tableOps.loadTable(id);
+  }
+  async namespaceExists(id) {
+    return this.namespaceOps.namespaceExists(id);
+  }
+  async tableExists(id) {
+    return this.tableOps.tableExists(id);
+  }
+  async createNamespaceIfNotExists(id, metadata) {
+    return this.namespaceOps.createNamespaceIfNotExists(id, metadata);
+  }
+  async createTableIfNotExists(namespace, request) {
+    return this.tableOps.createTableIfNotExists(namespace, request);
+  }
+};
+
+// ../../node_modules/@supabase/storage-js/dist/index.mjs
+var StorageError = class extends Error {
+  constructor(message) {
+    super(message);
+    this.__isStorageError = true;
+    this.name = "StorageError";
+  }
+};
+function isStorageError(error46) {
+  return typeof error46 === "object" && error46 !== null && "__isStorageError" in error46;
+}
+var StorageApiError = class extends StorageError {
+  constructor(message, status, statusCode) {
+    super(message);
+    this.name = "StorageApiError";
+    this.status = status;
+    this.statusCode = statusCode;
+  }
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      status: this.status,
+      statusCode: this.statusCode
+    };
+  }
+};
+var StorageUnknownError = class extends StorageError {
+  constructor(message, originalError) {
+    super(message);
+    this.name = "StorageUnknownError";
+    this.originalError = originalError;
+  }
+};
+var resolveFetch$1 = (customFetch) => {
+  if (customFetch)
+    return (...args) => customFetch(...args);
+  return (...args) => fetch(...args);
+};
+var resolveResponse$1 = () => {
+  return Response;
+};
+var recursiveToCamel = (item) => {
+  if (Array.isArray(item))
+    return item.map((el) => recursiveToCamel(el));
+  else if (typeof item === "function" || item !== Object(item))
+    return item;
+  const result = {};
+  Object.entries(item).forEach(([key, value]) => {
+    const newKey = key.replace(/([-_][a-z])/gi, (c) => c.toUpperCase().replace(/[-_]/g, ""));
+    result[newKey] = recursiveToCamel(value);
+  });
+  return result;
+};
+var isPlainObject$1 = (value) => {
+  if (typeof value !== "object" || value === null)
+    return false;
+  const prototype = Object.getPrototypeOf(value);
+  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
+};
+var isValidBucketName = (bucketName) => {
+  if (!bucketName || typeof bucketName !== "string")
+    return false;
+  if (bucketName.length === 0 || bucketName.length > 100)
+    return false;
+  if (bucketName.trim() !== bucketName)
+    return false;
+  if (bucketName.includes("/") || bucketName.includes("\\"))
+    return false;
+  return /^[\w!.\*'() &$@=;:+,?-]+$/.test(bucketName);
+};
+function _typeof(o) {
+  "@babel/helpers - typeof";
+  return _typeof = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
+    return typeof o$1;
+  } : function(o$1) {
+    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+  }, _typeof(o);
+}
+function toPrimitive(t, r) {
+  if (_typeof(t) != "object" || !t)
+    return t;
+  var e = t[Symbol.toPrimitive];
+  if (e !== undefined) {
+    var i = e.call(t, r || "default");
+    if (_typeof(i) != "object")
+      return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (r === "string" ? String : Number)(t);
+}
+function toPropertyKey(t) {
+  var i = toPrimitive(t, "string");
+  return _typeof(i) == "symbol" ? i : i + "";
+}
+function _defineProperty(e, r, t) {
+  return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }) : e[r] = t, e;
+}
+function ownKeys(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r$1) {
+      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread2(e) {
+  for (var r = 1;r < arguments.length; r++) {
+    var t = arguments[r] != null ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), true).forEach(function(r$1) {
+      _defineProperty(e, r$1, t[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    });
+  }
+  return e;
+}
+var _getErrorMessage$1 = (err) => {
+  var _err$error;
+  return err.msg || err.message || err.error_description || (typeof err.error === "string" ? err.error : (_err$error = err.error) === null || _err$error === undefined ? undefined : _err$error.message) || JSON.stringify(err);
+};
+var handleError$1 = async (error46, reject, options) => {
+  if (error46 instanceof await resolveResponse$1() && !(options === null || options === undefined ? undefined : options.noResolveJson))
+    error46.json().then((err) => {
+      const status = error46.status || 500;
+      const statusCode = (err === null || err === undefined ? undefined : err.statusCode) || status + "";
+      reject(new StorageApiError(_getErrorMessage$1(err), status, statusCode));
+    }).catch((err) => {
+      reject(new StorageUnknownError(_getErrorMessage$1(err), err));
+    });
+  else
+    reject(new StorageUnknownError(_getErrorMessage$1(error46), error46));
+};
+var _getRequestParams$1 = (method, options, parameters, body) => {
+  const params = {
+    method,
+    headers: (options === null || options === undefined ? undefined : options.headers) || {}
+  };
+  if (method === "GET" || !body)
+    return params;
+  if (isPlainObject$1(body)) {
+    params.headers = _objectSpread2({ "Content-Type": "application/json" }, options === null || options === undefined ? undefined : options.headers);
+    params.body = JSON.stringify(body);
+  } else
+    params.body = body;
+  if (options === null || options === undefined ? undefined : options.duplex)
+    params.duplex = options.duplex;
+  return _objectSpread2(_objectSpread2({}, params), parameters);
+};
+async function _handleRequest$1(fetcher, method, url2, options, parameters, body) {
+  return new Promise((resolve, reject) => {
+    fetcher(url2, _getRequestParams$1(method, options, parameters, body)).then((result) => {
+      if (!result.ok)
+        throw result;
+      if (options === null || options === undefined ? undefined : options.noResolveJson)
+        return result;
+      return result.json();
+    }).then((data) => resolve(data)).catch((error46) => handleError$1(error46, reject, options));
+  });
+}
+async function get(fetcher, url2, options, parameters) {
+  return _handleRequest$1(fetcher, "GET", url2, options, parameters);
+}
+async function post$1(fetcher, url2, body, options, parameters) {
+  return _handleRequest$1(fetcher, "POST", url2, options, parameters, body);
+}
+async function put(fetcher, url2, body, options, parameters) {
+  return _handleRequest$1(fetcher, "PUT", url2, options, parameters, body);
+}
+async function head(fetcher, url2, options, parameters) {
+  return _handleRequest$1(fetcher, "HEAD", url2, _objectSpread2(_objectSpread2({}, options), {}, { noResolveJson: true }), parameters);
+}
+async function remove(fetcher, url2, body, options, parameters) {
+  return _handleRequest$1(fetcher, "DELETE", url2, options, parameters, body);
+}
+var StreamDownloadBuilder = class {
+  constructor(downloadFn, shouldThrowOnError) {
+    this.downloadFn = downloadFn;
+    this.shouldThrowOnError = shouldThrowOnError;
+  }
+  then(onfulfilled, onrejected) {
+    return this.execute().then(onfulfilled, onrejected);
+  }
+  async execute() {
+    var _this = this;
+    try {
+      return {
+        data: (await _this.downloadFn()).body,
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+};
+var _Symbol$toStringTag;
+_Symbol$toStringTag = Symbol.toStringTag;
+var BlobDownloadBuilder = class {
+  constructor(downloadFn, shouldThrowOnError) {
+    this.downloadFn = downloadFn;
+    this.shouldThrowOnError = shouldThrowOnError;
+    this[_Symbol$toStringTag] = "BlobDownloadBuilder";
+    this.promise = null;
+  }
+  asStream() {
+    return new StreamDownloadBuilder(this.downloadFn, this.shouldThrowOnError);
+  }
+  then(onfulfilled, onrejected) {
+    return this.getPromise().then(onfulfilled, onrejected);
+  }
+  catch(onrejected) {
+    return this.getPromise().catch(onrejected);
+  }
+  finally(onfinally) {
+    return this.getPromise().finally(onfinally);
+  }
+  getPromise() {
+    if (!this.promise)
+      this.promise = this.execute();
+    return this.promise;
+  }
+  async execute() {
+    var _this = this;
+    try {
+      return {
+        data: await (await _this.downloadFn()).blob(),
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+};
+var DEFAULT_SEARCH_OPTIONS = {
+  limit: 100,
+  offset: 0,
+  sortBy: {
+    column: "name",
+    order: "asc"
+  }
+};
+var DEFAULT_FILE_OPTIONS = {
+  cacheControl: "3600",
+  contentType: "text/plain;charset=UTF-8",
+  upsert: false
+};
+var StorageFileApi = class {
+  constructor(url2, headers = {}, bucketId, fetch$1) {
+    this.shouldThrowOnError = false;
+    this.url = url2;
+    this.headers = headers;
+    this.bucketId = bucketId;
+    this.fetch = resolveFetch$1(fetch$1);
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  async uploadOrUpdate(method, path2, fileBody, fileOptions) {
+    var _this = this;
+    try {
+      let body;
+      const options = _objectSpread2(_objectSpread2({}, DEFAULT_FILE_OPTIONS), fileOptions);
+      let headers = _objectSpread2(_objectSpread2({}, _this.headers), method === "POST" && { "x-upsert": String(options.upsert) });
+      const metadata = options.metadata;
+      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
+        body = new FormData;
+        body.append("cacheControl", options.cacheControl);
+        if (metadata)
+          body.append("metadata", _this.encodeMetadata(metadata));
+        body.append("", fileBody);
+      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
+        body = fileBody;
+        if (!body.has("cacheControl"))
+          body.append("cacheControl", options.cacheControl);
+        if (metadata && !body.has("metadata"))
+          body.append("metadata", _this.encodeMetadata(metadata));
+      } else {
+        body = fileBody;
+        headers["cache-control"] = `max-age=${options.cacheControl}`;
+        headers["content-type"] = options.contentType;
+        if (metadata)
+          headers["x-metadata"] = _this.toBase64(_this.encodeMetadata(metadata));
+        if ((typeof ReadableStream !== "undefined" && body instanceof ReadableStream || body && typeof body === "object" && ("pipe" in body) && typeof body.pipe === "function") && !options.duplex)
+          options.duplex = "half";
+      }
+      if (fileOptions === null || fileOptions === undefined ? undefined : fileOptions.headers)
+        headers = _objectSpread2(_objectSpread2({}, headers), fileOptions.headers);
+      const cleanPath = _this._removeEmptyFolders(path2);
+      const _path = _this._getFinalPath(cleanPath);
+      const data = await (method == "PUT" ? put : post$1)(_this.fetch, `${_this.url}/object/${_path}`, body, _objectSpread2({ headers }, (options === null || options === undefined ? undefined : options.duplex) ? { duplex: options.duplex } : {}));
+      return {
+        data: {
+          path: cleanPath,
+          id: data.Id,
+          fullPath: data.Key
+        },
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async upload(path2, fileBody, fileOptions) {
+    return this.uploadOrUpdate("POST", path2, fileBody, fileOptions);
+  }
+  async uploadToSignedUrl(path2, token, fileBody, fileOptions) {
+    var _this3 = this;
+    const cleanPath = _this3._removeEmptyFolders(path2);
+    const _path = _this3._getFinalPath(cleanPath);
+    const url2 = new URL(_this3.url + `/object/upload/sign/${_path}`);
+    url2.searchParams.set("token", token);
+    try {
+      let body;
+      const options = _objectSpread2({ upsert: DEFAULT_FILE_OPTIONS.upsert }, fileOptions);
+      const headers = _objectSpread2(_objectSpread2({}, _this3.headers), { "x-upsert": String(options.upsert) });
+      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
+        body = new FormData;
+        body.append("cacheControl", options.cacheControl);
+        body.append("", fileBody);
+      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
+        body = fileBody;
+        body.append("cacheControl", options.cacheControl);
+      } else {
+        body = fileBody;
+        headers["cache-control"] = `max-age=${options.cacheControl}`;
+        headers["content-type"] = options.contentType;
+      }
+      return {
+        data: {
+          path: cleanPath,
+          fullPath: (await put(_this3.fetch, url2.toString(), body, { headers })).Key
+        },
+        error: null
+      };
+    } catch (error46) {
+      if (_this3.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async createSignedUploadUrl(path2, options) {
+    var _this4 = this;
+    try {
+      let _path = _this4._getFinalPath(path2);
+      const headers = _objectSpread2({}, _this4.headers);
+      if (options === null || options === undefined ? undefined : options.upsert)
+        headers["x-upsert"] = "true";
+      const data = await post$1(_this4.fetch, `${_this4.url}/object/upload/sign/${_path}`, {}, { headers });
+      const url2 = new URL(_this4.url + data.url);
+      const token = url2.searchParams.get("token");
+      if (!token)
+        throw new StorageError("No token returned by API");
+      return {
+        data: {
+          signedUrl: url2.toString(),
+          path: path2,
+          token
+        },
+        error: null
+      };
+    } catch (error46) {
+      if (_this4.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async update(path2, fileBody, fileOptions) {
+    return this.uploadOrUpdate("PUT", path2, fileBody, fileOptions);
+  }
+  async move(fromPath, toPath, options) {
+    var _this6 = this;
+    try {
+      return {
+        data: await post$1(_this6.fetch, `${_this6.url}/object/move`, {
+          bucketId: _this6.bucketId,
+          sourceKey: fromPath,
+          destinationKey: toPath,
+          destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
+        }, { headers: _this6.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this6.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async copy(fromPath, toPath, options) {
+    var _this7 = this;
+    try {
+      return {
+        data: { path: (await post$1(_this7.fetch, `${_this7.url}/object/copy`, {
+          bucketId: _this7.bucketId,
+          sourceKey: fromPath,
+          destinationKey: toPath,
+          destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
+        }, { headers: _this7.headers })).Key },
+        error: null
+      };
+    } catch (error46) {
+      if (_this7.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async createSignedUrl(path2, expiresIn, options) {
+    var _this8 = this;
+    try {
+      let _path = _this8._getFinalPath(path2);
+      let data = await post$1(_this8.fetch, `${_this8.url}/object/sign/${_path}`, _objectSpread2({ expiresIn }, (options === null || options === undefined ? undefined : options.transform) ? { transform: options.transform } : {}), { headers: _this8.headers });
+      const downloadQueryParam = (options === null || options === undefined ? undefined : options.download) ? `&download=${options.download === true ? "" : options.download}` : "";
+      data = { signedUrl: encodeURI(`${_this8.url}${data.signedURL}${downloadQueryParam}`) };
+      return {
+        data,
+        error: null
+      };
+    } catch (error46) {
+      if (_this8.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async createSignedUrls(paths, expiresIn, options) {
+    var _this9 = this;
+    try {
+      const data = await post$1(_this9.fetch, `${_this9.url}/object/sign/${_this9.bucketId}`, {
+        expiresIn,
+        paths
+      }, { headers: _this9.headers });
+      const downloadQueryParam = (options === null || options === undefined ? undefined : options.download) ? `&download=${options.download === true ? "" : options.download}` : "";
+      return {
+        data: data.map((datum) => _objectSpread2(_objectSpread2({}, datum), {}, { signedUrl: datum.signedURL ? encodeURI(`${_this9.url}${datum.signedURL}${downloadQueryParam}`) : null })),
+        error: null
+      };
+    } catch (error46) {
+      if (_this9.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  download(path2, options) {
+    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) !== "undefined" ? "render/image/authenticated" : "object";
+    const transformationQuery = this.transformOptsToQueryString((options === null || options === undefined ? undefined : options.transform) || {});
+    const queryString = transformationQuery ? `?${transformationQuery}` : "";
+    const _path = this._getFinalPath(path2);
+    const downloadFn = () => get(this.fetch, `${this.url}/${renderPath}/${_path}${queryString}`, {
+      headers: this.headers,
+      noResolveJson: true
+    });
+    return new BlobDownloadBuilder(downloadFn, this.shouldThrowOnError);
+  }
+  async info(path2) {
+    var _this10 = this;
+    const _path = _this10._getFinalPath(path2);
+    try {
+      return {
+        data: recursiveToCamel(await get(_this10.fetch, `${_this10.url}/object/info/${_path}`, { headers: _this10.headers })),
+        error: null
+      };
+    } catch (error46) {
+      if (_this10.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async exists(path2) {
+    var _this11 = this;
+    const _path = _this11._getFinalPath(path2);
+    try {
+      await head(_this11.fetch, `${_this11.url}/object/${_path}`, { headers: _this11.headers });
+      return {
+        data: true,
+        error: null
+      };
+    } catch (error46) {
+      if (_this11.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46) && error46 instanceof StorageUnknownError) {
+        const originalError = error46.originalError;
+        if ([400, 404].includes(originalError === null || originalError === undefined ? undefined : originalError.status))
+          return {
+            data: false,
+            error: error46
+          };
+      }
+      throw error46;
+    }
+  }
+  getPublicUrl(path2, options) {
+    const _path = this._getFinalPath(path2);
+    const _queryString = [];
+    const downloadQueryParam = (options === null || options === undefined ? undefined : options.download) ? `download=${options.download === true ? "" : options.download}` : "";
+    if (downloadQueryParam !== "")
+      _queryString.push(downloadQueryParam);
+    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) !== "undefined" ? "render/image" : "object";
+    const transformationQuery = this.transformOptsToQueryString((options === null || options === undefined ? undefined : options.transform) || {});
+    if (transformationQuery !== "")
+      _queryString.push(transformationQuery);
+    let queryString = _queryString.join("&");
+    if (queryString !== "")
+      queryString = `?${queryString}`;
+    return { data: { publicUrl: encodeURI(`${this.url}/${renderPath}/public/${_path}${queryString}`) } };
+  }
+  async remove(paths) {
+    var _this12 = this;
+    try {
+      return {
+        data: await remove(_this12.fetch, `${_this12.url}/object/${_this12.bucketId}`, { prefixes: paths }, { headers: _this12.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this12.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async list(path2, options, parameters) {
+    var _this13 = this;
+    try {
+      const body = _objectSpread2(_objectSpread2(_objectSpread2({}, DEFAULT_SEARCH_OPTIONS), options), {}, { prefix: path2 || "" });
+      return {
+        data: await post$1(_this13.fetch, `${_this13.url}/object/list/${_this13.bucketId}`, body, { headers: _this13.headers }, parameters),
+        error: null
+      };
+    } catch (error46) {
+      if (_this13.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async listV2(options, parameters) {
+    var _this14 = this;
+    try {
+      const body = _objectSpread2({}, options);
+      return {
+        data: await post$1(_this14.fetch, `${_this14.url}/object/list-v2/${_this14.bucketId}`, body, { headers: _this14.headers }, parameters),
+        error: null
+      };
+    } catch (error46) {
+      if (_this14.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  encodeMetadata(metadata) {
+    return JSON.stringify(metadata);
+  }
+  toBase64(data) {
+    if (typeof Buffer !== "undefined")
+      return Buffer.from(data).toString("base64");
+    return btoa(data);
+  }
+  _getFinalPath(path2) {
+    return `${this.bucketId}/${path2.replace(/^\/+/, "")}`;
+  }
+  _removeEmptyFolders(path2) {
+    return path2.replace(/^\/|\/$/g, "").replace(/\/+/g, "/");
+  }
+  transformOptsToQueryString(transform2) {
+    const params = [];
+    if (transform2.width)
+      params.push(`width=${transform2.width}`);
+    if (transform2.height)
+      params.push(`height=${transform2.height}`);
+    if (transform2.resize)
+      params.push(`resize=${transform2.resize}`);
+    if (transform2.format)
+      params.push(`format=${transform2.format}`);
+    if (transform2.quality)
+      params.push(`quality=${transform2.quality}`);
+    return params.join("&");
+  }
+};
+var version2 = "2.89.0";
+var DEFAULT_HEADERS$1 = { "X-Client-Info": `storage-js/${version2}` };
+var StorageBucketApi = class {
+  constructor(url2, headers = {}, fetch$1, opts) {
+    this.shouldThrowOnError = false;
+    const baseUrl = new URL(url2);
+    if (opts === null || opts === undefined ? undefined : opts.useNewHostname) {
+      if (/supabase\.(co|in|red)$/.test(baseUrl.hostname) && !baseUrl.hostname.includes("storage.supabase."))
+        baseUrl.hostname = baseUrl.hostname.replace("supabase.", "storage.supabase.");
+    }
+    this.url = baseUrl.href.replace(/\/$/, "");
+    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS$1), headers);
+    this.fetch = resolveFetch$1(fetch$1);
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  async listBuckets(options) {
+    var _this = this;
+    try {
+      const queryString = _this.listBucketOptionsToQueryString(options);
+      return {
+        data: await get(_this.fetch, `${_this.url}/bucket${queryString}`, { headers: _this.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async getBucket(id) {
+    var _this2 = this;
+    try {
+      return {
+        data: await get(_this2.fetch, `${_this2.url}/bucket/${id}`, { headers: _this2.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this2.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async createBucket(id, options = { public: false }) {
+    var _this3 = this;
+    try {
+      return {
+        data: await post$1(_this3.fetch, `${_this3.url}/bucket`, {
+          id,
+          name: id,
+          type: options.type,
+          public: options.public,
+          file_size_limit: options.fileSizeLimit,
+          allowed_mime_types: options.allowedMimeTypes
+        }, { headers: _this3.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this3.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async updateBucket(id, options) {
+    var _this4 = this;
+    try {
+      return {
+        data: await put(_this4.fetch, `${_this4.url}/bucket/${id}`, {
+          id,
+          name: id,
+          public: options.public,
+          file_size_limit: options.fileSizeLimit,
+          allowed_mime_types: options.allowedMimeTypes
+        }, { headers: _this4.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this4.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async emptyBucket(id) {
+    var _this5 = this;
+    try {
+      return {
+        data: await post$1(_this5.fetch, `${_this5.url}/bucket/${id}/empty`, {}, { headers: _this5.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this5.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async deleteBucket(id) {
+    var _this6 = this;
+    try {
+      return {
+        data: await remove(_this6.fetch, `${_this6.url}/bucket/${id}`, {}, { headers: _this6.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this6.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  listBucketOptionsToQueryString(options) {
+    const params = {};
+    if (options) {
+      if ("limit" in options)
+        params.limit = String(options.limit);
+      if ("offset" in options)
+        params.offset = String(options.offset);
+      if (options.search)
+        params.search = options.search;
+      if (options.sortColumn)
+        params.sortColumn = options.sortColumn;
+      if (options.sortOrder)
+        params.sortOrder = options.sortOrder;
+    }
+    return Object.keys(params).length > 0 ? "?" + new URLSearchParams(params).toString() : "";
+  }
+};
+var StorageAnalyticsClient = class {
+  constructor(url2, headers = {}, fetch$1) {
+    this.shouldThrowOnError = false;
+    this.url = url2.replace(/\/$/, "");
+    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS$1), headers);
+    this.fetch = resolveFetch$1(fetch$1);
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  async createBucket(name) {
+    var _this = this;
+    try {
+      return {
+        data: await post$1(_this.fetch, `${_this.url}/bucket`, { name }, { headers: _this.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async listBuckets(options) {
+    var _this2 = this;
+    try {
+      const queryParams = new URLSearchParams;
+      if ((options === null || options === undefined ? undefined : options.limit) !== undefined)
+        queryParams.set("limit", options.limit.toString());
+      if ((options === null || options === undefined ? undefined : options.offset) !== undefined)
+        queryParams.set("offset", options.offset.toString());
+      if (options === null || options === undefined ? undefined : options.sortColumn)
+        queryParams.set("sortColumn", options.sortColumn);
+      if (options === null || options === undefined ? undefined : options.sortOrder)
+        queryParams.set("sortOrder", options.sortOrder);
+      if (options === null || options === undefined ? undefined : options.search)
+        queryParams.set("search", options.search);
+      const queryString = queryParams.toString();
+      const url2 = queryString ? `${_this2.url}/bucket?${queryString}` : `${_this2.url}/bucket`;
+      return {
+        data: await get(_this2.fetch, url2, { headers: _this2.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this2.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async deleteBucket(bucketName) {
+    var _this3 = this;
+    try {
+      return {
+        data: await remove(_this3.fetch, `${_this3.url}/bucket/${bucketName}`, {}, { headers: _this3.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this3.shouldThrowOnError)
+        throw error46;
+      if (isStorageError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  from(bucketName) {
+    var _this4 = this;
+    if (!isValidBucketName(bucketName))
+      throw new StorageError("Invalid bucket name: File, folder, and bucket names must follow AWS object key naming guidelines and should avoid the use of any other characters.");
+    const catalog = new IcebergRestCatalog({
+      baseUrl: this.url,
+      catalogName: bucketName,
+      auth: {
+        type: "custom",
+        getHeaders: async () => _this4.headers
+      },
+      fetch: this.fetch
+    });
+    const shouldThrowOnError = this.shouldThrowOnError;
+    return new Proxy(catalog, { get(target, prop) {
+      const value = target[prop];
+      if (typeof value !== "function")
+        return value;
+      return async (...args) => {
+        try {
+          return {
+            data: await value.apply(target, args),
+            error: null
+          };
+        } catch (error46) {
+          if (shouldThrowOnError)
+            throw error46;
+          return {
+            data: null,
+            error: error46
+          };
+        }
+      };
+    } });
+  }
+};
+var DEFAULT_HEADERS = {
+  "X-Client-Info": `storage-js/${version2}`,
+  "Content-Type": "application/json"
+};
+var StorageVectorsError = class extends Error {
+  constructor(message) {
+    super(message);
+    this.__isStorageVectorsError = true;
+    this.name = "StorageVectorsError";
+  }
+};
+function isStorageVectorsError(error46) {
+  return typeof error46 === "object" && error46 !== null && "__isStorageVectorsError" in error46;
+}
+var StorageVectorsApiError = class extends StorageVectorsError {
+  constructor(message, status, statusCode) {
+    super(message);
+    this.name = "StorageVectorsApiError";
+    this.status = status;
+    this.statusCode = statusCode;
+  }
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      status: this.status,
+      statusCode: this.statusCode
+    };
+  }
+};
+var StorageVectorsUnknownError = class extends StorageVectorsError {
+  constructor(message, originalError) {
+    super(message);
+    this.name = "StorageVectorsUnknownError";
+    this.originalError = originalError;
+  }
+};
+var StorageVectorsErrorCode = /* @__PURE__ */ function(StorageVectorsErrorCode$1) {
+  StorageVectorsErrorCode$1["InternalError"] = "InternalError";
+  StorageVectorsErrorCode$1["S3VectorConflictException"] = "S3VectorConflictException";
+  StorageVectorsErrorCode$1["S3VectorNotFoundException"] = "S3VectorNotFoundException";
+  StorageVectorsErrorCode$1["S3VectorBucketNotEmpty"] = "S3VectorBucketNotEmpty";
+  StorageVectorsErrorCode$1["S3VectorMaxBucketsExceeded"] = "S3VectorMaxBucketsExceeded";
+  StorageVectorsErrorCode$1["S3VectorMaxIndexesExceeded"] = "S3VectorMaxIndexesExceeded";
+  return StorageVectorsErrorCode$1;
+}({});
+var resolveFetch = (customFetch) => {
+  if (customFetch)
+    return (...args) => customFetch(...args);
+  return (...args) => fetch(...args);
+};
+var resolveResponse = () => {
+  return Response;
+};
+var isPlainObject3 = (value) => {
+  if (typeof value !== "object" || value === null)
+    return false;
+  const prototype = Object.getPrototypeOf(value);
+  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
+};
+var normalizeToFloat32 = (values) => {
+  return Array.from(new Float32Array(values));
+};
+var validateVectorDimension = (vector, expectedDimension) => {
+  if (expectedDimension !== undefined && vector.float32.length !== expectedDimension)
+    throw new Error(`Vector dimension mismatch: expected ${expectedDimension}, got ${vector.float32.length}`);
+};
+var _getErrorMessage = (err) => err.msg || err.message || err.error_description || err.error || JSON.stringify(err);
+var handleError = async (error46, reject, options) => {
+  if (error46 && typeof error46 === "object" && "status" in error46 && "ok" in error46 && typeof error46.status === "number" && !(options === null || options === undefined ? undefined : options.noResolveJson)) {
+    const status = error46.status || 500;
+    const responseError = error46;
+    if (typeof responseError.json === "function")
+      responseError.json().then((err) => {
+        const statusCode = (err === null || err === undefined ? undefined : err.statusCode) || (err === null || err === undefined ? undefined : err.code) || status + "";
+        reject(new StorageVectorsApiError(_getErrorMessage(err), status, statusCode));
+      }).catch(() => {
+        const statusCode = status + "";
+        reject(new StorageVectorsApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode));
+      });
+    else {
+      const statusCode = status + "";
+      reject(new StorageVectorsApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode));
+    }
+  } else
+    reject(new StorageVectorsUnknownError(_getErrorMessage(error46), error46));
+};
+var _getRequestParams = (method, options, parameters, body) => {
+  const params = {
+    method,
+    headers: (options === null || options === undefined ? undefined : options.headers) || {}
+  };
+  if (method === "GET" || !body)
+    return params;
+  if (isPlainObject3(body)) {
+    params.headers = _objectSpread2({ "Content-Type": "application/json" }, options === null || options === undefined ? undefined : options.headers);
+    params.body = JSON.stringify(body);
+  } else
+    params.body = body;
+  return _objectSpread2(_objectSpread2({}, params), parameters);
+};
+async function _handleRequest(fetcher, method, url2, options, parameters, body) {
+  return new Promise((resolve, reject) => {
+    fetcher(url2, _getRequestParams(method, options, parameters, body)).then((result) => {
+      if (!result.ok)
+        throw result;
+      if (options === null || options === undefined ? undefined : options.noResolveJson)
+        return result;
+      const contentType = result.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json"))
+        return {};
+      return result.json();
+    }).then((data) => resolve(data)).catch((error46) => handleError(error46, reject, options));
+  });
+}
+async function post(fetcher, url2, body, options, parameters) {
+  return _handleRequest(fetcher, "POST", url2, options, parameters, body);
+}
+var VectorIndexApi = class {
+  constructor(url2, headers = {}, fetch$1) {
+    this.shouldThrowOnError = false;
+    this.url = url2.replace(/\/$/, "");
+    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS), headers);
+    this.fetch = resolveFetch(fetch$1);
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  async createIndex(options) {
+    var _this = this;
+    try {
+      return {
+        data: await post(_this.fetch, `${_this.url}/CreateIndex`, options, { headers: _this.headers }) || {},
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async getIndex(vectorBucketName, indexName) {
+    var _this2 = this;
+    try {
+      return {
+        data: await post(_this2.fetch, `${_this2.url}/GetIndex`, {
+          vectorBucketName,
+          indexName
+        }, { headers: _this2.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this2.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async listIndexes(options) {
+    var _this3 = this;
+    try {
+      return {
+        data: await post(_this3.fetch, `${_this3.url}/ListIndexes`, options, { headers: _this3.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this3.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async deleteIndex(vectorBucketName, indexName) {
+    var _this4 = this;
+    try {
+      return {
+        data: await post(_this4.fetch, `${_this4.url}/DeleteIndex`, {
+          vectorBucketName,
+          indexName
+        }, { headers: _this4.headers }) || {},
+        error: null
+      };
+    } catch (error46) {
+      if (_this4.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+};
+var VectorDataApi = class {
+  constructor(url2, headers = {}, fetch$1) {
+    this.shouldThrowOnError = false;
+    this.url = url2.replace(/\/$/, "");
+    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS), headers);
+    this.fetch = resolveFetch(fetch$1);
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  async putVectors(options) {
+    var _this = this;
+    try {
+      if (options.vectors.length < 1 || options.vectors.length > 500)
+        throw new Error("Vector batch size must be between 1 and 500 items");
+      return {
+        data: await post(_this.fetch, `${_this.url}/PutVectors`, options, { headers: _this.headers }) || {},
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async getVectors(options) {
+    var _this2 = this;
+    try {
+      return {
+        data: await post(_this2.fetch, `${_this2.url}/GetVectors`, options, { headers: _this2.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this2.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async listVectors(options) {
+    var _this3 = this;
+    try {
+      if (options.segmentCount !== undefined) {
+        if (options.segmentCount < 1 || options.segmentCount > 16)
+          throw new Error("segmentCount must be between 1 and 16");
+        if (options.segmentIndex !== undefined) {
+          if (options.segmentIndex < 0 || options.segmentIndex >= options.segmentCount)
+            throw new Error(`segmentIndex must be between 0 and ${options.segmentCount - 1}`);
+        }
+      }
+      return {
+        data: await post(_this3.fetch, `${_this3.url}/ListVectors`, options, { headers: _this3.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this3.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async queryVectors(options) {
+    var _this4 = this;
+    try {
+      return {
+        data: await post(_this4.fetch, `${_this4.url}/QueryVectors`, options, { headers: _this4.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this4.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async deleteVectors(options) {
+    var _this5 = this;
+    try {
+      if (options.keys.length < 1 || options.keys.length > 500)
+        throw new Error("Keys batch size must be between 1 and 500 items");
+      return {
+        data: await post(_this5.fetch, `${_this5.url}/DeleteVectors`, options, { headers: _this5.headers }) || {},
+        error: null
+      };
+    } catch (error46) {
+      if (_this5.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+};
+var VectorBucketApi = class {
+  constructor(url2, headers = {}, fetch$1) {
+    this.shouldThrowOnError = false;
+    this.url = url2.replace(/\/$/, "");
+    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS), headers);
+    this.fetch = resolveFetch(fetch$1);
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  async createBucket(vectorBucketName) {
+    var _this = this;
+    try {
+      return {
+        data: await post(_this.fetch, `${_this.url}/CreateVectorBucket`, { vectorBucketName }, { headers: _this.headers }) || {},
+        error: null
+      };
+    } catch (error46) {
+      if (_this.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async getBucket(vectorBucketName) {
+    var _this2 = this;
+    try {
+      return {
+        data: await post(_this2.fetch, `${_this2.url}/GetVectorBucket`, { vectorBucketName }, { headers: _this2.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this2.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async listBuckets(options = {}) {
+    var _this3 = this;
+    try {
+      return {
+        data: await post(_this3.fetch, `${_this3.url}/ListVectorBuckets`, options, { headers: _this3.headers }),
+        error: null
+      };
+    } catch (error46) {
+      if (_this3.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+  async deleteBucket(vectorBucketName) {
+    var _this4 = this;
+    try {
+      return {
+        data: await post(_this4.fetch, `${_this4.url}/DeleteVectorBucket`, { vectorBucketName }, { headers: _this4.headers }) || {},
+        error: null
+      };
+    } catch (error46) {
+      if (_this4.shouldThrowOnError)
+        throw error46;
+      if (isStorageVectorsError(error46))
+        return {
+          data: null,
+          error: error46
+        };
+      throw error46;
+    }
+  }
+};
+var StorageVectorsClient = class extends VectorBucketApi {
+  constructor(url2, options = {}) {
+    super(url2, options.headers || {}, options.fetch);
+  }
+  from(vectorBucketName) {
+    return new VectorBucketScope(this.url, this.headers, vectorBucketName, this.fetch);
+  }
+  async createBucket(vectorBucketName) {
+    var _superprop_getCreateBucket = () => super.createBucket, _this = this;
+    return _superprop_getCreateBucket().call(_this, vectorBucketName);
+  }
+  async getBucket(vectorBucketName) {
+    var _superprop_getGetBucket = () => super.getBucket, _this2 = this;
+    return _superprop_getGetBucket().call(_this2, vectorBucketName);
+  }
+  async listBuckets(options = {}) {
+    var _superprop_getListBuckets = () => super.listBuckets, _this3 = this;
+    return _superprop_getListBuckets().call(_this3, options);
+  }
+  async deleteBucket(vectorBucketName) {
+    var _superprop_getDeleteBucket = () => super.deleteBucket, _this4 = this;
+    return _superprop_getDeleteBucket().call(_this4, vectorBucketName);
+  }
+};
+var VectorBucketScope = class extends VectorIndexApi {
+  constructor(url2, headers, vectorBucketName, fetch$1) {
+    super(url2, headers, fetch$1);
+    this.vectorBucketName = vectorBucketName;
+  }
+  async createIndex(options) {
+    var _superprop_getCreateIndex = () => super.createIndex, _this5 = this;
+    return _superprop_getCreateIndex().call(_this5, _objectSpread2(_objectSpread2({}, options), {}, { vectorBucketName: _this5.vectorBucketName }));
+  }
+  async listIndexes(options = {}) {
+    var _superprop_getListIndexes = () => super.listIndexes, _this6 = this;
+    return _superprop_getListIndexes().call(_this6, _objectSpread2(_objectSpread2({}, options), {}, { vectorBucketName: _this6.vectorBucketName }));
+  }
+  async getIndex(indexName) {
+    var _superprop_getGetIndex = () => super.getIndex, _this7 = this;
+    return _superprop_getGetIndex().call(_this7, _this7.vectorBucketName, indexName);
+  }
+  async deleteIndex(indexName) {
+    var _superprop_getDeleteIndex = () => super.deleteIndex, _this8 = this;
+    return _superprop_getDeleteIndex().call(_this8, _this8.vectorBucketName, indexName);
+  }
+  index(indexName) {
+    return new VectorIndexScope(this.url, this.headers, this.vectorBucketName, indexName, this.fetch);
+  }
+};
+var VectorIndexScope = class extends VectorDataApi {
+  constructor(url2, headers, vectorBucketName, indexName, fetch$1) {
+    super(url2, headers, fetch$1);
+    this.vectorBucketName = vectorBucketName;
+    this.indexName = indexName;
+  }
+  async putVectors(options) {
+    var _superprop_getPutVectors = () => super.putVectors, _this9 = this;
+    return _superprop_getPutVectors().call(_this9, _objectSpread2(_objectSpread2({}, options), {}, {
+      vectorBucketName: _this9.vectorBucketName,
+      indexName: _this9.indexName
+    }));
+  }
+  async getVectors(options) {
+    var _superprop_getGetVectors = () => super.getVectors, _this10 = this;
+    return _superprop_getGetVectors().call(_this10, _objectSpread2(_objectSpread2({}, options), {}, {
+      vectorBucketName: _this10.vectorBucketName,
+      indexName: _this10.indexName
+    }));
+  }
+  async listVectors(options = {}) {
+    var _superprop_getListVectors = () => super.listVectors, _this11 = this;
+    return _superprop_getListVectors().call(_this11, _objectSpread2(_objectSpread2({}, options), {}, {
+      vectorBucketName: _this11.vectorBucketName,
+      indexName: _this11.indexName
+    }));
+  }
+  async queryVectors(options) {
+    var _superprop_getQueryVectors = () => super.queryVectors, _this12 = this;
+    return _superprop_getQueryVectors().call(_this12, _objectSpread2(_objectSpread2({}, options), {}, {
+      vectorBucketName: _this12.vectorBucketName,
+      indexName: _this12.indexName
+    }));
+  }
+  async deleteVectors(options) {
+    var _superprop_getDeleteVectors = () => super.deleteVectors, _this13 = this;
+    return _superprop_getDeleteVectors().call(_this13, _objectSpread2(_objectSpread2({}, options), {}, {
+      vectorBucketName: _this13.vectorBucketName,
+      indexName: _this13.indexName
+    }));
+  }
+};
+var StorageClient = class extends StorageBucketApi {
+  constructor(url2, headers = {}, fetch$1, opts) {
+    super(url2, headers, fetch$1, opts);
+  }
+  from(id) {
+    return new StorageFileApi(this.url, this.headers, id, this.fetch);
+  }
+  get vectors() {
+    return new StorageVectorsClient(this.url + "/vector", {
+      headers: this.headers,
+      fetch: this.fetch
+    });
+  }
+  get analytics() {
+    return new StorageAnalyticsClient(this.url + "/iceberg", this.headers, this.fetch);
+  }
+};
+
+// ../../node_modules/@supabase/supabase-js/dist/index.mjs
+var import_auth_js = __toESM(require_main3(), 1);
+__reExport(exports_dist3, __toESM(require_main2(), 1), module.exports);
+__reExport(exports_dist3, __toESM(require_main3(), 1), module.exports);
+var version3 = "2.89.0";
+var JS_ENV = "";
+if (typeof Deno !== "undefined")
+  JS_ENV = "deno";
+else if (typeof document !== "undefined")
+  JS_ENV = "web";
+else if (typeof navigator !== "undefined" && navigator.product === "ReactNative")
+  JS_ENV = "react-native";
+else
+  JS_ENV = "node";
+var DEFAULT_HEADERS2 = { "X-Client-Info": `supabase-js-${JS_ENV}/${version3}` };
+var DEFAULT_GLOBAL_OPTIONS = { headers: DEFAULT_HEADERS2 };
+var DEFAULT_DB_OPTIONS = { schema: "public" };
+var DEFAULT_AUTH_OPTIONS = {
+  autoRefreshToken: true,
+  persistSession: true,
+  detectSessionInUrl: true,
+  flowType: "implicit"
+};
+var DEFAULT_REALTIME_OPTIONS = {};
+function _typeof2(o) {
+  "@babel/helpers - typeof";
+  return _typeof2 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
+    return typeof o$1;
+  } : function(o$1) {
+    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+  }, _typeof2(o);
+}
+function toPrimitive2(t, r) {
+  if (_typeof2(t) != "object" || !t)
+    return t;
+  var e = t[Symbol.toPrimitive];
+  if (e !== undefined) {
+    var i = e.call(t, r || "default");
+    if (_typeof2(i) != "object")
+      return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (r === "string" ? String : Number)(t);
+}
+function toPropertyKey2(t) {
+  var i = toPrimitive2(t, "string");
+  return _typeof2(i) == "symbol" ? i : i + "";
+}
+function _defineProperty2(e, r, t) {
+  return (r = toPropertyKey2(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }) : e[r] = t, e;
+}
+function ownKeys2(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r$1) {
+      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread22(e) {
+  for (var r = 1;r < arguments.length; r++) {
+    var t = arguments[r] != null ? arguments[r] : {};
+    r % 2 ? ownKeys2(Object(t), true).forEach(function(r$1) {
+      _defineProperty2(e, r$1, t[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys2(Object(t)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    });
+  }
+  return e;
+}
+var resolveFetch2 = (customFetch) => {
+  if (customFetch)
+    return (...args) => customFetch(...args);
+  return (...args) => fetch(...args);
+};
+var resolveHeadersConstructor = () => {
+  return Headers;
+};
+var fetchWithAuth = (supabaseKey, getAccessToken, customFetch) => {
+  const fetch$1 = resolveFetch2(customFetch);
+  const HeadersConstructor = resolveHeadersConstructor();
+  return async (input, init) => {
+    var _await$getAccessToken;
+    const accessToken = (_await$getAccessToken = await getAccessToken()) !== null && _await$getAccessToken !== undefined ? _await$getAccessToken : supabaseKey;
+    let headers = new HeadersConstructor(init === null || init === undefined ? undefined : init.headers);
+    if (!headers.has("apikey"))
+      headers.set("apikey", supabaseKey);
+    if (!headers.has("Authorization"))
+      headers.set("Authorization", `Bearer ${accessToken}`);
+    return fetch$1(input, _objectSpread22(_objectSpread22({}, init), {}, { headers }));
+  };
+};
+function ensureTrailingSlash(url2) {
+  return url2.endsWith("/") ? url2 : url2 + "/";
+}
+function applySettingDefaults(options, defaults) {
+  var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header;
+  const { db: dbOptions, auth: authOptions, realtime: realtimeOptions, global: globalOptions } = options;
+  const { db: DEFAULT_DB_OPTIONS$1, auth: DEFAULT_AUTH_OPTIONS$1, realtime: DEFAULT_REALTIME_OPTIONS$1, global: DEFAULT_GLOBAL_OPTIONS$1 } = defaults;
+  const result = {
+    db: _objectSpread22(_objectSpread22({}, DEFAULT_DB_OPTIONS$1), dbOptions),
+    auth: _objectSpread22(_objectSpread22({}, DEFAULT_AUTH_OPTIONS$1), authOptions),
+    realtime: _objectSpread22(_objectSpread22({}, DEFAULT_REALTIME_OPTIONS$1), realtimeOptions),
+    storage: {},
+    global: _objectSpread22(_objectSpread22(_objectSpread22({}, DEFAULT_GLOBAL_OPTIONS$1), globalOptions), {}, { headers: _objectSpread22(_objectSpread22({}, (_DEFAULT_GLOBAL_OPTIO = DEFAULT_GLOBAL_OPTIONS$1 === null || DEFAULT_GLOBAL_OPTIONS$1 === undefined ? undefined : DEFAULT_GLOBAL_OPTIONS$1.headers) !== null && _DEFAULT_GLOBAL_OPTIO !== undefined ? _DEFAULT_GLOBAL_OPTIO : {}), (_globalOptions$header = globalOptions === null || globalOptions === undefined ? undefined : globalOptions.headers) !== null && _globalOptions$header !== undefined ? _globalOptions$header : {}) }),
+    accessToken: async () => ""
+  };
+  if (options.accessToken)
+    result.accessToken = options.accessToken;
+  else
+    delete result.accessToken;
+  return result;
+}
+function validateSupabaseUrl(supabaseUrl) {
+  const trimmedUrl = supabaseUrl === null || supabaseUrl === undefined ? undefined : supabaseUrl.trim();
+  if (!trimmedUrl)
+    throw new Error("supabaseUrl is required.");
+  if (!trimmedUrl.match(/^https?:\/\//i))
+    throw new Error("Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.");
+  try {
+    return new URL(ensureTrailingSlash(trimmedUrl));
+  } catch (_unused) {
+    throw Error("Invalid supabaseUrl: Provided URL is malformed.");
+  }
+}
+var SupabaseAuthClient = class extends import_auth_js.AuthClient {
+  constructor(options) {
+    super(options);
+  }
+};
+var SupabaseClient = class {
+  constructor(supabaseUrl, supabaseKey, options) {
+    var _settings$auth$storag, _settings$global$head;
+    this.supabaseUrl = supabaseUrl;
+    this.supabaseKey = supabaseKey;
+    const baseUrl = validateSupabaseUrl(supabaseUrl);
+    if (!supabaseKey)
+      throw new Error("supabaseKey is required.");
+    this.realtimeUrl = new URL("realtime/v1", baseUrl);
+    this.realtimeUrl.protocol = this.realtimeUrl.protocol.replace("http", "ws");
+    this.authUrl = new URL("auth/v1", baseUrl);
+    this.storageUrl = new URL("storage/v1", baseUrl);
+    this.functionsUrl = new URL("functions/v1", baseUrl);
+    const defaultStorageKey = `sb-${baseUrl.hostname.split(".")[0]}-auth-token`;
+    const DEFAULTS = {
+      db: DEFAULT_DB_OPTIONS,
+      realtime: DEFAULT_REALTIME_OPTIONS,
+      auth: _objectSpread22(_objectSpread22({}, DEFAULT_AUTH_OPTIONS), {}, { storageKey: defaultStorageKey }),
+      global: DEFAULT_GLOBAL_OPTIONS
+    };
+    const settings = applySettingDefaults(options !== null && options !== undefined ? options : {}, DEFAULTS);
+    this.storageKey = (_settings$auth$storag = settings.auth.storageKey) !== null && _settings$auth$storag !== undefined ? _settings$auth$storag : "";
+    this.headers = (_settings$global$head = settings.global.headers) !== null && _settings$global$head !== undefined ? _settings$global$head : {};
+    if (!settings.accessToken) {
+      var _settings$auth;
+      this.auth = this._initSupabaseAuthClient((_settings$auth = settings.auth) !== null && _settings$auth !== undefined ? _settings$auth : {}, this.headers, settings.global.fetch);
+    } else {
+      this.accessToken = settings.accessToken;
+      this.auth = new Proxy({}, { get: (_, prop) => {
+        throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(prop)} is not possible`);
+      } });
+    }
+    this.fetch = fetchWithAuth(supabaseKey, this._getAccessToken.bind(this), settings.global.fetch);
+    this.realtime = this._initRealtimeClient(_objectSpread22({
+      headers: this.headers,
+      accessToken: this._getAccessToken.bind(this)
+    }, settings.realtime));
+    if (this.accessToken)
+      this.accessToken().then((token) => this.realtime.setAuth(token)).catch((e) => console.warn("Failed to set initial Realtime auth token:", e));
+    this.rest = new PostgrestClient(new URL("rest/v1", baseUrl).href, {
+      headers: this.headers,
+      schema: settings.db.schema,
+      fetch: this.fetch
+    });
+    this.storage = new StorageClient(this.storageUrl.href, this.headers, this.fetch, options === null || options === undefined ? undefined : options.storage);
+    if (!settings.accessToken)
+      this._listenForAuthEvents();
+  }
+  get functions() {
+    return new import_functions_js.FunctionsClient(this.functionsUrl.href, {
+      headers: this.headers,
+      customFetch: this.fetch
+    });
+  }
+  from(relation) {
+    return this.rest.from(relation);
+  }
+  schema(schema) {
+    return this.rest.schema(schema);
+  }
+  rpc(fn, args = {}, options = {
+    head: false,
+    get: false,
+    count: undefined
+  }) {
+    return this.rest.rpc(fn, args, options);
+  }
+  channel(name, opts = { config: {} }) {
+    return this.realtime.channel(name, opts);
+  }
+  getChannels() {
+    return this.realtime.getChannels();
+  }
+  removeChannel(channel) {
+    return this.realtime.removeChannel(channel);
+  }
+  removeAllChannels() {
+    return this.realtime.removeAllChannels();
+  }
+  async _getAccessToken() {
+    var _this = this;
+    var _data$session$access_, _data$session;
+    if (_this.accessToken)
+      return await _this.accessToken();
+    const { data } = await _this.auth.getSession();
+    return (_data$session$access_ = (_data$session = data.session) === null || _data$session === undefined ? undefined : _data$session.access_token) !== null && _data$session$access_ !== undefined ? _data$session$access_ : _this.supabaseKey;
+  }
+  _initSupabaseAuthClient({ autoRefreshToken, persistSession, detectSessionInUrl, storage, userStorage, storageKey, flowType, lock, debug, throwOnError }, headers, fetch$1) {
+    const authHeaders = {
+      Authorization: `Bearer ${this.supabaseKey}`,
+      apikey: `${this.supabaseKey}`
+    };
+    return new SupabaseAuthClient({
+      url: this.authUrl.href,
+      headers: _objectSpread22(_objectSpread22({}, authHeaders), headers),
+      storageKey,
+      autoRefreshToken,
+      persistSession,
+      detectSessionInUrl,
+      storage,
+      userStorage,
+      flowType,
+      lock,
+      debug,
+      throwOnError,
+      fetch: fetch$1,
+      hasCustomAuthorizationHeader: Object.keys(this.headers).some((key) => key.toLowerCase() === "authorization")
+    });
+  }
+  _initRealtimeClient(options) {
+    return new import_realtime_js.RealtimeClient(this.realtimeUrl.href, _objectSpread22(_objectSpread22({}, options), {}, { params: _objectSpread22(_objectSpread22({}, { apikey: this.supabaseKey }), options === null || options === undefined ? undefined : options.params) }));
+  }
+  _listenForAuthEvents() {
+    return this.auth.onAuthStateChange((event, session) => {
+      this._handleTokenChanged(event, "CLIENT", session === null || session === undefined ? undefined : session.access_token);
+    });
+  }
+  _handleTokenChanged(event, source, token) {
+    if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN") && this.changedAccessToken !== token) {
+      this.changedAccessToken = token;
+      this.realtime.setAuth(token);
+    } else if (event === "SIGNED_OUT") {
+      this.realtime.setAuth();
+      if (source == "STORAGE")
+        this.auth.signOut();
+      this.changedAccessToken = undefined;
+    }
+  }
+};
+var createClient = (supabaseUrl, supabaseKey, options) => {
+  return new SupabaseClient(supabaseUrl, supabaseKey, options);
+};
+function shouldShowDeprecationWarning() {
+  if (typeof window !== "undefined")
+    return false;
+  if (typeof process === "undefined")
+    return false;
+  const processVersion = process["version"];
+  if (processVersion === undefined || processVersion === null)
+    return false;
+  const versionMatch = processVersion.match(/^v(\d+)\./);
+  if (!versionMatch)
+    return false;
+  return parseInt(versionMatch[1], 10) <= 18;
+}
+if (shouldShowDeprecationWarning())
+  console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
+
 // src/state/files.ts
 var import_promises3 = require("node:fs/promises");
 var import_node_path2 = require("node:path");
@@ -36920,9 +39576,89 @@ function resolveDefaultStatePath(...segments) {
   return resolvedPath;
 }
 
+// src/auth/session.ts
+var AUTH_SESSION_VERSION = 1;
+function getAuthSessionFilePath() {
+  return resolveStatePath("auth", "session.json");
+}
+function isNonEmptyString(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+function isAuthSessionValid(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const candidate = value;
+  if (candidate.version !== AUTH_SESSION_VERSION) {
+    return false;
+  }
+  if (!isNonEmptyString(candidate.accessToken) || !isNonEmptyString(candidate.refreshToken) || !isNonEmptyString(candidate.userId) || !isNonEmptyString(candidate.email)) {
+    return false;
+  }
+  if (candidate.refreshTokenExpiresAt !== undefined && (typeof candidate.refreshTokenExpiresAt !== "number" || !Number.isFinite(candidate.refreshTokenExpiresAt))) {
+    return false;
+  }
+  return true;
+}
+async function loadAuthSession() {
+  const filePath = getAuthSessionFilePath();
+  const session = await readJsonFile(filePath);
+  if (session === null) {
+    return null;
+  }
+  if (!isAuthSessionValid(session)) {
+    await removeStateFile(filePath);
+    return null;
+  }
+  return session;
+}
+async function saveAuthSession(session) {
+  await writeJsonFileAtomic(getAuthSessionFilePath(), session);
+}
+async function clearAuthSession() {
+  await removeStateFile(getAuthSessionFilePath());
+}
+
+// src/supabase/client.ts
+function createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey) {
+  return createClientImpl(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: false
+    }
+  });
+}
+async function createOnDemandClient(options = {}) {
+  const createClientImpl = options.createClientImpl ?? createClient;
+  const loadSession = options.loadSession ?? loadAuthSession;
+  const supabaseUrl = options.supabaseUrl ?? SUPABASE_URL;
+  const supabaseAnonKey = options.supabaseAnonKey ?? SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return null;
+  }
+  const session = await loadSession();
+  if (!session) {
+    return null;
+  }
+  const client = createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey);
+  const { error: error46 } = await client.auth.setSession({
+    access_token: session.accessToken,
+    refresh_token: session.refreshToken
+  });
+  if (error46) {
+    return null;
+  }
+  return {
+    client,
+    dispose: async () => {
+      await client.removeAllChannels();
+    }
+  };
+}
+
 // src/workspace/binding.ts
 var WORKSPACE_BINDING_VERSION = 1;
-function isNonEmptyString(value) {
+function isNonEmptyString2(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
 function getWorkspaceBindingFilePath() {
@@ -36939,10 +39675,10 @@ function isWorkspaceBindingValid(value) {
   if (!candidate.active || typeof candidate.active !== "object") {
     return false;
   }
-  if (!isNonEmptyString(candidate.active.id)) {
+  if (!isNonEmptyString2(candidate.active.id)) {
     return false;
   }
-  if (candidate.active.name !== undefined && !isNonEmptyString(candidate.active.name)) {
+  if (candidate.active.name !== undefined && !isNonEmptyString2(candidate.active.name)) {
     return false;
   }
   if (candidate.sync !== undefined) {
@@ -36977,56 +39713,50 @@ async function saveWorkspaceBinding(binding) {
     version: binding.version
   });
 }
-async function saveActiveWorkspaceBinding(workspaceId) {
+async function saveActiveWorkspaceBinding(workspaceId, workspaceName) {
   await saveWorkspaceBinding({
     active: {
-      id: workspaceId
+      id: workspaceId,
+      ...workspaceName ? { name: workspaceName } : {}
     },
     version: WORKSPACE_BINDING_VERSION
   });
 }
 
-// src/auth/session.ts
-var AUTH_SESSION_VERSION = 1;
-function getAuthSessionFilePath() {
-  return resolveStatePath("auth", "session.json");
+// src/workspace/resolve.ts
+function normalizeWorkspaceName(name) {
+  if (typeof name !== "string") {
+    return;
+  }
+  const trimmedName = name.trim();
+  return trimmedName.length > 0 ? trimmedName : undefined;
 }
-function isNonEmptyString2(value) {
-  return typeof value === "string" && value.trim().length > 0;
+async function resolveWorkspaceName(workspaceId) {
+  const onDemand = await createOnDemandClient();
+  if (!onDemand) {
+    return;
+  }
+  try {
+    const { data, error: error46 } = await onDemand.client.from("workspaces").select("name").eq("id", workspaceId).maybeSingle();
+    if (error46) {
+      return;
+    }
+    return normalizeWorkspaceName(data?.name);
+  } catch {
+    return;
+  } finally {
+    await onDemand.dispose();
+  }
 }
-function isAuthSessionValid(value) {
-  if (!value || typeof value !== "object") {
-    return false;
+async function saveResolvedWorkspaceBinding(workspaceId, resolveName = resolveWorkspaceName) {
+  let workspaceName;
+  try {
+    workspaceName = await resolveName(workspaceId);
+  } catch {
+    workspaceName = undefined;
   }
-  const candidate = value;
-  if (candidate.version !== AUTH_SESSION_VERSION) {
-    return false;
-  }
-  if (!isNonEmptyString2(candidate.accessToken) || !isNonEmptyString2(candidate.refreshToken) || !isNonEmptyString2(candidate.userId) || !isNonEmptyString2(candidate.email)) {
-    return false;
-  }
-  if (candidate.refreshTokenExpiresAt !== undefined && (typeof candidate.refreshTokenExpiresAt !== "number" || !Number.isFinite(candidate.refreshTokenExpiresAt))) {
-    return false;
-  }
-  return true;
-}
-async function loadAuthSession() {
-  const filePath = getAuthSessionFilePath();
-  const session = await readJsonFile(filePath);
-  if (session === null) {
-    return null;
-  }
-  if (!isAuthSessionValid(session)) {
-    await removeStateFile(filePath);
-    return null;
-  }
-  return session;
-}
-async function saveAuthSession(session) {
-  await writeJsonFileAtomic(getAuthSessionFilePath(), session);
-}
-async function clearAuthSession() {
-  await removeStateFile(getAuthSessionFilePath());
+  await saveActiveWorkspaceBinding(workspaceId, workspaceName);
+  return workspaceName;
 }
 
 // src/auth/login.ts
@@ -37144,7 +39874,7 @@ async function completeLogin(start, dependencies = {}) {
         await saveAuthSession(persistedSession);
         const workspaceId = normalizeWorkspaceId(payload.session.workspace_id);
         if (workspaceId) {
-          await saveActiveWorkspaceBinding(workspaceId);
+          await saveResolvedWorkspaceBinding(workspaceId, dependencies.resolveWorkspaceName);
         }
         return {
           deviceCode: start.deviceCode,
@@ -38502,2699 +41232,6 @@ async function sanitizeNormalizedPayloads(inputs) {
 }
 function formatExclusionReason(reason) {
   return reason;
-}
-
-// ../../node_modules/@supabase/supabase-js/dist/index.mjs
-var exports_dist3 = {};
-__export(exports_dist3, {
-  createClient: () => createClient,
-  SupabaseClient: () => SupabaseClient,
-  PostgrestError: () => PostgrestError,
-  FunctionsRelayError: () => import_functions_js.FunctionsRelayError,
-  FunctionsHttpError: () => import_functions_js.FunctionsHttpError,
-  FunctionsFetchError: () => import_functions_js.FunctionsFetchError,
-  FunctionsError: () => import_functions_js.FunctionsError,
-  FunctionRegion: () => import_functions_js.FunctionRegion
-});
-var import_functions_js = __toESM(require_main(), 1);
-
-// ../../node_modules/@supabase/postgrest-js/dist/index.mjs
-var exports_dist = {};
-__export(exports_dist, {
-  default: () => src_default,
-  PostgrestTransformBuilder: () => PostgrestTransformBuilder,
-  PostgrestQueryBuilder: () => PostgrestQueryBuilder,
-  PostgrestFilterBuilder: () => PostgrestFilterBuilder,
-  PostgrestError: () => PostgrestError,
-  PostgrestClient: () => PostgrestClient,
-  PostgrestBuilder: () => PostgrestBuilder
-});
-var PostgrestError = class extends Error {
-  constructor(context) {
-    super(context.message);
-    this.name = "PostgrestError";
-    this.details = context.details;
-    this.hint = context.hint;
-    this.code = context.code;
-  }
-};
-var PostgrestBuilder = class {
-  constructor(builder) {
-    var _builder$shouldThrowO, _builder$isMaybeSingl;
-    this.shouldThrowOnError = false;
-    this.method = builder.method;
-    this.url = builder.url;
-    this.headers = new Headers(builder.headers);
-    this.schema = builder.schema;
-    this.body = builder.body;
-    this.shouldThrowOnError = (_builder$shouldThrowO = builder.shouldThrowOnError) !== null && _builder$shouldThrowO !== undefined ? _builder$shouldThrowO : false;
-    this.signal = builder.signal;
-    this.isMaybeSingle = (_builder$isMaybeSingl = builder.isMaybeSingle) !== null && _builder$isMaybeSingl !== undefined ? _builder$isMaybeSingl : false;
-    if (builder.fetch)
-      this.fetch = builder.fetch;
-    else
-      this.fetch = fetch;
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  setHeader(name, value) {
-    this.headers = new Headers(this.headers);
-    this.headers.set(name, value);
-    return this;
-  }
-  then(onfulfilled, onrejected) {
-    var _this = this;
-    if (this.schema === undefined) {} else if (["GET", "HEAD"].includes(this.method))
-      this.headers.set("Accept-Profile", this.schema);
-    else
-      this.headers.set("Content-Profile", this.schema);
-    if (this.method !== "GET" && this.method !== "HEAD")
-      this.headers.set("Content-Type", "application/json");
-    const _fetch = this.fetch;
-    let res = _fetch(this.url.toString(), {
-      method: this.method,
-      headers: this.headers,
-      body: JSON.stringify(this.body),
-      signal: this.signal
-    }).then(async (res$1) => {
-      let error46 = null;
-      let data = null;
-      let count = null;
-      let status = res$1.status;
-      let statusText = res$1.statusText;
-      if (res$1.ok) {
-        var _this$headers$get2, _res$headers$get;
-        if (_this.method !== "HEAD") {
-          var _this$headers$get;
-          const body = await res$1.text();
-          if (body === "") {} else if (_this.headers.get("Accept") === "text/csv")
-            data = body;
-          else if (_this.headers.get("Accept") && ((_this$headers$get = _this.headers.get("Accept")) === null || _this$headers$get === undefined ? undefined : _this$headers$get.includes("application/vnd.pgrst.plan+text")))
-            data = body;
-          else
-            data = JSON.parse(body);
-        }
-        const countHeader = (_this$headers$get2 = _this.headers.get("Prefer")) === null || _this$headers$get2 === undefined ? undefined : _this$headers$get2.match(/count=(exact|planned|estimated)/);
-        const contentRange = (_res$headers$get = res$1.headers.get("content-range")) === null || _res$headers$get === undefined ? undefined : _res$headers$get.split("/");
-        if (countHeader && contentRange && contentRange.length > 1)
-          count = parseInt(contentRange[1]);
-        if (_this.isMaybeSingle && _this.method === "GET" && Array.isArray(data))
-          if (data.length > 1) {
-            error46 = {
-              code: "PGRST116",
-              details: `Results contain ${data.length} rows, application/vnd.pgrst.object+json requires 1 row`,
-              hint: null,
-              message: "JSON object requested, multiple (or no) rows returned"
-            };
-            data = null;
-            count = null;
-            status = 406;
-            statusText = "Not Acceptable";
-          } else if (data.length === 1)
-            data = data[0];
-          else
-            data = null;
-      } else {
-        var _error$details;
-        const body = await res$1.text();
-        try {
-          error46 = JSON.parse(body);
-          if (Array.isArray(error46) && res$1.status === 404) {
-            data = [];
-            error46 = null;
-            status = 200;
-            statusText = "OK";
-          }
-        } catch (_unused) {
-          if (res$1.status === 404 && body === "") {
-            status = 204;
-            statusText = "No Content";
-          } else
-            error46 = { message: body };
-        }
-        if (error46 && _this.isMaybeSingle && (error46 === null || error46 === undefined || (_error$details = error46.details) === null || _error$details === undefined ? undefined : _error$details.includes("0 rows"))) {
-          error46 = null;
-          status = 200;
-          statusText = "OK";
-        }
-        if (error46 && _this.shouldThrowOnError)
-          throw new PostgrestError(error46);
-      }
-      return {
-        error: error46,
-        data,
-        count,
-        status,
-        statusText
-      };
-    });
-    if (!this.shouldThrowOnError)
-      res = res.catch((fetchError) => {
-        var _fetchError$name2;
-        let errorDetails = "";
-        const cause = fetchError === null || fetchError === undefined ? undefined : fetchError.cause;
-        if (cause) {
-          var _cause$message, _cause$code, _fetchError$name, _cause$name;
-          const causeMessage = (_cause$message = cause === null || cause === undefined ? undefined : cause.message) !== null && _cause$message !== undefined ? _cause$message : "";
-          const causeCode = (_cause$code = cause === null || cause === undefined ? undefined : cause.code) !== null && _cause$code !== undefined ? _cause$code : "";
-          errorDetails = `${(_fetchError$name = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name !== undefined ? _fetchError$name : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`;
-          errorDetails += `
-
-Caused by: ${(_cause$name = cause === null || cause === undefined ? undefined : cause.name) !== null && _cause$name !== undefined ? _cause$name : "Error"}: ${causeMessage}`;
-          if (causeCode)
-            errorDetails += ` (${causeCode})`;
-          if (cause === null || cause === undefined ? undefined : cause.stack)
-            errorDetails += `
-${cause.stack}`;
-        } else {
-          var _fetchError$stack;
-          errorDetails = (_fetchError$stack = fetchError === null || fetchError === undefined ? undefined : fetchError.stack) !== null && _fetchError$stack !== undefined ? _fetchError$stack : "";
-        }
-        return {
-          error: {
-            message: `${(_fetchError$name2 = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name2 !== undefined ? _fetchError$name2 : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`,
-            details: errorDetails,
-            hint: "",
-            code: ""
-          },
-          data: null,
-          count: null,
-          status: 0,
-          statusText: ""
-        };
-      });
-    return res.then(onfulfilled, onrejected);
-  }
-  returns() {
-    return this;
-  }
-  overrideTypes() {
-    return this;
-  }
-};
-var PostgrestTransformBuilder = class extends PostgrestBuilder {
-  select(columns) {
-    let quoted = false;
-    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
-      if (/\s/.test(c) && !quoted)
-        return "";
-      if (c === '"')
-        quoted = !quoted;
-      return c;
-    }).join("");
-    this.url.searchParams.set("select", cleanedColumns);
-    this.headers.append("Prefer", "return=representation");
-    return this;
-  }
-  order(column, { ascending = true, nullsFirst, foreignTable, referencedTable = foreignTable } = {}) {
-    const key = referencedTable ? `${referencedTable}.order` : "order";
-    const existingOrder = this.url.searchParams.get(key);
-    this.url.searchParams.set(key, `${existingOrder ? `${existingOrder},` : ""}${column}.${ascending ? "asc" : "desc"}${nullsFirst === undefined ? "" : nullsFirst ? ".nullsfirst" : ".nullslast"}`);
-    return this;
-  }
-  limit(count, { foreignTable, referencedTable = foreignTable } = {}) {
-    const key = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
-    this.url.searchParams.set(key, `${count}`);
-    return this;
-  }
-  range(from, to, { foreignTable, referencedTable = foreignTable } = {}) {
-    const keyOffset = typeof referencedTable === "undefined" ? "offset" : `${referencedTable}.offset`;
-    const keyLimit = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
-    this.url.searchParams.set(keyOffset, `${from}`);
-    this.url.searchParams.set(keyLimit, `${to - from + 1}`);
-    return this;
-  }
-  abortSignal(signal) {
-    this.signal = signal;
-    return this;
-  }
-  single() {
-    this.headers.set("Accept", "application/vnd.pgrst.object+json");
-    return this;
-  }
-  maybeSingle() {
-    if (this.method === "GET")
-      this.headers.set("Accept", "application/json");
-    else
-      this.headers.set("Accept", "application/vnd.pgrst.object+json");
-    this.isMaybeSingle = true;
-    return this;
-  }
-  csv() {
-    this.headers.set("Accept", "text/csv");
-    return this;
-  }
-  geojson() {
-    this.headers.set("Accept", "application/geo+json");
-    return this;
-  }
-  explain({ analyze = false, verbose = false, settings = false, buffers = false, wal = false, format = "text" } = {}) {
-    var _this$headers$get;
-    const options = [
-      analyze ? "analyze" : null,
-      verbose ? "verbose" : null,
-      settings ? "settings" : null,
-      buffers ? "buffers" : null,
-      wal ? "wal" : null
-    ].filter(Boolean).join("|");
-    const forMediatype = (_this$headers$get = this.headers.get("Accept")) !== null && _this$headers$get !== undefined ? _this$headers$get : "application/json";
-    this.headers.set("Accept", `application/vnd.pgrst.plan+${format}; for="${forMediatype}"; options=${options};`);
-    if (format === "json")
-      return this;
-    else
-      return this;
-  }
-  rollback() {
-    this.headers.append("Prefer", "tx=rollback");
-    return this;
-  }
-  returns() {
-    return this;
-  }
-  maxAffected(value) {
-    this.headers.append("Prefer", "handling=strict");
-    this.headers.append("Prefer", `max-affected=${value}`);
-    return this;
-  }
-};
-var PostgrestReservedCharsRegexp = /* @__PURE__ */ new RegExp("[,()]");
-var PostgrestFilterBuilder = class extends PostgrestTransformBuilder {
-  eq(column, value) {
-    this.url.searchParams.append(column, `eq.${value}`);
-    return this;
-  }
-  neq(column, value) {
-    this.url.searchParams.append(column, `neq.${value}`);
-    return this;
-  }
-  gt(column, value) {
-    this.url.searchParams.append(column, `gt.${value}`);
-    return this;
-  }
-  gte(column, value) {
-    this.url.searchParams.append(column, `gte.${value}`);
-    return this;
-  }
-  lt(column, value) {
-    this.url.searchParams.append(column, `lt.${value}`);
-    return this;
-  }
-  lte(column, value) {
-    this.url.searchParams.append(column, `lte.${value}`);
-    return this;
-  }
-  like(column, pattern) {
-    this.url.searchParams.append(column, `like.${pattern}`);
-    return this;
-  }
-  likeAllOf(column, patterns) {
-    this.url.searchParams.append(column, `like(all).{${patterns.join(",")}}`);
-    return this;
-  }
-  likeAnyOf(column, patterns) {
-    this.url.searchParams.append(column, `like(any).{${patterns.join(",")}}`);
-    return this;
-  }
-  ilike(column, pattern) {
-    this.url.searchParams.append(column, `ilike.${pattern}`);
-    return this;
-  }
-  ilikeAllOf(column, patterns) {
-    this.url.searchParams.append(column, `ilike(all).{${patterns.join(",")}}`);
-    return this;
-  }
-  ilikeAnyOf(column, patterns) {
-    this.url.searchParams.append(column, `ilike(any).{${patterns.join(",")}}`);
-    return this;
-  }
-  regexMatch(column, pattern) {
-    this.url.searchParams.append(column, `match.${pattern}`);
-    return this;
-  }
-  regexIMatch(column, pattern) {
-    this.url.searchParams.append(column, `imatch.${pattern}`);
-    return this;
-  }
-  is(column, value) {
-    this.url.searchParams.append(column, `is.${value}`);
-    return this;
-  }
-  isDistinct(column, value) {
-    this.url.searchParams.append(column, `isdistinct.${value}`);
-    return this;
-  }
-  in(column, values) {
-    const cleanedValues = Array.from(new Set(values)).map((s) => {
-      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
-        return `"${s}"`;
-      else
-        return `${s}`;
-    }).join(",");
-    this.url.searchParams.append(column, `in.(${cleanedValues})`);
-    return this;
-  }
-  notIn(column, values) {
-    const cleanedValues = Array.from(new Set(values)).map((s) => {
-      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
-        return `"${s}"`;
-      else
-        return `${s}`;
-    }).join(",");
-    this.url.searchParams.append(column, `not.in.(${cleanedValues})`);
-    return this;
-  }
-  contains(column, value) {
-    if (typeof value === "string")
-      this.url.searchParams.append(column, `cs.${value}`);
-    else if (Array.isArray(value))
-      this.url.searchParams.append(column, `cs.{${value.join(",")}}`);
-    else
-      this.url.searchParams.append(column, `cs.${JSON.stringify(value)}`);
-    return this;
-  }
-  containedBy(column, value) {
-    if (typeof value === "string")
-      this.url.searchParams.append(column, `cd.${value}`);
-    else if (Array.isArray(value))
-      this.url.searchParams.append(column, `cd.{${value.join(",")}}`);
-    else
-      this.url.searchParams.append(column, `cd.${JSON.stringify(value)}`);
-    return this;
-  }
-  rangeGt(column, range) {
-    this.url.searchParams.append(column, `sr.${range}`);
-    return this;
-  }
-  rangeGte(column, range) {
-    this.url.searchParams.append(column, `nxl.${range}`);
-    return this;
-  }
-  rangeLt(column, range) {
-    this.url.searchParams.append(column, `sl.${range}`);
-    return this;
-  }
-  rangeLte(column, range) {
-    this.url.searchParams.append(column, `nxr.${range}`);
-    return this;
-  }
-  rangeAdjacent(column, range) {
-    this.url.searchParams.append(column, `adj.${range}`);
-    return this;
-  }
-  overlaps(column, value) {
-    if (typeof value === "string")
-      this.url.searchParams.append(column, `ov.${value}`);
-    else
-      this.url.searchParams.append(column, `ov.{${value.join(",")}}`);
-    return this;
-  }
-  textSearch(column, query, { config: config2, type } = {}) {
-    let typePart = "";
-    if (type === "plain")
-      typePart = "pl";
-    else if (type === "phrase")
-      typePart = "ph";
-    else if (type === "websearch")
-      typePart = "w";
-    const configPart = config2 === undefined ? "" : `(${config2})`;
-    this.url.searchParams.append(column, `${typePart}fts${configPart}.${query}`);
-    return this;
-  }
-  match(query) {
-    Object.entries(query).forEach(([column, value]) => {
-      this.url.searchParams.append(column, `eq.${value}`);
-    });
-    return this;
-  }
-  not(column, operator, value) {
-    this.url.searchParams.append(column, `not.${operator}.${value}`);
-    return this;
-  }
-  or(filters, { foreignTable, referencedTable = foreignTable } = {}) {
-    const key = referencedTable ? `${referencedTable}.or` : "or";
-    this.url.searchParams.append(key, `(${filters})`);
-    return this;
-  }
-  filter(column, operator, value) {
-    this.url.searchParams.append(column, `${operator}.${value}`);
-    return this;
-  }
-};
-var PostgrestQueryBuilder = class {
-  constructor(url2, { headers = {}, schema, fetch: fetch$1 }) {
-    this.url = url2;
-    this.headers = new Headers(headers);
-    this.schema = schema;
-    this.fetch = fetch$1;
-  }
-  select(columns, options) {
-    const { head = false, count } = options !== null && options !== undefined ? options : {};
-    const method = head ? "HEAD" : "GET";
-    let quoted = false;
-    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
-      if (/\s/.test(c) && !quoted)
-        return "";
-      if (c === '"')
-        quoted = !quoted;
-      return c;
-    }).join("");
-    this.url.searchParams.set("select", cleanedColumns);
-    if (count)
-      this.headers.append("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: this.url,
-      headers: this.headers,
-      schema: this.schema,
-      fetch: this.fetch
-    });
-  }
-  insert(values, { count, defaultToNull = true } = {}) {
-    var _this$fetch;
-    const method = "POST";
-    if (count)
-      this.headers.append("Prefer", `count=${count}`);
-    if (!defaultToNull)
-      this.headers.append("Prefer", `missing=default`);
-    if (Array.isArray(values)) {
-      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
-      if (columns.length > 0) {
-        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
-        this.url.searchParams.set("columns", uniqueColumns.join(","));
-      }
-    }
-    return new PostgrestFilterBuilder({
-      method,
-      url: this.url,
-      headers: this.headers,
-      schema: this.schema,
-      body: values,
-      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch
-    });
-  }
-  upsert(values, { onConflict, ignoreDuplicates = false, count, defaultToNull = true } = {}) {
-    var _this$fetch2;
-    const method = "POST";
-    this.headers.append("Prefer", `resolution=${ignoreDuplicates ? "ignore" : "merge"}-duplicates`);
-    if (onConflict !== undefined)
-      this.url.searchParams.set("on_conflict", onConflict);
-    if (count)
-      this.headers.append("Prefer", `count=${count}`);
-    if (!defaultToNull)
-      this.headers.append("Prefer", "missing=default");
-    if (Array.isArray(values)) {
-      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
-      if (columns.length > 0) {
-        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
-        this.url.searchParams.set("columns", uniqueColumns.join(","));
-      }
-    }
-    return new PostgrestFilterBuilder({
-      method,
-      url: this.url,
-      headers: this.headers,
-      schema: this.schema,
-      body: values,
-      fetch: (_this$fetch2 = this.fetch) !== null && _this$fetch2 !== undefined ? _this$fetch2 : fetch
-    });
-  }
-  update(values, { count } = {}) {
-    var _this$fetch3;
-    const method = "PATCH";
-    if (count)
-      this.headers.append("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: this.url,
-      headers: this.headers,
-      schema: this.schema,
-      body: values,
-      fetch: (_this$fetch3 = this.fetch) !== null && _this$fetch3 !== undefined ? _this$fetch3 : fetch
-    });
-  }
-  delete({ count } = {}) {
-    var _this$fetch4;
-    const method = "DELETE";
-    if (count)
-      this.headers.append("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: this.url,
-      headers: this.headers,
-      schema: this.schema,
-      fetch: (_this$fetch4 = this.fetch) !== null && _this$fetch4 !== undefined ? _this$fetch4 : fetch
-    });
-  }
-};
-var PostgrestClient = class PostgrestClient2 {
-  constructor(url2, { headers = {}, schema, fetch: fetch$1 } = {}) {
-    this.url = url2;
-    this.headers = new Headers(headers);
-    this.schemaName = schema;
-    this.fetch = fetch$1;
-  }
-  from(relation) {
-    if (!relation || typeof relation !== "string" || relation.trim() === "")
-      throw new Error("Invalid relation name: relation must be a non-empty string.");
-    return new PostgrestQueryBuilder(new URL(`${this.url}/${relation}`), {
-      headers: new Headers(this.headers),
-      schema: this.schemaName,
-      fetch: this.fetch
-    });
-  }
-  schema(schema) {
-    return new PostgrestClient2(this.url, {
-      headers: this.headers,
-      schema,
-      fetch: this.fetch
-    });
-  }
-  rpc(fn, args = {}, { head = false, get = false, count } = {}) {
-    var _this$fetch;
-    let method;
-    const url2 = new URL(`${this.url}/rpc/${fn}`);
-    let body;
-    if (head || get) {
-      method = head ? "HEAD" : "GET";
-      Object.entries(args).filter(([_, value]) => value !== undefined).map(([name, value]) => [name, Array.isArray(value) ? `{${value.join(",")}}` : `${value}`]).forEach(([name, value]) => {
-        url2.searchParams.append(name, value);
-      });
-    } else {
-      method = "POST";
-      body = args;
-    }
-    const headers = new Headers(this.headers);
-    if (count)
-      headers.set("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: url2,
-      headers,
-      schema: this.schemaName,
-      body,
-      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch
-    });
-  }
-};
-var src_default = {
-  PostgrestClient,
-  PostgrestQueryBuilder,
-  PostgrestFilterBuilder,
-  PostgrestTransformBuilder,
-  PostgrestBuilder,
-  PostgrestError
-};
-
-// ../../node_modules/@supabase/supabase-js/dist/index.mjs
-var import_realtime_js = __toESM(require_main2(), 1);
-
-// ../../node_modules/@supabase/storage-js/dist/index.mjs
-var exports_dist2 = {};
-__export(exports_dist2, {
-  validateVectorDimension: () => validateVectorDimension,
-  resolveResponse: () => resolveResponse,
-  resolveFetch: () => resolveFetch,
-  normalizeToFloat32: () => normalizeToFloat32,
-  isStorageVectorsError: () => isStorageVectorsError,
-  isStorageError: () => isStorageError,
-  isPlainObject: () => isPlainObject3,
-  VectorIndexScope: () => VectorIndexScope,
-  VectorIndexApi: () => VectorIndexApi,
-  VectorDataApi: () => VectorDataApi,
-  VectorBucketScope: () => VectorBucketScope,
-  VectorBucketApi: () => VectorBucketApi,
-  StorageVectorsUnknownError: () => StorageVectorsUnknownError,
-  StorageVectorsErrorCode: () => StorageVectorsErrorCode,
-  StorageVectorsError: () => StorageVectorsError,
-  StorageVectorsClient: () => StorageVectorsClient,
-  StorageVectorsApiError: () => StorageVectorsApiError,
-  StorageUnknownError: () => StorageUnknownError,
-  StorageError: () => StorageError,
-  StorageClient: () => StorageClient,
-  StorageApiError: () => StorageApiError,
-  StorageAnalyticsClient: () => StorageAnalyticsClient
-});
-
-// ../../node_modules/iceberg-js/dist/index.mjs
-var IcebergError = class extends Error {
-  constructor(message, opts) {
-    super(message);
-    this.name = "IcebergError";
-    this.status = opts.status;
-    this.icebergType = opts.icebergType;
-    this.icebergCode = opts.icebergCode;
-    this.details = opts.details;
-    this.isCommitStateUnknown = opts.icebergType === "CommitStateUnknownException" || [500, 502, 504].includes(opts.status) && opts.icebergType?.includes("CommitState") === true;
-  }
-  isNotFound() {
-    return this.status === 404;
-  }
-  isConflict() {
-    return this.status === 409;
-  }
-  isAuthenticationTimeout() {
-    return this.status === 419;
-  }
-};
-function buildUrl(baseUrl, path2, query) {
-  const url2 = new URL(path2, baseUrl);
-  if (query) {
-    for (const [key, value] of Object.entries(query)) {
-      if (value !== undefined) {
-        url2.searchParams.set(key, value);
-      }
-    }
-  }
-  return url2.toString();
-}
-async function buildAuthHeaders(auth) {
-  if (!auth || auth.type === "none") {
-    return {};
-  }
-  if (auth.type === "bearer") {
-    return { Authorization: `Bearer ${auth.token}` };
-  }
-  if (auth.type === "header") {
-    return { [auth.name]: auth.value };
-  }
-  if (auth.type === "custom") {
-    return await auth.getHeaders();
-  }
-  return {};
-}
-function createFetchClient(options) {
-  const fetchFn = options.fetchImpl ?? globalThis.fetch;
-  return {
-    async request({
-      method,
-      path: path2,
-      query,
-      body,
-      headers
-    }) {
-      const url2 = buildUrl(options.baseUrl, path2, query);
-      const authHeaders = await buildAuthHeaders(options.auth);
-      const res = await fetchFn(url2, {
-        method,
-        headers: {
-          ...body ? { "Content-Type": "application/json" } : {},
-          ...authHeaders,
-          ...headers
-        },
-        body: body ? JSON.stringify(body) : undefined
-      });
-      const text = await res.text();
-      const isJson = (res.headers.get("content-type") || "").includes("application/json");
-      const data = isJson && text ? JSON.parse(text) : text;
-      if (!res.ok) {
-        const errBody = isJson ? data : undefined;
-        const errorDetail = errBody?.error;
-        throw new IcebergError(errorDetail?.message ?? `Request failed with status ${res.status}`, {
-          status: res.status,
-          icebergType: errorDetail?.type,
-          icebergCode: errorDetail?.code,
-          details: errBody
-        });
-      }
-      return { status: res.status, headers: res.headers, data };
-    }
-  };
-}
-function namespaceToPath(namespace) {
-  return namespace.join("\x1F");
-}
-var NamespaceOperations = class {
-  constructor(client, prefix = "") {
-    this.client = client;
-    this.prefix = prefix;
-  }
-  async listNamespaces(parent) {
-    const query = parent ? { parent: namespaceToPath(parent.namespace) } : undefined;
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces`,
-      query
-    });
-    return response.data.namespaces.map((ns) => ({ namespace: ns }));
-  }
-  async createNamespace(id, metadata) {
-    const request = {
-      namespace: id.namespace,
-      properties: metadata?.properties
-    };
-    const response = await this.client.request({
-      method: "POST",
-      path: `${this.prefix}/namespaces`,
-      body: request
-    });
-    return response.data;
-  }
-  async dropNamespace(id) {
-    await this.client.request({
-      method: "DELETE",
-      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
-    });
-  }
-  async loadNamespaceMetadata(id) {
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
-    });
-    return {
-      properties: response.data.properties
-    };
-  }
-  async namespaceExists(id) {
-    try {
-      await this.client.request({
-        method: "HEAD",
-        path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
-      });
-      return true;
-    } catch (error46) {
-      if (error46 instanceof IcebergError && error46.status === 404) {
-        return false;
-      }
-      throw error46;
-    }
-  }
-  async createNamespaceIfNotExists(id, metadata) {
-    try {
-      return await this.createNamespace(id, metadata);
-    } catch (error46) {
-      if (error46 instanceof IcebergError && error46.status === 409) {
-        return;
-      }
-      throw error46;
-    }
-  }
-};
-function namespaceToPath2(namespace) {
-  return namespace.join("\x1F");
-}
-var TableOperations = class {
-  constructor(client, prefix = "", accessDelegation) {
-    this.client = client;
-    this.prefix = prefix;
-    this.accessDelegation = accessDelegation;
-  }
-  async listTables(namespace) {
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`
-    });
-    return response.data.identifiers;
-  }
-  async createTable(namespace, request) {
-    const headers = {};
-    if (this.accessDelegation) {
-      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
-    }
-    const response = await this.client.request({
-      method: "POST",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`,
-      body: request,
-      headers
-    });
-    return response.data.metadata;
-  }
-  async updateTable(id, request) {
-    const response = await this.client.request({
-      method: "POST",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-      body: request
-    });
-    return {
-      "metadata-location": response.data["metadata-location"],
-      metadata: response.data.metadata
-    };
-  }
-  async dropTable(id, options) {
-    await this.client.request({
-      method: "DELETE",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-      query: { purgeRequested: String(options?.purge ?? false) }
-    });
-  }
-  async loadTable(id) {
-    const headers = {};
-    if (this.accessDelegation) {
-      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
-    }
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-      headers
-    });
-    return response.data.metadata;
-  }
-  async tableExists(id) {
-    const headers = {};
-    if (this.accessDelegation) {
-      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
-    }
-    try {
-      await this.client.request({
-        method: "HEAD",
-        path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-        headers
-      });
-      return true;
-    } catch (error46) {
-      if (error46 instanceof IcebergError && error46.status === 404) {
-        return false;
-      }
-      throw error46;
-    }
-  }
-  async createTableIfNotExists(namespace, request) {
-    try {
-      return await this.createTable(namespace, request);
-    } catch (error46) {
-      if (error46 instanceof IcebergError && error46.status === 409) {
-        return await this.loadTable({ namespace: namespace.namespace, name: request.name });
-      }
-      throw error46;
-    }
-  }
-};
-var IcebergRestCatalog = class {
-  constructor(options) {
-    let prefix = "v1";
-    if (options.catalogName) {
-      prefix += `/${options.catalogName}`;
-    }
-    const baseUrl = options.baseUrl.endsWith("/") ? options.baseUrl : `${options.baseUrl}/`;
-    this.client = createFetchClient({
-      baseUrl,
-      auth: options.auth,
-      fetchImpl: options.fetch
-    });
-    this.accessDelegation = options.accessDelegation?.join(",");
-    this.namespaceOps = new NamespaceOperations(this.client, prefix);
-    this.tableOps = new TableOperations(this.client, prefix, this.accessDelegation);
-  }
-  async listNamespaces(parent) {
-    return this.namespaceOps.listNamespaces(parent);
-  }
-  async createNamespace(id, metadata) {
-    return this.namespaceOps.createNamespace(id, metadata);
-  }
-  async dropNamespace(id) {
-    await this.namespaceOps.dropNamespace(id);
-  }
-  async loadNamespaceMetadata(id) {
-    return this.namespaceOps.loadNamespaceMetadata(id);
-  }
-  async listTables(namespace) {
-    return this.tableOps.listTables(namespace);
-  }
-  async createTable(namespace, request) {
-    return this.tableOps.createTable(namespace, request);
-  }
-  async updateTable(id, request) {
-    return this.tableOps.updateTable(id, request);
-  }
-  async dropTable(id, options) {
-    await this.tableOps.dropTable(id, options);
-  }
-  async loadTable(id) {
-    return this.tableOps.loadTable(id);
-  }
-  async namespaceExists(id) {
-    return this.namespaceOps.namespaceExists(id);
-  }
-  async tableExists(id) {
-    return this.tableOps.tableExists(id);
-  }
-  async createNamespaceIfNotExists(id, metadata) {
-    return this.namespaceOps.createNamespaceIfNotExists(id, metadata);
-  }
-  async createTableIfNotExists(namespace, request) {
-    return this.tableOps.createTableIfNotExists(namespace, request);
-  }
-};
-
-// ../../node_modules/@supabase/storage-js/dist/index.mjs
-var StorageError = class extends Error {
-  constructor(message) {
-    super(message);
-    this.__isStorageError = true;
-    this.name = "StorageError";
-  }
-};
-function isStorageError(error46) {
-  return typeof error46 === "object" && error46 !== null && "__isStorageError" in error46;
-}
-var StorageApiError = class extends StorageError {
-  constructor(message, status, statusCode) {
-    super(message);
-    this.name = "StorageApiError";
-    this.status = status;
-    this.statusCode = statusCode;
-  }
-  toJSON() {
-    return {
-      name: this.name,
-      message: this.message,
-      status: this.status,
-      statusCode: this.statusCode
-    };
-  }
-};
-var StorageUnknownError = class extends StorageError {
-  constructor(message, originalError) {
-    super(message);
-    this.name = "StorageUnknownError";
-    this.originalError = originalError;
-  }
-};
-var resolveFetch$1 = (customFetch) => {
-  if (customFetch)
-    return (...args) => customFetch(...args);
-  return (...args) => fetch(...args);
-};
-var resolveResponse$1 = () => {
-  return Response;
-};
-var recursiveToCamel = (item) => {
-  if (Array.isArray(item))
-    return item.map((el) => recursiveToCamel(el));
-  else if (typeof item === "function" || item !== Object(item))
-    return item;
-  const result = {};
-  Object.entries(item).forEach(([key, value]) => {
-    const newKey = key.replace(/([-_][a-z])/gi, (c) => c.toUpperCase().replace(/[-_]/g, ""));
-    result[newKey] = recursiveToCamel(value);
-  });
-  return result;
-};
-var isPlainObject$1 = (value) => {
-  if (typeof value !== "object" || value === null)
-    return false;
-  const prototype = Object.getPrototypeOf(value);
-  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
-};
-var isValidBucketName = (bucketName) => {
-  if (!bucketName || typeof bucketName !== "string")
-    return false;
-  if (bucketName.length === 0 || bucketName.length > 100)
-    return false;
-  if (bucketName.trim() !== bucketName)
-    return false;
-  if (bucketName.includes("/") || bucketName.includes("\\"))
-    return false;
-  return /^[\w!.\*'() &$@=;:+,?-]+$/.test(bucketName);
-};
-function _typeof(o) {
-  "@babel/helpers - typeof";
-  return _typeof = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
-    return typeof o$1;
-  } : function(o$1) {
-    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-  }, _typeof(o);
-}
-function toPrimitive(t, r) {
-  if (_typeof(t) != "object" || !t)
-    return t;
-  var e = t[Symbol.toPrimitive];
-  if (e !== undefined) {
-    var i = e.call(t, r || "default");
-    if (_typeof(i) != "object")
-      return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (r === "string" ? String : Number)(t);
-}
-function toPropertyKey(t) {
-  var i = toPrimitive(t, "string");
-  return _typeof(i) == "symbol" ? i : i + "";
-}
-function _defineProperty(e, r, t) {
-  return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: true,
-    configurable: true,
-    writable: true
-  }) : e[r] = t, e;
-}
-function ownKeys(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r$1) {
-      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread2(e) {
-  for (var r = 1;r < arguments.length; r++) {
-    var t = arguments[r] != null ? arguments[r] : {};
-    r % 2 ? ownKeys(Object(t), true).forEach(function(r$1) {
-      _defineProperty(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
-    });
-  }
-  return e;
-}
-var _getErrorMessage$1 = (err) => {
-  var _err$error;
-  return err.msg || err.message || err.error_description || (typeof err.error === "string" ? err.error : (_err$error = err.error) === null || _err$error === undefined ? undefined : _err$error.message) || JSON.stringify(err);
-};
-var handleError$1 = async (error46, reject, options) => {
-  if (error46 instanceof await resolveResponse$1() && !(options === null || options === undefined ? undefined : options.noResolveJson))
-    error46.json().then((err) => {
-      const status = error46.status || 500;
-      const statusCode = (err === null || err === undefined ? undefined : err.statusCode) || status + "";
-      reject(new StorageApiError(_getErrorMessage$1(err), status, statusCode));
-    }).catch((err) => {
-      reject(new StorageUnknownError(_getErrorMessage$1(err), err));
-    });
-  else
-    reject(new StorageUnknownError(_getErrorMessage$1(error46), error46));
-};
-var _getRequestParams$1 = (method, options, parameters, body) => {
-  const params = {
-    method,
-    headers: (options === null || options === undefined ? undefined : options.headers) || {}
-  };
-  if (method === "GET" || !body)
-    return params;
-  if (isPlainObject$1(body)) {
-    params.headers = _objectSpread2({ "Content-Type": "application/json" }, options === null || options === undefined ? undefined : options.headers);
-    params.body = JSON.stringify(body);
-  } else
-    params.body = body;
-  if (options === null || options === undefined ? undefined : options.duplex)
-    params.duplex = options.duplex;
-  return _objectSpread2(_objectSpread2({}, params), parameters);
-};
-async function _handleRequest$1(fetcher, method, url2, options, parameters, body) {
-  return new Promise((resolve2, reject) => {
-    fetcher(url2, _getRequestParams$1(method, options, parameters, body)).then((result) => {
-      if (!result.ok)
-        throw result;
-      if (options === null || options === undefined ? undefined : options.noResolveJson)
-        return result;
-      return result.json();
-    }).then((data) => resolve2(data)).catch((error46) => handleError$1(error46, reject, options));
-  });
-}
-async function get(fetcher, url2, options, parameters) {
-  return _handleRequest$1(fetcher, "GET", url2, options, parameters);
-}
-async function post$1(fetcher, url2, body, options, parameters) {
-  return _handleRequest$1(fetcher, "POST", url2, options, parameters, body);
-}
-async function put(fetcher, url2, body, options, parameters) {
-  return _handleRequest$1(fetcher, "PUT", url2, options, parameters, body);
-}
-async function head(fetcher, url2, options, parameters) {
-  return _handleRequest$1(fetcher, "HEAD", url2, _objectSpread2(_objectSpread2({}, options), {}, { noResolveJson: true }), parameters);
-}
-async function remove(fetcher, url2, body, options, parameters) {
-  return _handleRequest$1(fetcher, "DELETE", url2, options, parameters, body);
-}
-var StreamDownloadBuilder = class {
-  constructor(downloadFn, shouldThrowOnError) {
-    this.downloadFn = downloadFn;
-    this.shouldThrowOnError = shouldThrowOnError;
-  }
-  then(onfulfilled, onrejected) {
-    return this.execute().then(onfulfilled, onrejected);
-  }
-  async execute() {
-    var _this = this;
-    try {
-      return {
-        data: (await _this.downloadFn()).body,
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-};
-var _Symbol$toStringTag;
-_Symbol$toStringTag = Symbol.toStringTag;
-var BlobDownloadBuilder = class {
-  constructor(downloadFn, shouldThrowOnError) {
-    this.downloadFn = downloadFn;
-    this.shouldThrowOnError = shouldThrowOnError;
-    this[_Symbol$toStringTag] = "BlobDownloadBuilder";
-    this.promise = null;
-  }
-  asStream() {
-    return new StreamDownloadBuilder(this.downloadFn, this.shouldThrowOnError);
-  }
-  then(onfulfilled, onrejected) {
-    return this.getPromise().then(onfulfilled, onrejected);
-  }
-  catch(onrejected) {
-    return this.getPromise().catch(onrejected);
-  }
-  finally(onfinally) {
-    return this.getPromise().finally(onfinally);
-  }
-  getPromise() {
-    if (!this.promise)
-      this.promise = this.execute();
-    return this.promise;
-  }
-  async execute() {
-    var _this = this;
-    try {
-      return {
-        data: await (await _this.downloadFn()).blob(),
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-};
-var DEFAULT_SEARCH_OPTIONS = {
-  limit: 100,
-  offset: 0,
-  sortBy: {
-    column: "name",
-    order: "asc"
-  }
-};
-var DEFAULT_FILE_OPTIONS = {
-  cacheControl: "3600",
-  contentType: "text/plain;charset=UTF-8",
-  upsert: false
-};
-var StorageFileApi = class {
-  constructor(url2, headers = {}, bucketId, fetch$1) {
-    this.shouldThrowOnError = false;
-    this.url = url2;
-    this.headers = headers;
-    this.bucketId = bucketId;
-    this.fetch = resolveFetch$1(fetch$1);
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  async uploadOrUpdate(method, path2, fileBody, fileOptions) {
-    var _this = this;
-    try {
-      let body;
-      const options = _objectSpread2(_objectSpread2({}, DEFAULT_FILE_OPTIONS), fileOptions);
-      let headers = _objectSpread2(_objectSpread2({}, _this.headers), method === "POST" && { "x-upsert": String(options.upsert) });
-      const metadata = options.metadata;
-      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
-        body = new FormData;
-        body.append("cacheControl", options.cacheControl);
-        if (metadata)
-          body.append("metadata", _this.encodeMetadata(metadata));
-        body.append("", fileBody);
-      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
-        body = fileBody;
-        if (!body.has("cacheControl"))
-          body.append("cacheControl", options.cacheControl);
-        if (metadata && !body.has("metadata"))
-          body.append("metadata", _this.encodeMetadata(metadata));
-      } else {
-        body = fileBody;
-        headers["cache-control"] = `max-age=${options.cacheControl}`;
-        headers["content-type"] = options.contentType;
-        if (metadata)
-          headers["x-metadata"] = _this.toBase64(_this.encodeMetadata(metadata));
-        if ((typeof ReadableStream !== "undefined" && body instanceof ReadableStream || body && typeof body === "object" && ("pipe" in body) && typeof body.pipe === "function") && !options.duplex)
-          options.duplex = "half";
-      }
-      if (fileOptions === null || fileOptions === undefined ? undefined : fileOptions.headers)
-        headers = _objectSpread2(_objectSpread2({}, headers), fileOptions.headers);
-      const cleanPath = _this._removeEmptyFolders(path2);
-      const _path = _this._getFinalPath(cleanPath);
-      const data = await (method == "PUT" ? put : post$1)(_this.fetch, `${_this.url}/object/${_path}`, body, _objectSpread2({ headers }, (options === null || options === undefined ? undefined : options.duplex) ? { duplex: options.duplex } : {}));
-      return {
-        data: {
-          path: cleanPath,
-          id: data.Id,
-          fullPath: data.Key
-        },
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async upload(path2, fileBody, fileOptions) {
-    return this.uploadOrUpdate("POST", path2, fileBody, fileOptions);
-  }
-  async uploadToSignedUrl(path2, token, fileBody, fileOptions) {
-    var _this3 = this;
-    const cleanPath = _this3._removeEmptyFolders(path2);
-    const _path = _this3._getFinalPath(cleanPath);
-    const url2 = new URL(_this3.url + `/object/upload/sign/${_path}`);
-    url2.searchParams.set("token", token);
-    try {
-      let body;
-      const options = _objectSpread2({ upsert: DEFAULT_FILE_OPTIONS.upsert }, fileOptions);
-      const headers = _objectSpread2(_objectSpread2({}, _this3.headers), { "x-upsert": String(options.upsert) });
-      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
-        body = new FormData;
-        body.append("cacheControl", options.cacheControl);
-        body.append("", fileBody);
-      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
-        body = fileBody;
-        body.append("cacheControl", options.cacheControl);
-      } else {
-        body = fileBody;
-        headers["cache-control"] = `max-age=${options.cacheControl}`;
-        headers["content-type"] = options.contentType;
-      }
-      return {
-        data: {
-          path: cleanPath,
-          fullPath: (await put(_this3.fetch, url2.toString(), body, { headers })).Key
-        },
-        error: null
-      };
-    } catch (error46) {
-      if (_this3.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async createSignedUploadUrl(path2, options) {
-    var _this4 = this;
-    try {
-      let _path = _this4._getFinalPath(path2);
-      const headers = _objectSpread2({}, _this4.headers);
-      if (options === null || options === undefined ? undefined : options.upsert)
-        headers["x-upsert"] = "true";
-      const data = await post$1(_this4.fetch, `${_this4.url}/object/upload/sign/${_path}`, {}, { headers });
-      const url2 = new URL(_this4.url + data.url);
-      const token = url2.searchParams.get("token");
-      if (!token)
-        throw new StorageError("No token returned by API");
-      return {
-        data: {
-          signedUrl: url2.toString(),
-          path: path2,
-          token
-        },
-        error: null
-      };
-    } catch (error46) {
-      if (_this4.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async update(path2, fileBody, fileOptions) {
-    return this.uploadOrUpdate("PUT", path2, fileBody, fileOptions);
-  }
-  async move(fromPath, toPath, options) {
-    var _this6 = this;
-    try {
-      return {
-        data: await post$1(_this6.fetch, `${_this6.url}/object/move`, {
-          bucketId: _this6.bucketId,
-          sourceKey: fromPath,
-          destinationKey: toPath,
-          destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
-        }, { headers: _this6.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this6.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async copy(fromPath, toPath, options) {
-    var _this7 = this;
-    try {
-      return {
-        data: { path: (await post$1(_this7.fetch, `${_this7.url}/object/copy`, {
-          bucketId: _this7.bucketId,
-          sourceKey: fromPath,
-          destinationKey: toPath,
-          destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
-        }, { headers: _this7.headers })).Key },
-        error: null
-      };
-    } catch (error46) {
-      if (_this7.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async createSignedUrl(path2, expiresIn, options) {
-    var _this8 = this;
-    try {
-      let _path = _this8._getFinalPath(path2);
-      let data = await post$1(_this8.fetch, `${_this8.url}/object/sign/${_path}`, _objectSpread2({ expiresIn }, (options === null || options === undefined ? undefined : options.transform) ? { transform: options.transform } : {}), { headers: _this8.headers });
-      const downloadQueryParam = (options === null || options === undefined ? undefined : options.download) ? `&download=${options.download === true ? "" : options.download}` : "";
-      data = { signedUrl: encodeURI(`${_this8.url}${data.signedURL}${downloadQueryParam}`) };
-      return {
-        data,
-        error: null
-      };
-    } catch (error46) {
-      if (_this8.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async createSignedUrls(paths, expiresIn, options) {
-    var _this9 = this;
-    try {
-      const data = await post$1(_this9.fetch, `${_this9.url}/object/sign/${_this9.bucketId}`, {
-        expiresIn,
-        paths
-      }, { headers: _this9.headers });
-      const downloadQueryParam = (options === null || options === undefined ? undefined : options.download) ? `&download=${options.download === true ? "" : options.download}` : "";
-      return {
-        data: data.map((datum) => _objectSpread2(_objectSpread2({}, datum), {}, { signedUrl: datum.signedURL ? encodeURI(`${_this9.url}${datum.signedURL}${downloadQueryParam}`) : null })),
-        error: null
-      };
-    } catch (error46) {
-      if (_this9.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  download(path2, options) {
-    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) !== "undefined" ? "render/image/authenticated" : "object";
-    const transformationQuery = this.transformOptsToQueryString((options === null || options === undefined ? undefined : options.transform) || {});
-    const queryString = transformationQuery ? `?${transformationQuery}` : "";
-    const _path = this._getFinalPath(path2);
-    const downloadFn = () => get(this.fetch, `${this.url}/${renderPath}/${_path}${queryString}`, {
-      headers: this.headers,
-      noResolveJson: true
-    });
-    return new BlobDownloadBuilder(downloadFn, this.shouldThrowOnError);
-  }
-  async info(path2) {
-    var _this10 = this;
-    const _path = _this10._getFinalPath(path2);
-    try {
-      return {
-        data: recursiveToCamel(await get(_this10.fetch, `${_this10.url}/object/info/${_path}`, { headers: _this10.headers })),
-        error: null
-      };
-    } catch (error46) {
-      if (_this10.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async exists(path2) {
-    var _this11 = this;
-    const _path = _this11._getFinalPath(path2);
-    try {
-      await head(_this11.fetch, `${_this11.url}/object/${_path}`, { headers: _this11.headers });
-      return {
-        data: true,
-        error: null
-      };
-    } catch (error46) {
-      if (_this11.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46) && error46 instanceof StorageUnknownError) {
-        const originalError = error46.originalError;
-        if ([400, 404].includes(originalError === null || originalError === undefined ? undefined : originalError.status))
-          return {
-            data: false,
-            error: error46
-          };
-      }
-      throw error46;
-    }
-  }
-  getPublicUrl(path2, options) {
-    const _path = this._getFinalPath(path2);
-    const _queryString = [];
-    const downloadQueryParam = (options === null || options === undefined ? undefined : options.download) ? `download=${options.download === true ? "" : options.download}` : "";
-    if (downloadQueryParam !== "")
-      _queryString.push(downloadQueryParam);
-    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) !== "undefined" ? "render/image" : "object";
-    const transformationQuery = this.transformOptsToQueryString((options === null || options === undefined ? undefined : options.transform) || {});
-    if (transformationQuery !== "")
-      _queryString.push(transformationQuery);
-    let queryString = _queryString.join("&");
-    if (queryString !== "")
-      queryString = `?${queryString}`;
-    return { data: { publicUrl: encodeURI(`${this.url}/${renderPath}/public/${_path}${queryString}`) } };
-  }
-  async remove(paths) {
-    var _this12 = this;
-    try {
-      return {
-        data: await remove(_this12.fetch, `${_this12.url}/object/${_this12.bucketId}`, { prefixes: paths }, { headers: _this12.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this12.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async list(path2, options, parameters) {
-    var _this13 = this;
-    try {
-      const body = _objectSpread2(_objectSpread2(_objectSpread2({}, DEFAULT_SEARCH_OPTIONS), options), {}, { prefix: path2 || "" });
-      return {
-        data: await post$1(_this13.fetch, `${_this13.url}/object/list/${_this13.bucketId}`, body, { headers: _this13.headers }, parameters),
-        error: null
-      };
-    } catch (error46) {
-      if (_this13.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async listV2(options, parameters) {
-    var _this14 = this;
-    try {
-      const body = _objectSpread2({}, options);
-      return {
-        data: await post$1(_this14.fetch, `${_this14.url}/object/list-v2/${_this14.bucketId}`, body, { headers: _this14.headers }, parameters),
-        error: null
-      };
-    } catch (error46) {
-      if (_this14.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  encodeMetadata(metadata) {
-    return JSON.stringify(metadata);
-  }
-  toBase64(data) {
-    if (typeof Buffer !== "undefined")
-      return Buffer.from(data).toString("base64");
-    return btoa(data);
-  }
-  _getFinalPath(path2) {
-    return `${this.bucketId}/${path2.replace(/^\/+/, "")}`;
-  }
-  _removeEmptyFolders(path2) {
-    return path2.replace(/^\/|\/$/g, "").replace(/\/+/g, "/");
-  }
-  transformOptsToQueryString(transform2) {
-    const params = [];
-    if (transform2.width)
-      params.push(`width=${transform2.width}`);
-    if (transform2.height)
-      params.push(`height=${transform2.height}`);
-    if (transform2.resize)
-      params.push(`resize=${transform2.resize}`);
-    if (transform2.format)
-      params.push(`format=${transform2.format}`);
-    if (transform2.quality)
-      params.push(`quality=${transform2.quality}`);
-    return params.join("&");
-  }
-};
-var version2 = "2.89.0";
-var DEFAULT_HEADERS$1 = { "X-Client-Info": `storage-js/${version2}` };
-var StorageBucketApi = class {
-  constructor(url2, headers = {}, fetch$1, opts) {
-    this.shouldThrowOnError = false;
-    const baseUrl = new URL(url2);
-    if (opts === null || opts === undefined ? undefined : opts.useNewHostname) {
-      if (/supabase\.(co|in|red)$/.test(baseUrl.hostname) && !baseUrl.hostname.includes("storage.supabase."))
-        baseUrl.hostname = baseUrl.hostname.replace("supabase.", "storage.supabase.");
-    }
-    this.url = baseUrl.href.replace(/\/$/, "");
-    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS$1), headers);
-    this.fetch = resolveFetch$1(fetch$1);
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  async listBuckets(options) {
-    var _this = this;
-    try {
-      const queryString = _this.listBucketOptionsToQueryString(options);
-      return {
-        data: await get(_this.fetch, `${_this.url}/bucket${queryString}`, { headers: _this.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async getBucket(id) {
-    var _this2 = this;
-    try {
-      return {
-        data: await get(_this2.fetch, `${_this2.url}/bucket/${id}`, { headers: _this2.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this2.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async createBucket(id, options = { public: false }) {
-    var _this3 = this;
-    try {
-      return {
-        data: await post$1(_this3.fetch, `${_this3.url}/bucket`, {
-          id,
-          name: id,
-          type: options.type,
-          public: options.public,
-          file_size_limit: options.fileSizeLimit,
-          allowed_mime_types: options.allowedMimeTypes
-        }, { headers: _this3.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this3.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async updateBucket(id, options) {
-    var _this4 = this;
-    try {
-      return {
-        data: await put(_this4.fetch, `${_this4.url}/bucket/${id}`, {
-          id,
-          name: id,
-          public: options.public,
-          file_size_limit: options.fileSizeLimit,
-          allowed_mime_types: options.allowedMimeTypes
-        }, { headers: _this4.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this4.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async emptyBucket(id) {
-    var _this5 = this;
-    try {
-      return {
-        data: await post$1(_this5.fetch, `${_this5.url}/bucket/${id}/empty`, {}, { headers: _this5.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this5.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async deleteBucket(id) {
-    var _this6 = this;
-    try {
-      return {
-        data: await remove(_this6.fetch, `${_this6.url}/bucket/${id}`, {}, { headers: _this6.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this6.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  listBucketOptionsToQueryString(options) {
-    const params = {};
-    if (options) {
-      if ("limit" in options)
-        params.limit = String(options.limit);
-      if ("offset" in options)
-        params.offset = String(options.offset);
-      if (options.search)
-        params.search = options.search;
-      if (options.sortColumn)
-        params.sortColumn = options.sortColumn;
-      if (options.sortOrder)
-        params.sortOrder = options.sortOrder;
-    }
-    return Object.keys(params).length > 0 ? "?" + new URLSearchParams(params).toString() : "";
-  }
-};
-var StorageAnalyticsClient = class {
-  constructor(url2, headers = {}, fetch$1) {
-    this.shouldThrowOnError = false;
-    this.url = url2.replace(/\/$/, "");
-    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS$1), headers);
-    this.fetch = resolveFetch$1(fetch$1);
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  async createBucket(name) {
-    var _this = this;
-    try {
-      return {
-        data: await post$1(_this.fetch, `${_this.url}/bucket`, { name }, { headers: _this.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async listBuckets(options) {
-    var _this2 = this;
-    try {
-      const queryParams = new URLSearchParams;
-      if ((options === null || options === undefined ? undefined : options.limit) !== undefined)
-        queryParams.set("limit", options.limit.toString());
-      if ((options === null || options === undefined ? undefined : options.offset) !== undefined)
-        queryParams.set("offset", options.offset.toString());
-      if (options === null || options === undefined ? undefined : options.sortColumn)
-        queryParams.set("sortColumn", options.sortColumn);
-      if (options === null || options === undefined ? undefined : options.sortOrder)
-        queryParams.set("sortOrder", options.sortOrder);
-      if (options === null || options === undefined ? undefined : options.search)
-        queryParams.set("search", options.search);
-      const queryString = queryParams.toString();
-      const url2 = queryString ? `${_this2.url}/bucket?${queryString}` : `${_this2.url}/bucket`;
-      return {
-        data: await get(_this2.fetch, url2, { headers: _this2.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this2.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async deleteBucket(bucketName) {
-    var _this3 = this;
-    try {
-      return {
-        data: await remove(_this3.fetch, `${_this3.url}/bucket/${bucketName}`, {}, { headers: _this3.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this3.shouldThrowOnError)
-        throw error46;
-      if (isStorageError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  from(bucketName) {
-    var _this4 = this;
-    if (!isValidBucketName(bucketName))
-      throw new StorageError("Invalid bucket name: File, folder, and bucket names must follow AWS object key naming guidelines and should avoid the use of any other characters.");
-    const catalog = new IcebergRestCatalog({
-      baseUrl: this.url,
-      catalogName: bucketName,
-      auth: {
-        type: "custom",
-        getHeaders: async () => _this4.headers
-      },
-      fetch: this.fetch
-    });
-    const shouldThrowOnError = this.shouldThrowOnError;
-    return new Proxy(catalog, { get(target, prop) {
-      const value = target[prop];
-      if (typeof value !== "function")
-        return value;
-      return async (...args) => {
-        try {
-          return {
-            data: await value.apply(target, args),
-            error: null
-          };
-        } catch (error46) {
-          if (shouldThrowOnError)
-            throw error46;
-          return {
-            data: null,
-            error: error46
-          };
-        }
-      };
-    } });
-  }
-};
-var DEFAULT_HEADERS = {
-  "X-Client-Info": `storage-js/${version2}`,
-  "Content-Type": "application/json"
-};
-var StorageVectorsError = class extends Error {
-  constructor(message) {
-    super(message);
-    this.__isStorageVectorsError = true;
-    this.name = "StorageVectorsError";
-  }
-};
-function isStorageVectorsError(error46) {
-  return typeof error46 === "object" && error46 !== null && "__isStorageVectorsError" in error46;
-}
-var StorageVectorsApiError = class extends StorageVectorsError {
-  constructor(message, status, statusCode) {
-    super(message);
-    this.name = "StorageVectorsApiError";
-    this.status = status;
-    this.statusCode = statusCode;
-  }
-  toJSON() {
-    return {
-      name: this.name,
-      message: this.message,
-      status: this.status,
-      statusCode: this.statusCode
-    };
-  }
-};
-var StorageVectorsUnknownError = class extends StorageVectorsError {
-  constructor(message, originalError) {
-    super(message);
-    this.name = "StorageVectorsUnknownError";
-    this.originalError = originalError;
-  }
-};
-var StorageVectorsErrorCode = /* @__PURE__ */ function(StorageVectorsErrorCode$1) {
-  StorageVectorsErrorCode$1["InternalError"] = "InternalError";
-  StorageVectorsErrorCode$1["S3VectorConflictException"] = "S3VectorConflictException";
-  StorageVectorsErrorCode$1["S3VectorNotFoundException"] = "S3VectorNotFoundException";
-  StorageVectorsErrorCode$1["S3VectorBucketNotEmpty"] = "S3VectorBucketNotEmpty";
-  StorageVectorsErrorCode$1["S3VectorMaxBucketsExceeded"] = "S3VectorMaxBucketsExceeded";
-  StorageVectorsErrorCode$1["S3VectorMaxIndexesExceeded"] = "S3VectorMaxIndexesExceeded";
-  return StorageVectorsErrorCode$1;
-}({});
-var resolveFetch = (customFetch) => {
-  if (customFetch)
-    return (...args) => customFetch(...args);
-  return (...args) => fetch(...args);
-};
-var resolveResponse = () => {
-  return Response;
-};
-var isPlainObject3 = (value) => {
-  if (typeof value !== "object" || value === null)
-    return false;
-  const prototype = Object.getPrototypeOf(value);
-  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
-};
-var normalizeToFloat32 = (values) => {
-  return Array.from(new Float32Array(values));
-};
-var validateVectorDimension = (vector, expectedDimension) => {
-  if (expectedDimension !== undefined && vector.float32.length !== expectedDimension)
-    throw new Error(`Vector dimension mismatch: expected ${expectedDimension}, got ${vector.float32.length}`);
-};
-var _getErrorMessage = (err) => err.msg || err.message || err.error_description || err.error || JSON.stringify(err);
-var handleError = async (error46, reject, options) => {
-  if (error46 && typeof error46 === "object" && "status" in error46 && "ok" in error46 && typeof error46.status === "number" && !(options === null || options === undefined ? undefined : options.noResolveJson)) {
-    const status = error46.status || 500;
-    const responseError = error46;
-    if (typeof responseError.json === "function")
-      responseError.json().then((err) => {
-        const statusCode = (err === null || err === undefined ? undefined : err.statusCode) || (err === null || err === undefined ? undefined : err.code) || status + "";
-        reject(new StorageVectorsApiError(_getErrorMessage(err), status, statusCode));
-      }).catch(() => {
-        const statusCode = status + "";
-        reject(new StorageVectorsApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode));
-      });
-    else {
-      const statusCode = status + "";
-      reject(new StorageVectorsApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode));
-    }
-  } else
-    reject(new StorageVectorsUnknownError(_getErrorMessage(error46), error46));
-};
-var _getRequestParams = (method, options, parameters, body) => {
-  const params = {
-    method,
-    headers: (options === null || options === undefined ? undefined : options.headers) || {}
-  };
-  if (method === "GET" || !body)
-    return params;
-  if (isPlainObject3(body)) {
-    params.headers = _objectSpread2({ "Content-Type": "application/json" }, options === null || options === undefined ? undefined : options.headers);
-    params.body = JSON.stringify(body);
-  } else
-    params.body = body;
-  return _objectSpread2(_objectSpread2({}, params), parameters);
-};
-async function _handleRequest(fetcher, method, url2, options, parameters, body) {
-  return new Promise((resolve2, reject) => {
-    fetcher(url2, _getRequestParams(method, options, parameters, body)).then((result) => {
-      if (!result.ok)
-        throw result;
-      if (options === null || options === undefined ? undefined : options.noResolveJson)
-        return result;
-      const contentType = result.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json"))
-        return {};
-      return result.json();
-    }).then((data) => resolve2(data)).catch((error46) => handleError(error46, reject, options));
-  });
-}
-async function post(fetcher, url2, body, options, parameters) {
-  return _handleRequest(fetcher, "POST", url2, options, parameters, body);
-}
-var VectorIndexApi = class {
-  constructor(url2, headers = {}, fetch$1) {
-    this.shouldThrowOnError = false;
-    this.url = url2.replace(/\/$/, "");
-    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS), headers);
-    this.fetch = resolveFetch(fetch$1);
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  async createIndex(options) {
-    var _this = this;
-    try {
-      return {
-        data: await post(_this.fetch, `${_this.url}/CreateIndex`, options, { headers: _this.headers }) || {},
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async getIndex(vectorBucketName, indexName) {
-    var _this2 = this;
-    try {
-      return {
-        data: await post(_this2.fetch, `${_this2.url}/GetIndex`, {
-          vectorBucketName,
-          indexName
-        }, { headers: _this2.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this2.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async listIndexes(options) {
-    var _this3 = this;
-    try {
-      return {
-        data: await post(_this3.fetch, `${_this3.url}/ListIndexes`, options, { headers: _this3.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this3.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async deleteIndex(vectorBucketName, indexName) {
-    var _this4 = this;
-    try {
-      return {
-        data: await post(_this4.fetch, `${_this4.url}/DeleteIndex`, {
-          vectorBucketName,
-          indexName
-        }, { headers: _this4.headers }) || {},
-        error: null
-      };
-    } catch (error46) {
-      if (_this4.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-};
-var VectorDataApi = class {
-  constructor(url2, headers = {}, fetch$1) {
-    this.shouldThrowOnError = false;
-    this.url = url2.replace(/\/$/, "");
-    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS), headers);
-    this.fetch = resolveFetch(fetch$1);
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  async putVectors(options) {
-    var _this = this;
-    try {
-      if (options.vectors.length < 1 || options.vectors.length > 500)
-        throw new Error("Vector batch size must be between 1 and 500 items");
-      return {
-        data: await post(_this.fetch, `${_this.url}/PutVectors`, options, { headers: _this.headers }) || {},
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async getVectors(options) {
-    var _this2 = this;
-    try {
-      return {
-        data: await post(_this2.fetch, `${_this2.url}/GetVectors`, options, { headers: _this2.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this2.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async listVectors(options) {
-    var _this3 = this;
-    try {
-      if (options.segmentCount !== undefined) {
-        if (options.segmentCount < 1 || options.segmentCount > 16)
-          throw new Error("segmentCount must be between 1 and 16");
-        if (options.segmentIndex !== undefined) {
-          if (options.segmentIndex < 0 || options.segmentIndex >= options.segmentCount)
-            throw new Error(`segmentIndex must be between 0 and ${options.segmentCount - 1}`);
-        }
-      }
-      return {
-        data: await post(_this3.fetch, `${_this3.url}/ListVectors`, options, { headers: _this3.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this3.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async queryVectors(options) {
-    var _this4 = this;
-    try {
-      return {
-        data: await post(_this4.fetch, `${_this4.url}/QueryVectors`, options, { headers: _this4.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this4.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async deleteVectors(options) {
-    var _this5 = this;
-    try {
-      if (options.keys.length < 1 || options.keys.length > 500)
-        throw new Error("Keys batch size must be between 1 and 500 items");
-      return {
-        data: await post(_this5.fetch, `${_this5.url}/DeleteVectors`, options, { headers: _this5.headers }) || {},
-        error: null
-      };
-    } catch (error46) {
-      if (_this5.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-};
-var VectorBucketApi = class {
-  constructor(url2, headers = {}, fetch$1) {
-    this.shouldThrowOnError = false;
-    this.url = url2.replace(/\/$/, "");
-    this.headers = _objectSpread2(_objectSpread2({}, DEFAULT_HEADERS), headers);
-    this.fetch = resolveFetch(fetch$1);
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  async createBucket(vectorBucketName) {
-    var _this = this;
-    try {
-      return {
-        data: await post(_this.fetch, `${_this.url}/CreateVectorBucket`, { vectorBucketName }, { headers: _this.headers }) || {},
-        error: null
-      };
-    } catch (error46) {
-      if (_this.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async getBucket(vectorBucketName) {
-    var _this2 = this;
-    try {
-      return {
-        data: await post(_this2.fetch, `${_this2.url}/GetVectorBucket`, { vectorBucketName }, { headers: _this2.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this2.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async listBuckets(options = {}) {
-    var _this3 = this;
-    try {
-      return {
-        data: await post(_this3.fetch, `${_this3.url}/ListVectorBuckets`, options, { headers: _this3.headers }),
-        error: null
-      };
-    } catch (error46) {
-      if (_this3.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-  async deleteBucket(vectorBucketName) {
-    var _this4 = this;
-    try {
-      return {
-        data: await post(_this4.fetch, `${_this4.url}/DeleteVectorBucket`, { vectorBucketName }, { headers: _this4.headers }) || {},
-        error: null
-      };
-    } catch (error46) {
-      if (_this4.shouldThrowOnError)
-        throw error46;
-      if (isStorageVectorsError(error46))
-        return {
-          data: null,
-          error: error46
-        };
-      throw error46;
-    }
-  }
-};
-var StorageVectorsClient = class extends VectorBucketApi {
-  constructor(url2, options = {}) {
-    super(url2, options.headers || {}, options.fetch);
-  }
-  from(vectorBucketName) {
-    return new VectorBucketScope(this.url, this.headers, vectorBucketName, this.fetch);
-  }
-  async createBucket(vectorBucketName) {
-    var _superprop_getCreateBucket = () => super.createBucket, _this = this;
-    return _superprop_getCreateBucket().call(_this, vectorBucketName);
-  }
-  async getBucket(vectorBucketName) {
-    var _superprop_getGetBucket = () => super.getBucket, _this2 = this;
-    return _superprop_getGetBucket().call(_this2, vectorBucketName);
-  }
-  async listBuckets(options = {}) {
-    var _superprop_getListBuckets = () => super.listBuckets, _this3 = this;
-    return _superprop_getListBuckets().call(_this3, options);
-  }
-  async deleteBucket(vectorBucketName) {
-    var _superprop_getDeleteBucket = () => super.deleteBucket, _this4 = this;
-    return _superprop_getDeleteBucket().call(_this4, vectorBucketName);
-  }
-};
-var VectorBucketScope = class extends VectorIndexApi {
-  constructor(url2, headers, vectorBucketName, fetch$1) {
-    super(url2, headers, fetch$1);
-    this.vectorBucketName = vectorBucketName;
-  }
-  async createIndex(options) {
-    var _superprop_getCreateIndex = () => super.createIndex, _this5 = this;
-    return _superprop_getCreateIndex().call(_this5, _objectSpread2(_objectSpread2({}, options), {}, { vectorBucketName: _this5.vectorBucketName }));
-  }
-  async listIndexes(options = {}) {
-    var _superprop_getListIndexes = () => super.listIndexes, _this6 = this;
-    return _superprop_getListIndexes().call(_this6, _objectSpread2(_objectSpread2({}, options), {}, { vectorBucketName: _this6.vectorBucketName }));
-  }
-  async getIndex(indexName) {
-    var _superprop_getGetIndex = () => super.getIndex, _this7 = this;
-    return _superprop_getGetIndex().call(_this7, _this7.vectorBucketName, indexName);
-  }
-  async deleteIndex(indexName) {
-    var _superprop_getDeleteIndex = () => super.deleteIndex, _this8 = this;
-    return _superprop_getDeleteIndex().call(_this8, _this8.vectorBucketName, indexName);
-  }
-  index(indexName) {
-    return new VectorIndexScope(this.url, this.headers, this.vectorBucketName, indexName, this.fetch);
-  }
-};
-var VectorIndexScope = class extends VectorDataApi {
-  constructor(url2, headers, vectorBucketName, indexName, fetch$1) {
-    super(url2, headers, fetch$1);
-    this.vectorBucketName = vectorBucketName;
-    this.indexName = indexName;
-  }
-  async putVectors(options) {
-    var _superprop_getPutVectors = () => super.putVectors, _this9 = this;
-    return _superprop_getPutVectors().call(_this9, _objectSpread2(_objectSpread2({}, options), {}, {
-      vectorBucketName: _this9.vectorBucketName,
-      indexName: _this9.indexName
-    }));
-  }
-  async getVectors(options) {
-    var _superprop_getGetVectors = () => super.getVectors, _this10 = this;
-    return _superprop_getGetVectors().call(_this10, _objectSpread2(_objectSpread2({}, options), {}, {
-      vectorBucketName: _this10.vectorBucketName,
-      indexName: _this10.indexName
-    }));
-  }
-  async listVectors(options = {}) {
-    var _superprop_getListVectors = () => super.listVectors, _this11 = this;
-    return _superprop_getListVectors().call(_this11, _objectSpread2(_objectSpread2({}, options), {}, {
-      vectorBucketName: _this11.vectorBucketName,
-      indexName: _this11.indexName
-    }));
-  }
-  async queryVectors(options) {
-    var _superprop_getQueryVectors = () => super.queryVectors, _this12 = this;
-    return _superprop_getQueryVectors().call(_this12, _objectSpread2(_objectSpread2({}, options), {}, {
-      vectorBucketName: _this12.vectorBucketName,
-      indexName: _this12.indexName
-    }));
-  }
-  async deleteVectors(options) {
-    var _superprop_getDeleteVectors = () => super.deleteVectors, _this13 = this;
-    return _superprop_getDeleteVectors().call(_this13, _objectSpread2(_objectSpread2({}, options), {}, {
-      vectorBucketName: _this13.vectorBucketName,
-      indexName: _this13.indexName
-    }));
-  }
-};
-var StorageClient = class extends StorageBucketApi {
-  constructor(url2, headers = {}, fetch$1, opts) {
-    super(url2, headers, fetch$1, opts);
-  }
-  from(id) {
-    return new StorageFileApi(this.url, this.headers, id, this.fetch);
-  }
-  get vectors() {
-    return new StorageVectorsClient(this.url + "/vector", {
-      headers: this.headers,
-      fetch: this.fetch
-    });
-  }
-  get analytics() {
-    return new StorageAnalyticsClient(this.url + "/iceberg", this.headers, this.fetch);
-  }
-};
-
-// ../../node_modules/@supabase/supabase-js/dist/index.mjs
-var import_auth_js = __toESM(require_main3(), 1);
-__reExport(exports_dist3, __toESM(require_main2(), 1), module.exports);
-__reExport(exports_dist3, __toESM(require_main3(), 1), module.exports);
-var version3 = "2.89.0";
-var JS_ENV = "";
-if (typeof Deno !== "undefined")
-  JS_ENV = "deno";
-else if (typeof document !== "undefined")
-  JS_ENV = "web";
-else if (typeof navigator !== "undefined" && navigator.product === "ReactNative")
-  JS_ENV = "react-native";
-else
-  JS_ENV = "node";
-var DEFAULT_HEADERS2 = { "X-Client-Info": `supabase-js-${JS_ENV}/${version3}` };
-var DEFAULT_GLOBAL_OPTIONS = { headers: DEFAULT_HEADERS2 };
-var DEFAULT_DB_OPTIONS = { schema: "public" };
-var DEFAULT_AUTH_OPTIONS = {
-  autoRefreshToken: true,
-  persistSession: true,
-  detectSessionInUrl: true,
-  flowType: "implicit"
-};
-var DEFAULT_REALTIME_OPTIONS = {};
-function _typeof2(o) {
-  "@babel/helpers - typeof";
-  return _typeof2 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
-    return typeof o$1;
-  } : function(o$1) {
-    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-  }, _typeof2(o);
-}
-function toPrimitive2(t, r) {
-  if (_typeof2(t) != "object" || !t)
-    return t;
-  var e = t[Symbol.toPrimitive];
-  if (e !== undefined) {
-    var i = e.call(t, r || "default");
-    if (_typeof2(i) != "object")
-      return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (r === "string" ? String : Number)(t);
-}
-function toPropertyKey2(t) {
-  var i = toPrimitive2(t, "string");
-  return _typeof2(i) == "symbol" ? i : i + "";
-}
-function _defineProperty2(e, r, t) {
-  return (r = toPropertyKey2(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: true,
-    configurable: true,
-    writable: true
-  }) : e[r] = t, e;
-}
-function ownKeys2(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r$1) {
-      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread22(e) {
-  for (var r = 1;r < arguments.length; r++) {
-    var t = arguments[r] != null ? arguments[r] : {};
-    r % 2 ? ownKeys2(Object(t), true).forEach(function(r$1) {
-      _defineProperty2(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys2(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
-    });
-  }
-  return e;
-}
-var resolveFetch2 = (customFetch) => {
-  if (customFetch)
-    return (...args) => customFetch(...args);
-  return (...args) => fetch(...args);
-};
-var resolveHeadersConstructor = () => {
-  return Headers;
-};
-var fetchWithAuth = (supabaseKey, getAccessToken, customFetch) => {
-  const fetch$1 = resolveFetch2(customFetch);
-  const HeadersConstructor = resolveHeadersConstructor();
-  return async (input, init) => {
-    var _await$getAccessToken;
-    const accessToken = (_await$getAccessToken = await getAccessToken()) !== null && _await$getAccessToken !== undefined ? _await$getAccessToken : supabaseKey;
-    let headers = new HeadersConstructor(init === null || init === undefined ? undefined : init.headers);
-    if (!headers.has("apikey"))
-      headers.set("apikey", supabaseKey);
-    if (!headers.has("Authorization"))
-      headers.set("Authorization", `Bearer ${accessToken}`);
-    return fetch$1(input, _objectSpread22(_objectSpread22({}, init), {}, { headers }));
-  };
-};
-function ensureTrailingSlash(url2) {
-  return url2.endsWith("/") ? url2 : url2 + "/";
-}
-function applySettingDefaults(options, defaults) {
-  var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header;
-  const { db: dbOptions, auth: authOptions, realtime: realtimeOptions, global: globalOptions } = options;
-  const { db: DEFAULT_DB_OPTIONS$1, auth: DEFAULT_AUTH_OPTIONS$1, realtime: DEFAULT_REALTIME_OPTIONS$1, global: DEFAULT_GLOBAL_OPTIONS$1 } = defaults;
-  const result = {
-    db: _objectSpread22(_objectSpread22({}, DEFAULT_DB_OPTIONS$1), dbOptions),
-    auth: _objectSpread22(_objectSpread22({}, DEFAULT_AUTH_OPTIONS$1), authOptions),
-    realtime: _objectSpread22(_objectSpread22({}, DEFAULT_REALTIME_OPTIONS$1), realtimeOptions),
-    storage: {},
-    global: _objectSpread22(_objectSpread22(_objectSpread22({}, DEFAULT_GLOBAL_OPTIONS$1), globalOptions), {}, { headers: _objectSpread22(_objectSpread22({}, (_DEFAULT_GLOBAL_OPTIO = DEFAULT_GLOBAL_OPTIONS$1 === null || DEFAULT_GLOBAL_OPTIONS$1 === undefined ? undefined : DEFAULT_GLOBAL_OPTIONS$1.headers) !== null && _DEFAULT_GLOBAL_OPTIO !== undefined ? _DEFAULT_GLOBAL_OPTIO : {}), (_globalOptions$header = globalOptions === null || globalOptions === undefined ? undefined : globalOptions.headers) !== null && _globalOptions$header !== undefined ? _globalOptions$header : {}) }),
-    accessToken: async () => ""
-  };
-  if (options.accessToken)
-    result.accessToken = options.accessToken;
-  else
-    delete result.accessToken;
-  return result;
-}
-function validateSupabaseUrl(supabaseUrl) {
-  const trimmedUrl = supabaseUrl === null || supabaseUrl === undefined ? undefined : supabaseUrl.trim();
-  if (!trimmedUrl)
-    throw new Error("supabaseUrl is required.");
-  if (!trimmedUrl.match(/^https?:\/\//i))
-    throw new Error("Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.");
-  try {
-    return new URL(ensureTrailingSlash(trimmedUrl));
-  } catch (_unused) {
-    throw Error("Invalid supabaseUrl: Provided URL is malformed.");
-  }
-}
-var SupabaseAuthClient = class extends import_auth_js.AuthClient {
-  constructor(options) {
-    super(options);
-  }
-};
-var SupabaseClient = class {
-  constructor(supabaseUrl, supabaseKey, options) {
-    var _settings$auth$storag, _settings$global$head;
-    this.supabaseUrl = supabaseUrl;
-    this.supabaseKey = supabaseKey;
-    const baseUrl = validateSupabaseUrl(supabaseUrl);
-    if (!supabaseKey)
-      throw new Error("supabaseKey is required.");
-    this.realtimeUrl = new URL("realtime/v1", baseUrl);
-    this.realtimeUrl.protocol = this.realtimeUrl.protocol.replace("http", "ws");
-    this.authUrl = new URL("auth/v1", baseUrl);
-    this.storageUrl = new URL("storage/v1", baseUrl);
-    this.functionsUrl = new URL("functions/v1", baseUrl);
-    const defaultStorageKey = `sb-${baseUrl.hostname.split(".")[0]}-auth-token`;
-    const DEFAULTS = {
-      db: DEFAULT_DB_OPTIONS,
-      realtime: DEFAULT_REALTIME_OPTIONS,
-      auth: _objectSpread22(_objectSpread22({}, DEFAULT_AUTH_OPTIONS), {}, { storageKey: defaultStorageKey }),
-      global: DEFAULT_GLOBAL_OPTIONS
-    };
-    const settings = applySettingDefaults(options !== null && options !== undefined ? options : {}, DEFAULTS);
-    this.storageKey = (_settings$auth$storag = settings.auth.storageKey) !== null && _settings$auth$storag !== undefined ? _settings$auth$storag : "";
-    this.headers = (_settings$global$head = settings.global.headers) !== null && _settings$global$head !== undefined ? _settings$global$head : {};
-    if (!settings.accessToken) {
-      var _settings$auth;
-      this.auth = this._initSupabaseAuthClient((_settings$auth = settings.auth) !== null && _settings$auth !== undefined ? _settings$auth : {}, this.headers, settings.global.fetch);
-    } else {
-      this.accessToken = settings.accessToken;
-      this.auth = new Proxy({}, { get: (_, prop) => {
-        throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(prop)} is not possible`);
-      } });
-    }
-    this.fetch = fetchWithAuth(supabaseKey, this._getAccessToken.bind(this), settings.global.fetch);
-    this.realtime = this._initRealtimeClient(_objectSpread22({
-      headers: this.headers,
-      accessToken: this._getAccessToken.bind(this)
-    }, settings.realtime));
-    if (this.accessToken)
-      this.accessToken().then((token) => this.realtime.setAuth(token)).catch((e) => console.warn("Failed to set initial Realtime auth token:", e));
-    this.rest = new PostgrestClient(new URL("rest/v1", baseUrl).href, {
-      headers: this.headers,
-      schema: settings.db.schema,
-      fetch: this.fetch
-    });
-    this.storage = new StorageClient(this.storageUrl.href, this.headers, this.fetch, options === null || options === undefined ? undefined : options.storage);
-    if (!settings.accessToken)
-      this._listenForAuthEvents();
-  }
-  get functions() {
-    return new import_functions_js.FunctionsClient(this.functionsUrl.href, {
-      headers: this.headers,
-      customFetch: this.fetch
-    });
-  }
-  from(relation) {
-    return this.rest.from(relation);
-  }
-  schema(schema) {
-    return this.rest.schema(schema);
-  }
-  rpc(fn, args = {}, options = {
-    head: false,
-    get: false,
-    count: undefined
-  }) {
-    return this.rest.rpc(fn, args, options);
-  }
-  channel(name, opts = { config: {} }) {
-    return this.realtime.channel(name, opts);
-  }
-  getChannels() {
-    return this.realtime.getChannels();
-  }
-  removeChannel(channel) {
-    return this.realtime.removeChannel(channel);
-  }
-  removeAllChannels() {
-    return this.realtime.removeAllChannels();
-  }
-  async _getAccessToken() {
-    var _this = this;
-    var _data$session$access_, _data$session;
-    if (_this.accessToken)
-      return await _this.accessToken();
-    const { data } = await _this.auth.getSession();
-    return (_data$session$access_ = (_data$session = data.session) === null || _data$session === undefined ? undefined : _data$session.access_token) !== null && _data$session$access_ !== undefined ? _data$session$access_ : _this.supabaseKey;
-  }
-  _initSupabaseAuthClient({ autoRefreshToken, persistSession, detectSessionInUrl, storage, userStorage, storageKey, flowType, lock, debug, throwOnError }, headers, fetch$1) {
-    const authHeaders = {
-      Authorization: `Bearer ${this.supabaseKey}`,
-      apikey: `${this.supabaseKey}`
-    };
-    return new SupabaseAuthClient({
-      url: this.authUrl.href,
-      headers: _objectSpread22(_objectSpread22({}, authHeaders), headers),
-      storageKey,
-      autoRefreshToken,
-      persistSession,
-      detectSessionInUrl,
-      storage,
-      userStorage,
-      flowType,
-      lock,
-      debug,
-      throwOnError,
-      fetch: fetch$1,
-      hasCustomAuthorizationHeader: Object.keys(this.headers).some((key) => key.toLowerCase() === "authorization")
-    });
-  }
-  _initRealtimeClient(options) {
-    return new import_realtime_js.RealtimeClient(this.realtimeUrl.href, _objectSpread22(_objectSpread22({}, options), {}, { params: _objectSpread22(_objectSpread22({}, { apikey: this.supabaseKey }), options === null || options === undefined ? undefined : options.params) }));
-  }
-  _listenForAuthEvents() {
-    return this.auth.onAuthStateChange((event, session) => {
-      this._handleTokenChanged(event, "CLIENT", session === null || session === undefined ? undefined : session.access_token);
-    });
-  }
-  _handleTokenChanged(event, source, token) {
-    if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN") && this.changedAccessToken !== token) {
-      this.changedAccessToken = token;
-      this.realtime.setAuth(token);
-    } else if (event === "SIGNED_OUT") {
-      this.realtime.setAuth();
-      if (source == "STORAGE")
-        this.auth.signOut();
-      this.changedAccessToken = undefined;
-    }
-  }
-};
-var createClient = (supabaseUrl, supabaseKey, options) => {
-  return new SupabaseClient(supabaseUrl, supabaseKey, options);
-};
-function shouldShowDeprecationWarning() {
-  if (typeof window !== "undefined")
-    return false;
-  if (typeof process === "undefined")
-    return false;
-  const processVersion = process["version"];
-  if (processVersion === undefined || processVersion === null)
-    return false;
-  const versionMatch = processVersion.match(/^v(\d+)\./);
-  if (!versionMatch)
-    return false;
-  return parseInt(versionMatch[1], 10) <= 18;
-}
-if (shouldShowDeprecationWarning())
-  console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
-
-// src/supabase/client.ts
-function createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey) {
-  return createClientImpl(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      autoRefreshToken: true,
-      persistSession: false
-    }
-  });
-}
-async function createOnDemandClient(options = {}) {
-  const createClientImpl = options.createClientImpl ?? createClient;
-  const loadSession = options.loadSession ?? loadAuthSession;
-  const supabaseUrl = options.supabaseUrl ?? SUPABASE_URL;
-  const supabaseAnonKey = options.supabaseAnonKey ?? SUPABASE_ANON_KEY;
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return null;
-  }
-  const session = await loadSession();
-  if (!session) {
-    return null;
-  }
-  const client = createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey);
-  const { error: error46 } = await client.auth.setSession({
-    access_token: session.accessToken,
-    refresh_token: session.refreshToken
-  });
-  if (error46) {
-    return null;
-  }
-  return {
-    client,
-    dispose: async () => {
-      await client.removeAllChannels();
-    }
-  };
 }
 
 // src/codex/discovery.ts
@@ -43183,7 +43220,13 @@ async function createWorkspaceResponse(input) {
       throw new Error("workspaceId must be a non-empty string");
     }
     await verifyWorkspaceMembership(trimmedWorkspaceId);
-    await saveActiveWorkspaceBinding(trimmedWorkspaceId);
+    let workspaceName;
+    try {
+      workspaceName = await input.resolveWorkspaceName?.(trimmedWorkspaceId);
+    } catch {
+      workspaceName = undefined;
+    }
+    await saveActiveWorkspaceBinding(trimmedWorkspaceId, workspaceName);
   }
   const [authSession, workspaceBinding] = await Promise.all([
     loadAuthSession(),
@@ -43233,13 +43276,17 @@ function createHealthResponse(options = {}) {
 function createServer(options = {}) {
   const name = assertRequiredOption("name", options.name ?? ZEST_CODEX_SERVER_NAME);
   const healthResponse = createHealthResponse(options);
-  const login = options.login ?? (() => loginWithDeviceFlow());
+  const resolveWorkspaceNameWithFallback = options.resolveWorkspaceName ?? resolveWorkspaceName;
+  const login = options.login ?? (() => loginWithDeviceFlow({ resolveWorkspaceName: resolveWorkspaceNameWithFallback }));
   const logout = options.logout ?? (() => createLogoutResponse());
   const privacy = options.privacy ?? (() => createPrivacyResponse());
   const status = options.status ?? (() => createStatusResponse());
   const sync = options.sync ?? (() => runSync());
   const updateCheck = options.updateCheck ?? (() => getBestEffortUpdateMetadata({ currentVersion: healthResponse.version }));
-  const workspace = options.workspace ?? ((input) => createWorkspaceResponse(input));
+  const workspace = options.workspace ?? ((input) => createWorkspaceResponse({
+    ...input,
+    resolveWorkspaceName: resolveWorkspaceNameWithFallback
+  }));
   const server = new McpServer({
     name,
     version: healthResponse.version
@@ -43306,4 +43353,4 @@ main().catch((error46) => {
   process.exit(1);
 });
 
-//# debugId=ED1233A5CDB7EC6E64756E2164756E21
+//# debugId=9139A1C0B771BFBC64756E2164756E21

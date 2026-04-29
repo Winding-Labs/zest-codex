@@ -7,4 +7,4 @@ metadata:
 
 Run the `status` MCP tool.
 
-Summarize whether the user is authenticated, whether a workspace is bound, and whether sync is ready. If readiness is blocked, name the blocking reason.
+Summarize whether the user is authenticated, whether a workspace is bound, and whether sync is ready. When a workspace is present, mention `workspace.name` first and fall back to `workspace.id` only if the name is unavailable. If readiness is blocked, name the blocking reason.
