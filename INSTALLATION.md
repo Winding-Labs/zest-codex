@@ -2,60 +2,34 @@
 
 ## Recommended Install
 
-As long as the official public Plugin Directory is not supported ([docs](https://developers.openai.com/codex/plugins/build#publish-official-public-plugins)) this is the easiest path for most users.
+Install Zest by adding the Zest Git marketplace in Codex.
 
-### 1. Run the installer
+### 1. Add the marketplace
 
-Either double-click the `install.sh` or go into the release folder and run:
+Open Codex Plugins, choose `Add marketplace`, and use:
 
-```bash
-bash install.sh
+```text
+Source: Winding-Labs/zest-codex
+Git ref: main
 ```
 
-The installer installs the plugin at personal level for the current user.
+Leave sparse paths empty. The Zest marketplace repository is intentionally small, so a full checkout is the simplest and most reliable default.
 
-What it does for you:
+### 2. Install Zest
 
-- copies the plugin files
-- rewrites the installed `.mcp.json` so the bundled MCP server uses an absolute path
-- removes the stale `~/.codex/plugins/cache/zest-alpha/...` cache if it exists
-- creates or updates the right marketplace file
-- preserves other plugin entries already present in that marketplace
-- creates a backup before changing an existing marketplace file
+After the marketplace is added, Codex should show the `Zest` marketplace and the `Zest` plugin.
 
-### 2. Restart Codex
+Install or enable `Zest`.
+
+### 3. Restart Codex
 
 Completely quit Codex, then open it again.
 
-This refreshes the local plugin marketplace.
-
-### 3. Install or enable the plugin
-
-After restart, Codex should see the local Zest plugin.
-
-- Codex desktop app: Go to plugins and select the `Zest Alpha` marketplace. Zest plugin should appear - install it.
-- Codex CLI - run `/plugins` and install.
-
-If Codex shows plugin installation options, install or enable `Zest`.
+This refreshes plugin skills and the local MCP server registration.
 
 ### 4. Make sure the local Zest MCP is enabled
 
-Sometimes, after fresh install, the plugin's MCP server isn't enabled. Verify this using `/mcp` - if Zest doesn't appear as enabled - restart Codex. 
-
-## Install Location
-
-As of April 2, 2026, the official Codex docs split local installs into plugin files and marketplace files:
-
-- plugin payload goes into `.codex/plugins`
-- marketplace configuration lives in `.agents/plugins/marketplace.json`
-
-### Personal level
-
-Use this when the plugin should be available for your user account across repositories.
-
-- plugin files: `~/.codex/plugins/zest`
-- marketplace file: `~/.agents/plugins/marketplace.json`
-- marketplace path: `./.codex/plugins/zest`
+Use `/mcp` and confirm that Zest appears as enabled. If it does not appear, restart Codex once more.
 
 ## First-Time Setup In Codex
 
@@ -79,6 +53,7 @@ In Codex, type `$` to open the skill picker. You should see the Zest skills afte
 
 Available skills in this package:
 
+- `cleanup-legacy-alpha`
 - `login`
 - `logout`
 - `status`
@@ -116,21 +91,88 @@ Explain what the Zest plugin can read and how privacy filtering works
 
 If the Zest skills do not appear after installation, fully quit and reopen Codex once more, then verify that the plugin is installed or enabled.
 
+## Remove Old Zest Alpha
+
+If you migrated from an older `Zest Alpha` install and still see both `Zest` and `Zest Alpha` in Codex, ask Zest to clean up the old install:
+
+```text
+Clean up old Zest Alpha install
+```
+
+This runs the `cleanup_legacy_alpha` MCP tool. It removes only known legacy Zest Alpha artifacts, creates backups before editing Codex config files, and reports whether a full Codex restart is required.
+
+## Updating
+
+Use Codex marketplace upgrade for the `zest` marketplace when a new version is published.
+
+The plugin also performs a passive best-effort update check before each MCP tool call except `sync`. If a newer version is available, tool responses may include an `update` object with `available`, `latestVersion`, `downloadUrl`, `checkedAt`, `upgradeCommand`, and `instructions`.
+
+When `available` is `true`, update Zest with:
+
+```bash
+codex plugin marketplace upgrade zest
+```
+
+## Optional Sparse Checkout
+
+Sparse paths are optional. They tell Codex to fetch only specific paths from the Git repository.
+
+Because `Winding-Labs/zest-codex` is a small marketplace repository, leave sparse paths empty unless you are debugging checkout behavior. If needed, these paths are enough:
+
+```text
+.agents/plugins
+plugins/zest
+package.json
+INSTALLATION.md
+```
+
+## Legacy ZIP Fallback
+
+For one release after marketplace-first distribution ships, Zest still publishes a ZIP fallback.
+
+Use this only when the Git marketplace flow is unavailable, for example:
+
+- your Codex build does not support `Add marketplace`
+- Git access is blocked in your environment
+- support asks you to verify the legacy path
+
+From the unzipped release folder, run:
+
+```bash
+bash install.sh
+```
+
+The legacy installer installs the plugin at personal level for the current user.
+
+What it does:
+
+- copies the plugin files
+- rewrites the installed `.mcp.json` so the bundled MCP server uses an absolute path
+- removes stale `~/.codex/plugins/cache/zest-alpha/...` cache from older prerelease installs if it exists
+- creates or updates the right marketplace file
+- preserves other plugin entries already present in that marketplace
+- creates a backup before changing an existing marketplace file
+
+After running the legacy installer, restart Codex and install or enable `Zest` from the `Zest` marketplace.
+
 ## Troubleshooting
 
 ### The MCP is not enabled
 
-Sometimes, after fresh installation, the plugin's MCP server isn't enabled. Verify this using `/mcp` - if Zest doesn't appear as enabled - restart Codex. 
+Use `/mcp` and confirm that Zest appears as enabled. If Zest does not appear, restart Codex.
 
 ### The plugin does not appear in Codex
 
 Check all of these:
 
-- the plugin files were copied to `~/.codex/plugins/zest`
-- `~/.agents/plugins/marketplace.json` exists and includes the Zest entry
+- the `Zest` marketplace was added successfully
+- `Zest` is installed or enabled from that marketplace
 - you restarted Codex after installing
 
-If you are reinstalling over an older alpha build, the installer also clears the legacy `~/.codex/plugins/cache/zest-alpha/...` cache to avoid Codex starting a stale copy of the plugin.
+If you used the legacy ZIP fallback, also check:
+
+- the plugin files were copied to `~/.codex/plugins/zest`
+- `~/.agents/plugins/marketplace.json` exists and includes the Zest entry
 
 ### Login opens the wrong website
 
@@ -140,17 +182,15 @@ The package may have been built against the wrong environment. Ask the sender fo
 
 The plugin runs a local Node-based MCP server. Install Node and then restart Codex.
 
-### I want to install manually instead of using `install.sh`
-
-You can do that, but make sure you keep the plugin files and the marketplace file in the correct personal-install locations.
-
-If you install manually, update the plugin's `.mcp.json` so the `node` argument points to the absolute path of `dist/mcp/server.js`. Leaving it as `./dist/mcp/server.js` can fail when Codex starts the MCP server from the repository working directory instead of the plugin directory.
-
-If you are replacing an older alpha install, also remove `~/.codex/plugins/cache/zest-alpha` before restarting Codex.
-
 ## Uninstall
 
-To remove the plugin:
+For marketplace installs:
+
+1. remove or disable the `Zest` plugin in Codex
+2. remove the `zest` marketplace if you no longer need it
+3. restart Codex
+
+For legacy ZIP installs:
 
 1. delete the installed plugin folder
 2. remove the Zest entry from the matching marketplace file
@@ -161,6 +201,6 @@ To remove the plugin:
 When reporting an installation issue, send the person who shared the package:
 
 - your operating system
-- whether the plugin folder exists in the target install location
+- whether you used Git marketplace install or ZIP fallback
 - whether Codex was restarted
 - the exact error message, if there is one

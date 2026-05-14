@@ -1,14 +1,14 @@
 {
-  "name": "zest-alpha",
+  "name": "zest",
   "interface": {
-    "displayName": "Zest Alpha"
+    "displayName": "Zest"
   },
   "plugins": [
     {
       "name": "zest",
       "source": {
         "source": "local",
-        "path": "./zest"
+        "path": "./plugins/zest"
       },
       "policy": {
         "installation": "AVAILABLE",
