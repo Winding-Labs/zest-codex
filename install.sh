@@ -4,14 +4,21 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [[ -f "${SCRIPT_DIR}/marketplace.json" && -d "${SCRIPT_DIR}/zest" ]]; then
+if [[ -f "${SCRIPT_DIR}/.agents/plugins/marketplace.json" && -d "${SCRIPT_DIR}/plugins/zest" ]]; then
+  BUNDLE_ROOT="${SCRIPT_DIR}"
+elif [[ -f "${SCRIPT_DIR}/marketplace.json" && -d "${SCRIPT_DIR}/zest" ]]; then
   BUNDLE_ROOT="${SCRIPT_DIR}"
 else
   BUNDLE_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 fi
 
-SOURCE_PLUGIN_DIR="${BUNDLE_ROOT}/zest"
-SOURCE_MARKETPLACE="${BUNDLE_ROOT}/marketplace.json"
+if [[ -d "${BUNDLE_ROOT}/plugins/zest" ]]; then
+  SOURCE_PLUGIN_DIR="${BUNDLE_ROOT}/plugins/zest"
+  SOURCE_MARKETPLACE="${BUNDLE_ROOT}/.agents/plugins/marketplace.json"
+else
+  SOURCE_PLUGIN_DIR="${BUNDLE_ROOT}/zest"
+  SOURCE_MARKETPLACE="${BUNDLE_ROOT}/marketplace.json"
+fi
 SOURCE_PLUGIN_MANIFEST="${SOURCE_PLUGIN_DIR}/.codex-plugin/plugin.json"
 
 if ! command -v node >/dev/null 2>&1; then
