@@ -12,6 +12,7 @@
   "license": "MIT",
   "keywords": ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
   "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Zest",

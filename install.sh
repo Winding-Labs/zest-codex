@@ -176,6 +176,48 @@ fs.writeFileSync(mcpConfigPath, `${JSON.stringify(config, null, 2)}\n`);
 EOF
 }
 
+rewrite_hooks_config() {
+  local target_plugin_dir="$1"
+  local target_hooks_config="${target_plugin_dir}/hooks/hooks.json"
+
+  if [[ ! -f "${target_hooks_config}" ]]; then
+    return
+  fi
+
+  node - "${target_hooks_config}" "${target_plugin_dir}" <<'EOF'
+const fs = require("node:fs");
+const path = require("node:path");
+
+const [hooksConfigPath, pluginDir] = process.argv.slice(2);
+const config = JSON.parse(fs.readFileSync(hooksConfigPath, "utf8"));
+
+for (const eventHooks of Object.values(config.hooks || {})) {
+  if (!Array.isArray(eventHooks)) {
+    continue;
+  }
+
+  for (const matcher of eventHooks) {
+    for (const hook of matcher?.hooks || []) {
+      if (typeof hook?.command !== "string") {
+        continue;
+      }
+
+      hook.command = hook.command.replace(
+        /(["'])\.\/dist\/hooks\/refresh-auth\.js\1/g,
+        `"${path.join(pluginDir, "dist/hooks/refresh-auth.js")}"`,
+      );
+      hook.command = hook.command.replace(
+        /\$\{CLAUDE_PLUGIN_ROOT\}\/dist\/hooks\/refresh-auth\.js/g,
+        path.join(pluginDir, "dist/hooks/refresh-auth.js"),
+      );
+    }
+  }
+}
+
+fs.writeFileSync(hooksConfigPath, `${JSON.stringify(config, null, 2)}\n`);
+EOF
+}
+
 clear_plugin_cache() {
   local cache_root="${HOME}/.codex/plugins/cache"
   local legacy_cache_dir="${cache_root}/zest-alpha/${PLUGIN_NAME}"
@@ -206,6 +248,7 @@ clear_plugin_cache
 mkdir -p "$(dirname "${TARGET_PLUGIN_DIR}")"
 cp -R "${SOURCE_PLUGIN_DIR}" "${TARGET_PLUGIN_DIR}"
 rewrite_mcp_config "${TARGET_PLUGIN_DIR}"
+rewrite_hooks_config "${TARGET_PLUGIN_DIR}"
 write_marketplace "${TARGET_MARKETPLACE}" "${TARGET_PLUGIN_PATH}"
 
 echo

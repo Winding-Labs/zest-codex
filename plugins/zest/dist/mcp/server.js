@@ -39948,6 +39948,7 @@ var plugin_default = {
   license: "MIT",
   keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
   skills: "./skills/",
+  hooks: "./hooks/hooks.json",
   mcpServers: "./.mcp.json",
   interface: {
     displayName: "Zest",
@@ -43149,18 +43150,110 @@ async function clearAuthSession() {
   await removeStateFile(getAuthSessionFilePath());
 }
 
+// src/supabase/session-storage-adapter.ts
+function getJwtExpiresAt(token) {
+  const [, payload] = token.split(".");
+  if (!payload) {
+    return;
+  }
+  try {
+    const decoded = JSON.parse(Buffer.from(payload, "base64url").toString("utf-8"));
+    return typeof decoded.exp === "number" && Number.isFinite(decoded.exp) ? decoded.exp : undefined;
+  } catch {
+    return;
+  }
+}
+function isRefreshTokenExpired(session) {
+  return session.refreshTokenExpiresAt !== undefined && session.refreshTokenExpiresAt <= Date.now();
+}
+function createGoTrueSession(session) {
+  if (isRefreshTokenExpired(session)) {
+    return null;
+  }
+  const expiresAt = getJwtExpiresAt(session.accessToken) ?? 0;
+  const now = Math.floor(Date.now() / 1000);
+  return {
+    access_token: session.accessToken,
+    expires_at: expiresAt,
+    expires_in: Math.max(0, expiresAt - now),
+    refresh_token: session.refreshToken,
+    token_type: "bearer",
+    user: {
+      app_metadata: {},
+      aud: "authenticated",
+      created_at: "",
+      email: session.email,
+      id: session.userId,
+      user_metadata: {}
+    }
+  };
+}
+async function persistGoTrueSession(session) {
+  if (!session.access_token || !session.refresh_token || !session.user?.id) {
+    return;
+  }
+  const existingSession = await loadAuthSession();
+  const refreshTokenRotated = existingSession !== null && existingSession.refreshToken !== session.refresh_token;
+  await saveAuthSession({
+    accessToken: session.access_token,
+    email: session.user.email || existingSession?.email || "",
+    refreshToken: session.refresh_token,
+    refreshTokenExpiresAt: refreshTokenRotated ? undefined : existingSession?.refreshTokenExpiresAt,
+    userId: session.user.id,
+    version: 1
+  });
+}
+function createSessionStorageAdapter(isRemovalAllowed = () => true) {
+  return {
+    async getItem(key) {
+      if (key.endsWith("-code-verifier")) {
+        return null;
+      }
+      const session = await loadAuthSession();
+      if (!session) {
+        return null;
+      }
+      const gotrueSession = createGoTrueSession(session);
+      return gotrueSession ? JSON.stringify(gotrueSession) : null;
+    },
+    async removeItem(key) {
+      if (key.endsWith("-code-verifier") || !isRemovalAllowed()) {
+        return;
+      }
+      await clearAuthSession();
+    },
+    async setItem(key, value) {
+      if (key.endsWith("-code-verifier")) {
+        return;
+      }
+      const session = JSON.parse(value);
+      await persistGoTrueSession(session);
+    }
+  };
+}
+
 // src/supabase/client.ts
-function createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey) {
+function createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey, storage) {
   return createClientImpl(supabaseUrl, supabaseAnonKey, {
     auth: {
-      autoRefreshToken: true,
-      persistSession: false
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+      persistSession: true,
+      storage
     }
   });
+}
+function isExpiringWithin(expiresAt, minTtlSeconds) {
+  return expiresAt !== undefined && expiresAt - Math.floor(Date.now() / 1000) <= minTtlSeconds;
+}
+function isStoredAccessTokenExpiringWithin(session, minTtlSeconds) {
+  const expiresAt = getJwtExpiresAt(session.accessToken);
+  return expiresAt === undefined || isExpiringWithin(expiresAt, minTtlSeconds);
 }
 async function createOnDemandClient(options = {}) {
   const createClientImpl = options.createClientImpl ?? createClient;
   const loadSession = options.loadSession ?? loadAuthSession;
+  const refreshMinTtlSeconds = options.refreshMinTtlSeconds ?? 0;
   const supabaseUrl = options.supabaseUrl ?? SUPABASE_URL;
   const supabaseAnonKey = options.supabaseAnonKey ?? SUPABASE_ANON_KEY;
   if (!supabaseUrl || !supabaseAnonKey) {
@@ -43170,13 +43263,24 @@ async function createOnDemandClient(options = {}) {
   if (!session) {
     return null;
   }
-  const client = createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey);
+  const storage = createSessionStorageAdapter(() => false);
+  const client = createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey, storage);
   const { error: error51 } = await client.auth.setSession({
     access_token: session.accessToken,
     refresh_token: session.refreshToken
   });
   if (error51) {
     return null;
+  }
+  const getSession = typeof client.auth.getSession === "function" ? client.auth.getSession.bind(client.auth) : null;
+  const activeSession = getSession ? (await getSession()).data.session : null;
+  if (activeSession && isExpiringWithin(activeSession.expires_at, refreshMinTtlSeconds) || isStoredAccessTokenExpiringWithin(session, refreshMinTtlSeconds)) {
+    const { data, error: refreshError } = await client.auth.refreshSession();
+    if (refreshError || !data.session) {
+      await client.removeAllChannels();
+      return null;
+    }
+    await persistGoTrueSession(data.session);
   }
   return {
     client,
@@ -47055,4 +47159,4 @@ main().catch((error51) => {
   process.exit(1);
 });
 
-//# debugId=4683C09B9D6A535E64756E2164756E21
+//# debugId=B273BD5497924C1F64756E2164756E21
