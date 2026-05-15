@@ -43560,6 +43560,9 @@ function getCodexHomeDir(options) {
 function getAgentsHomeDir(options) {
   return options.agentsHomeDir ?? import_node_path4.join(import_node_os3.homedir(), ".agents");
 }
+function getStateRootDir2(options) {
+  return options.stateRootDir ?? process.env.ZEST_CODEX_STATE_DIR ?? import_node_path4.join(import_node_os3.homedir(), ".codex-zest");
+}
 function createBackupSuffix(now) {
   return now.toISOString().replace(/\D/g, "").slice(0, 14);
 }
@@ -43655,6 +43658,7 @@ async function cleanupLegacyMarketplace(marketplacePath, suffix) {
 async function cleanupLegacyAlphaInstall(options = {}) {
   const codexHomeDir = getCodexHomeDir(options);
   const agentsHomeDir = getAgentsHomeDir(options);
+  const stateRootDir = getStateRootDir2(options);
   const suffix = createBackupSuffix(options.now ?? new Date);
   const backups = [];
   const legacyCachePath = import_node_path4.join(codexHomeDir, "plugins", "cache", LEGACY_MARKETPLACE_NAME);
@@ -43668,10 +43672,12 @@ async function cleanupLegacyAlphaInstall(options = {}) {
   if (marketplace.backup) {
     backups.push(marketplace.backup);
   }
+  const removedUpdateMetadataCache = await removeIfExists(import_node_path4.join(stateRootDir, "update", "check.json"));
   const removed = {
     legacyCache: removedLegacyCache,
     legacyConfigBlocks: config2.removed,
-    legacyMarketplace: marketplace.removed
+    legacyMarketplace: marketplace.removed,
+    updateMetadataCache: removedUpdateMetadataCache
   };
   const changed = Object.values(removed).some(Boolean);
   return {
@@ -45979,6 +45985,108 @@ function resolveTurnContextModel(record3) {
   }
   return record3.collaborationMode?.model ?? null;
 }
+function resolveModelWithReasoning(transcript) {
+  for (const record3 of transcript.records) {
+    if (record3.recordType !== "turn_context") {
+      continue;
+    }
+    const model = resolveTurnContextModel(record3);
+    if (!model) {
+      continue;
+    }
+    const reasoning = record3.effort ?? record3.collaborationMode?.reasoningEffort;
+    return reasoning ? `${model}:${reasoning}` : model;
+  }
+}
+function findLatestTokenCountRecord(transcript) {
+  let latest;
+  for (const record3 of transcript.records) {
+    if (record3.recordType === "event_msg" && record3.eventType === "token_count") {
+      latest = record3;
+    }
+  }
+  return latest;
+}
+function roundPercent(value) {
+  return Math.round(value * 100) / 100;
+}
+function remainingLimit(usedPercent) {
+  return usedPercent === undefined ? undefined : roundPercent(Math.max(0, 100 - usedPercent));
+}
+function normalizeTokenUsage(usage) {
+  if (!usage) {
+    return;
+  }
+  const normalized = {
+    ...usage.inputTokens !== undefined ? { input_tokens: usage.inputTokens } : {},
+    ...usage.cachedInputTokens !== undefined ? { cached_input_tokens: usage.cachedInputTokens } : {},
+    ...usage.outputTokens !== undefined ? { output_tokens: usage.outputTokens } : {},
+    ...usage.reasoningOutputTokens !== undefined ? { reasoning_output_tokens: usage.reasoningOutputTokens } : {},
+    ...usage.totalTokens !== undefined ? { total_tokens: usage.totalTokens } : {}
+  };
+  return Object.keys(normalized).length > 0 ? normalized : undefined;
+}
+function normalizeRateLimitWindow(window2) {
+  if (!window2) {
+    return;
+  }
+  const normalized = {
+    ...window2.usedPercent !== undefined ? { used_percent: window2.usedPercent } : {},
+    ...window2.windowMinutes !== undefined ? { window_minutes: window2.windowMinutes } : {},
+    ...window2.resetsAt !== undefined ? { resets_at: window2.resetsAt } : {}
+  };
+  return Object.keys(normalized).length > 0 ? normalized : undefined;
+}
+function buildCodexSessionMetadata(transcript) {
+  const latest = findLatestTokenCountRecord(transcript);
+  if (!latest) {
+    return null;
+  }
+  const totalUsage = latest.info?.totalTokenUsage;
+  const lastUsage = latest.info?.lastTokenUsage;
+  const modelContextWindow = latest.info?.modelContextWindow;
+  const totalUsageSnapshot = normalizeTokenUsage(totalUsage);
+  const lastUsageSnapshot = normalizeTokenUsage(lastUsage);
+  const modelWithReasoning = resolveModelWithReasoning(transcript);
+  const fiveHourLimit = remainingLimit(latest.rateLimits?.primary?.usedPercent);
+  const weeklyLimit = remainingLimit(latest.rateLimits?.secondary?.usedPercent);
+  const tokenCountLatest = {
+    timestamp: latest.timestamp,
+    ...totalUsageSnapshot ? { total_token_usage: totalUsageSnapshot } : {},
+    ...lastUsageSnapshot ? { last_token_usage: lastUsageSnapshot } : {},
+    ...modelContextWindow !== undefined ? { model_context_window: modelContextWindow } : {}
+  };
+  const primary = normalizeRateLimitWindow(latest.rateLimits?.primary);
+  const secondary = normalizeRateLimitWindow(latest.rateLimits?.secondary);
+  const rateLimitsLatest = latest.rateLimits ? {
+    ...latest.rateLimits.limitId !== undefined ? { limit_id: latest.rateLimits.limitId } : {},
+    ...latest.rateLimits.planType !== undefined ? { plan_type: latest.rateLimits.planType } : {},
+    ...primary ? { primary } : {},
+    ...secondary ? { secondary } : {}
+  } : undefined;
+  const hasTokenInfo = Object.keys(tokenCountLatest).some((key) => key !== "timestamp");
+  const hasRateLimitInfo = rateLimitsLatest && Object.keys(rateLimitsLatest).length > 0;
+  if (!hasTokenInfo && !hasRateLimitInfo) {
+    return null;
+  }
+  const contextTokenUsage = lastUsage?.totalTokens ?? totalUsage?.totalTokens;
+  const contextUsed = contextTokenUsage !== undefined && modelContextWindow && modelContextWindow > 0 ? roundPercent(contextTokenUsage / modelContextWindow * 100) : undefined;
+  return {
+    ...modelWithReasoning ? { model_with_reasoning: modelWithReasoning } : {},
+    ...contextUsed !== undefined ? { context_used: contextUsed } : {},
+    ...contextUsed !== undefined ? { context_remaining: roundPercent(Math.max(0, 100 - contextUsed)) } : {},
+    ...fiveHourLimit !== undefined ? { five_hour_limit: fiveHourLimit } : {},
+    ...weeklyLimit !== undefined ? { weekly_limit: weeklyLimit } : {},
+    ...totalUsage?.totalTokens !== undefined ? { used_tokens: totalUsage.totalTokens } : {},
+    ...totalUsage?.inputTokens !== undefined ? { total_input_tokens: totalUsage.inputTokens } : {},
+    ...totalUsage?.outputTokens !== undefined ? { total_output_tokens: totalUsage.outputTokens } : {},
+    ...totalUsage?.cachedInputTokens !== undefined ? { cached_input_tokens: totalUsage.cachedInputTokens } : {},
+    ...totalUsage?.reasoningOutputTokens !== undefined ? { reasoning_tokens: totalUsage.reasoningOutputTokens } : {},
+    ...modelContextWindow !== undefined ? { model_context_window: modelContextWindow } : {},
+    ...hasTokenInfo ? { token_count_latest: tokenCountLatest } : {},
+    ...hasRateLimitInfo ? { rate_limits_latest: rateLimitsLatest } : {}
+  };
+}
 function normalizeMessages(transcript, userId) {
   const transcriptModels = resolveTranscriptModels(transcript);
   const primaryModel = transcriptModels[0];
@@ -46018,7 +46126,7 @@ function normalizeTranscriptToZestPayload(input) {
     user_id: userId,
     workspace_id: workspaceId ?? null,
     analysis_status: "pending",
-    metadata: null,
+    metadata: buildCodexSessionMetadata(transcript),
     project_id: null,
     project_name: transcript.sessionMeta?.cwd ? import_node_path8.basename(transcript.sessionMeta.cwd) : null,
     platform: platform2,
@@ -47159,4 +47267,4 @@ main().catch((error51) => {
   process.exit(1);
 });
 
-//# debugId=B273BD5497924C1F64756E2164756E21
+//# debugId=98DB01BBBD6CAB9A64756E2164756E21

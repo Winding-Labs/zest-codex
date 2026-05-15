@@ -6,7 +6,9 @@ This repository is the public Git marketplace mirror for the Zest Codex plugin. 
 
 ## Install
 
-In Codex, open Plugins, choose `Add marketplace`, and use:
+### Codex App
+
+Open Plugins, choose `Add marketplace`, and use:
 
 ```text
 Source: Winding-Labs/zest-codex
@@ -16,6 +18,16 @@ Git ref: main
 Leave sparse paths empty. This repository is intentionally small, so a full checkout is the recommended path.
 
 After adding the marketplace, install or enable the `Zest` plugin, then fully restart Codex.
+
+### Codex CLI
+
+Add the Zest marketplace from your terminal:
+
+```bash
+codex plugin marketplace add Winding-Labs/zest-codex --ref main
+```
+
+Then restart Codex so the plugin skills and MCP server are reloaded.
 
 ## First-Time Setup
 

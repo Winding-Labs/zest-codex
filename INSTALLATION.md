@@ -4,7 +4,7 @@
 
 Install Zest by adding the Zest Git marketplace in Codex.
 
-### 1. Add the marketplace
+### 1. Add the marketplace from Codex App
 
 Open Codex Plugins, choose `Add marketplace`, and use:
 
@@ -15,19 +15,27 @@ Git ref: main
 
 Leave sparse paths empty. The Zest marketplace repository is intentionally small, so a full checkout is the simplest and most reliable default.
 
-### 2. Install Zest
+### 2. Or add the marketplace from Codex CLI
+
+From your terminal, run:
+
+```bash
+codex plugin marketplace add Winding-Labs/zest-codex --ref main
+```
+
+### 3. Install Zest
 
 After the marketplace is added, Codex should show the `Zest` marketplace and the `Zest` plugin.
 
 Install or enable `Zest`.
 
-### 3. Restart Codex
+### 4. Restart Codex
 
 Completely quit Codex, then open it again.
 
 This refreshes plugin skills and the local MCP server registration.
 
-### 4. Make sure the local Zest MCP is enabled
+### 5. Make sure the local Zest MCP is enabled
 
 Use `/mcp` and confirm that Zest appears as enabled. If it does not appear, restart Codex once more.
 
