@@ -40490,12 +40490,12 @@ var WEB_APP_URL = resolveConfigValue({
   fallback: "http://localhost:3000"
 });
 var SUPABASE_URL = resolveConfigValue({
-  bundledValue: "",
+  bundledValue: "https://fnnlebrtmlxxjwdvngck.supabase.co",
   runtimeValue: process.env.ZEST_SUPABASE_URL,
   fallback: ""
 });
 var SUPABASE_ANON_KEY = resolveConfigValue({
-  bundledValue: "",
+  bundledValue: "sb_publishable_gJsE8TaVHipVQfLNDFV3tA_z7SRAZBY",
   runtimeValue: process.env.ZEST_SUPABASE_ANON_KEY,
   fallback: ""
 });
@@ -43190,7 +43190,7 @@ function createGoTrueSession(session) {
 }
 async function persistGoTrueSession(session) {
   if (!session.access_token || !session.refresh_token || !session.user?.id) {
-    return;
+    throw new Error("invalid Supabase session");
   }
   const existingSession = await loadAuthSession();
   const refreshTokenRotated = existingSession !== null && existingSession.refreshToken !== session.refresh_token;
@@ -43226,7 +43226,12 @@ function createSessionStorageAdapter(isRemovalAllowed = () => true) {
       if (key.endsWith("-code-verifier")) {
         return;
       }
-      const session = JSON.parse(value);
+      let session;
+      try {
+        session = JSON.parse(value);
+      } catch {
+        return;
+      }
       await persistGoTrueSession(session);
     }
   };
@@ -43270,6 +43275,7 @@ async function createOnDemandClient(options = {}) {
     refresh_token: session.refreshToken
   });
   if (error51) {
+    await client.removeAllChannels();
     return null;
   }
   const getSession = typeof client.auth.getSession === "function" ? client.auth.getSession.bind(client.auth) : null;
@@ -43280,7 +43286,12 @@ async function createOnDemandClient(options = {}) {
       await client.removeAllChannels();
       return null;
     }
-    await persistGoTrueSession(data.session);
+    try {
+      await persistGoTrueSession(data.session);
+    } catch {
+      await client.removeAllChannels();
+      return null;
+    }
   }
   return {
     client,
@@ -43644,7 +43655,12 @@ async function cleanupLegacyMarketplace(marketplacePath, suffix) {
     }
     throw error51;
   }
-  const marketplace = JSON.parse(content);
+  let marketplace;
+  try {
+    marketplace = JSON.parse(content);
+  } catch {
+    return { removed: false, skipped: "not_zest_alpha" };
+  }
   if (marketplace.name !== LEGACY_MARKETPLACE_NAME) {
     return { removed: false, skipped: "not_zest_alpha" };
   }
@@ -47267,4 +47283,4 @@ main().catch((error51) => {
   process.exit(1);
 });
 
-//# debugId=98DB01BBBD6CAB9A64756E2164756E21
+//# debugId=81B43D5283DEB0CC64756E2164756E21

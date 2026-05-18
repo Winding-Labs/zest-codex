@@ -13403,12 +13403,12 @@ var WEB_APP_URL = resolveConfigValue({
   fallback: "http://localhost:3000"
 });
 var SUPABASE_URL = resolveConfigValue({
-  bundledValue: "",
+  bundledValue: "https://fnnlebrtmlxxjwdvngck.supabase.co",
   runtimeValue: process.env.ZEST_SUPABASE_URL,
   fallback: ""
 });
 var SUPABASE_ANON_KEY = resolveConfigValue({
-  bundledValue: "",
+  bundledValue: "sb_publishable_gJsE8TaVHipVQfLNDFV3tA_z7SRAZBY",
   runtimeValue: process.env.ZEST_SUPABASE_ANON_KEY,
   fallback: ""
 });
@@ -13466,7 +13466,7 @@ function createGoTrueSession(session) {
 }
 async function persistGoTrueSession(session) {
   if (!session.access_token || !session.refresh_token || !session.user?.id) {
-    return;
+    throw new Error("invalid Supabase session");
   }
   const existingSession = await loadAuthSession();
   const refreshTokenRotated = existingSession !== null && existingSession.refreshToken !== session.refresh_token;
@@ -13502,7 +13502,12 @@ function createSessionStorageAdapter(isRemovalAllowed = () => true) {
       if (key.endsWith("-code-verifier")) {
         return;
       }
-      const session = JSON.parse(value);
+      let session;
+      try {
+        session = JSON.parse(value);
+      } catch {
+        return;
+      }
       await persistGoTrueSession(session);
     }
   };
@@ -13546,6 +13551,7 @@ async function createOnDemandClient(options = {}) {
     refresh_token: session.refreshToken
   });
   if (error) {
+    await client.removeAllChannels();
     return null;
   }
   const getSession = typeof client.auth.getSession === "function" ? client.auth.getSession.bind(client.auth) : null;
@@ -13556,7 +13562,12 @@ async function createOnDemandClient(options = {}) {
       await client.removeAllChannels();
       return null;
     }
-    await persistGoTrueSession(data.session);
+    try {
+      await persistGoTrueSession(data.session);
+    } catch {
+      await client.removeAllChannels();
+      return null;
+    }
   }
   return {
     client,
@@ -13571,6 +13582,7 @@ var AUTH_REFRESH_MIN_TTL_SECONDS = 15 * 60;
 var USER_PROMPT_REFRESH_THROTTLE_MS = 60 * 60 * 1000;
 var AUTH_REFRESH_LOCK_STALE_MS = 30000;
 var DEFAULT_LOCK_RETRY_DELAY_MS = 100;
+var MAX_LOCK_ATTEMPTS = 50;
 function getAuthRefreshCheckFilePath() {
   return resolveStatePath("auth", "refresh-check.json");
 }
@@ -13596,7 +13608,12 @@ async function saveRefreshCheckState(state) {
 }
 async function acquireRefreshLock(options) {
   const lockPath = getAuthRefreshLockPath();
+  let attempts = 0;
   while (true) {
+    attempts += 1;
+    if (attempts > MAX_LOCK_ATTEMPTS) {
+      throw new Error("Failed to acquire auth refresh lock");
+    }
     try {
       await import_promises2.mkdir(import_node_path3.dirname(lockPath), { recursive: true, mode: 448 });
       await import_promises2.mkdir(lockPath, { mode: 448 });
@@ -13643,12 +13660,6 @@ async function ensureAuthSessionFresh(options) {
         trigger
       };
     }
-    if (trigger === "user_prompt_submit") {
-      await saveRefreshCheckState({
-        ...lockedState,
-        userPromptSubmitLastCheckedAt: now
-      });
-    }
     const createClient2 = options.createClient ?? ((input) => createOnDemandClient(input));
     const onDemand = await createClient2({
       refreshMinTtlSeconds: AUTH_REFRESH_MIN_TTL_SECONDS
@@ -13661,6 +13672,12 @@ async function ensureAuthSessionFresh(options) {
       };
     }
     await onDemand.dispose();
+    if (trigger === "user_prompt_submit") {
+      await saveRefreshCheckState({
+        ...lockedState,
+        userPromptSubmitLastCheckedAt: now
+      });
+    }
     return {
       refreshed: true,
       status: "checked",
@@ -13693,4 +13710,4 @@ async function main() {
 }
 main();
 
-//# debugId=EE335EE57BB6C12964756E2164756E21
+//# debugId=2BD9AC784E1D28FC64756E2164756E21
