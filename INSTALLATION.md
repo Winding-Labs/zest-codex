@@ -115,10 +115,38 @@ Use Codex marketplace upgrade for the `zest` marketplace when a new version is p
 
 The plugin also performs a passive best-effort update check before each MCP tool call except `sync`. If a newer version is available, tool responses may include an `update` object with `available`, `latestVersion`, `downloadUrl`, `checkedAt`, `upgradeCommand`, and `instructions`.
 
+Installed production builds also try a guarded automatic upgrade on Codex `SessionStart`. When the
+same update check reports a newer version, the hook runs:
+
+```bash
+codex plugin marketplace upgrade zest
+```
+
+Automatic upgrade attempts are best-effort, throttled to once every 24 hours, protected by a local
+lock, and never block Codex startup if the command fails. To disable the automatic attempt, set:
+
+```bash
+ZEST_CODEX_AUTOUPDATE_DISABLED=1
+```
+
 When `available` is `true`, update Zest with:
 
 ```bash
 codex plugin marketplace upgrade zest
+```
+
+If Codex appears to be using a stale production plugin bundle, clear the production cache and restart
+Codex. This also clears Zest's local update-check cache so the next start does not wait for the
+update TTL:
+
+```bash
+./clear-production-cache.sh
+```
+
+To preview the cache entries without removing them:
+
+```bash
+./clear-production-cache.sh --dry-run
 ```
 
 ## Optional Sparse Checkout

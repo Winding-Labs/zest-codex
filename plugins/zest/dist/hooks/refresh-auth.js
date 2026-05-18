@@ -10740,6 +10740,40 @@ var require_main3 = __commonJS((exports2) => {
     return locks_1.processLock;
   } });
 });
+// .codex-plugin/plugin.json
+var plugin_default = {
+  name: "zest",
+  version: "0.0.1",
+  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
+  author: {
+    name: "Zest",
+    email: "support@meetzest.com",
+    url: "https://meetzest.com"
+  },
+  homepage: "https://meetzest.com",
+  repository: "https://github.com/Winding-Labs/zest",
+  license: "MIT",
+  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
+  skills: "./skills/",
+  hooks: "./hooks/hooks.json",
+  mcpServers: "./.mcp.json",
+  interface: {
+    displayName: "Zest",
+    shortDescription: "AI workflow telemetry and standups for Codex.",
+    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
+    developerName: "Zest",
+    category: "Productivity",
+    capabilities: ["Interactive", "Read", "Write"],
+    websiteURL: "https://meetzest.com",
+    privacyPolicyURL: "https://meetzest.com/privacy",
+    termsOfServiceURL: "https://meetzest.com/terms",
+    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
+    brandColor: "#D4FF3D",
+    composerIcon: "./assets/zest-icon.svg",
+    logo: "./assets/zest.png",
+    screenshots: []
+  }
+};
 
 // src/auth/refresh.ts
 var import_promises2 = require("node:fs/promises");
@@ -10805,42 +10839,6 @@ async function removeStateFile(filePath) {
 // src/state/paths.ts
 var import_node_os = require("node:os");
 var import_node_path2 = require("node:path");
-// .codex-plugin/plugin.json
-var plugin_default = {
-  name: "zest",
-  version: "0.0.1",
-  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
-  author: {
-    name: "Zest",
-    email: "support@meetzest.com",
-    url: "https://meetzest.com"
-  },
-  homepage: "https://meetzest.com",
-  repository: "https://github.com/Winding-Labs/zest",
-  license: "MIT",
-  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
-  skills: "./skills/",
-  hooks: "./hooks/hooks.json",
-  mcpServers: "./.mcp.json",
-  interface: {
-    displayName: "Zest",
-    shortDescription: "AI workflow telemetry and standups for Codex.",
-    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
-    developerName: "Zest",
-    category: "Productivity",
-    capabilities: ["Interactive", "Read", "Write"],
-    websiteURL: "https://meetzest.com",
-    privacyPolicyURL: "https://meetzest.com/privacy",
-    termsOfServiceURL: "https://meetzest.com/terms",
-    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
-    brandColor: "#D4FF3D",
-    composerIcon: "./assets/zest-icon.svg",
-    logo: "./assets/zest.png",
-    screenshots: []
-  }
-};
-
-// src/state/paths.ts
 var DEFAULT_STATE_DIR_NAME = `.codex-${plugin_default.name}`;
 function getDefaultStateRootDir() {
   return import_node_path2.join(import_node_os.homedir(), DEFAULT_STATE_DIR_NAME);
@@ -13688,6 +13686,413 @@ async function ensureAuthSessionFresh(options) {
   }
 }
 
+// src/update/autoupdate.ts
+var import_node_child_process = require("node:child_process");
+var import_promises3 = require("node:fs/promises");
+var import_node_path4 = require("node:path");
+var import_node_util = require("node:util");
+
+// src/update/check.ts
+var UPDATE_CHECK_CACHE_VERSION = 1;
+var UPDATE_CHECK_ERROR = "best_effort_check_failed";
+var UPDATE_CHECK_TTL_MS = 6 * 60 * 60 * 1000;
+var UPDATE_CHECK_TIMEOUT_MS = 2000;
+var UPDATE_REPOSITORY_URL = "https://github.com/Winding-Labs/zest-codex";
+var UPDATE_PACKAGE_URL = "https://raw.githubusercontent.com/Winding-Labs/zest-codex/main/package.json";
+var DEBUG_UPDATE_PACKAGE_URL = "http://127.0.0.1:8787/package.json";
+var UPDATE_MARKETPLACE_UPGRADE_COMMAND = "codex plugin marketplace upgrade zest";
+var UPDATE_MARKETPLACE_UPGRADE_INSTRUCTIONS = "To update Zest, run: codex plugin marketplace upgrade zest";
+function isNonEmptyString2(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+function normalizeIsoTimestamp(value) {
+  if (!isNonEmptyString2(value)) {
+    return;
+  }
+  const timestamp = Date.parse(value);
+  return Number.isNaN(timestamp) ? undefined : new Date(timestamp).toISOString();
+}
+function isUpdateMetadata(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const candidate = value;
+  if (typeof candidate.available !== "boolean" || !isNonEmptyString2(candidate.checkedAt)) {
+    return false;
+  }
+  if (candidate.latestVersion !== undefined && !isNonEmptyString2(candidate.latestVersion)) {
+    return false;
+  }
+  if (candidate.downloadUrl !== undefined && !isNonEmptyString2(candidate.downloadUrl)) {
+    return false;
+  }
+  if (candidate.instructions !== undefined && !isNonEmptyString2(candidate.instructions)) {
+    return false;
+  }
+  if (candidate.publishedAt !== undefined && !isNonEmptyString2(candidate.publishedAt)) {
+    return false;
+  }
+  if (candidate.upgradeCommand !== undefined && !isNonEmptyString2(candidate.upgradeCommand)) {
+    return false;
+  }
+  if (candidate.error !== undefined && candidate.error !== UPDATE_CHECK_ERROR) {
+    return false;
+  }
+  return true;
+}
+function isPersistedUpdateCheck(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const candidate = value;
+  if (candidate.version !== UPDATE_CHECK_CACHE_VERSION || typeof candidate.expiresAt !== "number" || !Number.isFinite(candidate.expiresAt)) {
+    return false;
+  }
+  return isUpdateMetadata(candidate.result);
+}
+function getFetchImplementation(fetchImplementation) {
+  const implementation = fetchImplementation ?? globalThis.fetch;
+  if (!implementation) {
+    throw new Error("Global fetch is not available");
+  }
+  return implementation;
+}
+function normalizeRepositoryUrl(repository) {
+  if (isNonEmptyString2(repository)) {
+    return repository.trim();
+  }
+  if (!repository || typeof repository !== "object") {
+    return;
+  }
+  return isNonEmptyString2(repository.url) ? repository.url.trim() : undefined;
+}
+function normalizePackage(remotePackage) {
+  if (!remotePackage || typeof remotePackage !== "object") {
+    throw new Error("Invalid update package payload");
+  }
+  const candidate = remotePackage;
+  if (!isNonEmptyString2(candidate.version)) {
+    throw new Error("Update package is missing version");
+  }
+  return {
+    ...isNonEmptyString2(candidate.homepage) ? { homepage: candidate.homepage.trim() } : {},
+    ...normalizeIsoTimestamp(candidate.publishedAt) ? { publishedAt: normalizeIsoTimestamp(candidate.publishedAt) } : {},
+    ...normalizeRepositoryUrl(candidate.repository) ? { repository: normalizeRepositoryUrl(candidate.repository) } : {},
+    version: candidate.version.trim()
+  };
+}
+function parseVersion(version3) {
+  const match = version3.trim().match(/^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/u);
+  if (!match) {
+    return null;
+  }
+  const [, major, minor, patch, prerelease] = match;
+  return {
+    main: [Number(major), Number(minor), Number(patch)],
+    prerelease: prerelease ? prerelease.split(".") : []
+  };
+}
+function compareIdentifiers(left, right) {
+  const leftIsNumeric = /^\d+$/u.test(left);
+  const rightIsNumeric = /^\d+$/u.test(right);
+  if (leftIsNumeric && rightIsNumeric) {
+    return Number(left) - Number(right);
+  }
+  if (leftIsNumeric) {
+    return -1;
+  }
+  if (rightIsNumeric) {
+    return 1;
+  }
+  return left.localeCompare(right);
+}
+function compareVersions(currentVersion, latestVersion) {
+  const current = parseVersion(currentVersion);
+  const latest = parseVersion(latestVersion);
+  if (!current || !latest) {
+    return null;
+  }
+  for (let index = 0;index < current.main.length; index += 1) {
+    const difference = current.main[index] - latest.main[index];
+    if (difference !== 0) {
+      return difference;
+    }
+  }
+  if (current.prerelease.length === 0 && latest.prerelease.length === 0) {
+    return 0;
+  }
+  if (current.prerelease.length === 0) {
+    return 1;
+  }
+  if (latest.prerelease.length === 0) {
+    return -1;
+  }
+  const length = Math.max(current.prerelease.length, latest.prerelease.length);
+  for (let index = 0;index < length; index += 1) {
+    const left = current.prerelease[index];
+    const right = latest.prerelease[index];
+    if (left === undefined) {
+      return -1;
+    }
+    if (right === undefined) {
+      return 1;
+    }
+    const difference = compareIdentifiers(left, right);
+    if (difference !== 0) {
+      return difference;
+    }
+  }
+  return 0;
+}
+function getUpdateCheckCacheFilePath() {
+  return resolveStatePath("update", "check.json");
+}
+async function loadCachedUpdateMetadata(now) {
+  const filePath = getUpdateCheckCacheFilePath();
+  const cachedValue = await readJsonFile(filePath);
+  if (cachedValue === null) {
+    return null;
+  }
+  if (!isPersistedUpdateCheck(cachedValue)) {
+    await removeStateFile(filePath);
+    return null;
+  }
+  if (cachedValue.expiresAt <= now) {
+    return null;
+  }
+  return cachedValue.result;
+}
+async function saveCachedUpdateMetadata(result, expiresAt) {
+  await writeJsonFileAtomic(getUpdateCheckCacheFilePath(), {
+    expiresAt,
+    result,
+    version: UPDATE_CHECK_CACHE_VERSION
+  });
+}
+async function fetchPackage(packageUrl, fetchImplementation, timeoutMs) {
+  const response = await fetchImplementation(packageUrl, {
+    headers: {
+      Accept: "application/json"
+    },
+    signal: AbortSignal.timeout(timeoutMs)
+  });
+  if (!response.ok) {
+    throw new Error(`Update package request failed with status ${response.status}`);
+  }
+  return normalizePackage(await response.json());
+}
+function createSuccessfulResult(checkedAt, currentVersion, remotePackage, repositoryUrl) {
+  const comparison = compareVersions(currentVersion, remotePackage.version);
+  if (comparison === null) {
+    throw new Error("Unable to compare plugin versions");
+  }
+  return {
+    available: comparison < 0,
+    checkedAt,
+    downloadUrl: remotePackage.homepage ?? normalizeRepositoryUrl(remotePackage.repository) ?? repositoryUrl,
+    ...comparison < 0 ? {
+      instructions: UPDATE_MARKETPLACE_UPGRADE_INSTRUCTIONS,
+      upgradeCommand: UPDATE_MARKETPLACE_UPGRADE_COMMAND
+    } : {},
+    latestVersion: remotePackage.version,
+    ...remotePackage.publishedAt ? { publishedAt: remotePackage.publishedAt } : {}
+  };
+}
+function createFailureResult(checkedAt) {
+  return {
+    available: false,
+    checkedAt,
+    error: UPDATE_CHECK_ERROR
+  };
+}
+async function getBestEffortUpdateMetadata(options) {
+  if (process.env.ZEST_CODEX_UPDATE_CHECK_DISABLED === "1") {
+    return null;
+  }
+  const now = options.now ?? Date.now();
+  const cachedResult = await loadCachedUpdateMetadata(now);
+  if (cachedResult) {
+    return cachedResult;
+  }
+  const checkedAt = new Date(now).toISOString();
+  const ttlMs = options.ttlMs ?? UPDATE_CHECK_TTL_MS;
+  const packageUrl = options.packageUrl ?? process.env.ZEST_CODEX_UPDATE_PACKAGE_URL ?? (DEBUG_MODE_ENABLED ? DEBUG_UPDATE_PACKAGE_URL : UPDATE_PACKAGE_URL);
+  try {
+    const remotePackage = await fetchPackage(packageUrl, getFetchImplementation(options.fetchImplementation), options.timeoutMs ?? UPDATE_CHECK_TIMEOUT_MS);
+    const result = createSuccessfulResult(checkedAt, options.currentVersion, remotePackage, options.repositoryUrl ?? UPDATE_REPOSITORY_URL);
+    await saveCachedUpdateMetadata(result, now + ttlMs);
+    return result;
+  } catch {
+    const result = createFailureResult(checkedAt);
+    await saveCachedUpdateMetadata(result, now + ttlMs);
+    return result;
+  }
+}
+
+// src/update/autoupdate.ts
+var AUTOUPDATE_THROTTLE_MS = 24 * 60 * 60 * 1000;
+var AUTOUPDATE_LOCK_STALE_MS = 2 * 60 * 1000;
+var AUTOUPDATE_COMMAND_TIMEOUT_MS = 8000;
+var DEFAULT_LOCK_RETRY_DELAY_MS2 = 100;
+var MAX_LOCK_ATTEMPTS2 = 20;
+var STDERR_SNIPPET_MAX_LENGTH = 500;
+var execAsync = import_node_util.promisify(import_node_child_process.exec);
+function getAutoUpdateStateFilePath() {
+  return resolveStatePath("update", "autoupdate.json");
+}
+function getAutoUpdateLockPath() {
+  return resolveStatePath("update", "autoupdate.lock");
+}
+async function sleep3(ms) {
+  await new Promise((resolve2) => setTimeout(resolve2, ms));
+}
+function normalizeState(value) {
+  if (!value || typeof value !== "object") {
+    return { version: 1 };
+  }
+  const candidate = value;
+  return {
+    version: 1,
+    ...typeof candidate.lastAttemptedAt === "number" && Number.isFinite(candidate.lastAttemptedAt) ? { lastAttemptedAt: candidate.lastAttemptedAt } : {},
+    ...typeof candidate.lastSucceededAt === "number" && Number.isFinite(candidate.lastSucceededAt) ? { lastSucceededAt: candidate.lastSucceededAt } : {},
+    ...candidate.lastResult ? { lastResult: candidate.lastResult } : {}
+  };
+}
+async function loadAutoUpdateState() {
+  return normalizeState(await readJsonFile(getAutoUpdateStateFilePath()).catch(() => null));
+}
+async function saveAutoUpdateState(state) {
+  await writeJsonFileAtomic(getAutoUpdateStateFilePath(), state);
+}
+async function acquireAutoUpdateLock(options) {
+  const lockPath = getAutoUpdateLockPath();
+  let attempts = 0;
+  while (true) {
+    attempts += 1;
+    if (attempts > MAX_LOCK_ATTEMPTS2) {
+      throw new Error("Failed to acquire auto-update lock");
+    }
+    try {
+      await import_promises3.mkdir(import_node_path4.dirname(lockPath), { recursive: true, mode: 448 });
+      await import_promises3.mkdir(lockPath, { mode: 448 });
+      return async () => {
+        await import_promises3.rm(lockPath, { force: true, recursive: true });
+      };
+    } catch (error) {
+      if (error.code !== "EEXIST") {
+        throw error;
+      }
+      const lockStats = await import_promises3.stat(lockPath).catch(() => null);
+      if (lockStats && options.now() - lockStats.mtimeMs > AUTOUPDATE_LOCK_STALE_MS) {
+        await import_promises3.rm(lockPath, { force: true, recursive: true }).catch(() => {
+          return;
+        });
+        continue;
+      }
+      await sleep3(options.retryDelayMs);
+    }
+  }
+}
+async function runMarketplaceUpgrade(command) {
+  try {
+    const result = await execAsync(command, {
+      timeout: AUTOUPDATE_COMMAND_TIMEOUT_MS,
+      windowsHide: true
+    });
+    return {
+      code: 0,
+      stderr: result.stderr,
+      stdout: result.stdout
+    };
+  } catch (error) {
+    const failure = error;
+    return {
+      code: typeof failure.code === "number" ? failure.code : 1,
+      stderr: failure.stderr ?? failure.message,
+      stdout: failure.stdout ?? ""
+    };
+  }
+}
+function truncateStderr(stderr) {
+  const trimmed = stderr.trim();
+  if (trimmed.length === 0) {
+    return;
+  }
+  return trimmed.slice(0, STDERR_SNIPPET_MAX_LENGTH);
+}
+async function maybeAutoUpdatePlugin(options) {
+  if (process.env.ZEST_CODEX_AUTOUPDATE_DISABLED === "1") {
+    return {
+      attempted: false,
+      status: "disabled"
+    };
+  }
+  const now = options.now ?? Date.now();
+  const throttleMs = options.throttleMs ?? AUTOUPDATE_THROTTLE_MS;
+  const state = await loadAutoUpdateState();
+  if (state.lastAttemptedAt !== undefined && now - state.lastAttemptedAt < throttleMs) {
+    return {
+      attempted: false,
+      status: "throttled"
+    };
+  }
+  const releaseLock = await acquireAutoUpdateLock({
+    now: () => Date.now(),
+    retryDelayMs: options.lockRetryDelayMs ?? DEFAULT_LOCK_RETRY_DELAY_MS2
+  }).catch(() => null);
+  if (!releaseLock) {
+    return {
+      attempted: true,
+      status: "failed"
+    };
+  }
+  try {
+    const lockedState = await loadAutoUpdateState();
+    if (lockedState.lastAttemptedAt !== undefined && now - lockedState.lastAttemptedAt < throttleMs) {
+      return {
+        attempted: false,
+        status: "throttled"
+      };
+    }
+    const getUpdateMetadata = options.getUpdateMetadata ?? (() => getBestEffortUpdateMetadata({ currentVersion: options.currentVersion }));
+    const update = await getUpdateMetadata();
+    if (!update?.available) {
+      return {
+        attempted: false,
+        status: "no_update"
+      };
+    }
+    const runUpgrade = options.runUpgrade ?? runMarketplaceUpgrade;
+    const command = update.upgradeCommand ?? UPDATE_MARKETPLACE_UPGRADE_COMMAND;
+    const result = await runUpgrade(command);
+    const status = result.code === 0 ? "updated" : "failed";
+    const nextState = {
+      ...lockedState,
+      lastAttemptedAt: now,
+      lastResult: {
+        exitCode: result.code,
+        fromVersion: options.currentVersion,
+        status,
+        ...truncateStderr(result.stderr) ? { stderrSnippet: truncateStderr(result.stderr) } : {},
+        ...update.latestVersion ? { toVersion: update.latestVersion } : {}
+      },
+      ...status === "updated" ? { lastSucceededAt: now } : {}
+    };
+    await saveAutoUpdateState(nextState);
+    return {
+      attempted: true,
+      status
+    };
+  } catch {
+    return {
+      attempted: true,
+      status: "failed"
+    };
+  } finally {
+    await releaseLock();
+  }
+}
+
 // src/hooks/refresh-auth.ts
 function parseTrigger(value) {
   switch (value) {
@@ -13707,7 +14112,12 @@ async function main() {
   await ensureAuthSessionFresh({ trigger }).catch(() => {
     return;
   });
+  if (trigger === "session_start" && plugin_default.name === "zest") {
+    await maybeAutoUpdatePlugin({ currentVersion: plugin_default.version }).catch(() => {
+      return;
+    });
+  }
 }
 main();
 
-//# debugId=2BD9AC784E1D28FC64756E2164756E21
+//# debugId=370FC20A56E1C19F64756E2164756E21
