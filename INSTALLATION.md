@@ -27,15 +27,25 @@ codex plugin marketplace add Winding-Labs/zest-codex --ref main
 
 After the marketplace is added, Codex should show the `Zest` marketplace and the `Zest` plugin.
 
-Install or enable `Zest`.
+Open the `Zest` marketplace in Codex, then install `Zest` by clicking the `+` button. Adding the marketplace only makes the plugin available; it does not install the plugin automatically.
 
-### 4. Restart Codex
+### 4. Enable Plugin Hooks
+
+Enable Codex plugin hooks so Zest can refresh auth and run automatic update checks when a new Codex session starts:
+
+```bash
+codex features enable plugin_hooks
+```
+
+Without `plugin_hooks`, the Zest MCP server and skills can still work, but the bundled `SessionStart` and `UserPromptSubmit` hooks will not run.
+
+### 5. Restart Codex
 
 Completely quit Codex, then open it again.
 
-This refreshes plugin skills and the local MCP server registration.
+This refreshes plugin skills, the local MCP server registration, and activates plugin hooks.
 
-### 5. Make sure the local Zest MCP is enabled
+### 6. Make sure the local Zest MCP is enabled
 
 Use `/mcp` and confirm that Zest appears as enabled. If it does not appear, restart Codex once more.
 

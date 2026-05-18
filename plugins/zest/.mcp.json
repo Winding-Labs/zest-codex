@@ -4,7 +4,7 @@
       "command": "sh",
       "args": [
         "-c",
-        "exec node \"$HOME/.codex/plugins/cache/zest/zest/0.0.1/dist/mcp/server.js\""
+        "exec node \"$HOME/.codex/plugins/cache/zest/zest/0.0.2/dist/mcp/server.js\""
       ],
       "type": "stdio"
     }

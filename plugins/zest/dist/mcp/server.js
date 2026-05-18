@@ -39936,7 +39936,7 @@ class StdioServerTransport {
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.0.1",
+  version: "0.0.2",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -47283,4 +47283,4 @@ main().catch((error51) => {
   process.exit(1);
 });
 
-//# debugId=81B43D5283DEB0CC64756E2164756E21
+//# debugId=C042080F9388A00664756E2164756E21
