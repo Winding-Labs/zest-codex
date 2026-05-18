@@ -10743,7 +10743,7 @@ var require_main3 = __commonJS((exports2) => {
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.0.2",
+  version: "0.0.1",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -14120,4 +14120,4 @@ async function main() {
 }
 main();
 
-//# debugId=1318BF997241D93664756E2164756E21
+//# debugId=370FC20A56E1C19F64756E2164756E21
