@@ -10852,7 +10852,7 @@ var import_node_path2 = require("node:path");
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.0.3",
+  version: "0.1.0",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -32284,4 +32284,4 @@ if (shouldRunDaemonEntrypoint()) {
   runDaemon();
 }
 
-//# debugId=628AD17B7D94F43464756E2164756E21
+//# debugId=774FF4423D6DC94964756E2164756E21

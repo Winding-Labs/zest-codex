@@ -10768,7 +10768,7 @@ module.exports = __toCommonJS(exports_refresh_auth);
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.0.3",
+  version: "0.1.0",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -29563,4 +29563,4 @@ async function runRefreshAuthHook(eventName, dependencies = {}) {
 }
 runRefreshAuthHook(process.argv[2]);
 
-//# debugId=E1C43E85F6C0DFA464756E2164756E21
+//# debugId=420D08A394C5927564756E2164756E21

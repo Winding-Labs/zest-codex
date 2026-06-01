@@ -41183,7 +41183,7 @@ var DEFAULT_PRIVACY_SETTINGS = {
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.0.3",
+  version: "0.1.0",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -49644,4 +49644,4 @@ main().catch((error51) => {
   process.exit(1);
 });
 
-//# debugId=6B3F5B82E4A0746D64756E2164756E21
+//# debugId=95C21C0351340A0264756E2164756E21
