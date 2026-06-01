@@ -10759,46 +10759,20 @@ var require_main3 = __commonJS((exports2) => {
   } });
 });
 
-// src/hooks/refresh-auth.ts
-var exports_refresh_auth = {};
-__export(exports_refresh_auth, {
-  runRefreshAuthHook: () => runRefreshAuthHook
+// src/daemon/daemon.ts
+var exports_daemon = {};
+__export(exports_daemon, {
+  shouldRunDaemonEntrypoint: () => shouldRunDaemonEntrypoint,
+  shouldExitForMemory: () => shouldExitForMemory,
+  runDaemonCycle: () => runDaemonCycle,
+  runDaemon: () => runDaemon,
+  createDefaultRunDaemonCycleDependencies: () => createDefaultRunDaemonCycleDependencies,
+  DEFAULT_DAEMON_MAX_RSS_BYTES: () => DEFAULT_DAEMON_MAX_RSS_BYTES,
+  DEFAULT_DAEMON_INTERVAL_MS: () => DEFAULT_DAEMON_INTERVAL_MS,
+  DEFAULT_DAEMON_IDLE_MS: () => DEFAULT_DAEMON_IDLE_MS
 });
-module.exports = __toCommonJS(exports_refresh_auth);
-// .codex-plugin/plugin.json
-var plugin_default = {
-  name: "zest",
-  version: "0.0.3",
-  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
-  author: {
-    name: "Zest",
-    email: "support@meetzest.com",
-    url: "https://meetzest.com"
-  },
-  homepage: "https://meetzest.com",
-  repository: "https://github.com/Winding-Labs/zest",
-  license: "MIT",
-  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
-  skills: "./skills/",
-  hooks: "./hooks/hooks.json",
-  mcpServers: "./.mcp.json",
-  interface: {
-    displayName: "Zest",
-    shortDescription: "AI workflow telemetry and standups for Codex.",
-    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
-    developerName: "Zest",
-    category: "Productivity",
-    capabilities: ["Interactive", "Read", "Write"],
-    websiteURL: "https://meetzest.com",
-    privacyPolicyURL: "https://meetzest.com/privacy",
-    termsOfServiceURL: "https://meetzest.com/terms",
-    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
-    brandColor: "#D4FF3D",
-    composerIcon: "./assets/zest-icon.svg",
-    logo: "./assets/zest.png",
-    screenshots: []
-  }
-};
+module.exports = __toCommonJS(exports_daemon);
+var import_node_path12 = require("node:path");
 
 // src/auth/refresh.ts
 var import_promises2 = require("node:fs/promises");
@@ -10851,6 +10825,17 @@ async function writeJsonFileAtomic(filePath, value) {
   await writeFileAtomic(filePath, `${JSON.stringify(value, null, 2)}
 `);
 }
+async function readTomlFile(filePath) {
+  try {
+    const content = await import_promises.readFile(filePath, "utf-8");
+    return import_toml.parse(content);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return null;
+    }
+    throw error;
+  }
+}
 async function removeStateFile(filePath) {
   try {
     await import_promises.unlink(filePath);
@@ -10864,6 +10849,42 @@ async function removeStateFile(filePath) {
 // src/state/paths.ts
 var import_node_os = require("node:os");
 var import_node_path2 = require("node:path");
+// .codex-plugin/plugin.json
+var plugin_default = {
+  name: "zest",
+  version: "0.0.3",
+  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
+  author: {
+    name: "Zest",
+    email: "support@meetzest.com",
+    url: "https://meetzest.com"
+  },
+  homepage: "https://meetzest.com",
+  repository: "https://github.com/Winding-Labs/zest",
+  license: "MIT",
+  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
+  skills: "./skills/",
+  hooks: "./hooks/hooks.json",
+  mcpServers: "./.mcp.json",
+  interface: {
+    displayName: "Zest",
+    shortDescription: "AI workflow telemetry and standups for Codex.",
+    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
+    developerName: "Zest",
+    category: "Productivity",
+    capabilities: ["Interactive", "Read", "Write"],
+    websiteURL: "https://meetzest.com",
+    privacyPolicyURL: "https://meetzest.com/privacy",
+    termsOfServiceURL: "https://meetzest.com/terms",
+    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
+    brandColor: "#D4FF3D",
+    composerIcon: "./assets/zest-icon.svg",
+    logo: "./assets/zest.png",
+    screenshots: []
+  }
+};
+
+// src/state/paths.ts
 var DEFAULT_STATE_DIR_NAME = `.codex-${plugin_default.name}`;
 function getDefaultStateRootDir() {
   return import_node_path2.join(import_node_os.homedir(), DEFAULT_STATE_DIR_NAME);
@@ -13448,6 +13469,9 @@ var SYNC_DEBUG_LOGGING_ENABLED = resolveConfigValue({
   runtimeValue: process.env.ZEST_CODEX_ENABLE_LOGS,
   fallback: ""
 }) === "1";
+var PLATFORM_TERMINAL = "terminal";
+var PLATFORM_CODEX_APP = "codex-app";
+var SOURCE = "codex";
 
 // src/supabase/session-storage-adapter.ts
 function getJwtExpiresAt(token) {
@@ -13711,10 +13735,221 @@ async function ensureAuthSessionFresh(options) {
   }
 }
 
-// src/daemon/manager.ts
-var import_node_child_process = require("node:child_process");
-var import_promises4 = require("node:fs/promises");
+// src/logging/logger.ts
+var import_promises5 = require("node:fs/promises");
 var import_node_path5 = require("node:path");
+
+// ../../packages/plugin-common/src/log-rotation/log-rotation.ts
+var import_promises4 = require("node:fs/promises");
+var import_node_path4 = require("node:path");
+
+// ../../packages/plugin-common/src/utils/fs-utils.ts
+var import_promises3 = require("node:fs/promises");
+async function ensureDirectory(dirPath) {
+  try {
+    await import_promises3.stat(dirPath);
+  } catch {
+    await import_promises3.mkdir(dirPath, { recursive: true, mode: 448 });
+  }
+}
+
+// ../../packages/plugin-common/src/log-rotation/log-rotation.ts
+var CLEANUP_THROTTLE_MS = 60 * 60 * 1000;
+function getDateString() {
+  return new Date().toISOString().split("T")[0];
+}
+function getDatedLogPath(logsDir, logPrefix) {
+  const dateStr = getDateString();
+  return import_node_path4.join(logsDir, `${logPrefix}-${dateStr}.log`);
+}
+function parseDateFromFilename(filename, logPrefix) {
+  const pattern = new RegExp(`^${logPrefix}-(\\d{4}-\\d{2}-\\d{2})\\.log$`);
+  const match = filename.match(pattern);
+  if (!match) {
+    return null;
+  }
+  const date = new Date(match[1] + "T00:00:00Z");
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+function createLogRotation(config) {
+  const { logsDir, retentionDays, logger } = config;
+  const lastCleanupTime = {};
+  async function cleanupStaleLogs(logPrefix) {
+    const now = Date.now();
+    const lastCleanup = lastCleanupTime[logPrefix] || 0;
+    if (now - lastCleanup < CLEANUP_THROTTLE_MS) {
+      return;
+    }
+    lastCleanupTime[logPrefix] = now;
+    try {
+      await ensureDirectory(logsDir);
+      const files = await import_promises4.readdir(logsDir);
+      const cutoffDate = new Date(now - retentionDays * 24 * 60 * 60 * 1000);
+      for (const file of files) {
+        const fileDate = parseDateFromFilename(file, logPrefix);
+        if (fileDate && fileDate < cutoffDate) {
+          const filePath = import_node_path4.join(logsDir, file);
+          try {
+            await import_promises4.unlink(filePath);
+          } catch (error) {
+            logger?.error(`Failed to delete old log file ${file}`, error);
+          }
+        }
+      }
+    } catch (error) {
+      logger?.error("Failed to cleanup old logs", error);
+    }
+  }
+  async function forceCleanupStaleLogs(logPrefix) {
+    lastCleanupTime[logPrefix] = 0;
+    await cleanupStaleLogs(logPrefix);
+  }
+  return { cleanupStaleLogs, forceCleanupStaleLogs };
+}
+
+// src/logging/config.ts
+var LOG_RETENTION_DAYS = 7;
+var LOG_PREFIX = "plugin";
+var LEVELS = ["debug", "info", "warn", "error"];
+function resolveConfigValue2(bundledValue, runtimeValue) {
+  if (typeof runtimeValue === "string" && runtimeValue.length > 0)
+    return runtimeValue;
+  if (typeof bundledValue === "string" && bundledValue.length > 0)
+    return bundledValue;
+  return "";
+}
+function getLogsDir() {
+  return resolveStatePath("logs");
+}
+function isFileLoggingEnabled() {
+  const disabled = resolveConfigValue2("", process.env.ZEST_CODEX_DISABLE_LOGS);
+  return disabled !== "1";
+}
+function getEffectiveLogLevel() {
+  const configured = resolveConfigValue2("", process.env.ZEST_CODEX_LOG_LEVEL);
+  if (LEVELS.includes(configured)) {
+    return configured;
+  }
+  return "info";
+}
+function getCurrentLogFilePath() {
+  return getDatedLogPath(getLogsDir(), LOG_PREFIX);
+}
+
+// src/logging/redaction.ts
+var UNSAFE_KEY_PATTERN = /(access[\s_-]?token|refresh[\s_-]?token|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code|payload|prompt|content|diff|stdout|stderr|output|arguments)/i;
+var UNSAFE_STRING_ASSIGNMENT_PATTERN = /(["']?\b(?:access[\s_-]?token|refresh[\s_-]?token|accessToken|refreshToken|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code)\b["']?)(\s*[:=]\s*)(["']?)(Bearer\s+)?([^"',\s;}\]]+)(["']?)/gi;
+var UNSAFE_STRING_PHRASE_PATTERN = /\b(authorization|api[\s_-]?key|anon[\s_-]?key|accessToken|refreshToken|access[\s_-]?token|refresh[\s_-]?token|device[\s_-]?code)\b(\s+)(Bearer\s+)?("[^"]*"|'[^']*'|[^\s,;]+)/gi;
+var MAX_STACK_LENGTH = 2000;
+var CIRCULAR_SENTINEL = "[Circular]";
+function redactValue(value, seen) {
+  if (value === null || typeof value === "number" || typeof value === "boolean") {
+    return value;
+  }
+  if (typeof value === "string") {
+    return redactUnsafeString(value);
+  }
+  if (Array.isArray(value)) {
+    if (seen.has(value)) {
+      return CIRCULAR_SENTINEL;
+    }
+    seen.add(value);
+    const redacted = value.map((item) => redactValue(item, seen));
+    seen.delete(value);
+    return redacted;
+  }
+  if (value instanceof Error) {
+    return serializeLogError(value);
+  }
+  if (typeof value === "object") {
+    if (seen.has(value)) {
+      return CIRCULAR_SENTINEL;
+    }
+    return redactObject(value, seen);
+  }
+  return String(value);
+}
+function redactObject(details, seen) {
+  const redacted = {};
+  seen.add(details);
+  for (const [key, value] of Object.entries(details)) {
+    redacted[key] = UNSAFE_KEY_PATTERN.test(key) ? "[REDACTED]" : redactValue(value, seen);
+  }
+  seen.delete(details);
+  return redacted;
+}
+function redactUnsafeString(value) {
+  return value.replace(UNSAFE_STRING_ASSIGNMENT_PATTERN, (_match, key, separator, openingQuote, bearer, _secret, closingQuote) => `${key}${separator}${openingQuote}${bearer ?? ""}[REDACTED]${closingQuote}`).replace(UNSAFE_STRING_PHRASE_PATTERN, (_match, key, separator, bearer) => `${key}${separator}${bearer ?? ""}[REDACTED]`);
+}
+function redactLogDetails(details) {
+  return redactObject(details, new WeakSet);
+}
+function serializeLogError(error) {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: redactUnsafeString(error.message),
+      ...error.stack ? { stack: redactUnsafeString(error.stack).slice(0, MAX_STACK_LENGTH) } : {}
+    };
+  }
+  return {
+    name: "UnknownError",
+    message: redactUnsafeString(String(error))
+  };
+}
+
+// src/logging/logger.ts
+var LEVEL_ORDER = {
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3
+};
+function shouldLog(level) {
+  return LEVEL_ORDER[level] >= LEVEL_ORDER[getEffectiveLogLevel()];
+}
+function createLogger(dependencies = {}) {
+  const append = dependencies.append ?? import_promises5.appendFile;
+  const createRotation = dependencies.createRotation ?? createLogRotation;
+  const ensureDir = dependencies.ensureDir ?? import_promises5.mkdir;
+  const now = dependencies.now ?? (() => new Date);
+  const rotation = createRotation({
+    logsDir: getLogsDir(),
+    retentionDays: LOG_RETENTION_DAYS
+  });
+  async function cleanupLogs() {
+    await rotation.cleanupStaleLogs(LOG_PREFIX);
+  }
+  async function write(level, component, event, options = {}) {
+    if (!isFileLoggingEnabled() || !shouldLog(level))
+      return;
+    const entry = {
+      ts: now().toISOString(),
+      level,
+      component,
+      event,
+      ...options.runId ? { runId: options.runId } : {},
+      ...options.details ? { details: redactLogDetails(options.details) } : {},
+      ...options.error ? { error: serializeLogError(options.error) } : {}
+    };
+    try {
+      const path = getCurrentLogFilePath();
+      await ensureDir(import_node_path5.dirname(path), { recursive: true, mode: 448 });
+      await append(path, `${JSON.stringify(entry)}
+`, { encoding: "utf-8", mode: 384 });
+      await cleanupLogs();
+    } catch {
+      return;
+    }
+  }
+  return {
+    debug: (component, event, options) => write("debug", component, event, options),
+    info: (component, event, options) => write("info", component, event, options),
+    warn: (component, event, options) => write("warn", component, event, options),
+    error: (component, event, options) => write("error", component, event, options)
+  };
+}
+var logger = createLogger();
 
 // ../../node_modules/zod/v4/classic/external.js
 var exports_external = {};
@@ -27994,6 +28229,26 @@ function date4(params) {
 config(en_default());
 // ../../packages/privacy-redaction/src/config/defaults.ts
 var DEFAULT_MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+var DEFAULT_PRIVACY_CONFIG = {
+  approach: "detection",
+  aggressiveMode: false,
+  enabledPatterns: [],
+  enableGitignore: true,
+  enableZestRules: true,
+  customExclusionPatterns: [],
+  maxFileSizeBytes: DEFAULT_MAX_FILE_SIZE_BYTES
+};
+function createPrivacyConfig(partial2) {
+  if (!partial2) {
+    return { ...DEFAULT_PRIVACY_CONFIG };
+  }
+  return {
+    ...DEFAULT_PRIVACY_CONFIG,
+    ...partial2,
+    enabledPatterns: partial2.enabledPatterns ?? DEFAULT_PRIVACY_CONFIG.enabledPatterns,
+    customExclusionPatterns: partial2.customExclusionPatterns ?? DEFAULT_PRIVACY_CONFIG.customExclusionPatterns
+  };
+}
 
 // ../../packages/privacy-redaction/src/detection/cache.ts
 class DetectionCache {
@@ -28056,6 +28311,23 @@ class DetectionCache {
     }
     return pruned;
   }
+}
+function computeContentHash(content) {
+  let hash2 = 0;
+  for (let i = 0;i < content.length; i++) {
+    const char = content.charCodeAt(i);
+    hash2 = (hash2 << 5) - hash2 + char;
+    hash2 = hash2 & hash2;
+  }
+  return Math.abs(hash2).toString(36);
+}
+function generateCacheKey(content, context) {
+  const contentHash = computeContentHash(content);
+  if (context) {
+    const contextHash = computeContentHash(context);
+    return `${contentHash}:${contextHash}`;
+  }
+  return contentHash;
 }
 // ../../packages/privacy-redaction/src/patterns/sensitive-patterns.ts
 function createPattern(name, description, regex, category, options = {}) {
@@ -28190,6 +28462,225 @@ var SENSITIVE_DATA_PATTERNS = [
   }),
   createPattern("private_ip", "Private IP addresses", /\b(?:10\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|172\.(?:1[6-9]|2[0-9]|3[01])\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|192\.168\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\b/g, "network", { redactionStrategy: "partial", priority: 50, aggressiveOnly: true })
 ];
+var HIGHLY_SENSITIVE_PATTERN_NAMES = [
+  "private_key",
+  "aws_access_key",
+  "aws_secret_key",
+  "azure_storage_key",
+  "google_api_key",
+  "credit_card",
+  "credit_card_formatted",
+  "stripe_key",
+  "paypal_client_id",
+  "square_token",
+  "ssn",
+  "mongodb_atlas",
+  "mongodb_connection",
+  "planetscale_password",
+  "supabase_key",
+  "db_connection",
+  "openai_key",
+  "openai_project_key",
+  "anthropic_key",
+  "auth0_secret",
+  "okta_token",
+  "generic_secret",
+  "generic_secret_unquoted",
+  "slack_token",
+  "discord_token",
+  "github_token",
+  "github_app_token",
+  "github_oauth_token",
+  "gitlab_token",
+  "bitbucket_token",
+  "shopify_token",
+  "shopify_secret",
+  "sendgrid_key",
+  "mailgun_key",
+  "heroku_key",
+  "digitalocean_token",
+  "cloudflare_token",
+  "vercel_token",
+  "netlify_token",
+  "railway_token"
+];
+
+// ../../packages/privacy-redaction/src/patterns/categories.ts
+function getAllPatterns() {
+  return SENSITIVE_DATA_PATTERNS;
+}
+function getPatternsByNames(names) {
+  const nameSet = new Set(names);
+  return SENSITIVE_DATA_PATTERNS.filter((pattern) => nameSet.has(pattern.name));
+}
+function getNonAggressivePatterns() {
+  return SENSITIVE_DATA_PATTERNS.filter((pattern) => !pattern.aggressiveOnly);
+}
+function isHighlySensitivePattern(patternName) {
+  return HIGHLY_SENSITIVE_PATTERN_NAMES.includes(patternName);
+}
+function selectPatterns(aggressiveMode, enabledPatterns) {
+  if (enabledPatterns.length > 0) {
+    return getPatternsByNames(enabledPatterns);
+  }
+  if (aggressiveMode) {
+    return getAllPatterns();
+  }
+  return getNonAggressivePatterns();
+}
+// ../../packages/privacy-redaction/src/detection/detector.ts
+class SensitiveDataDetector {
+  patterns;
+  config;
+  cache;
+  stats;
+  constructor(options) {
+    this.config = options.config;
+    this.patterns = selectPatterns(options.config.aggressiveMode, options.config.enabledPatterns);
+    if (options.enableCache !== false) {
+      this.cache = new DetectionCache({
+        maxEntries: options.maxCacheEntries ?? 1000,
+        ttlMs: options.cacheTtlMs ?? 5 * 60 * 1000
+      });
+    } else {
+      this.cache = null;
+    }
+    this.stats = this.createEmptyStats();
+  }
+  createEmptyStats() {
+    return {
+      totalDetections: 0,
+      byPattern: {},
+      byCategory: {},
+      contentScanned: 0,
+      cacheHits: 0
+    };
+  }
+  updateConfig(newConfig) {
+    this.config = { ...this.config, ...newConfig };
+    this.patterns = selectPatterns(this.config.aggressiveMode, this.config.enabledPatterns);
+    this.cache?.clear();
+  }
+  getConfig() {
+    return { ...this.config };
+  }
+  scanContent(content, context) {
+    if (this.cache) {
+      const cacheKey = generateCacheKey(content, context);
+      const cached2 = this.cache.get(cacheKey);
+      if (cached2) {
+        this.stats.cacheHits++;
+        return { ...cached2, fromCache: true };
+      }
+    }
+    const detections = this.performScan(content);
+    const deduplicatedDetections = this.deduplicateDetections(detections);
+    this.stats.contentScanned++;
+    this.stats.totalDetections += deduplicatedDetections.length;
+    for (const detection of deduplicatedDetections) {
+      this.stats.byPattern[detection.pattern] = (this.stats.byPattern[detection.pattern] || 0) + 1;
+      this.stats.byCategory[detection.category] = (this.stats.byCategory[detection.category] || 0) + 1;
+    }
+    const result = {
+      hasSensitiveData: deduplicatedDetections.length > 0,
+      detections: deduplicatedDetections,
+      fromCache: false
+    };
+    if (this.cache) {
+      const cacheKey = generateCacheKey(content, context);
+      this.cache.set(cacheKey, result);
+    }
+    return result;
+  }
+  performScan(content) {
+    const detections = [];
+    for (const pattern of this.patterns) {
+      pattern.regex.lastIndex = 0;
+      const matches = Array.from(content.matchAll(pattern.regex));
+      for (const match of matches) {
+        if (match.index === undefined)
+          continue;
+        let start = match.index;
+        let end = match.index + match[0].length;
+        let matchedText = match[0];
+        if (match[1] !== undefined) {
+          const sensitiveValue = match[1];
+          const sensitiveStartInMatch = match[0].indexOf(sensitiveValue);
+          if (sensitiveStartInMatch !== -1) {
+            start = match.index + sensitiveStartInMatch;
+            end = start + sensitiveValue.length;
+            matchedText = sensitiveValue;
+          }
+        }
+        detections.push({
+          pattern: pattern.name,
+          description: pattern.description,
+          position: { start, end },
+          matchedText,
+          redactionStrategy: pattern.redactionStrategy,
+          category: pattern.category,
+          highlySensitive: pattern.highlySensitive
+        });
+      }
+    }
+    return detections;
+  }
+  deduplicateDetections(detections) {
+    if (detections.length <= 1) {
+      return detections;
+    }
+    const sorted = [...detections].sort((a, b) => {
+      if (a.position.start !== b.position.start) {
+        return a.position.start - b.position.start;
+      }
+      return this.getPatternPriority(b.pattern) - this.getPatternPriority(a.pattern);
+    });
+    const deduplicated = [];
+    for (const detection of sorted) {
+      const overlappingIndex = deduplicated.findIndex((existing) => detection.position.start < existing.position.end && detection.position.end > existing.position.start);
+      if (overlappingIndex === -1) {
+        deduplicated.push(detection);
+      } else {
+        const existing = deduplicated[overlappingIndex];
+        const existingPriority = this.getPatternPriority(existing.pattern);
+        const newPriority = this.getPatternPriority(detection.pattern);
+        if (newPriority > existingPriority) {
+          deduplicated[overlappingIndex] = detection;
+        }
+      }
+    }
+    return deduplicated;
+  }
+  getPatternPriority(patternName) {
+    const pattern = this.patterns.find((p) => p.name === patternName);
+    return pattern?.priority ?? 50;
+  }
+  hasHighlySensitiveData(detections) {
+    return detections.some((d) => d.highlySensitive || isHighlySensitivePattern(d.pattern));
+  }
+  getStats() {
+    return { ...this.stats };
+  }
+  clearStats() {
+    this.stats = this.createEmptyStats();
+  }
+  clearCache() {
+    this.cache?.clear();
+  }
+  clearAll() {
+    this.clearStats();
+    this.clearCache();
+  }
+  getCacheSize() {
+    return this.cache?.size ?? 0;
+  }
+  getActivePatterns() {
+    return [...this.patterns];
+  }
+  getActivePatternCount() {
+    return this.patterns.length;
+  }
+}
 // ../../packages/privacy-redaction/src/exclusion/built-in-rules.ts
 var SENSITIVE_FILE_RULES = [
   { pattern: "*.env*", category: "sensitive_files", description: "Environment files" },
@@ -28330,6 +28821,643 @@ var ALL_BUILT_IN_RULES = [
   ...LOCK_FILE_RULES,
   ...BINARY_MEDIA_RULES
 ];
+function getBuiltInPatterns() {
+  return new Set(ALL_BUILT_IN_RULES.map((rule) => rule.pattern));
+}
+// ../../packages/privacy-redaction/src/exclusion/gitignore-parser.ts
+function parseGitignoreLine(line) {
+  let pattern = line.trim();
+  if (!pattern || pattern.startsWith("#")) {
+    return null;
+  }
+  pattern = pattern.replace(/\\(\s)$/, "$1");
+  const negated = pattern.startsWith("!");
+  if (negated) {
+    pattern = pattern.substring(1);
+  }
+  const directoryOnly = pattern.endsWith("/");
+  if (directoryOnly) {
+    pattern = pattern.slice(0, -1);
+  }
+  const original = line.trim();
+  let glob = pattern;
+  if (glob.startsWith("/")) {
+    glob = glob.substring(1);
+  } else if (!glob.includes("/")) {
+    glob = `**/${glob}`;
+  }
+  if (directoryOnly) {
+    glob = `${glob}/**`;
+  }
+  return {
+    original,
+    glob,
+    negated,
+    directoryOnly
+  };
+}
+function parseGitignoreContent(content) {
+  const lines = content.split(`
+`);
+  const patterns = [];
+  for (const line of lines) {
+    const parsed = parseGitignoreLine(line);
+    if (parsed) {
+      patterns.push(parsed);
+    }
+  }
+  return patterns;
+}
+function createGitignoreResult(filePath, content) {
+  const directory = filePath.replace(/[/\\][^/\\]*$/, "");
+  const patterns = parseGitignoreContent(content);
+  const globs = patterns.filter((p) => !p.negated).map((p) => p.glob);
+  return {
+    filePath,
+    directory,
+    patterns,
+    globs
+  };
+}
+function mergeGitignorePatterns(results) {
+  const patternMap = new Map;
+  for (const result of results) {
+    for (const glob of result.globs) {
+      patternMap.set(glob, result.directory);
+    }
+  }
+  return patternMap;
+}
+
+// ../../packages/privacy-redaction/src/exclusion/glob-matcher.ts
+function normalizePath(filePath) {
+  return filePath.replace(/\\/g, "/");
+}
+function globToRegex(pattern) {
+  let normalized = normalizePath(pattern);
+  let regexPattern = normalized.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*\*/g, "§DOUBLESTAR§").replace(/\*/g, "[^/]*").replace(/\?/g, "[^/]");
+  regexPattern = regexPattern.replace(/§DOUBLESTAR§\//g, "(?:.*/)?").replace(/\/§DOUBLESTAR§/g, "(?:/.*)?").replace(/§DOUBLESTAR§/g, ".*");
+  return new RegExp(`^${regexPattern}$`, "i");
+}
+function matchesGlob(filePath, pattern, workspaceRoot) {
+  const normalizedPath = normalizePath(filePath);
+  const regex = globToRegex(pattern);
+  if (regex.test(normalizedPath)) {
+    return true;
+  }
+  if (!pattern.includes("/")) {
+    const fileName = normalizedPath.split("/").pop() || "";
+    if (regex.test(fileName)) {
+      return true;
+    }
+  }
+  if (workspaceRoot) {
+    const normalizedRoot = normalizePath(workspaceRoot);
+    if (normalizedPath.startsWith(normalizedRoot)) {
+      let relativePath = normalizedPath.substring(normalizedRoot.length);
+      if (relativePath.startsWith("/")) {
+        relativePath = relativePath.substring(1);
+      }
+      if (regex.test(relativePath)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+function matchesGlobRelative(filePath, pattern, baseDir) {
+  const normalizedPath = normalizePath(filePath);
+  const normalizedBase = normalizePath(baseDir);
+  if (!normalizedPath.startsWith(normalizedBase)) {
+    return false;
+  }
+  let relativePath = normalizedPath.substring(normalizedBase.length);
+  if (relativePath.startsWith("/")) {
+    relativePath = relativePath.substring(1);
+  }
+  return matchesGlob(relativePath, pattern);
+}
+function findMatchingPattern(filePath, patterns, workspaceRoot) {
+  for (const pattern of patterns) {
+    if (matchesGlob(filePath, pattern, workspaceRoot)) {
+      return pattern;
+    }
+  }
+  return null;
+}
+function findMatchingPatternWithBase(filePath, patternMap) {
+  for (const [pattern, baseDir] of patternMap) {
+    if (matchesGlobRelative(filePath, pattern, baseDir)) {
+      return { pattern, baseDir };
+    }
+  }
+  return null;
+}
+
+// ../../packages/privacy-redaction/src/exclusion/zest-rules-parser.ts
+var ZEST_RULES_FILENAME = ".zest.rules";
+function parseZestRulesContent(content) {
+  return parseGitignoreContent(content);
+}
+function createZestRulesResult(filePath, content) {
+  const directory = filePath.replace(/[/\\][^/\\]*$/, "");
+  const patterns = parseZestRulesContent(content);
+  const globs = patterns.filter((p) => !p.negated).map((p) => p.glob);
+  return {
+    filePath,
+    directory,
+    patterns,
+    globs
+  };
+}
+function mergeZestRulesPatterns(results) {
+  const patterns = new Set;
+  for (const result of results) {
+    for (const glob of result.globs) {
+      patterns.add(glob);
+    }
+  }
+  return patterns;
+}
+
+// ../../packages/privacy-redaction/src/exclusion/exclusion-service.ts
+class FileExclusionService {
+  config;
+  fs;
+  builtInPatterns;
+  gitignorePatterns;
+  zestRulesPatterns;
+  customPatterns;
+  excludedFiles;
+  initialized;
+  constructor(options) {
+    this.config = options.config;
+    this.fs = options.fs;
+    this.builtInPatterns = getBuiltInPatterns();
+    this.gitignorePatterns = new Map;
+    this.zestRulesPatterns = new Set;
+    this.customPatterns = new Set(options.config.customExclusionPatterns);
+    this.excludedFiles = new Map;
+    this.initialized = false;
+  }
+  async initialize() {
+    await this.refreshPatterns();
+    this.initialized = true;
+  }
+  async refreshPatterns() {
+    if (this.config.enableGitignore) {
+      await this.loadGitignorePatterns();
+    } else {
+      this.gitignorePatterns.clear();
+    }
+    if (this.config.enableZestRules) {
+      await this.loadZestRulesPatterns();
+    } else {
+      this.zestRulesPatterns.clear();
+    }
+    this.customPatterns = new Set(this.config.customExclusionPatterns);
+    this.excludedFiles.clear();
+  }
+  async loadGitignorePatterns() {
+    this.gitignorePatterns.clear();
+    const workspaceRoot = this.fs.getWorkspaceRoot();
+    if (!workspaceRoot)
+      return;
+    const results = [];
+    const rootGitignore = `${workspaceRoot}/.gitignore`;
+    try {
+      if (await this.fs.fileExists(rootGitignore)) {
+        const content = await this.fs.readFile(rootGitignore);
+        results.push(createGitignoreResult(rootGitignore, content));
+      }
+    } catch {}
+    this.gitignorePatterns = mergeGitignorePatterns(results);
+  }
+  async loadZestRulesPatterns() {
+    this.zestRulesPatterns.clear();
+    const workspaceRoot = this.fs.getWorkspaceRoot();
+    if (!workspaceRoot)
+      return;
+    const results = [];
+    const rootZestRules = `${workspaceRoot}/${ZEST_RULES_FILENAME}`;
+    try {
+      if (await this.fs.fileExists(rootZestRules)) {
+        const content = await this.fs.readFile(rootZestRules);
+        results.push(createZestRulesResult(rootZestRules, content));
+      }
+    } catch {}
+    this.zestRulesPatterns = mergeZestRulesPatterns(results);
+  }
+  async updateConfig(newConfig) {
+    this.config = { ...this.config, ...newConfig };
+    await this.refreshPatterns();
+  }
+  getConfig() {
+    return { ...this.config };
+  }
+  shouldExcludeFile(filePath) {
+    const workspaceRoot = this.fs.getWorkspaceRoot();
+    const builtInMatch = findMatchingPattern(filePath, this.builtInPatterns, workspaceRoot);
+    if (builtInMatch) {
+      const result = {
+        excluded: true,
+        reason: "built_in_rule",
+        matchedRule: builtInMatch
+      };
+      this.trackExclusion(filePath, result);
+      return result;
+    }
+    if (this.config.enableGitignore && this.gitignorePatterns.size > 0) {
+      const gitignoreMatch = findMatchingPatternWithBase(filePath, this.gitignorePatterns);
+      if (gitignoreMatch) {
+        const result = {
+          excluded: true,
+          reason: "gitignore",
+          matchedRule: gitignoreMatch.pattern
+        };
+        this.trackExclusion(filePath, result);
+        return result;
+      }
+    }
+    if (this.config.enableZestRules && this.zestRulesPatterns.size > 0) {
+      const zestMatch = findMatchingPattern(filePath, this.zestRulesPatterns, workspaceRoot);
+      if (zestMatch) {
+        const result = {
+          excluded: true,
+          reason: "zest_rules",
+          matchedRule: zestMatch
+        };
+        this.trackExclusion(filePath, result);
+        return result;
+      }
+    }
+    if (this.customPatterns.size > 0) {
+      const customMatch = findMatchingPattern(filePath, this.customPatterns, workspaceRoot);
+      if (customMatch) {
+        const result = {
+          excluded: true,
+          reason: "custom_pattern",
+          matchedRule: customMatch
+        };
+        this.trackExclusion(filePath, result);
+        return result;
+      }
+    }
+    return { excluded: false };
+  }
+  isFileTooLarge(fileSizeBytes) {
+    return fileSizeBytes > this.config.maxFileSizeBytes;
+  }
+  isBinaryFile(filePath) {
+    const binaryExtensions = [
+      ".exe",
+      ".dll",
+      ".so",
+      ".dylib",
+      ".bin",
+      ".obj",
+      ".o",
+      ".a",
+      ".lib",
+      ".jar",
+      ".war",
+      ".class",
+      ".pyc",
+      ".wasm",
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif",
+      ".bmp",
+      ".ico",
+      ".webp",
+      ".mp4",
+      ".avi",
+      ".mov",
+      ".wmv",
+      ".mkv",
+      ".mp3",
+      ".wav",
+      ".zip",
+      ".tar",
+      ".gz",
+      ".rar",
+      ".7z",
+      ".pdf",
+      ".woff",
+      ".woff2",
+      ".ttf",
+      ".otf",
+      ".eot",
+      ".db",
+      ".sqlite",
+      ".sqlite3"
+    ];
+    const lowerPath = filePath.toLowerCase();
+    return binaryExtensions.some((ext) => lowerPath.endsWith(ext));
+  }
+  trackExclusion(filePath, result) {
+    if (result.excluded && result.reason && result.matchedRule) {
+      this.excludedFiles.set(filePath, {
+        filePath,
+        reason: result.reason,
+        matchedRule: result.matchedRule
+      });
+    }
+  }
+  getExcludedFiles() {
+    return Array.from(this.excludedFiles.values());
+  }
+  getStats() {
+    const byReason = {
+      built_in_rule: 0,
+      gitignore: 0,
+      zest_rules: 0,
+      custom_pattern: 0,
+      file_size: 0,
+      binary_file: 0
+    };
+    for (const excluded of this.excludedFiles.values()) {
+      byReason[excluded.reason]++;
+    }
+    return {
+      totalExcluded: this.excludedFiles.size,
+      byReason,
+      gitignorePatternCount: this.gitignorePatterns.size,
+      zestRulesPatternCount: this.zestRulesPatterns.size,
+      builtInPatternCount: this.builtInPatterns.size
+    };
+  }
+  clearExclusions() {
+    this.excludedFiles.clear();
+  }
+  clearExclusionForFile(filePath) {
+    this.excludedFiles.delete(filePath);
+  }
+  isInitialized() {
+    return this.initialized;
+  }
+  getPatternCounts() {
+    const counts = {
+      builtIn: this.builtInPatterns.size,
+      gitignore: this.gitignorePatterns.size,
+      zestRules: this.zestRulesPatterns.size,
+      custom: this.customPatterns.size,
+      total: 0
+    };
+    counts.total = counts.builtIn + counts.gitignore + counts.zestRules + counts.custom;
+    return counts;
+  }
+}
+// ../../packages/privacy-redaction/src/redaction/strategies.ts
+function simpleHash(text) {
+  let hash2 = 0;
+  for (let i = 0;i < text.length; i++) {
+    const char = text.charCodeAt(i);
+    hash2 = (hash2 << 5) - hash2 + char;
+    hash2 = hash2 & hash2;
+  }
+  return Math.abs(hash2).toString(16).padStart(8, "0").substring(0, 8);
+}
+function fullRedact(_text) {
+  return "[REDACTED]";
+}
+function partialRedact(text) {
+  if (text.length <= 8) {
+    return "[REDACTED]";
+  }
+  const visibleChars = Math.max(2, Math.floor(text.length * 0.2));
+  const start = text.substring(0, visibleChars);
+  const end = text.substring(text.length - visibleChars);
+  const middleLength = text.length - 2 * visibleChars;
+  return `${start}${"*".repeat(Math.min(middleLength, 8))}${end}`;
+}
+function hashRedact(text) {
+  return `[HASH:${simpleHash(text)}]`;
+}
+function encryptRedact(text) {
+  const contentHash = simpleHash(text);
+  const encryptedHash = simpleHash(text + "salt");
+  return `[ENCRYPTED:${encryptedHash}...${contentHash}]`;
+}
+function applyRedactionStrategy(text, strategy) {
+  switch (strategy) {
+    case "full":
+      return fullRedact(text);
+    case "partial":
+      return partialRedact(text);
+    case "hash":
+      return hashRedact(text);
+    case "encrypt":
+      return encryptRedact(text);
+    default:
+      return fullRedact(text);
+  }
+}
+
+// ../../packages/privacy-redaction/src/redaction/redactor.ts
+function redactContent(content, detections, config2, options = {}) {
+  const approach = options.approach ?? config2.approach;
+  const encryptHighlySensitive = options.encryptHighlySensitive ?? true;
+  if (detections.length === 0) {
+    return {
+      redactedContent: content,
+      detections: [],
+      stats: {
+        totalDetections: 0,
+        byPattern: {}
+      },
+      wasRedacted: false
+    };
+  }
+  const sortedDetections = [...detections].sort((a, b) => b.position.start - a.position.start);
+  let redactedContent = content;
+  const patternCounts = {};
+  for (const detection of sortedDetections) {
+    const originalText = content.substring(detection.position.start, detection.position.end);
+    const strategy = determineStrategy(detection, approach, encryptHighlySensitive);
+    const redactedText = applyRedactionStrategy(originalText, strategy);
+    redactedContent = redactedContent.substring(0, detection.position.start) + redactedText + redactedContent.substring(detection.position.end);
+    patternCounts[detection.pattern] = (patternCounts[detection.pattern] || 0) + 1;
+  }
+  return {
+    redactedContent,
+    detections,
+    stats: {
+      totalDetections: detections.length,
+      byPattern: patternCounts
+    },
+    wasRedacted: true
+  };
+}
+function determineStrategy(detection, approach, encryptHighlySensitive) {
+  switch (approach) {
+    case "encryption":
+      return "encrypt";
+    case "hybrid":
+      if (encryptHighlySensitive && isHighlySensitive(detection)) {
+        return "encrypt";
+      }
+      return detection.redactionStrategy;
+    case "detection":
+    default:
+      return detection.redactionStrategy;
+  }
+}
+function isHighlySensitive(detection) {
+  return detection.highlySensitive || isHighlySensitivePattern(detection.pattern);
+}
+// ../../packages/privacy-redaction/src/privacy-service.ts
+class PrivacyService {
+  config;
+  detector;
+  exclusionService;
+  filesProcessed;
+  constructor(options) {
+    this.config = createPrivacyConfig(options.config);
+    const detectorOptions = {
+      config: this.config,
+      enableCache: options.enableCache ?? true,
+      maxCacheEntries: options.maxCacheEntries,
+      cacheTtlMs: options.cacheTtlMs
+    };
+    this.detector = new SensitiveDataDetector(detectorOptions);
+    const exclusionOptions = {
+      config: this.config,
+      fs: options.fs
+    };
+    this.exclusionService = new FileExclusionService(exclusionOptions);
+    this.filesProcessed = 0;
+  }
+  async initialize() {
+    await this.exclusionService.initialize();
+  }
+  isInitialized() {
+    return this.exclusionService.isInitialized();
+  }
+  processContent(content, filePath, options) {
+    const scanResult = this.detector.scanContent(content, filePath);
+    if (!scanResult.hasSensitiveData) {
+      this.filesProcessed++;
+      return {
+        content,
+        detections: [],
+        hasSensitiveData: false,
+        wasRedacted: false
+      };
+    }
+    const redactionResult = redactContent(content, scanResult.detections, this.config, options);
+    this.filesProcessed++;
+    return {
+      content: redactionResult.redactedContent,
+      detections: redactionResult.detections,
+      hasSensitiveData: true,
+      wasRedacted: redactionResult.wasRedacted
+    };
+  }
+  processContentIfNotExcluded(content, filePath, options) {
+    const exclusion = this.shouldExcludeFile(filePath);
+    if (exclusion.excluded) {
+      return null;
+    }
+    return this.processContent(content, filePath, options);
+  }
+  scanContent(content, context) {
+    const result = this.detector.scanContent(content, context);
+    return result.detections;
+  }
+  hasSensitiveData(content) {
+    const result = this.detector.scanContent(content);
+    return result.hasSensitiveData;
+  }
+  hasHighlySensitiveData(content) {
+    const result = this.detector.scanContent(content);
+    if (!result.hasSensitiveData)
+      return false;
+    return this.detector.hasHighlySensitiveData(result.detections);
+  }
+  shouldExcludeFile(filePath) {
+    return this.exclusionService.shouldExcludeFile(filePath);
+  }
+  isFileTooLarge(fileSizeBytes) {
+    return this.exclusionService.isFileTooLarge(fileSizeBytes);
+  }
+  isBinaryFile(filePath) {
+    return this.exclusionService.isBinaryFile(filePath);
+  }
+  async updateConfig(partial2) {
+    this.config = { ...this.config, ...partial2 };
+    this.detector.updateConfig(partial2);
+    await this.exclusionService.updateConfig(partial2);
+  }
+  getConfig() {
+    return { ...this.config };
+  }
+  getStats() {
+    const detectionStats = this.detector.getStats();
+    const exclusionStats = this.exclusionService.getStats();
+    return {
+      detection: detectionStats,
+      filesExcluded: exclusionStats.totalExcluded,
+      filesProcessed: this.filesProcessed
+    };
+  }
+  getExcludedFiles() {
+    return this.exclusionService.getExcludedFiles();
+  }
+  clearAll() {
+    this.detector.clearAll();
+    this.exclusionService.clearExclusions();
+    this.filesProcessed = 0;
+  }
+  clearCache() {
+    this.detector.clearCache();
+  }
+  clearStats() {
+    this.detector.clearStats();
+    this.filesProcessed = 0;
+  }
+  clearExclusions() {
+    this.exclusionService.clearExclusions();
+  }
+  async refreshExclusionPatterns() {
+    await this.exclusionService.refreshPatterns();
+  }
+  getActivePatternCount() {
+    return this.detector.getActivePatternCount();
+  }
+  getExclusionPatternCounts() {
+    return this.exclusionService.getPatternCounts();
+  }
+  getCacheSize() {
+    return this.detector.getCacheSize();
+  }
+}
+
+// ../../packages/privacy-redaction/src/manager/node-fs-adapter.ts
+var import_promises6 = require("node:fs/promises");
+function createNodeFsAdapter(workspaceRoot) {
+  return {
+    async readFile(path) {
+      return import_promises6.readFile(path, "utf-8");
+    },
+    async fileExists(path) {
+      try {
+        await import_promises6.stat(path);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    async readDir(path) {
+      return import_promises6.readdir(path);
+    },
+    getWorkspaceRoot() {
+      return workspaceRoot;
+    }
+  };
+}
+
 // ../../packages/privacy-redaction/src/manager/privacy-manager.ts
 var PrivacySettingsSchema = exports_external.object({
   approach: exports_external.enum(["detection", "encryption", "hybrid"]).default("detection"),
@@ -28380,43 +29508,18 @@ async function loadSettings() {
 
 // src/sync/lock.ts
 var import_node_crypto = require("node:crypto");
-var import_promises3 = require("node:fs/promises");
-var import_node_path4 = require("node:path");
+var import_promises7 = require("node:fs/promises");
+var import_node_path6 = require("node:path");
 
 // src/daemon/state.ts
-function getDaemonPidFilePath() {
-  return resolveStatePath("daemon", "daemon.pid");
-}
 function getDaemonActivityFilePath() {
   return resolveStatePath("daemon", "activity.json");
 }
 function getDaemonStatusFilePath() {
   return resolveStatePath("daemon", "status.json");
 }
-function getDaemonRestartLockPath() {
-  return resolveStatePath("daemon", "restart.lock");
-}
 function getDaemonSyncLockPath() {
   return resolveStatePath("daemon", "sync.lock");
-}
-function isDaemonStatus(value) {
-  if (!value || typeof value !== "object")
-    return false;
-  const candidate = value;
-  return candidate.version === 1 && (typeof candidate.pid === "number" || candidate.pid === null) && typeof candidate.running === "boolean";
-}
-async function touchDaemonActivity(trigger, now = new Date) {
-  const state = {
-    version: 1,
-    lastActivityAt: now.toISOString(),
-    lastTrigger: trigger
-  };
-  await writeJsonFileAtomic(getDaemonActivityFilePath(), state);
-  return state;
-}
-async function loadDaemonStatus() {
-  const status = await readJsonFile(getDaemonStatusFilePath()).catch(() => null);
-  return isDaemonStatus(status) ? status : null;
 }
 async function writeDaemonStatus(status) {
   await writeJsonFileAtomic(getDaemonStatusFilePath(), status);
@@ -28443,7 +29546,7 @@ function createOwnerToken() {
   return `${process.pid}-${Date.now()}-${import_node_crypto.randomUUID()}`;
 }
 function getOwnerFilePath(lockPath, token) {
-  return import_node_path4.join(lockPath, `${OWNER_FILE_PREFIX}${token}`);
+  return import_node_path6.join(lockPath, `${OWNER_FILE_PREFIX}${token}`);
 }
 function resolveHeartbeatIntervalMs(options) {
   return options.heartbeatIntervalMs ?? Math.max(1, Math.floor((options.staleMs ?? DEFAULT_STALE_MS) / 2));
@@ -28452,7 +29555,7 @@ function isSameIdentity(left, right) {
   return left.dev === right.dev && left.ino === right.ino;
 }
 async function getLockIdentity(lockPath) {
-  const lockStat = await import_promises3.stat(lockPath).catch((error51) => {
+  const lockStat = await import_promises7.stat(lockPath).catch((error51) => {
     if (error51.code === "ENOENT") {
       return null;
     }
@@ -28461,7 +29564,7 @@ async function getLockIdentity(lockPath) {
   return lockStat ? { dev: lockStat.dev, ino: lockStat.ino } : null;
 }
 async function getLockSnapshot(lockPath) {
-  const ownerFiles = await import_promises3.readdir(lockPath).catch((error51) => {
+  const ownerFiles = await import_promises7.readdir(lockPath).catch((error51) => {
     if (error51.code === "ENOENT") {
       return null;
     }
@@ -28471,15 +29574,15 @@ async function getLockSnapshot(lockPath) {
     return { exists: false };
   }
   const owners = (await Promise.all(ownerFiles.filter((fileName) => fileName.startsWith(OWNER_FILE_PREFIX)).map(async (fileName) => {
-    const ownerPath = import_node_path4.join(lockPath, fileName);
+    const ownerPath = import_node_path6.join(lockPath, fileName);
     const [owner, ownerStat] = await Promise.all([
-      import_promises3.readFile(ownerPath, "utf-8").catch((error51) => {
+      import_promises7.readFile(ownerPath, "utf-8").catch((error51) => {
         if (error51.code === "ENOENT") {
           return null;
         }
         throw error51;
       }),
-      import_promises3.stat(ownerPath).catch((error51) => {
+      import_promises7.stat(ownerPath).catch((error51) => {
         if (error51.code === "ENOENT") {
           return null;
         }
@@ -28501,7 +29604,7 @@ async function getLockSnapshot(lockPath) {
   if (owners.length > 0) {
     return owners.reduce((newest, owner) => owner.mtimeMs > newest.mtimeMs ? owner : newest);
   }
-  const lockStat = await import_promises3.stat(lockPath).catch((error51) => {
+  const lockStat = await import_promises7.stat(lockPath).catch((error51) => {
     if (error51.code === "ENOENT") {
       return null;
     }
@@ -28523,13 +29626,13 @@ async function removeIfStale(lockPath, staleMs, now, beforeStaleCleanup) {
   await beforeStaleCleanup();
   if (snapshot.ownerPath && snapshot.ownerToken) {
     const [owner, ownerStat] = await Promise.all([
-      import_promises3.readFile(snapshot.ownerPath, "utf-8").catch((error51) => {
+      import_promises7.readFile(snapshot.ownerPath, "utf-8").catch((error51) => {
         if (error51.code === "ENOENT") {
           return null;
         }
         throw error51;
       }),
-      import_promises3.stat(snapshot.ownerPath).catch((error51) => {
+      import_promises7.stat(snapshot.ownerPath).catch((error51) => {
         if (error51.code === "ENOENT") {
           return null;
         }
@@ -28542,13 +29645,13 @@ async function removeIfStale(lockPath, staleMs, now, beforeStaleCleanup) {
     if (ownerStat.mtimeMs !== snapshot.mtimeMs && !isStale(ownerStat.mtimeMs, staleMs, now)) {
       return false;
     }
-    await import_promises3.unlink(snapshot.ownerPath).catch((error51) => {
+    await import_promises7.unlink(snapshot.ownerPath).catch((error51) => {
       if (error51.code !== "ENOENT") {
         throw error51;
       }
     });
   }
-  await import_promises3.rmdir(lockPath).catch((error51) => {
+  await import_promises7.rmdir(lockPath).catch((error51) => {
     if (error51.code !== "ENOENT" && error51.code !== "ENOTEMPTY") {
       throw error51;
     }
@@ -28556,11 +29659,11 @@ async function removeIfStale(lockPath, staleMs, now, beforeStaleCleanup) {
   return true;
 }
 async function writeOwnerFile(ownerPath, token) {
-  await import_promises3.writeFile(ownerPath, `${token}
+  await import_promises7.writeFile(ownerPath, `${token}
 `, { encoding: "utf-8", mode: FILE_MODE2 });
 }
 async function removeOwnOwnerFile(ownerPath) {
-  await import_promises3.unlink(ownerPath).catch((error51) => {
+  await import_promises7.unlink(ownerPath).catch((error51) => {
     if (error51.code !== "ENOENT") {
       throw error51;
     }
@@ -28572,7 +29675,7 @@ async function cleanupFailedOwnerPublication(lockPath, ownerPath, expectedIdenti
   }
   const currentIdentity = await getLockIdentity(lockPath);
   if (currentIdentity && isSameIdentity(currentIdentity, expectedIdentity)) {
-    await import_promises3.rmdir(lockPath).catch((error51) => {
+    await import_promises7.rmdir(lockPath).catch((error51) => {
       if (error51.code !== "ENOENT" && error51.code !== "ENOTEMPTY") {
         throw error51;
       }
@@ -28580,10 +29683,10 @@ async function cleanupFailedOwnerPublication(lockPath, ownerPath, expectedIdenti
   }
 }
 async function acquireLock(options) {
-  await import_promises3.mkdir(import_node_path4.dirname(options.lockPath), { mode: DIRECTORY_MODE2, recursive: true });
+  await import_promises7.mkdir(import_node_path6.dirname(options.lockPath), { mode: DIRECTORY_MODE2, recursive: true });
   for (let attempt = 1;attempt <= options.maxAttempts; attempt += 1) {
     try {
-      await import_promises3.mkdir(options.lockPath, { mode: DIRECTORY_MODE2 });
+      await import_promises7.mkdir(options.lockPath, { mode: DIRECTORY_MODE2 });
       const lockIdentity = await getLockIdentity(options.lockPath);
       if (!lockIdentity) {
         continue;
@@ -28633,7 +29736,7 @@ function startHeartbeat(ownerPath, intervalMs) {
       return;
     }
     const now = new Date;
-    await import_promises3.utimes(ownerPath, now, now).catch(() => {
+    await import_promises7.utimes(ownerPath, now, now).catch(() => {
       return;
     });
     if (!stopped) {
@@ -28649,7 +29752,7 @@ function startHeartbeat(ownerPath, intervalMs) {
   };
 }
 async function releaseLock(lock) {
-  const owner = await import_promises3.readFile(lock.ownerPath, "utf-8").catch((error51) => {
+  const owner = await import_promises7.readFile(lock.ownerPath, "utf-8").catch((error51) => {
     if (error51.code === "ENOENT") {
       return null;
     }
@@ -28658,12 +29761,12 @@ async function releaseLock(lock) {
   if (owner?.trim() !== lock.token) {
     return;
   }
-  await import_promises3.unlink(lock.ownerPath).catch((error51) => {
+  await import_promises7.unlink(lock.ownerPath).catch((error51) => {
     if (error51.code !== "ENOENT") {
       throw error51;
     }
   });
-  await import_promises3.rmdir(lock.lockPath).catch((error51) => {
+  await import_promises7.rmdir(lock.lockPath).catch((error51) => {
     if (error51.code !== "ENOENT" && error51.code !== "ENOTEMPTY") {
       throw error51;
     }
@@ -28694,873 +29797,2491 @@ async function withSyncLock(callback, options = {}) {
   }
 }
 
-// src/daemon/manager.ts
-var __dirname = "/home/runner/work/zest/zest/monorepo/apps/codex-cli-plugin/src/daemon";
-var DIRECTORY_MODE3 = 448;
-var FILE_MODE3 = 384;
-var DEFAULT_PID_STALE_MS = 15 * 60 * 1000;
-var DEFAULT_STARTUP_GRACE_MS = 30 * 1000;
-function isProcessRunning(pid) {
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch (error51) {
-    return error51.code === "EPERM";
-  }
-}
-function resolveNowMs2(now) {
-  const value = now();
-  return value instanceof Date ? value.getTime() : value;
-}
-function parseTimestampMs(timestamp) {
-  if (!timestamp) {
-    return null;
-  }
-  const value = Date.parse(timestamp);
-  return Number.isNaN(value) ? null : value;
-}
-function isFreshDaemonTimestamp(timestamp, now, staleMs) {
-  const timestampMs = parseTimestampMs(timestamp);
-  if (timestampMs === null) {
-    return false;
-  }
-  return resolveNowMs2(now) - timestampMs <= staleMs;
-}
-async function readDaemonPid() {
-  const content = await import_promises4.readFile(getDaemonPidFilePath(), "utf-8");
-  const trimmed = content.trim();
-  if (!/^\d+$/.test(trimmed)) {
-    return null;
-  }
-  const pid = Number.parseInt(trimmed, 10);
-  return Number.isSafeInteger(pid) && pid > 0 ? pid : null;
-}
-async function getDaemonPid(options = {}) {
-  try {
-    const pid = await readDaemonPid();
-    if (!pid || !isProcessRunning(pid)) {
-      return null;
-    }
-    const status = await loadDaemonStatus();
-    const now = options.now ?? Date.now;
-    const staleMs = options.staleMs ?? DEFAULT_PID_STALE_MS;
-    if (!status || status.pid !== pid || !status.running || !isFreshDaemonTimestamp(status.lastHeartbeatAt, now, staleMs)) {
-      return null;
-    }
-    return pid;
-  } catch {
-    return null;
-  }
-}
-async function getStartingDaemonPid(options) {
-  try {
-    const pid = await readDaemonPid();
-    if (!pid || !isProcessRunning(pid)) {
-      return null;
-    }
-    const status = await loadDaemonStatus();
-    if (!status || status.pid !== pid || !status.running || status.lastHeartbeatAt || !isFreshDaemonTimestamp(status.startedAt, options.now, options.startupGraceMs)) {
-      return null;
-    }
-    return pid;
-  } catch {
-    return null;
-  }
-}
-async function writeDaemonPid(pid) {
-  const path = getDaemonPidFilePath();
-  await import_promises4.mkdir(import_node_path5.dirname(path), { mode: DIRECTORY_MODE3, recursive: true });
-  await import_promises4.writeFile(path, `${pid}
-`, { encoding: "utf-8", mode: FILE_MODE3 });
-}
-function daemonScriptPathFromEntrypoint(entrypointPath) {
-  if (!entrypointPath) {
-    return null;
-  }
-  const normalized = import_node_path5.normalize(entrypointPath);
-  if (!import_node_path5.basename(normalized).endsWith(".js")) {
-    return null;
-  }
-  const parts = normalized.split(/[\\/]+/u);
-  const distIndex = parts.lastIndexOf("dist");
-  const bundleKind = distIndex >= 0 ? parts[distIndex + 1] : undefined;
-  if (bundleKind !== "hooks" && bundleKind !== "mcp") {
-    return null;
-  }
-  const distRoot = import_node_path5.dirname(import_node_path5.dirname(normalized));
-  const daemonScriptPath = import_node_path5.resolve(distRoot, "daemon", "daemon.js");
-  const relativeDaemonPath = import_node_path5.relative(distRoot, daemonScriptPath);
-  if (import_node_path5.isAbsolute(relativeDaemonPath) || relativeDaemonPath.startsWith("..")) {
-    return null;
-  }
-  return daemonScriptPath;
-}
-function defaultDaemonScriptPath() {
-  const bundledDaemonPath = daemonScriptPathFromEntrypoint(process.argv[1]);
-  if (bundledDaemonPath) {
-    return bundledDaemonPath;
-  }
-  return import_node_path5.join(__dirname, "..", "daemon", "daemon.js");
-}
-async function daemonScriptExists(daemonScriptPath) {
-  try {
-    await import_promises4.access(daemonScriptPath);
-    return true;
-  } catch {
-    return false;
-  }
-}
-async function startDaemon(options = {}) {
-  const daemonScriptPath = options.daemonScriptPath ?? defaultDaemonScriptPath();
-  const spawnProcess = options.spawnProcess ?? import_node_child_process.spawn;
-  if (!options.spawnProcess && !await daemonScriptExists(daemonScriptPath)) {
-    return null;
-  }
-  let child;
-  try {
-    child = spawnProcess(process.execPath, [daemonScriptPath], {
-      detached: true,
-      stdio: "ignore",
-      windowsHide: true
-    });
-  } catch {
-    return null;
-  }
-  child.unref();
-  if (!child.pid) {
-    return null;
-  }
-  await writeDaemonPid(child.pid);
-  return child.pid;
-}
-async function ensureDaemonRunning(options = {}) {
-  const settings = await loadSettings();
-  if (!settings.backgroundSync.enabled) {
-    return { started: false, reason: "background_sync_disabled" };
-  }
-  return withSyncLock(async () => {
-    const existingPid = await getDaemonPid();
-    if (existingPid) {
-      return { started: false, reason: "already_running", pid: existingPid };
-    }
-    const startingPid = await getStartingDaemonPid({
-      now: options.now ?? Date.now,
-      startupGraceMs: options.startupGraceMs ?? DEFAULT_STARTUP_GRACE_MS
-    });
-    if (startingPid) {
-      return { started: false, reason: "already_running", pid: startingPid };
-    }
-    const pid = await (options.spawnDaemon ?? startDaemon)();
-    if (!pid) {
-      return { started: false, reason: "start_failed" };
-    }
-    await writeDaemonPid(pid);
-    const existingStatus = await loadDaemonStatus();
-    if (existingStatus?.pid !== pid || !existingStatus.lastHeartbeatAt) {
-      await writeDaemonStatus({
-        pid,
-        running: true,
-        startedAt: new Date().toISOString(),
-        version: 1
-      });
-    }
-    return { started: true, pid };
-  }, { lockPath: getDaemonRestartLockPath() });
-}
-
-// src/logging/logger.ts
-var import_promises7 = require("node:fs/promises");
-var import_node_path7 = require("node:path");
-
-// ../../packages/plugin-common/src/log-rotation/log-rotation.ts
-var import_promises6 = require("node:fs/promises");
-var import_node_path6 = require("node:path");
-
-// ../../packages/plugin-common/src/utils/fs-utils.ts
-var import_promises5 = require("node:fs/promises");
-async function ensureDirectory(dirPath) {
-  try {
-    await import_promises5.stat(dirPath);
-  } catch {
-    await import_promises5.mkdir(dirPath, { recursive: true, mode: 448 });
-  }
-}
-
-// ../../packages/plugin-common/src/log-rotation/log-rotation.ts
-var CLEANUP_THROTTLE_MS = 60 * 60 * 1000;
-function getDateString() {
-  return new Date().toISOString().split("T")[0];
-}
-function getDatedLogPath(logsDir, logPrefix) {
-  const dateStr = getDateString();
-  return import_node_path6.join(logsDir, `${logPrefix}-${dateStr}.log`);
-}
-function parseDateFromFilename(filename, logPrefix) {
-  const pattern = new RegExp(`^${logPrefix}-(\\d{4}-\\d{2}-\\d{2})\\.log$`);
-  const match = filename.match(pattern);
-  if (!match) {
-    return null;
-  }
-  const date5 = new Date(match[1] + "T00:00:00Z");
-  return Number.isNaN(date5.getTime()) ? null : date5;
-}
-function createLogRotation(config2) {
-  const { logsDir, retentionDays, logger } = config2;
-  const lastCleanupTime = {};
-  async function cleanupStaleLogs(logPrefix) {
-    const now = Date.now();
-    const lastCleanup = lastCleanupTime[logPrefix] || 0;
-    if (now - lastCleanup < CLEANUP_THROTTLE_MS) {
-      return;
-    }
-    lastCleanupTime[logPrefix] = now;
-    try {
-      await ensureDirectory(logsDir);
-      const files = await import_promises6.readdir(logsDir);
-      const cutoffDate = new Date(now - retentionDays * 24 * 60 * 60 * 1000);
-      for (const file2 of files) {
-        const fileDate = parseDateFromFilename(file2, logPrefix);
-        if (fileDate && fileDate < cutoffDate) {
-          const filePath = import_node_path6.join(logsDir, file2);
-          try {
-            await import_promises6.unlink(filePath);
-          } catch (error51) {
-            logger?.error(`Failed to delete old log file ${file2}`, error51);
-          }
-        }
-      }
-    } catch (error51) {
-      logger?.error("Failed to cleanup old logs", error51);
-    }
-  }
-  async function forceCleanupStaleLogs(logPrefix) {
-    lastCleanupTime[logPrefix] = 0;
-    await cleanupStaleLogs(logPrefix);
-  }
-  return { cleanupStaleLogs, forceCleanupStaleLogs };
-}
-
-// src/logging/config.ts
-var LOG_RETENTION_DAYS = 7;
-var LOG_PREFIX = "plugin";
-var LEVELS = ["debug", "info", "warn", "error"];
-function resolveConfigValue2(bundledValue, runtimeValue) {
-  if (typeof runtimeValue === "string" && runtimeValue.length > 0)
-    return runtimeValue;
-  if (typeof bundledValue === "string" && bundledValue.length > 0)
-    return bundledValue;
-  return "";
-}
-function getLogsDir() {
-  return resolveStatePath("logs");
-}
-function isFileLoggingEnabled() {
-  const disabled = resolveConfigValue2("", process.env.ZEST_CODEX_DISABLE_LOGS);
-  return disabled !== "1";
-}
-function getEffectiveLogLevel() {
-  const configured = resolveConfigValue2("", process.env.ZEST_CODEX_LOG_LEVEL);
-  if (LEVELS.includes(configured)) {
-    return configured;
-  }
-  return "info";
-}
-function getCurrentLogFilePath() {
-  return getDatedLogPath(getLogsDir(), LOG_PREFIX);
-}
-
-// src/logging/redaction.ts
-var UNSAFE_KEY_PATTERN = /(access[\s_-]?token|refresh[\s_-]?token|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code|payload|prompt|content|diff|stdout|stderr|output|arguments)/i;
-var UNSAFE_STRING_ASSIGNMENT_PATTERN = /(["']?\b(?:access[\s_-]?token|refresh[\s_-]?token|accessToken|refreshToken|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code)\b["']?)(\s*[:=]\s*)(["']?)(Bearer\s+)?([^"',\s;}\]]+)(["']?)/gi;
-var UNSAFE_STRING_PHRASE_PATTERN = /\b(authorization|api[\s_-]?key|anon[\s_-]?key|accessToken|refreshToken|access[\s_-]?token|refresh[\s_-]?token|device[\s_-]?code)\b(\s+)(Bearer\s+)?("[^"]*"|'[^']*'|[^\s,;]+)/gi;
-var MAX_STACK_LENGTH = 2000;
-var CIRCULAR_SENTINEL = "[Circular]";
-function redactValue(value, seen) {
-  if (value === null || typeof value === "number" || typeof value === "boolean") {
-    return value;
-  }
-  if (typeof value === "string") {
-    return redactUnsafeString(value);
-  }
-  if (Array.isArray(value)) {
-    if (seen.has(value)) {
-      return CIRCULAR_SENTINEL;
-    }
-    seen.add(value);
-    const redacted = value.map((item) => redactValue(item, seen));
-    seen.delete(value);
-    return redacted;
-  }
-  if (value instanceof Error) {
-    return serializeLogError(value);
-  }
-  if (typeof value === "object") {
-    if (seen.has(value)) {
-      return CIRCULAR_SENTINEL;
-    }
-    return redactObject(value, seen);
-  }
-  return String(value);
-}
-function redactObject(details, seen) {
-  const redacted = {};
-  seen.add(details);
-  for (const [key, value] of Object.entries(details)) {
-    redacted[key] = UNSAFE_KEY_PATTERN.test(key) ? "[REDACTED]" : redactValue(value, seen);
-  }
-  seen.delete(details);
-  return redacted;
-}
-function redactUnsafeString(value) {
-  return value.replace(UNSAFE_STRING_ASSIGNMENT_PATTERN, (_match, key, separator, openingQuote, bearer, _secret, closingQuote) => `${key}${separator}${openingQuote}${bearer ?? ""}[REDACTED]${closingQuote}`).replace(UNSAFE_STRING_PHRASE_PATTERN, (_match, key, separator, bearer) => `${key}${separator}${bearer ?? ""}[REDACTED]`);
-}
-function redactLogDetails(details) {
-  return redactObject(details, new WeakSet);
-}
-function serializeLogError(error51) {
-  if (error51 instanceof Error) {
-    return {
-      name: error51.name,
-      message: redactUnsafeString(error51.message),
-      ...error51.stack ? { stack: redactUnsafeString(error51.stack).slice(0, MAX_STACK_LENGTH) } : {}
-    };
-  }
-  return {
-    name: "UnknownError",
-    message: redactUnsafeString(String(error51))
-  };
-}
-
-// src/logging/logger.ts
-var LEVEL_ORDER = {
-  debug: 0,
-  info: 1,
-  warn: 2,
-  error: 3
-};
-function shouldLog(level) {
-  return LEVEL_ORDER[level] >= LEVEL_ORDER[getEffectiveLogLevel()];
-}
-function createLogger(dependencies = {}) {
-  const append = dependencies.append ?? import_promises7.appendFile;
-  const createRotation = dependencies.createRotation ?? createLogRotation;
-  const ensureDir = dependencies.ensureDir ?? import_promises7.mkdir;
-  const now = dependencies.now ?? (() => new Date);
-  const rotation = createRotation({
-    logsDir: getLogsDir(),
-    retentionDays: LOG_RETENTION_DAYS
-  });
-  async function cleanupLogs() {
-    await rotation.cleanupStaleLogs(LOG_PREFIX);
-  }
-  async function write(level, component, event, options = {}) {
-    if (!isFileLoggingEnabled() || !shouldLog(level))
-      return;
-    const entry = {
-      ts: now().toISOString(),
-      level,
-      component,
-      event,
-      ...options.runId ? { runId: options.runId } : {},
-      ...options.details ? { details: redactLogDetails(options.details) } : {},
-      ...options.error ? { error: serializeLogError(options.error) } : {}
-    };
-    try {
-      const path = getCurrentLogFilePath();
-      await ensureDir(import_node_path7.dirname(path), { recursive: true, mode: 448 });
-      await append(path, `${JSON.stringify(entry)}
-`, { encoding: "utf-8", mode: 384 });
-      await cleanupLogs();
-    } catch {
-      return;
-    }
-  }
-  return {
-    debug: (component, event, options) => write("debug", component, event, options),
-    info: (component, event, options) => write("info", component, event, options),
-    warn: (component, event, options) => write("warn", component, event, options),
-    error: (component, event, options) => write("error", component, event, options)
-  };
-}
-var logger = createLogger();
-
-// src/update/autoupdate.ts
-var import_node_child_process2 = require("node:child_process");
+// src/codex/discovery.ts
 var import_promises8 = require("node:fs/promises");
 var import_node_path8 = require("node:path");
-var import_node_util = require("node:util");
 
-// src/update/check.ts
-var UPDATE_CHECK_CACHE_VERSION = 1;
-var UPDATE_CHECK_ERROR = "best_effort_check_failed";
-var UPDATE_CHECK_TTL_MS = 6 * 60 * 60 * 1000;
-var UPDATE_CHECK_TIMEOUT_MS = 2000;
-var UPDATE_REPOSITORY_URL = "https://github.com/Winding-Labs/zest-codex";
-var UPDATE_PACKAGE_URL = "https://raw.githubusercontent.com/Winding-Labs/zest-codex/main/package.json";
-var DEBUG_UPDATE_PACKAGE_URL = "http://127.0.0.1:8787/package.json";
-var UPDATE_MARKETPLACE_UPGRADE_COMMAND = "codex plugin marketplace upgrade zest";
-var UPDATE_MARKETPLACE_UPGRADE_INSTRUCTIONS = "To update Zest, run: codex plugin marketplace upgrade zest";
+// src/collector/session-references.ts
+var import_node_fs = require("node:fs");
+var import_node_readline = __toESM(require("node:readline"));
+function isRecord(value) {
+  return typeof value === "object" && value !== null;
+}
 function isNonEmptyString2(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
-function normalizeIsoTimestamp(value) {
-  if (!isNonEmptyString2(value)) {
-    return;
-  }
-  const timestamp = Date.parse(value);
-  return Number.isNaN(timestamp) ? undefined : new Date(timestamp).toISOString();
+function isFiniteNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
 }
-function isUpdateMetadata(value) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-  const candidate = value;
-  if (typeof candidate.available !== "boolean" || !isNonEmptyString2(candidate.checkedAt)) {
-    return false;
-  }
-  if (candidate.latestVersion !== undefined && !isNonEmptyString2(candidate.latestVersion)) {
-    return false;
-  }
-  if (candidate.downloadUrl !== undefined && !isNonEmptyString2(candidate.downloadUrl)) {
-    return false;
-  }
-  if (candidate.instructions !== undefined && !isNonEmptyString2(candidate.instructions)) {
-    return false;
-  }
-  if (candidate.publishedAt !== undefined && !isNonEmptyString2(candidate.publishedAt)) {
-    return false;
-  }
-  if (candidate.upgradeCommand !== undefined && !isNonEmptyString2(candidate.upgradeCommand)) {
-    return false;
-  }
-  if (candidate.error !== undefined && candidate.error !== UPDATE_CHECK_ERROR) {
-    return false;
-  }
-  return true;
-}
-function isPersistedUpdateCheck(value) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-  const candidate = value;
-  if (candidate.version !== UPDATE_CHECK_CACHE_VERSION || typeof candidate.expiresAt !== "number" || !Number.isFinite(candidate.expiresAt)) {
-    return false;
-  }
-  return isUpdateMetadata(candidate.result);
-}
-function getFetchImplementation(fetchImplementation) {
-  const implementation = fetchImplementation ?? globalThis.fetch;
-  if (!implementation) {
-    throw new Error("Global fetch is not available");
-  }
-  return implementation;
-}
-function normalizeRepositoryUrl(repository) {
-  if (isNonEmptyString2(repository)) {
-    return repository.trim();
-  }
-  if (!repository || typeof repository !== "object") {
-    return;
-  }
-  return isNonEmptyString2(repository.url) ? repository.url.trim() : undefined;
-}
-function normalizePackage(remotePackage) {
-  if (!remotePackage || typeof remotePackage !== "object") {
-    throw new Error("Invalid update package payload");
-  }
-  const candidate = remotePackage;
-  if (!isNonEmptyString2(candidate.version)) {
-    throw new Error("Update package is missing version");
-  }
-  return {
-    ...isNonEmptyString2(candidate.homepage) ? { homepage: candidate.homepage.trim() } : {},
-    ...normalizeIsoTimestamp(candidate.publishedAt) ? { publishedAt: normalizeIsoTimestamp(candidate.publishedAt) } : {},
-    ...normalizeRepositoryUrl(candidate.repository) ? { repository: normalizeRepositoryUrl(candidate.repository) } : {},
-    version: candidate.version.trim()
-  };
-}
-function parseVersion(version4) {
-  const match = version4.trim().match(/^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/u);
-  if (!match) {
-    return null;
-  }
-  const [, major, minor, patch, prerelease] = match;
-  return {
-    main: [Number(major), Number(minor), Number(patch)],
-    prerelease: prerelease ? prerelease.split(".") : []
-  };
-}
-function compareIdentifiers(left, right) {
-  const leftIsNumeric = /^\d+$/u.test(left);
-  const rightIsNumeric = /^\d+$/u.test(right);
-  if (leftIsNumeric && rightIsNumeric) {
-    return Number(left) - Number(right);
-  }
-  if (leftIsNumeric) {
-    return -1;
-  }
-  if (rightIsNumeric) {
-    return 1;
-  }
-  return left.localeCompare(right);
-}
-function compareVersions(currentVersion, latestVersion) {
-  const current = parseVersion(currentVersion);
-  const latest = parseVersion(latestVersion);
-  if (!current || !latest) {
-    return null;
-  }
-  for (let index = 0;index < current.main.length; index += 1) {
-    const difference = current.main[index] - latest.main[index];
-    if (difference !== 0) {
-      return difference;
-    }
-  }
-  if (current.prerelease.length === 0 && latest.prerelease.length === 0) {
-    return 0;
-  }
-  if (current.prerelease.length === 0) {
-    return 1;
-  }
-  if (latest.prerelease.length === 0) {
-    return -1;
-  }
-  const length = Math.max(current.prerelease.length, latest.prerelease.length);
-  for (let index = 0;index < length; index += 1) {
-    const left = current.prerelease[index];
-    const right = latest.prerelease[index];
-    if (left === undefined) {
-      return -1;
-    }
-    if (right === undefined) {
-      return 1;
-    }
-    const difference = compareIdentifiers(left, right);
-    if (difference !== 0) {
-      return difference;
-    }
-  }
-  return 0;
-}
-function getUpdateCheckCacheFilePath() {
-  return resolveStatePath("update", "check.json");
-}
-async function loadCachedUpdateMetadata(now) {
-  const filePath = getUpdateCheckCacheFilePath();
-  const cachedValue = await readJsonFile(filePath);
-  if (cachedValue === null) {
-    return null;
-  }
-  if (!isPersistedUpdateCheck(cachedValue)) {
-    await removeStateFile(filePath);
-    return null;
-  }
-  if (cachedValue.expiresAt <= now) {
-    return null;
-  }
-  return cachedValue.result;
-}
-async function saveCachedUpdateMetadata(result, expiresAt) {
-  await writeJsonFileAtomic(getUpdateCheckCacheFilePath(), {
-    expiresAt,
-    result,
-    version: UPDATE_CHECK_CACHE_VERSION
+async function readJsonLines(filePath, parseLine) {
+  const stream = import_node_fs.createReadStream(filePath, { encoding: "utf-8" });
+  const lines = import_node_readline.default.createInterface({
+    crlfDelay: Number.POSITIVE_INFINITY,
+    input: stream
   });
-}
-async function fetchPackage(packageUrl, fetchImplementation, timeoutMs) {
-  const response = await fetchImplementation(packageUrl, {
-    headers: {
-      Accept: "application/json"
-    },
-    signal: AbortSignal.timeout(timeoutMs)
-  });
-  if (!response.ok) {
-    throw new Error(`Update package request failed with status ${response.status}`);
-  }
-  return normalizePackage(await response.json());
-}
-function createSuccessfulResult(checkedAt, currentVersion, remotePackage, repositoryUrl) {
-  const comparison = compareVersions(currentVersion, remotePackage.version);
-  if (comparison === null) {
-    throw new Error("Unable to compare plugin versions");
-  }
-  return {
-    available: comparison < 0,
-    checkedAt,
-    downloadUrl: remotePackage.homepage ?? normalizeRepositoryUrl(remotePackage.repository) ?? repositoryUrl,
-    ...comparison < 0 ? {
-      instructions: UPDATE_MARKETPLACE_UPGRADE_INSTRUCTIONS,
-      upgradeCommand: UPDATE_MARKETPLACE_UPGRADE_COMMAND
-    } : {},
-    latestVersion: remotePackage.version,
-    ...remotePackage.publishedAt ? { publishedAt: remotePackage.publishedAt } : {}
-  };
-}
-function createFailureResult(checkedAt) {
-  return {
-    available: false,
-    checkedAt,
-    error: UPDATE_CHECK_ERROR
-  };
-}
-async function getBestEffortUpdateMetadata(options) {
-  if (process.env.ZEST_CODEX_UPDATE_CHECK_DISABLED === "1") {
-    return null;
-  }
-  const now = options.now ?? Date.now();
-  const cachedResult = await loadCachedUpdateMetadata(now);
-  if (cachedResult) {
-    return cachedResult;
-  }
-  const checkedAt = new Date(now).toISOString();
-  const ttlMs = options.ttlMs ?? UPDATE_CHECK_TTL_MS;
-  const packageUrl = options.packageUrl ?? process.env.ZEST_CODEX_UPDATE_PACKAGE_URL ?? (DEBUG_MODE_ENABLED ? DEBUG_UPDATE_PACKAGE_URL : UPDATE_PACKAGE_URL);
+  const entries = [];
   try {
-    const remotePackage = await fetchPackage(packageUrl, getFetchImplementation(options.fetchImplementation), options.timeoutMs ?? UPDATE_CHECK_TIMEOUT_MS);
-    const result = createSuccessfulResult(checkedAt, options.currentVersion, remotePackage, options.repositoryUrl ?? UPDATE_REPOSITORY_URL);
-    await saveCachedUpdateMetadata(result, now + ttlMs);
-    return result;
-  } catch {
-    const result = createFailureResult(checkedAt);
-    await saveCachedUpdateMetadata(result, now + ttlMs);
-    return result;
-  }
-}
-
-// src/update/autoupdate.ts
-var AUTOUPDATE_THROTTLE_MS = 24 * 60 * 60 * 1000;
-var AUTOUPDATE_LOCK_STALE_MS = 2 * 60 * 1000;
-var AUTOUPDATE_COMMAND_TIMEOUT_MS = 8000;
-var DEFAULT_LOCK_RETRY_DELAY_MS2 = 100;
-var MAX_LOCK_ATTEMPTS2 = 20;
-var STDERR_SNIPPET_MAX_LENGTH = 500;
-var execAsync = import_node_util.promisify(import_node_child_process2.exec);
-function getAutoUpdateStateFilePath() {
-  return resolveStatePath("update", "autoupdate.json");
-}
-function getAutoUpdateLockPath() {
-  return resolveStatePath("update", "autoupdate.lock");
-}
-async function sleep4(ms) {
-  await new Promise((resolve3) => setTimeout(resolve3, ms));
-}
-function normalizeState(value) {
-  if (!value || typeof value !== "object") {
-    return { version: 1 };
-  }
-  const candidate = value;
-  return {
-    version: 1,
-    ...typeof candidate.lastAttemptedAt === "number" && Number.isFinite(candidate.lastAttemptedAt) ? { lastAttemptedAt: candidate.lastAttemptedAt } : {},
-    ...typeof candidate.lastSucceededAt === "number" && Number.isFinite(candidate.lastSucceededAt) ? { lastSucceededAt: candidate.lastSucceededAt } : {},
-    ...candidate.lastResult ? { lastResult: candidate.lastResult } : {}
-  };
-}
-async function loadAutoUpdateState() {
-  return normalizeState(await readJsonFile(getAutoUpdateStateFilePath()).catch(() => null));
-}
-async function saveAutoUpdateState(state) {
-  await writeJsonFileAtomic(getAutoUpdateStateFilePath(), state);
-}
-async function acquireAutoUpdateLock(options) {
-  const lockPath = getAutoUpdateLockPath();
-  let attempts = 0;
-  while (true) {
-    attempts += 1;
-    if (attempts > MAX_LOCK_ATTEMPTS2) {
-      throw new Error("Failed to acquire auto-update lock");
-    }
-    try {
-      await import_promises8.mkdir(import_node_path8.dirname(lockPath), { recursive: true, mode: 448 });
-      await import_promises8.mkdir(lockPath, { mode: 448 });
-      return async () => {
-        await import_promises8.rm(lockPath, { force: true, recursive: true });
-      };
-    } catch (error51) {
-      if (error51.code !== "EEXIST") {
-        throw error51;
-      }
-      const lockStats = await import_promises8.stat(lockPath).catch(() => null);
-      if (lockStats && options.now() - lockStats.mtimeMs > AUTOUPDATE_LOCK_STALE_MS) {
-        await import_promises8.rm(lockPath, { force: true, recursive: true }).catch(() => {
-          return;
-        });
+    for await (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (line.length === 0) {
         continue;
       }
-      await sleep4(options.retryDelayMs);
+      let parsed;
+      try {
+        parsed = JSON.parse(line);
+      } catch {
+        continue;
+      }
+      const entry = parseLine(parsed);
+      if (entry !== null) {
+        entries.push(entry);
+      }
     }
-  }
-}
-async function runMarketplaceUpgrade(command) {
-  try {
-    const result = await execAsync(command, {
-      timeout: AUTOUPDATE_COMMAND_TIMEOUT_MS,
-      windowsHide: true
-    });
-    return {
-      code: 0,
-      stderr: result.stderr,
-      stdout: result.stdout
-    };
-  } catch (error51) {
-    const failure = error51;
-    return {
-      code: typeof failure.code === "number" ? failure.code : 1,
-      stderr: failure.stderr ?? failure.message,
-      stdout: failure.stdout ?? ""
-    };
-  }
-}
-function truncateStderr(stderr) {
-  const trimmed = stderr.trim();
-  if (trimmed.length === 0) {
-    return;
-  }
-  return trimmed.slice(0, STDERR_SNIPPET_MAX_LENGTH);
-}
-async function maybeAutoUpdatePlugin(options) {
-  if (process.env.ZEST_CODEX_AUTOUPDATE_DISABLED === "1") {
-    return {
-      attempted: false,
-      status: "disabled"
-    };
-  }
-  const now = options.now ?? Date.now();
-  const throttleMs = options.throttleMs ?? AUTOUPDATE_THROTTLE_MS;
-  const state = await loadAutoUpdateState();
-  if (state.lastAttemptedAt !== undefined && now - state.lastAttemptedAt < throttleMs) {
-    return {
-      attempted: false,
-      status: "throttled"
-    };
-  }
-  const releaseLock2 = await acquireAutoUpdateLock({
-    now: () => Date.now(),
-    retryDelayMs: options.lockRetryDelayMs ?? DEFAULT_LOCK_RETRY_DELAY_MS2
-  }).catch(() => null);
-  if (!releaseLock2) {
-    return {
-      attempted: true,
-      status: "failed"
-    };
-  }
-  try {
-    const lockedState = await loadAutoUpdateState();
-    if (lockedState.lastAttemptedAt !== undefined && now - lockedState.lastAttemptedAt < throttleMs) {
-      return {
-        attempted: false,
-        status: "throttled"
-      };
-    }
-    const getUpdateMetadata = options.getUpdateMetadata ?? (() => getBestEffortUpdateMetadata({ currentVersion: options.currentVersion }));
-    const update = await getUpdateMetadata();
-    if (!update?.available) {
-      return {
-        attempted: false,
-        status: "no_update"
-      };
-    }
-    const runUpgrade = options.runUpgrade ?? runMarketplaceUpgrade;
-    const command = update.upgradeCommand ?? UPDATE_MARKETPLACE_UPGRADE_COMMAND;
-    const result = await runUpgrade(command);
-    const status = result.code === 0 ? "updated" : "failed";
-    const nextState = {
-      ...lockedState,
-      lastAttemptedAt: now,
-      lastResult: {
-        exitCode: result.code,
-        fromVersion: options.currentVersion,
-        status,
-        ...truncateStderr(result.stderr) ? { stderrSnippet: truncateStderr(result.stderr) } : {},
-        ...update.latestVersion ? { toVersion: update.latestVersion } : {}
-      },
-      ...status === "updated" ? { lastSucceededAt: now } : {}
-    };
-    await saveAutoUpdateState(nextState);
-    return {
-      attempted: true,
-      status
-    };
-  } catch {
-    return {
-      attempted: true,
-      status: "failed"
-    };
   } finally {
-    await releaseLock2();
+    lines.close();
+    stream.destroy();
   }
+  return entries;
+}
+function parseSessionIndexEntry(value) {
+  if (!isRecord(value) || !isNonEmptyString2(value.id) || !isNonEmptyString2(value.updated_at)) {
+    return null;
+  }
+  if (value.thread_name !== undefined && !isNonEmptyString2(value.thread_name)) {
+    return null;
+  }
+  return {
+    id: value.id,
+    ...value.thread_name ? { threadName: value.thread_name } : {},
+    updatedAt: value.updated_at
+  };
+}
+function parseHistoryEntry(value) {
+  if (!isRecord(value)) {
+    return null;
+  }
+  if (!isNonEmptyString2(value.session_id) || !isFiniteNumber(value.ts) || !isNonEmptyString2(value.text)) {
+    return null;
+  }
+  return {
+    sessionId: value.session_id,
+    text: value.text,
+    timestamp: value.ts
+  };
+}
+async function readSessionIndex(filePath) {
+  return readJsonLines(filePath, parseSessionIndexEntry);
+}
+async function readHistory(filePath) {
+  return readJsonLines(filePath, parseHistoryEntry);
+}
+async function buildSessionReferences(input) {
+  const [sessionIndexEntries, historyEntries] = await Promise.all([
+    readSessionIndex(input.sessionIndexPath),
+    readHistory(input.historyPath)
+  ]);
+  const latestHistoryBySessionId = new Map;
+  for (const entry of historyEntries) {
+    const existing = latestHistoryBySessionId.get(entry.sessionId);
+    if (!existing || entry.timestamp >= existing.timestamp) {
+      latestHistoryBySessionId.set(entry.sessionId, {
+        text: entry.text,
+        timestamp: entry.timestamp
+      });
+    }
+  }
+  return sessionIndexEntries.map((entry) => {
+    const latestHistory = latestHistoryBySessionId.get(entry.id);
+    return {
+      ...latestHistory ? {
+        latestPromptAt: new Date(latestHistory.timestamp * 1000).toISOString(),
+        latestPromptText: latestHistory.text
+      } : {},
+      ...entry.threadName ? { title: entry.threadName } : {},
+      sessionId: entry.id,
+      updatedAt: entry.updatedAt
+    };
+  });
+}
+function buildSessionReferenceMap(references) {
+  return new Map(references.map((reference) => [reference.sessionId, reference]));
 }
 
-// src/hooks/refresh-auth.ts
-function parseTrigger(value) {
-  switch (value) {
-    case "SessionStart":
-      return "session_start";
-    case "UserPromptSubmit":
-      return "user_prompt_submit";
+// src/codex/paths.ts
+var import_node_os2 = require("node:os");
+var import_node_path7 = require("node:path");
+var DEFAULT_CODEX_DIR_NAME = ".codex";
+var ALLOWLISTED_TOP_LEVEL_FILES = new Set([
+  "config.toml",
+  "session_index.jsonl",
+  "history.jsonl"
+]);
+function getCodexRootDir() {
+  return process.env.ZEST_CODEX_ROOT_DIR ?? import_node_path7.join(import_node_os2.homedir(), DEFAULT_CODEX_DIR_NAME);
+}
+function isWithinRoot(rootDir, targetPath) {
+  const rel = import_node_path7.relative(rootDir, targetPath);
+  if (rel.length === 0)
+    return false;
+  return !(rel === ".." || rel.startsWith("../") || import_node_path7.isAbsolute(rel));
+}
+function matchesAllowlist(relativePath) {
+  if (ALLOWLISTED_TOP_LEVEL_FILES.has(relativePath)) {
+    return true;
+  }
+  if (relativePath.startsWith("sessions/") && relativePath.endsWith(".jsonl")) {
+    const inner = relativePath.slice("sessions/".length);
+    return inner.length > ".jsonl".length && !inner.includes("..");
+  }
+  return false;
+}
+function resolveCodexPath(...segments) {
+  const rootDir = getCodexRootDir();
+  const resolvedPath = import_node_path7.resolve(rootDir, ...segments);
+  if (!isWithinRoot(rootDir, resolvedPath)) {
+    throw new Error(`Codex path must stay within ${rootDir}`);
+  }
+  const rel = import_node_path7.relative(rootDir, resolvedPath);
+  if (!matchesAllowlist(rel)) {
+    throw new Error(`Codex path is not allowlisted: ${rel}`);
+  }
+  return resolvedPath;
+}
+function isAllowlistedCodexPath(absolutePath) {
+  const rootDir = getCodexRootDir();
+  if (!isWithinRoot(rootDir, absolutePath)) {
+    return false;
+  }
+  return matchesAllowlist(import_node_path7.relative(rootDir, absolutePath));
+}
+
+// src/codex/discovery.ts
+async function directoryExists(path) {
+  try {
+    await import_promises8.readdir(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+async function pathExists(path) {
+  try {
+    await import_promises8.access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+function createLocalDayWindow(now = new Date) {
+  const start = new Date(now);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 1);
+  return { start, end };
+}
+function isInsideWindow(timestamp, window2) {
+  if (!timestamp) {
+    return false;
+  }
+  const ms = timestamp instanceof Date ? timestamp.getTime() : new Date(timestamp).getTime();
+  return Number.isFinite(ms) && ms >= window2.start.getTime() && ms < window2.end.getTime();
+}
+function formatDatePath(window2) {
+  const year = String(window2.start.getFullYear());
+  const month = String(window2.start.getMonth() + 1).padStart(2, "0");
+  const day = String(window2.start.getDate()).padStart(2, "0");
+  return import_node_path8.join("sessions", year, month, day);
+}
+function isCurrentDayTranscript(path, rootDir, window2) {
+  const relativePath = import_node_path8.relative(rootDir, path);
+  const currentDayPrefix = `${formatDatePath(window2)}/`;
+  return relativePath.startsWith(currentDayPrefix);
+}
+function extractSessionIdFromTranscriptPath(path) {
+  const transcriptName = import_node_path8.basename(path).replace(/\.jsonl$/, "");
+  return transcriptName.match(/([0-9A-Z]{26})$/)?.[1];
+}
+async function readActiveSessionIds(sessionIndexPath, window2) {
+  try {
+    const entries = await readSessionIndex(sessionIndexPath);
+    return new Set(entries.filter((entry) => isInsideWindow(entry.updatedAt, window2)).map((entry) => entry.id));
+  } catch {
+    return new Set;
+  }
+}
+async function isCurrentMtime(path, window2) {
+  try {
+    const fileStat = await import_promises8.stat(path);
+    return isInsideWindow(fileStat.mtime, window2);
+  } catch {
+    return false;
+  }
+}
+async function collectTranscriptPaths(dirPath, sessionIndexPath) {
+  const entries = await import_promises8.readdir(dirPath, { recursive: true, withFileTypes: true });
+  const transcriptPaths = [];
+  const rootDir = getCodexRootDir();
+  const window2 = createLocalDayWindow();
+  const activeSessionIds = await readActiveSessionIds(sessionIndexPath, window2);
+  for (const entry of entries) {
+    if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
+      continue;
+    }
+    const parentPath = typeof entry.parentPath === "string" ? entry.parentPath : ("path" in entry) && typeof entry.path === "string" ? import_node_path8.join(dirPath, entry.path) : dirPath;
+    const absolutePath = import_node_path8.join(parentPath, entry.name);
+    if (!isAllowlistedCodexPath(absolutePath)) {
+      continue;
+    }
+    const sessionId = extractSessionIdFromTranscriptPath(absolutePath);
+    if (isCurrentDayTranscript(absolutePath, rootDir, window2) || sessionId !== undefined && activeSessionIds.has(sessionId) || await isCurrentMtime(absolutePath, window2)) {
+      transcriptPaths.push(absolutePath);
+    }
+  }
+  return transcriptPaths.sort((left, right) => left.localeCompare(right));
+}
+async function discoverCodexRuntimeFiles() {
+  const rootDir = getCodexRootDir();
+  const transcriptDir = import_node_path8.join(rootDir, "sessions");
+  const sessionIndexPath = resolveCodexPath("session_index.jsonl");
+  const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir, sessionIndexPath) : [];
+  const historyPath = resolveCodexPath("history.jsonl");
+  return {
+    ...await pathExists(historyPath) ? { historyPath } : {},
+    ...await pathExists(sessionIndexPath) ? { sessionIndexPath } : {},
+    transcriptPaths
+  };
+}
+
+// src/collector/transcript-parser.ts
+var import_node_fs2 = require("node:fs");
+var import_node_readline2 = __toESM(require("node:readline"));
+
+// src/collector/session-signals.ts
+var BUILTIN_FUNCTION_CALL_NAMES = new Set([
+  "Bash",
+  "Read",
+  "Edit",
+  "Write",
+  "MultiEdit",
+  "Glob",
+  "Grep",
+  "LS",
+  "WebFetch",
+  "WebSearch",
+  "LSP",
+  "NotebookEdit"
+]);
+var AGENT_FUNCTION_CALL_NAMES = new Set(["Task", "Agent"]);
+var MCP_TOOL_NAME_PATTERN = /^mcp__[^_]+(?:_[^_]+)*__[^_]+(?:_[^_]+)*$/;
+var MCP_NAMESPACE_PATTERN = /^mcp__[^_]+(?:_[^_]+)*__$/;
+function incrementMap(map2, key) {
+  map2[key] = (map2[key] ?? 0) + 1;
+}
+function recordFunctionCallSignal(record2, signals) {
+  const normalizedMcpToolName = normalizeMcpToolName(record2);
+  if (normalizedMcpToolName) {
+    incrementMap(signals.mcp_usage, normalizedMcpToolName);
+    return;
+  }
+  if (BUILTIN_FUNCTION_CALL_NAMES.has(record2.name)) {
+    incrementMap(signals.builtin_usage, record2.name);
+    return;
+  }
+  if (AGENT_FUNCTION_CALL_NAMES.has(record2.name)) {
+    incrementMap(signals.agent_usage, record2.name);
+    return;
+  }
+  incrementMap(signals.unknown_usage, record2.name);
+}
+function normalizeMcpToolName(record2) {
+  if (MCP_TOOL_NAME_PATTERN.test(record2.name)) {
+    return record2.name;
+  }
+  if (record2.namespace && MCP_NAMESPACE_PATTERN.test(record2.namespace)) {
+    return `${record2.namespace}${record2.name}`;
+  }
+  return null;
+}
+function recordCustomToolSignal(record2, signals) {
+  incrementMap(signals.builtin_usage, record2.name);
+}
+function recordWebSearchSignal(_record2, signals) {
+  incrementMap(signals.builtin_usage, "web_search");
+}
+function recordMessageSignal(record2, signals) {
+  for (const block of record2.content) {
+    if (block.type === "input_image") {
+      signals.image_count += 1;
+    }
+  }
+}
+function extractSessionSignals(records) {
+  const signals = {
+    mcp_usage: {},
+    skill_usage: {},
+    agent_usage: {},
+    builtin_usage: {},
+    unknown_usage: {},
+    image_count: 0
+  };
+  for (const record2 of records) {
+    if (record2.recordType !== "response_item") {
+      continue;
+    }
+    switch (record2.itemType) {
+      case "function_call":
+        recordFunctionCallSignal(record2, signals);
+        break;
+      case "custom_tool_call":
+        recordCustomToolSignal(record2, signals);
+        break;
+      case "web_search_call":
+        recordWebSearchSignal(record2, signals);
+        break;
+      case "message":
+        recordMessageSignal(record2, signals);
+        break;
+      default:
+        break;
+    }
+  }
+  return signals;
+}
+
+// src/collector/transcript-parser/message-mappers.ts
+function messageFromEvent(record2) {
+  if (record2.eventType === "user_message") {
+    return {
+      role: "user",
+      textParts: [record2.message, ...record2.textElements].filter((entry) => entry.length > 0),
+      imageCount: record2.imagesCount + record2.localImagesCount,
+      timestamp: record2.timestamp,
+      lineNumber: record2.lineNumber,
+      source: "event_msg"
+    };
+  }
+  if (record2.eventType === "agent_message") {
+    return {
+      role: "assistant",
+      ...record2.phase ? { phase: record2.phase } : {},
+      textParts: record2.message.length > 0 ? [record2.message] : [],
+      imageCount: 0,
+      timestamp: record2.timestamp,
+      lineNumber: record2.lineNumber,
+      source: "event_msg"
+    };
+  }
+  return null;
+}
+
+// src/collector/transcript-parser/guards.ts
+function isRecord2(value) {
+  return typeof value === "object" && value !== null;
+}
+function isString(value) {
+  return typeof value === "string";
+}
+function isNonEmptyString3(value) {
+  return isString(value) && value.trim().length > 0;
+}
+function isNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+function isBoolean(value) {
+  return typeof value === "boolean";
+}
+function isArray(value) {
+  return Array.isArray(value);
+}
+function toStringArray(value) {
+  if (!isArray(value)) {
+    return [];
+  }
+  return value.filter(isString);
+}
+
+// src/collector/transcript-parser/field-parsers.ts
+function parseDuration(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const secs = isNumber(value.secs) ? value.secs : undefined;
+  const nanos = isNumber(value.nanos) ? value.nanos : undefined;
+  if (secs === undefined && nanos === undefined) {
+    return;
+  }
+  return { ...secs !== undefined ? { secs } : {}, ...nanos !== undefined ? { nanos } : {} };
+}
+function parseTokenUsage(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const inputTokens = isNumber(value.input_tokens) ? value.input_tokens : undefined;
+  const cachedInputTokens = isNumber(value.cached_input_tokens) ? value.cached_input_tokens : undefined;
+  const outputTokens = isNumber(value.output_tokens) ? value.output_tokens : undefined;
+  const reasoningOutputTokens = isNumber(value.reasoning_output_tokens) ? value.reasoning_output_tokens : undefined;
+  const totalTokens = isNumber(value.total_tokens) ? value.total_tokens : undefined;
+  if (inputTokens === undefined && cachedInputTokens === undefined && outputTokens === undefined && reasoningOutputTokens === undefined && totalTokens === undefined) {
+    return;
+  }
+  return {
+    ...inputTokens !== undefined ? { inputTokens } : {},
+    ...cachedInputTokens !== undefined ? { cachedInputTokens } : {},
+    ...outputTokens !== undefined ? { outputTokens } : {},
+    ...reasoningOutputTokens !== undefined ? { reasoningOutputTokens } : {},
+    ...totalTokens !== undefined ? { totalTokens } : {}
+  };
+}
+function parseRateLimitWindow(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const usedPercent = isNumber(value.used_percent) ? value.used_percent : undefined;
+  const windowMinutes = isNumber(value.window_minutes) ? value.window_minutes : undefined;
+  const resetsAt = isNumber(value.resets_at) ? value.resets_at : undefined;
+  if (usedPercent === undefined && windowMinutes === undefined && resetsAt === undefined) {
+    return;
+  }
+  return {
+    ...usedPercent !== undefined ? { usedPercent } : {},
+    ...windowMinutes !== undefined ? { windowMinutes } : {},
+    ...resetsAt !== undefined ? { resetsAt } : {}
+  };
+}
+function parseGitContext(value) {
+  if (!isRecord2(value)) {
+    return;
+  }
+  const branch = isNonEmptyString3(value.branch) ? value.branch : undefined;
+  const commitHash = isNonEmptyString3(value.commit_hash) ? value.commit_hash : undefined;
+  const repositoryUrl = isNonEmptyString3(value.repository_url) ? value.repository_url : undefined;
+  if (branch === undefined && commitHash === undefined && repositoryUrl === undefined) {
+    return;
+  }
+  return {
+    ...branch ? { branch } : {},
+    ...commitHash ? { commitHash } : {},
+    ...repositoryUrl ? { repositoryUrl } : {}
+  };
+}
+function parseSandboxPolicy(value) {
+  if (!isRecord2(value) || !isNonEmptyString3(value.type)) {
+    return;
+  }
+  return {
+    type: value.type,
+    writableRoots: toStringArray(value.writable_roots),
+    ...isBoolean(value.network_access) ? { networkAccess: value.network_access } : {},
+    ...isBoolean(value.exclude_tmpdir_env_var) ? { excludeTmpdirEnvVar: value.exclude_tmpdir_env_var } : {},
+    ...isBoolean(value.exclude_slash_tmp) ? { excludeSlashTmp: value.exclude_slash_tmp } : {}
+  };
+}
+function parseCollaborationMode(value) {
+  if (!isRecord2(value) || !isNonEmptyString3(value.mode)) {
+    return;
+  }
+  const settings = isRecord2(value.settings) ? value.settings : undefined;
+  return {
+    mode: value.mode,
+    ...settings && isNonEmptyString3(settings.model) ? { model: settings.model } : {},
+    ...settings && isNonEmptyString3(settings.reasoning_effort) ? { reasoningEffort: settings.reasoning_effort } : {}
+  };
+}
+function parseMessageContentBlocks(value) {
+  if (!isArray(value)) {
+    return null;
+  }
+  const blocks = [];
+  for (const entry of value) {
+    if (!isRecord2(entry) || !isNonEmptyString3(entry.type)) {
+      return null;
+    }
+    if (entry.type === "input_text" || entry.type === "output_text") {
+      if (!isString(entry.text)) {
+        return null;
+      }
+      blocks.push({
+        type: entry.type,
+        text: entry.text
+      });
+      continue;
+    }
+    if (entry.type === "input_image") {
+      blocks.push({ type: "input_image" });
+      continue;
+    }
+    return null;
+  }
+  return blocks;
+}
+
+// src/collector/transcript-parser/record-parsers.ts
+function parseSessionMetaRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString3(payload.id) || !isNonEmptyString3(payload.cwd) || !isNonEmptyString3(payload.originator) || !isNonEmptyString3(payload.source) || !isNonEmptyString3(payload.cli_version) || !isNonEmptyString3(payload.model_provider)) {
+    return null;
+  }
+  const git = parseGitContext(payload.git);
+  return {
+    recordType: "session_meta",
+    lineNumber,
+    timestamp,
+    sessionId: payload.id,
+    cwd: payload.cwd,
+    originator: payload.originator,
+    source: payload.source,
+    cliVersion: payload.cli_version,
+    modelProvider: payload.model_provider,
+    ...git ? { git } : {}
+  };
+}
+function parseEventRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString3(payload.type)) {
+    return null;
+  }
+  switch (payload.type) {
+    case "task_started":
+      if (!isNonEmptyString3(payload.turn_id)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "task_started",
+        lineNumber,
+        timestamp,
+        turnId: payload.turn_id,
+        ...isNumber(payload.model_context_window) ? { modelContextWindow: payload.model_context_window } : {},
+        ...isNonEmptyString3(payload.collaboration_mode_kind) ? { collaborationModeKind: payload.collaboration_mode_kind } : {}
+      };
+    case "task_complete":
+      if (!isNonEmptyString3(payload.turn_id)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "task_complete",
+        lineNumber,
+        timestamp,
+        turnId: payload.turn_id,
+        ...isString(payload.last_agent_message) ? { lastAgentMessage: payload.last_agent_message } : {}
+      };
+    case "turn_aborted":
+      if (!isNonEmptyString3(payload.turn_id)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "turn_aborted",
+        lineNumber,
+        timestamp,
+        turnId: payload.turn_id,
+        ...isNonEmptyString3(payload.reason) ? { reason: payload.reason } : {}
+      };
+    case "user_message":
+      if (!isString(payload.message)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "user_message",
+        lineNumber,
+        timestamp,
+        message: payload.message,
+        imagesCount: isArray(payload.images) ? payload.images.length : 0,
+        localImagesCount: isArray(payload.local_images) ? payload.local_images.length : 0,
+        textElements: toStringArray(payload.text_elements)
+      };
+    case "agent_message":
+      if (!isString(payload.message)) {
+        return null;
+      }
+      return {
+        recordType: "event_msg",
+        eventType: "agent_message",
+        lineNumber,
+        timestamp,
+        message: payload.message,
+        ...isNonEmptyString3(payload.phase) ? { phase: payload.phase } : {},
+        hasMemoryCitation: payload.memory_citation !== null && payload.memory_citation !== undefined
+      };
+    case "token_count": {
+      const info = isRecord2(payload.info) ? {
+        ...parseTokenUsage(payload.info.total_token_usage) ? { totalTokenUsage: parseTokenUsage(payload.info.total_token_usage) } : {},
+        ...parseTokenUsage(payload.info.last_token_usage) ? { lastTokenUsage: parseTokenUsage(payload.info.last_token_usage) } : {},
+        ...isNumber(payload.info.model_context_window) ? { modelContextWindow: payload.info.model_context_window } : {}
+      } : undefined;
+      const rateLimits = isRecord2(payload.rate_limits) ? {
+        ...isNonEmptyString3(payload.rate_limits.limit_id) ? { limitId: payload.rate_limits.limit_id } : {},
+        ...isNonEmptyString3(payload.rate_limits.plan_type) ? { planType: payload.rate_limits.plan_type } : {},
+        ...parseRateLimitWindow(payload.rate_limits.primary) ? { primary: parseRateLimitWindow(payload.rate_limits.primary) } : {},
+        ...parseRateLimitWindow(payload.rate_limits.secondary) ? { secondary: parseRateLimitWindow(payload.rate_limits.secondary) } : {}
+      } : undefined;
+      return {
+        recordType: "event_msg",
+        eventType: "token_count",
+        lineNumber,
+        timestamp,
+        ...info && Object.keys(info).length > 0 ? { info } : {},
+        ...rateLimits && Object.keys(rateLimits).length > 0 ? { rateLimits } : {}
+      };
+    }
+    case "exec_command_end": {
+      if (!isArray(payload.command)) {
+        return null;
+      }
+      const duration3 = parseDuration(payload.duration);
+      return {
+        recordType: "event_msg",
+        eventType: "exec_command_end",
+        lineNumber,
+        timestamp,
+        command: toStringArray(payload.command),
+        parsedCmd: toStringArray(payload.parsed_cmd),
+        ...isNonEmptyString3(payload.call_id) ? { callId: payload.call_id } : {},
+        ...isNonEmptyString3(payload.turn_id) ? { turnId: payload.turn_id } : {},
+        ...isNonEmptyString3(payload.cwd) ? { cwd: payload.cwd } : {},
+        ...isNumber(payload.exit_code) ? { exitCode: payload.exit_code } : {},
+        ...isNonEmptyString3(payload.status) ? { status: payload.status } : {},
+        ...duration3 ? { duration: duration3 } : {}
+      };
+    }
+    case "mcp_tool_call_end": {
+      const invocation = isRecord2(payload.invocation) ? payload.invocation : undefined;
+      if (!invocation || !isNonEmptyString3(invocation.server) || !isNonEmptyString3(invocation.tool)) {
+        return null;
+      }
+      const duration3 = parseDuration(payload.duration);
+      const resultKind = isRecord2(payload.result) ? "Ok" in payload.result ? "ok" : ("Err" in payload.result) ? "err" : undefined : undefined;
+      return {
+        recordType: "event_msg",
+        eventType: "mcp_tool_call_end",
+        lineNumber,
+        timestamp,
+        server: invocation.server,
+        tool: invocation.tool,
+        ...isNonEmptyString3(payload.call_id) ? { callId: payload.call_id } : {},
+        ...duration3 ? { duration: duration3 } : {},
+        ...resultKind ? { resultKind } : {}
+      };
+    }
+    case "item_completed": {
+      const item = isRecord2(payload.item) ? payload.item : undefined;
+      return {
+        recordType: "event_msg",
+        eventType: "item_completed",
+        lineNumber,
+        timestamp,
+        ...isNonEmptyString3(payload.thread_id) ? { threadId: payload.thread_id } : {},
+        ...isNonEmptyString3(payload.turn_id) ? { turnId: payload.turn_id } : {},
+        ...item && isNonEmptyString3(item.type) ? { itemType: item.type } : {},
+        ...item && isNonEmptyString3(item.id) ? { itemId: item.id } : {}
+      };
+    }
+    case "context_compacted":
+      return {
+        recordType: "event_msg",
+        eventType: "context_compacted",
+        lineNumber,
+        timestamp
+      };
+    case "thread_rolled_back":
+      return {
+        recordType: "event_msg",
+        eventType: "thread_rolled_back",
+        lineNumber,
+        timestamp,
+        ...isNumber(payload.num_turns) ? { numTurns: payload.num_turns } : {}
+      };
     default:
       return null;
   }
 }
-async function runRefreshAuthHook(eventName, dependencies = {}) {
-  const trigger = parseTrigger(eventName);
-  if (!trigger) {
+function parseResponseItemRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString3(payload.type)) {
+    return null;
+  }
+  switch (payload.type) {
+    case "message": {
+      if (!isNonEmptyString3(payload.role)) {
+        return null;
+      }
+      const content = parseMessageContentBlocks(payload.content);
+      if (content === null) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "message",
+        lineNumber,
+        timestamp,
+        role: payload.role,
+        content,
+        ...isNonEmptyString3(payload.phase) ? { phase: payload.phase } : {}
+      };
+    }
+    case "reasoning": {
+      const summary = isArray(payload.summary) ? payload.summary.filter(isRecord2).map((entry) => isString(entry.text) ? entry.text : null).filter((entry) => entry !== null) : [];
+      return {
+        recordType: "response_item",
+        itemType: "reasoning",
+        lineNumber,
+        timestamp,
+        summaryText: summary,
+        hasEncryptedContent: isNonEmptyString3(payload.encrypted_content)
+      };
+    }
+    case "function_call":
+      if (!isNonEmptyString3(payload.name) || !isNonEmptyString3(payload.call_id) || !isString(payload.arguments)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "function_call",
+        lineNumber,
+        timestamp,
+        name: payload.name,
+        ...isNonEmptyString3(payload.namespace) ? { namespace: payload.namespace } : {},
+        callId: payload.call_id,
+        arguments: payload.arguments
+      };
+    case "function_call_output":
+      if (!isNonEmptyString3(payload.call_id) || !isString(payload.output)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "function_call_output",
+        lineNumber,
+        timestamp,
+        callId: payload.call_id,
+        output: payload.output
+      };
+    case "custom_tool_call":
+      if (!isNonEmptyString3(payload.call_id) || !isNonEmptyString3(payload.name) || !isString(payload.input)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "custom_tool_call",
+        lineNumber,
+        timestamp,
+        callId: payload.call_id,
+        name: payload.name,
+        input: payload.input,
+        ...isNonEmptyString3(payload.status) ? { status: payload.status } : {}
+      };
+    case "custom_tool_call_output":
+      if (!isNonEmptyString3(payload.call_id) || !isString(payload.output)) {
+        return null;
+      }
+      return {
+        recordType: "response_item",
+        itemType: "custom_tool_call_output",
+        lineNumber,
+        timestamp,
+        callId: payload.call_id,
+        output: payload.output
+      };
+    case "web_search_call": {
+      const action = isRecord2(payload.action) ? payload.action : undefined;
+      return {
+        recordType: "response_item",
+        itemType: "web_search_call",
+        lineNumber,
+        timestamp,
+        queries: action ? toStringArray(action.queries) : [],
+        ...isNonEmptyString3(payload.status) ? { status: payload.status } : {},
+        ...action && isNonEmptyString3(action.type) ? { actionType: action.type } : {},
+        ...action && isNonEmptyString3(action.query) ? { query: action.query } : {}
+      };
+    }
+    default:
+      return null;
+  }
+}
+function parseTurnContextRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload) || !isNonEmptyString3(payload.turn_id) || !isNonEmptyString3(payload.cwd)) {
+    return null;
+  }
+  const sandboxPolicy = parseSandboxPolicy(payload.sandbox_policy);
+  const collaborationMode = parseCollaborationMode(payload.collaboration_mode);
+  return {
+    recordType: "turn_context",
+    lineNumber,
+    timestamp,
+    turnId: payload.turn_id,
+    cwd: payload.cwd,
+    ...isNonEmptyString3(payload.current_date) ? { currentDate: payload.current_date } : {},
+    ...isNonEmptyString3(payload.timezone) ? { timezone: payload.timezone } : {},
+    ...isNonEmptyString3(payload.approval_policy) ? { approvalPolicy: payload.approval_policy } : {},
+    ...sandboxPolicy ? { sandboxPolicy } : {},
+    ...isNonEmptyString3(payload.model) ? { model: payload.model } : {},
+    ...isNonEmptyString3(payload.personality) ? { personality: payload.personality } : {},
+    ...collaborationMode ? { collaborationMode } : {},
+    ...isNonEmptyString3(payload.effort) ? { effort: payload.effort } : {},
+    ...isNonEmptyString3(payload.summary) ? { summary: payload.summary } : {},
+    ...isRecord2(payload.truncation_policy) ? {
+      truncationPolicy: {
+        ...isNonEmptyString3(payload.truncation_policy.mode) ? { mode: payload.truncation_policy.mode } : {},
+        ...isNumber(payload.truncation_policy.limit) ? { limit: payload.truncation_policy.limit } : {}
+      }
+    } : {}
+  };
+}
+function parseCompactedRecord(payload, timestamp, lineNumber) {
+  if (!isRecord2(payload)) {
+    return null;
+  }
+  return {
+    recordType: "compacted",
+    lineNumber,
+    timestamp,
+    replacementHistoryCount: isArray(payload.replacement_history) ? payload.replacement_history.length : 0
+  };
+}
+function parseTopLevelRecord(value, lineNumber) {
+  if (!isRecord2(value) || !isNonEmptyString3(value.type) || !isNonEmptyString3(value.timestamp)) {
+    return null;
+  }
+  switch (value.type) {
+    case "session_meta":
+      return parseSessionMetaRecord(value.payload, value.timestamp, lineNumber);
+    case "event_msg":
+      return parseEventRecord(value.payload, value.timestamp, lineNumber);
+    case "response_item":
+      return parseResponseItemRecord(value.payload, value.timestamp, lineNumber);
+    case "turn_context":
+      return parseTurnContextRecord(value.payload, value.timestamp, lineNumber);
+    case "compacted":
+      return parseCompactedRecord(value.payload, value.timestamp, lineNumber);
+    default:
+      return null;
+  }
+}
+
+// src/collector/transcript-parser.ts
+function createAccumulator() {
+  return {
+    records: [],
+    messages: [],
+    malformedLineCount: 0,
+    skippedRecordCount: 0
+  };
+}
+function collectRecord(accumulator, record2) {
+  accumulator.records.push(record2);
+  if (record2.recordType === "session_meta" && accumulator.sessionMeta === undefined) {
+    accumulator.sessionMeta = record2;
+  }
+  if (record2.recordType === "event_msg") {
+    const message = messageFromEvent(record2);
+    if (message) {
+      accumulator.messages.push(message);
+    }
+  }
+  return accumulator;
+}
+async function readTranscript(filePath) {
+  const stream = import_node_fs2.createReadStream(filePath, { encoding: "utf-8" });
+  const lines = import_node_readline2.default.createInterface({
+    crlfDelay: Number.POSITIVE_INFINITY,
+    input: stream
+  });
+  let lineNumber = 0;
+  const accumulator = createAccumulator();
+  try {
+    for await (const rawLine of lines) {
+      lineNumber += 1;
+      const line = rawLine.trim();
+      if (line.length === 0) {
+        continue;
+      }
+      let parsed;
+      try {
+        parsed = JSON.parse(line);
+      } catch {
+        accumulator.malformedLineCount += 1;
+        continue;
+      }
+      const record2 = parseTopLevelRecord(parsed, lineNumber);
+      if (record2 === null) {
+        accumulator.skippedRecordCount += 1;
+        continue;
+      }
+      collectRecord(accumulator, record2);
+    }
+  } finally {
+    lines.close();
+    stream.destroy();
+  }
+  if (!accumulator.sessionMeta?.sessionId) {
+    return null;
+  }
+  return {
+    sessionId: accumulator.sessionMeta.sessionId,
+    filePath,
+    sessionMeta: accumulator.sessionMeta,
+    records: accumulator.records,
+    messages: accumulator.messages,
+    signals: extractSessionSignals(accumulator.records),
+    malformedLineCount: accumulator.malformedLineCount,
+    skippedRecordCount: accumulator.skippedRecordCount
+  };
+}
+async function readTranscripts(filePaths) {
+  const parsed = await Promise.all(filePaths.map((filePath) => readTranscript(filePath)));
+  return parsed.filter((entry) => entry !== null);
+}
+
+// src/privacy/sanitize.ts
+var import_node_path9 = require("node:path");
+function createPrivacyServiceForSource(sourcePath, settings) {
+  return new PrivacyService({
+    config: settings ? createPrivacyConfig(settings) : undefined,
+    enableCache: true,
+    fs: createNodeFsAdapter(import_node_path9.dirname(sourcePath))
+  });
+}
+function mapFieldSummary(field, result) {
+  return {
+    detectionCount: result.detections.length,
+    field,
+    patterns: [...new Set(result.detections.map((detection) => detection.pattern))].sort(),
+    wasRedacted: result.wasRedacted
+  };
+}
+function sanitizeSessionTitle(session, service, summaries, sourcePath) {
+  if (!session.title) {
+    return session;
+  }
+  const result = service.processContent(session.title, sourcePath);
+  if (result.hasSensitiveData) {
+    summaries.push(mapFieldSummary("session.title", result));
+  }
+  return {
+    ...session,
+    title: result.content
+  };
+}
+function sanitizeMessages(messages, service, summaries, sourcePath) {
+  return messages.map((message) => {
+    const result = service.processContent(message.content, sourcePath);
+    if (result.hasSensitiveData) {
+      summaries.push(mapFieldSummary(`messages.${message.message_index}.content`, result));
+    }
+    return {
+      ...message,
+      content: result.content
+    };
+  });
+}
+function createDroppedResult(input, droppedReason, details = {}) {
+  return {
+    status: "dropped",
+    payload: input.payload,
+    privacy: input.privacy,
+    metadata: {
+      fields: [],
+      droppedReason,
+      ...details
+    }
+  };
+}
+async function sanitizeNormalizedPayload(input, settings) {
+  if (input.privacy.sourceKind !== "transcript") {
+    return createDroppedResult(input, "unsupported_source");
+  }
+  if (!input.privacy.sourcePathAllowlisted) {
+    return createDroppedResult(input, "source_not_allowlisted");
+  }
+  const service = createPrivacyServiceForSource(input.privacy.sourcePath, settings);
+  await service.initialize();
+  const exclusion = service.shouldExcludeFile(input.privacy.sourcePath);
+  if (exclusion.excluded) {
+    return createDroppedResult(input, "source_excluded", {
+      exclusionMatch: exclusion.matchedRule,
+      exclusionReason: exclusion.reason
+    });
+  }
+  const fields = [];
+  return {
+    status: "sanitized",
+    privacy: input.privacy,
+    payload: {
+      ...input.payload,
+      session: sanitizeSessionTitle(input.payload.session, service, fields, input.privacy.sourcePath),
+      messages: sanitizeMessages(input.payload.messages, service, fields, input.privacy.sourcePath)
+    },
+    metadata: {
+      fields
+    }
+  };
+}
+async function sanitizeNormalizedPayloads(inputs, settings) {
+  return Promise.all(inputs.map((input) => sanitizeNormalizedPayload(input, settings)));
+}
+
+// src/settings/folders.ts
+var import_node_path10 = require("node:path");
+function getPathApi(platform) {
+  return platform === "win32" ? import_node_path10.win32 : import_node_path10.posix;
+}
+function shouldFoldCase(platform = process.platform) {
+  return platform === "darwin" || platform === "win32";
+}
+function normalizeComparablePath(folderPath, platform = process.platform) {
+  const normalized = getPathApi(platform).resolve(folderPath);
+  return shouldFoldCase(platform) ? normalized.toLowerCase() : normalized;
+}
+function isPathIgnored(candidatePath, ignoredFolders, platform = process.platform) {
+  const candidate = normalizeComparablePath(candidatePath, platform);
+  return ignoredFolders.some((ignoredFolder) => {
+    const ignored = normalizeComparablePath(ignoredFolder, platform);
+    if (candidate === ignored) {
+      return true;
+    }
+    const pathApi = getPathApi(platform);
+    const relativePath = pathApi.relative(ignored, candidate);
+    return relativePath.length > 0 && !relativePath.startsWith("..") && !pathApi.isAbsolute(relativePath);
+  });
+}
+
+// src/workspace/binding.ts
+var WORKSPACE_BINDING_VERSION = 1;
+function isNonEmptyString4(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+function getWorkspaceBindingFilePath() {
+  return resolveStatePath("workspace", "binding.toml");
+}
+function isWorkspaceBindingValid(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const candidate = value;
+  if (candidate.version !== WORKSPACE_BINDING_VERSION) {
+    return false;
+  }
+  if (!candidate.active || typeof candidate.active !== "object") {
+    return false;
+  }
+  if (!isNonEmptyString4(candidate.active.id)) {
+    return false;
+  }
+  if (candidate.active.name !== undefined && !isNonEmptyString4(candidate.active.name)) {
+    return false;
+  }
+  if (candidate.sync !== undefined) {
+    if (!candidate.sync || typeof candidate.sync !== "object") {
+      return false;
+    }
+    if (typeof candidate.sync.enabled !== "boolean") {
+      return false;
+    }
+  }
+  return true;
+}
+async function loadWorkspaceBinding() {
+  const filePath = getWorkspaceBindingFilePath();
+  const binding = await readTomlFile(filePath);
+  if (binding === null) {
+    return null;
+  }
+  if (!isWorkspaceBindingValid(binding)) {
+    await removeStateFile(filePath);
+    return null;
+  }
+  return binding;
+}
+
+// src/sync/message-index.ts
+function isValidMessageIndex(value) {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0;
+}
+
+// src/sync/checkpoints.ts
+function resolveSyncCheckpointsFilePath() {
+  return resolveStatePath("sync", "checkpoints.json");
+}
+function sortSyncCheckpoints(checkpoints) {
+  return [...checkpoints].sort((left, right) => left.sessionId.localeCompare(right.sessionId));
+}
+function isValidSyncCheckpoint(checkpoint) {
+  if (!checkpoint || typeof checkpoint !== "object") {
+    return false;
+  }
+  const { sessionId, lastSyncedMessageIndex, lastSyncedAt } = checkpoint;
+  return typeof sessionId === "string" && sessionId.length > 0 && typeof lastSyncedMessageIndex === "number" && Number.isInteger(lastSyncedMessageIndex) && lastSyncedMessageIndex >= 0 && typeof lastSyncedAt === "string";
+}
+function filterValidSyncCheckpoints(checkpoints) {
+  if (!Array.isArray(checkpoints)) {
+    return [];
+  }
+  return checkpoints.filter(isValidSyncCheckpoint);
+}
+async function loadSyncCheckpoints() {
+  const checkpoints = await readJsonFile(resolveSyncCheckpointsFilePath());
+  return sortSyncCheckpoints(filterValidSyncCheckpoints(checkpoints));
+}
+async function saveSyncCheckpoints(checkpoints) {
+  await writeJsonFileAtomic(resolveSyncCheckpointsFilePath(), sortSyncCheckpoints(filterValidSyncCheckpoints(checkpoints)));
+}
+async function getLastSyncedMessageIndex(sessionId) {
+  const checkpoints = await loadSyncCheckpoints();
+  const checkpoint = checkpoints.find((entry) => entry.sessionId === sessionId);
+  return checkpoint?.lastSyncedMessageIndex ?? null;
+}
+async function filterPayloadToUnsyncedMessages(payload) {
+  const sessionId = payload.payload.session.id;
+  if (!sessionId) {
+    return payload;
+  }
+  const lastSyncedMessageIndex = await getLastSyncedMessageIndex(sessionId);
+  if (lastSyncedMessageIndex === null) {
+    return payload;
+  }
+  const messages = payload.payload.messages.filter((message) => isValidMessageIndex(message.message_index) && message.message_index > lastSyncedMessageIndex);
+  if (messages.length === 0) {
+    return null;
+  }
+  return {
+    ...payload,
+    payload: {
+      ...payload.payload,
+      messages
+    }
+  };
+}
+async function recordUploadedMessageCheckpoints(messages, now = new Date, candidateMessages = messages) {
+  const uploadedIndexesBySessionId = new Map;
+  const candidateIndexesBySessionId = new Map;
+  for (const message of messages) {
+    const sessionId = message.session_id;
+    const messageIndex = message.message_index;
+    if (!sessionId || !isValidMessageIndex(messageIndex)) {
+      continue;
+    }
+    const uploadedIndexes = uploadedIndexesBySessionId.get(sessionId) ?? new Set;
+    uploadedIndexes.add(messageIndex);
+    uploadedIndexesBySessionId.set(sessionId, uploadedIndexes);
+  }
+  for (const message of candidateMessages) {
+    const sessionId = message.session_id;
+    const messageIndex = message.message_index;
+    if (!sessionId || !isValidMessageIndex(messageIndex)) {
+      continue;
+    }
+    const candidateIndexes = candidateIndexesBySessionId.get(sessionId) ?? new Set;
+    candidateIndexes.add(messageIndex);
+    candidateIndexesBySessionId.set(sessionId, candidateIndexes);
+  }
+  if (uploadedIndexesBySessionId.size === 0) {
     return;
   }
-  const ensureAuthFresh = dependencies.ensureAuthFresh ?? ensureAuthSessionFresh;
-  const ensureDaemon = dependencies.ensureDaemon ?? ensureDaemonRunning;
-  const maybeAutoUpdate = dependencies.maybeAutoUpdate ?? maybeAutoUpdatePlugin;
-  const touchActivity = dependencies.touchActivity ?? touchDaemonActivity;
-  await logger.info("hook", "trigger_received", {
-    details: { trigger }
-  });
-  await ensureAuthFresh({ trigger }).then((result) => logger.info("hook", "auth_refresh_completed", {
-    details: {
-      refreshed: result.refreshed,
-      status: result.status,
-      trigger
-    }
-  })).catch((error51) => logger.error("hook", "auth_refresh_failed", {
-    details: { trigger },
-    error: error51
-  }));
-  if (trigger === "session_start" && plugin_default.name === "zest") {
-    await maybeAutoUpdate({ currentVersion: plugin_default.version }).then((result) => logger.info("hook", "update_check_completed", {
-      details: {
-        attempted: result.attempted,
-        currentVersion: plugin_default.version,
-        status: result.status
+  const syncedAt = now.toISOString();
+  const checkpointsBySessionId = new Map((await loadSyncCheckpoints()).map((checkpoint) => [checkpoint.sessionId, checkpoint]));
+  for (const [sessionId, uploadedIndexes] of uploadedIndexesBySessionId) {
+    const existing = checkpointsBySessionId.get(sessionId);
+    let maxUploadedIndex = existing?.lastSyncedMessageIndex ?? -1;
+    const candidateIndexes = [...candidateIndexesBySessionId.get(sessionId) ?? uploadedIndexes].filter((index) => index > maxUploadedIndex).sort((left, right) => left - right);
+    for (const candidateIndex of candidateIndexes) {
+      if (!uploadedIndexes.has(candidateIndex)) {
+        break;
       }
-    })).catch((error51) => logger.error("hook", "update_check_failed", {
-      details: {
-        currentVersion: plugin_default.version,
-        trigger
-      },
-      error: error51
-    }));
+      maxUploadedIndex = candidateIndex;
+    }
+    if (maxUploadedIndex <= (existing?.lastSyncedMessageIndex ?? -1)) {
+      continue;
+    }
+    checkpointsBySessionId.set(sessionId, {
+      sessionId,
+      lastSyncedMessageIndex: maxUploadedIndex,
+      lastSyncedAt: syncedAt
+    });
   }
-  await touchActivity(trigger).then((result) => logger.info("hook", "activity_touch_completed", {
-    details: {
-      lastActivityAt: result.lastActivityAt,
-      lastTrigger: result.lastTrigger,
-      trigger
+  await saveSyncCheckpoints([...checkpointsBySessionId.values()]);
+}
+
+// src/sync/normalize.ts
+var import_node_path11 = require("node:path");
+function normalizeSignals(signals) {
+  return {
+    mcp_usage: { ...signals.mcp_usage },
+    skill_usage: {},
+    agent_usage: { ...signals.agent_usage },
+    builtin_usage: { ...signals.builtin_usage },
+    unknown_usage: { ...signals.unknown_usage },
+    image_count: signals.image_count
+  };
+}
+function resolveCreatedAt(transcript) {
+  if (transcript.sessionMeta?.timestamp) {
+    return { createdAt: transcript.sessionMeta.timestamp, source: "session_meta" };
+  }
+  const firstRecordTimestamp = transcript.records[0]?.timestamp;
+  if (firstRecordTimestamp) {
+    return { createdAt: firstRecordTimestamp, source: "first_record" };
+  }
+  return {
+    createdAt: transcript.messages[0]?.timestamp ?? new Date(0).toISOString(),
+    source: "first_message"
+  };
+}
+function resolvePlatform(originator) {
+  if (originator === "Codex Desktop") {
+    return {
+      platform: PLATFORM_CODEX_APP,
+      source: "originator"
+    };
+  }
+  if (originator === "codex_cli_rs") {
+    return {
+      platform: PLATFORM_TERMINAL,
+      source: "originator"
+    };
+  }
+  return {
+    platform: PLATFORM_TERMINAL,
+    source: "fallback"
+  };
+}
+function normalizeMessageContent(message) {
+  return message.textParts.map((part) => part.trim()).filter((part) => part.length > 0).join(`
+
+`);
+}
+function normalizeMessageMetadata(message) {
+  const metadata = {};
+  if (message.phase) {
+    metadata.phase = message.phase;
+  }
+  metadata.source = message.source;
+  metadata.line_number = message.lineNumber;
+  return Object.keys(metadata).length > 0 ? metadata : null;
+}
+var CONVERSATIONAL_ROLES = new Set(["user", "assistant"]);
+function resolveTranscriptModels(transcript) {
+  const models = new Set;
+  for (const record2 of transcript.records) {
+    if (record2.recordType !== "turn_context") {
+      continue;
     }
-  })).catch((error51) => logger.error("hook", "activity_touch_failed", {
-    details: { trigger },
-    error: error51
-  }));
-  await ensureDaemon().then((result) => logger.info("hook", "daemon_ensure_completed", {
-    details: {
-      pid: result.pid,
-      reason: result.started ? undefined : result.reason,
-      started: result.started,
-      trigger
+    const model = resolveTurnContextModel(record2);
+    if (model) {
+      models.add(model);
     }
-  })).catch((error51) => logger.error("hook", "daemon_ensure_failed", {
-    details: { trigger },
-    error: error51
+  }
+  return Array.from(models);
+}
+function resolveTurnContextModel(record2) {
+  if (record2.model) {
+    return record2.model;
+  }
+  return record2.collaborationMode?.model ?? null;
+}
+function resolveModelWithReasoning(transcript) {
+  for (const record2 of transcript.records) {
+    if (record2.recordType !== "turn_context") {
+      continue;
+    }
+    const model = resolveTurnContextModel(record2);
+    if (!model) {
+      continue;
+    }
+    const reasoning = record2.effort ?? record2.collaborationMode?.reasoningEffort;
+    return reasoning ? `${model}:${reasoning}` : model;
+  }
+}
+function findLatestTokenCountRecord(transcript) {
+  let latest;
+  for (const record2 of transcript.records) {
+    if (record2.recordType === "event_msg" && record2.eventType === "token_count") {
+      latest = record2;
+    }
+  }
+  return latest;
+}
+function roundPercent(value) {
+  return Math.round(value * 100) / 100;
+}
+function remainingLimit(usedPercent) {
+  return usedPercent === undefined ? undefined : roundPercent(Math.max(0, 100 - usedPercent));
+}
+function normalizeTokenUsage(usage) {
+  if (!usage) {
+    return;
+  }
+  const normalized = {
+    ...usage.inputTokens !== undefined ? { input_tokens: usage.inputTokens } : {},
+    ...usage.cachedInputTokens !== undefined ? { cached_input_tokens: usage.cachedInputTokens } : {},
+    ...usage.outputTokens !== undefined ? { output_tokens: usage.outputTokens } : {},
+    ...usage.reasoningOutputTokens !== undefined ? { reasoning_output_tokens: usage.reasoningOutputTokens } : {},
+    ...usage.totalTokens !== undefined ? { total_tokens: usage.totalTokens } : {}
+  };
+  return Object.keys(normalized).length > 0 ? normalized : undefined;
+}
+function normalizeRateLimitWindow(window2) {
+  if (!window2) {
+    return;
+  }
+  const normalized = {
+    ...window2.usedPercent !== undefined ? { used_percent: window2.usedPercent } : {},
+    ...window2.windowMinutes !== undefined ? { window_minutes: window2.windowMinutes } : {},
+    ...window2.resetsAt !== undefined ? { resets_at: window2.resetsAt } : {}
+  };
+  return Object.keys(normalized).length > 0 ? normalized : undefined;
+}
+function buildCodexSessionMetadata(transcript) {
+  const latest = findLatestTokenCountRecord(transcript);
+  if (!latest) {
+    return null;
+  }
+  const totalUsage = latest.info?.totalTokenUsage;
+  const lastUsage = latest.info?.lastTokenUsage;
+  const modelContextWindow = latest.info?.modelContextWindow;
+  const totalUsageSnapshot = normalizeTokenUsage(totalUsage);
+  const lastUsageSnapshot = normalizeTokenUsage(lastUsage);
+  const modelWithReasoning = resolveModelWithReasoning(transcript);
+  const fiveHourLimit = remainingLimit(latest.rateLimits?.primary?.usedPercent);
+  const weeklyLimit = remainingLimit(latest.rateLimits?.secondary?.usedPercent);
+  const tokenCountLatest = {
+    timestamp: latest.timestamp,
+    ...totalUsageSnapshot ? { total_token_usage: totalUsageSnapshot } : {},
+    ...lastUsageSnapshot ? { last_token_usage: lastUsageSnapshot } : {},
+    ...modelContextWindow !== undefined ? { model_context_window: modelContextWindow } : {}
+  };
+  const primary = normalizeRateLimitWindow(latest.rateLimits?.primary);
+  const secondary = normalizeRateLimitWindow(latest.rateLimits?.secondary);
+  const rateLimitsLatest = latest.rateLimits ? {
+    ...latest.rateLimits.limitId !== undefined ? { limit_id: latest.rateLimits.limitId } : {},
+    ...latest.rateLimits.planType !== undefined ? { plan_type: latest.rateLimits.planType } : {},
+    ...primary ? { primary } : {},
+    ...secondary ? { secondary } : {}
+  } : undefined;
+  const hasTokenInfo = Object.keys(tokenCountLatest).some((key) => key !== "timestamp");
+  const hasRateLimitInfo = rateLimitsLatest && Object.keys(rateLimitsLatest).length > 0;
+  if (!hasTokenInfo && !hasRateLimitInfo) {
+    return null;
+  }
+  const contextTokenUsage = lastUsage?.totalTokens ?? totalUsage?.totalTokens;
+  const contextUsed = contextTokenUsage !== undefined && modelContextWindow && modelContextWindow > 0 ? roundPercent(contextTokenUsage / modelContextWindow * 100) : undefined;
+  return {
+    ...modelWithReasoning ? { model_with_reasoning: modelWithReasoning } : {},
+    ...contextUsed !== undefined ? { context_used: contextUsed } : {},
+    ...contextUsed !== undefined ? { context_remaining: roundPercent(Math.max(0, 100 - contextUsed)) } : {},
+    ...fiveHourLimit !== undefined ? { five_hour_limit: fiveHourLimit } : {},
+    ...weeklyLimit !== undefined ? { weekly_limit: weeklyLimit } : {},
+    ...totalUsage?.totalTokens !== undefined ? { used_tokens: totalUsage.totalTokens } : {},
+    ...totalUsage?.inputTokens !== undefined ? { input_tokens: totalUsage.inputTokens } : {},
+    ...totalUsage?.outputTokens !== undefined ? { output_tokens: totalUsage.outputTokens } : {},
+    ...totalUsage?.cachedInputTokens !== undefined ? { cache_read_tokens: totalUsage.cachedInputTokens } : {},
+    ...totalUsage?.reasoningOutputTokens !== undefined ? { reasoning_tokens: totalUsage.reasoningOutputTokens } : {},
+    ...modelContextWindow !== undefined ? { model_context_window: modelContextWindow } : {},
+    ...hasTokenInfo ? { token_count_latest: tokenCountLatest } : {},
+    ...hasRateLimitInfo ? { rate_limits_latest: rateLimitsLatest } : {}
+  };
+}
+function normalizeMessages(transcript, userId) {
+  const transcriptModels = resolveTranscriptModels(transcript);
+  const primaryModel = transcriptModels[0];
+  return transcript.messages.filter((message) => CONVERSATIONAL_ROLES.has(message.role)).map((message) => ({
+    role: message.role,
+    content: normalizeMessageContent(message),
+    created_at: message.timestamp,
+    session_id: transcript.sessionId,
+    user_id: userId,
+    code_diffs: null,
+    metadata: normalizeMessageMetadataWithModel(message, primaryModel),
+    imageCount: message.imageCount
+  })).filter((message) => message.content.length > 0 || message.imageCount > 0).map(({ imageCount: _imageCount, ...message }, index) => ({
+    ...message,
+    message_index: index
   }));
 }
-runRefreshAuthHook(process.argv[2]);
+function normalizeMessageMetadataWithModel(message, modelName) {
+  const metadata = normalizeMessageMetadata(message);
+  if (!modelName) {
+    return metadata;
+  }
+  return {
+    ...metadata ?? {},
+    modelName
+  };
+}
+function normalizeTranscriptToZestPayload(input) {
+  const { transcript, sessionRef, userId, workspaceId } = input;
+  const { createdAt, source: createdAtSource } = resolveCreatedAt(transcript);
+  const { platform, source: platformSource } = resolvePlatform(transcript.sessionMeta?.originator);
+  const title = sessionRef?.title ?? null;
+  const session = {
+    id: transcript.sessionId,
+    title,
+    created_at: createdAt,
+    user_id: userId,
+    workspace_id: workspaceId ?? null,
+    analysis_status: "pending",
+    metadata: buildCodexSessionMetadata(transcript),
+    project_id: null,
+    project_name: transcript.sessionMeta?.cwd ? import_node_path11.basename(transcript.sessionMeta.cwd) : null,
+    platform,
+    source: SOURCE,
+    signals: normalizeSignals(transcript.signals)
+  };
+  return {
+    session,
+    messages: normalizeMessages(transcript, userId),
+    decisions: {
+      titleSource: sessionRef?.title ? "session_index" : "missing",
+      createdAtSource,
+      platformSource,
+      sourceDetailsOmitted: true
+    }
+  };
+}
+function normalizeTranscriptToPreparedPayload(input) {
+  const { transcript } = input;
+  return {
+    payload: normalizeTranscriptToZestPayload(input),
+    privacy: {
+      sourceKind: "transcript",
+      sourcePath: transcript.filePath,
+      sourcePathAllowlisted: isAllowlistedCodexPath(transcript.filePath)
+    }
+  };
+}
+function normalizeTranscriptsToPreparedPayloads(input) {
+  const { transcripts, sessionRefsById, userId, workspaceId } = input;
+  return transcripts.map((transcript) => normalizeTranscriptToPreparedPayload({
+    transcript,
+    sessionRef: sessionRefsById?.get(transcript.sessionId),
+    userId,
+    workspaceId
+  }));
+}
 
-//# debugId=E1C43E85F6C0DFA464756E2164756E21
+// src/sync/queue.ts
+var MAX_RETRY_ATTEMPTS = 3;
+function getNowIso(now = new Date) {
+  return now.toISOString();
+}
+function resolveQueueFilePath() {
+  return resolveStatePath("queue", "transcripts.json");
+}
+function sortQueueEntries(entries) {
+  return [...entries].sort((left, right) => left.createdAt.localeCompare(right.createdAt) || left.id.localeCompare(right.id));
+}
+function dedupeDroppedPayloads(results) {
+  return results.filter((result) => result.status === "sanitized");
+}
+function getValidMessageIndex(message) {
+  return isValidMessageIndex(message.message_index) ? message.message_index : null;
+}
+function mergeQueuedTranscriptPayload(existingPayload, incomingPayload) {
+  const messagesByIndex = new Map;
+  for (const message of existingPayload.payload.messages) {
+    const messageIndex = getValidMessageIndex(message);
+    if (messageIndex === null) {
+      continue;
+    }
+    messagesByIndex.set(messageIndex, message);
+  }
+  for (const message of incomingPayload.payload.messages) {
+    const messageIndex = getValidMessageIndex(message);
+    if (messageIndex === null || messagesByIndex.has(messageIndex)) {
+      continue;
+    }
+    messagesByIndex.set(messageIndex, message);
+  }
+  return {
+    ...incomingPayload,
+    payload: {
+      ...incomingPayload.payload,
+      messages: [...messagesByIndex.entries()].sort(([leftIndex], [rightIndex]) => leftIndex - rightIndex).map(([, message]) => message)
+    }
+  };
+}
+function mergeQueueEntry(existingEntry, incomingPayload, now) {
+  return {
+    ...existingEntry,
+    status: "pending",
+    lastError: null,
+    updatedAt: getNowIso(now),
+    payload: mergeQueuedTranscriptPayload(existingEntry.payload, incomingPayload)
+  };
+}
+function getReplayKeySuffix(payload, now) {
+  const messageIndexes = payload.payload.messages.map(getValidMessageIndex).filter((messageIndex) => messageIndex !== null).sort((leftIndex, rightIndex) => leftIndex - rightIndex);
+  return messageIndexes.length > 0 ? messageIndexes.join("-") : getNowIso(now);
+}
+function createFailedReplayQueueEntry(payload, now) {
+  const entry = createQueueEntry(payload, now);
+  const replayKey = `${entry.dedupeKey}:failed-replay:${getReplayKeySuffix(payload, now)}`;
+  return {
+    ...entry,
+    id: replayKey,
+    dedupeKey: replayKey
+  };
+}
+function createQueueEntry(payload, now = new Date) {
+  const timestamp = getNowIso(now);
+  const id = payload.payload.session.id;
+  if (!id) {
+    throw new Error("Queue entries require a session id");
+  }
+  return {
+    id,
+    dedupeKey: id,
+    status: "pending",
+    attemptCount: 0,
+    lastAttemptAt: null,
+    lastFailureAt: null,
+    lastError: null,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    payload
+  };
+}
+function buildQueueEntriesFromResults(results, existingEntries = [], now = new Date) {
+  const nextEntries = [...existingEntries];
+  for (const payload of dedupeDroppedPayloads(results)) {
+    const entry = createQueueEntry(payload, now);
+    const existingEntryIndex = nextEntries.findIndex((existingEntry) => existingEntry.dedupeKey === entry.dedupeKey);
+    if (existingEntryIndex !== -1) {
+      const existingEntry = nextEntries[existingEntryIndex];
+      if (existingEntry?.status === "pending" || existingEntry?.status === "retrying") {
+        nextEntries[existingEntryIndex] = mergeQueueEntry(existingEntry, payload, now);
+        continue;
+      }
+      if (existingEntry?.status === "failed") {
+        const replayEntry = createFailedReplayQueueEntry(payload, now);
+        const replayEntryIndex = nextEntries.findIndex((existingReplayEntry2) => existingReplayEntry2.dedupeKey === replayEntry.dedupeKey);
+        if (replayEntryIndex === -1) {
+          nextEntries.push(replayEntry);
+          continue;
+        }
+        const existingReplayEntry = nextEntries[replayEntryIndex];
+        if (existingReplayEntry?.status === "pending" || existingReplayEntry?.status === "retrying") {
+          nextEntries[replayEntryIndex] = mergeQueueEntry(existingReplayEntry, payload, now);
+          continue;
+        }
+      }
+      continue;
+    }
+    nextEntries.push(entry);
+  }
+  return sortQueueEntries(nextEntries);
+}
+async function loadQueueEntries() {
+  const entries = await readJsonFile(resolveQueueFilePath());
+  return sortQueueEntries(entries ?? []);
+}
+async function saveQueueEntries(entries) {
+  await writeJsonFileAtomic(resolveQueueFilePath(), sortQueueEntries(entries));
+}
+async function enqueueSanitizedPayloads(results, now = new Date) {
+  const existingEntries = await loadQueueEntries();
+  const nextEntries = buildQueueEntriesFromResults(results, existingEntries, now);
+  await saveQueueEntries(nextEntries);
+  await logger.info("queue", "enqueue_completed", {
+    details: {
+      incomingResults: results.length,
+      totalEntries: nextEntries.length,
+      pending: nextEntries.filter((entry) => entry.status === "pending").length,
+      retrying: nextEntries.filter((entry) => entry.status === "retrying").length,
+      failed: nextEntries.filter((entry) => entry.status === "failed").length
+    }
+  });
+  return nextEntries;
+}
+async function getReplayableQueueEntries() {
+  const entries = await loadQueueEntries();
+  return entries.filter((entry) => {
+    if (entry.status === "synced" || entry.status === "failed") {
+      return false;
+    }
+    if (entry.status === "retrying") {
+      return entry.attemptCount < MAX_RETRY_ATTEMPTS;
+    }
+    return true;
+  });
+}
+async function markQueueEntriesSynced(ids) {
+  const idSet = new Set(ids);
+  const nextEntries = (await loadQueueEntries()).filter((entry) => !idSet.has(entry.id));
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
+async function recordQueueFailure(ids, error51, now = new Date) {
+  const idSet = new Set(ids);
+  const timestamp = getNowIso(now);
+  const entries = await loadQueueEntries();
+  const nextEntries = entries.map((entry) => {
+    if (!idSet.has(entry.id)) {
+      return entry;
+    }
+    const nextAttemptCount = entry.attemptCount + 1;
+    return {
+      ...entry,
+      status: nextAttemptCount >= MAX_RETRY_ATTEMPTS ? "failed" : "retrying",
+      attemptCount: nextAttemptCount,
+      lastAttemptAt: timestamp,
+      lastFailureAt: timestamp,
+      lastError: error51,
+      updatedAt: timestamp
+    };
+  });
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
+// ../../packages/types/data-controls.ts
+var RETENTION_PERIODS = ["12h", "1d", "7d", "30d", "90d", "1y", "forever"];
+var RETENTION_PERIOD_ORDER = {
+  "12h": 0,
+  "1d": 1,
+  "7d": 2,
+  "30d": 3,
+  "90d": 4,
+  "1y": 5,
+  forever: 6
+};
+var WORKSPACE_COLLECTION_DEFAULTS = {
+  user_messages: true,
+  assistant_messages: true,
+  code_diffs: true,
+  github_events: true
+};
+var WORKSPACE_RETENTION_DEFAULTS = {
+  user_messages: "90d",
+  assistant_messages: "90d",
+  code_diffs: "7d",
+  github_events: "90d"
+};
+function shorterRetentionPeriod(a, b) {
+  return RETENTION_PERIOD_ORDER[a] <= RETENTION_PERIOD_ORDER[b] ? a : b;
+}
+function getEffectiveCollection(workspace, user) {
+  if (!user)
+    return workspace;
+  return {
+    user_messages: workspace.user_messages && user.user_messages,
+    assistant_messages: workspace.assistant_messages && user.assistant_messages,
+    code_diffs: workspace.code_diffs && user.code_diffs,
+    github_events: workspace.github_events
+  };
+}
+function getEffectiveRetention(workspace, user) {
+  if (!user)
+    return workspace;
+  return {
+    user_messages: shorterRetentionPeriod(workspace.user_messages, user.user_messages),
+    assistant_messages: shorterRetentionPeriod(workspace.assistant_messages, user.assistant_messages),
+    code_diffs: shorterRetentionPeriod(workspace.code_diffs, user.code_diffs),
+    github_events: workspace.github_events
+  };
+}
+// ../../packages/types/github-metrics-schemas.ts
+var metricChangeSchema = exports_external.object({
+  percentage: exports_external.number(),
+  label: exports_external.string()
+});
+var metricSubMetricSchema = exports_external.object({
+  name: exports_external.string(),
+  value: exports_external.number(),
+  unit: exports_external.string(),
+  change: metricChangeSchema.optional()
+});
+var metricDrilldownSchema = exports_external.discriminatedUnion("type", [
+  exports_external.object({
+    type: exports_external.literal("gh_pull_requests"),
+    filters: exports_external.object({ state: exports_external.enum(["merged", "closed", "open"]) }).optional()
+  }),
+  exports_external.object({
+    type: exports_external.literal("gh_issues"),
+    filters: exports_external.object({ state: exports_external.enum(["closed", "open"]) }).optional()
+  })
+]);
+var metricItemSchema = exports_external.object({
+  name: exports_external.string(),
+  description: exports_external.string().optional(),
+  value: exports_external.number(),
+  unit: exports_external.string(),
+  trend_points: exports_external.array(exports_external.number().nullable()),
+  ai_trend_points: exports_external.array(exports_external.number().nullable()).optional(),
+  change: metricChangeSchema.optional(),
+  sub_metrics: exports_external.array(metricSubMetricSchema).optional(),
+  drilldown: metricDrilldownSchema.optional()
+});
+var gitHubMetricsEntryDataSchema = exports_external.object({
+  metrics: exports_external.array(metricItemSchema).min(1)
+});
+// ../../packages/types/prompt-tags.ts
+var PROMPT_TAGS = {
+  TOP_5: {
+    id: "top-5",
+    displayName: "\uD83D\uDD79️ Top 5",
+    description: "Essential practices for maximum productivity",
+    category: "practices"
+  },
+  ANALYZE_PROMPTS: {
+    id: "analyze-prompts",
+    displayName: "\uD83D\uDCC8 Analyze my prompts",
+    description: "Analyze your AI usage patterns and prompt effectiveness",
+    category: "practices"
+  },
+  CHECKLISTS: {
+    id: "checklists",
+    displayName: "✅ Checklists",
+    description: "Comprehensive checklists for common development tasks",
+    category: "practices"
+  },
+  PROMPT_HACKS: {
+    id: "prompt-hacks",
+    displayName: "\uD83D\uDCAC Prompt Hacks",
+    description: "Advanced techniques for better AI interactions",
+    category: "practices"
+  },
+  AI_CODING_STACK: {
+    id: "ai-coding-stack",
+    displayName: "\uD83E\uDD16 AI Coding Stack",
+    description: "Tools and configurations for AI-assisted development",
+    category: "practices"
+  }
+};
+var AVAILABLE_PROMPT_TAGS = Object.values(PROMPT_TAGS);
+var tagIds = AVAILABLE_PROMPT_TAGS.map((tag) => tag.id);
+// ../../packages/types/schemas.ts
+var CustomPromptMetadataSchema = exports_external.object({
+  tags: exports_external.array(exports_external.string()).optional(),
+  cascade_category: exports_external.string().optional(),
+  description: exports_external.string().optional()
+});
+// ../../packages/types/token-usage.ts
+var TOKEN_SOURCES = ["provider_reported", "estimated_heuristic", "mixed"];
+var SessionTokenUsageSchema = exports_external.object({
+  input_tokens: exports_external.number().int().nonnegative(),
+  output_tokens: exports_external.number().int().nonnegative(),
+  total_tokens: exports_external.number().int().nonnegative(),
+  token_source: exports_external.enum(TOKEN_SOURCES),
+  cost_usd: exports_external.number().nonnegative().nullable().optional(),
+  cost_source: exports_external.enum(["provider_reported", "derived_openrouter", "cursor_reported"]).nullable().optional(),
+  cache_read_tokens: exports_external.number().int().nonnegative().optional(),
+  cache_creation_tokens: exports_external.number().int().nonnegative().optional(),
+  cache_creation_5m_tokens: exports_external.number().int().nonnegative().optional(),
+  cache_creation_1h_tokens: exports_external.number().int().nonnegative().optional(),
+  reasoning_tokens: exports_external.number().int().nonnegative().optional(),
+  message_count_with_tokens: exports_external.number().int().nonnegative().optional()
+});
+// ../../packages/types/data-controls-schemas.ts
+var collectionSettingsSchema = exports_external.object({
+  user_messages: exports_external.boolean(),
+  assistant_messages: exports_external.boolean(),
+  code_diffs: exports_external.boolean(),
+  github_events: exports_external.boolean().default(true)
+});
+var retentionSettingsSchema = exports_external.object({
+  user_messages: exports_external.enum(RETENTION_PERIODS),
+  assistant_messages: exports_external.enum(RETENTION_PERIODS),
+  code_diffs: exports_external.enum(RETENTION_PERIODS),
+  github_events: exports_external.enum(RETENTION_PERIODS).default("90d")
+});
+
+// src/supabase/data-controls-provider.ts
+var DATA_CONTROLS_CACHE_TTL_MS = 5 * 60 * 1000;
+
+class DataControlsProvider {
+  effectiveCollection = null;
+  effectiveRetention = null;
+  lastFetchedAt = null;
+  ready = false;
+  async refresh(client, workspaceId, userId, fetchedAt = Date.now()) {
+    try {
+      const [workspaceResult, userResult] = await Promise.all([
+        client.from("workspace_data_controls").select("collection, retention").eq("workspace_id", workspaceId).maybeSingle(),
+        client.from("user_data_controls").select("collection, retention").eq("user_id", userId).maybeSingle()
+      ]);
+      if (workspaceResult.error || userResult.error) {
+        return false;
+      }
+      const workspaceCollection = collectionSettingsSchema.safeParse(workspaceResult.data?.collection);
+      const workspaceRetention = retentionSettingsSchema.safeParse(workspaceResult.data?.retention);
+      const userCollection = collectionSettingsSchema.safeParse(userResult.data?.collection);
+      const userRetention = retentionSettingsSchema.safeParse(userResult.data?.retention);
+      this.effectiveCollection = getEffectiveCollection(workspaceCollection.success ? workspaceCollection.data : WORKSPACE_COLLECTION_DEFAULTS, userCollection.success ? userCollection.data : null);
+      this.effectiveRetention = getEffectiveRetention(workspaceRetention.success ? workspaceRetention.data : WORKSPACE_RETENTION_DEFAULTS, userRetention.success ? userRetention.data : null);
+      this.lastFetchedAt = fetchedAt;
+      this.ready = true;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  isReady() {
+    return this.ready;
+  }
+  isStale(now = Date.now()) {
+    if (this.lastFetchedAt === null) {
+      return true;
+    }
+    return now - this.lastFetchedAt > DATA_CONTROLS_CACHE_TTL_MS;
+  }
+  invalidate() {
+    this.effectiveCollection = null;
+    this.effectiveRetention = null;
+    this.lastFetchedAt = null;
+    this.ready = false;
+  }
+  shouldUploadUserMessages() {
+    return this.effectiveCollection?.user_messages ?? false;
+  }
+  shouldUploadAssistantMessages() {
+    return this.effectiveCollection?.assistant_messages ?? false;
+  }
+  shouldUploadCodeDiffs() {
+    return this.effectiveCollection?.code_diffs ?? false;
+  }
+  getCollection() {
+    return this.effectiveCollection;
+  }
+  getRetention() {
+    return this.effectiveRetention;
+  }
+}
+
+// src/sync/upload.ts
+var defaultDataControls = new DataControlsProvider;
+function isNetworkError(error51) {
+  if (!(error51 instanceof Error)) {
+    return false;
+  }
+  const message = error51.message.toLowerCase();
+  const code = error51.code;
+  return message.includes("network") || message.includes("timeout") || message.includes("fetch") || ["ENOTFOUND", "ECONNREFUSED", "ECONNRESET", "ETIMEDOUT", "ENETUNREACH"].includes(code ?? "");
+}
+function deduplicateSessions(entries, workspaceId, allowedSessionIds) {
+  const sessionsById = new Map;
+  for (const entry of entries) {
+    const session = entry.payload.payload.session;
+    if (!session.id) {
+      continue;
+    }
+    if (allowedSessionIds && !allowedSessionIds.has(session.id)) {
+      continue;
+    }
+    sessionsById.set(session.id, {
+      ...session,
+      workspace_id: workspaceId
+    });
+  }
+  return Array.from(sessionsById.values());
+}
+function deduplicateMessages(entries) {
+  const messagesByKey = new Map;
+  for (const entry of entries) {
+    for (const message of entry.payload.payload.messages) {
+      const { id: _id, ...messageWithoutId } = message;
+      const key = `${messageWithoutId.session_id}:${messageWithoutId.message_index}`;
+      messagesByKey.set(key, messageWithoutId);
+    }
+  }
+  return Array.from(messagesByKey.values());
+}
+function filterMessagesForUpload(messages, dataControls) {
+  const shouldUploadUserMessages = dataControls.shouldUploadUserMessages();
+  const shouldUploadAssistantMessages = dataControls.shouldUploadAssistantMessages();
+  const shouldUploadCodeDiffs = dataControls.shouldUploadCodeDiffs();
+  return messages.filter((message) => {
+    if (message.role === "user") {
+      return shouldUploadUserMessages;
+    }
+    if (message.role === "assistant") {
+      return shouldUploadAssistantMessages;
+    }
+    return true;
+  }).map((message) => shouldUploadCodeDiffs ? message : { ...message, code_diffs: null });
+}
+async function upsertSessions(client, sessions) {
+  if (sessions.length === 0) {
+    return;
+  }
+  const { error: error51 } = await client.from("chat_sessions").upsert(sessions, { onConflict: "id", defaultToNull: false });
+  if (error51) {
+    throw error51;
+  }
+}
+async function upsertMessages(client, messages) {
+  if (messages.length === 0) {
+    return;
+  }
+  const { error: error51 } = await client.from("chat_messages").upsert(messages, { onConflict: "session_id,message_index", defaultToNull: false });
+  if (error51) {
+    throw error51;
+  }
+}
+async function uploadQueuedTranscripts(dependencies = {}) {
+  const loadSession = dependencies.loadSession ?? loadAuthSession;
+  const loadWorkspace = dependencies.loadWorkspace ?? loadWorkspaceBinding;
+  const getQueueEntries = dependencies.getQueueEntries ?? getReplayableQueueEntries;
+  const createClient2 = dependencies.createClient ?? (() => createOnDemandClient());
+  const dataControls = dependencies.dataControls ?? defaultDataControls;
+  const recordFailure = dependencies.recordFailure ?? recordQueueFailure;
+  const markSynced = dependencies.markSynced ?? markQueueEntriesSynced;
+  const now = dependencies.now ?? (() => new Date);
+  const session = await loadSession();
+  if (!session) {
+    return {
+      success: false,
+      uploaded: { messages: 0, sessions: 0 },
+      error: "Sync failed: not authenticated",
+      errorType: "not_authenticated"
+    };
+  }
+  const workspace = await loadWorkspace();
+  if (!workspace) {
+    await logger.warn("upload", "workspace_binding_missing");
+    return {
+      success: false,
+      uploaded: { messages: 0, sessions: 0 },
+      error: "Sync failed: workspace unbound",
+      errorType: "workspace_unbound"
+    };
+  }
+  if (!workspace.active?.id) {
+    await logger.warn("upload", "workspace_binding_missing");
+    return {
+      success: false,
+      uploaded: { messages: 0, sessions: 0 },
+      error: "Sync failed: no active workspace ID",
+      errorType: "workspace_unbound"
+    };
+  }
+  const queuedEntries = await getQueueEntries();
+  if (queuedEntries.length === 0) {
+    return {
+      success: true,
+      uploaded: { messages: 0, sessions: 0 }
+    };
+  }
+  const onDemand = await createClient2();
+  if (!onDemand) {
+    return {
+      success: false,
+      uploaded: { messages: 0, sessions: 0 },
+      error: "Sync failed: not authenticated",
+      errorType: "not_authenticated"
+    };
+  }
+  const ids = queuedEntries.map((entry) => entry.id);
+  try {
+    if (!dataControls.isReady() || dataControls.isStale(now().getTime())) {
+      await logger.info("upload", "data_controls_refreshing", {
+        details: {
+          hasCachedControls: dataControls.isReady(),
+          isStale: dataControls.isStale(now().getTime()),
+          queuedEntries: queuedEntries.length,
+          workspaceId: workspace.active.id
+        }
+      });
+      const refreshed = await dataControls.refresh(onDemand.client, workspace.active.id, session.userId, now().getTime());
+      if (!refreshed || !dataControls.isReady()) {
+        await logger.warn("upload", "data_controls_unavailable", {
+          details: {
+            queuedEntries: queuedEntries.length,
+            workspaceId: workspace.active.id
+          }
+        });
+        return {
+          success: false,
+          uploaded: { messages: 0, sessions: 0 },
+          error: "Sync failed: data controls unavailable",
+          errorType: "data_controls_unavailable"
+        };
+      }
+    } else {
+      await logger.debug("upload", "data_controls_cached", {
+        details: {
+          queuedEntries: queuedEntries.length,
+          workspaceId: workspace.active.id
+        }
+      });
+    }
+    const candidateMessages = deduplicateMessages(queuedEntries);
+    const filteredMessages = filterMessagesForUpload(candidateMessages, dataControls);
+    await logger.info("upload", "payloads_filtered", {
+      details: {
+        candidateMessages: candidateMessages.length,
+        filteredMessages: filteredMessages.length,
+        queuedEntries: queuedEntries.length,
+        uploadAssistantMessages: dataControls.shouldUploadAssistantMessages(),
+        uploadCodeDiffs: dataControls.shouldUploadCodeDiffs(),
+        uploadUserMessages: dataControls.shouldUploadUserMessages()
+      }
+    });
+    if (filteredMessages.length === 0) {
+      await logger.info("upload", "no_messages_allowed", {
+        details: {
+          queuedEntries: queuedEntries.length,
+          workspaceId: workspace.active.id
+        }
+      });
+      return {
+        success: true,
+        uploaded: {
+          messages: 0,
+          sessions: 0
+        }
+      };
+    }
+    const allowedSessionIds = new Set(queuedEntries.filter((entry) => entry.payload.payload.messages.length === 0).map((entry) => entry.payload.payload.session.id).filter((sessionId) => Boolean(sessionId)));
+    for (const message of filteredMessages) {
+      allowedSessionIds.add(message.session_id);
+    }
+    const sessions = deduplicateSessions(queuedEntries, workspace.active.id, allowedSessionIds);
+    await logger.info("upload", "upload_started", {
+      details: {
+        messages: filteredMessages.length,
+        queuedEntries: queuedEntries.length,
+        sessions: sessions.length,
+        workspaceId: workspace.active.id
+      }
+    });
+    await upsertSessions(onDemand.client, sessions);
+    await upsertMessages(onDemand.client, filteredMessages);
+    await recordUploadedMessageCheckpoints(filteredMessages, now(), candidateMessages);
+    await markSynced(ids);
+    await logger.info("upload", "upload_completed", {
+      details: {
+        messages: filteredMessages.length,
+        sessions: sessions.length,
+        workspaceId: workspace.active.id
+      }
+    });
+    return {
+      success: true,
+      uploaded: {
+        messages: filteredMessages.length,
+        sessions: sessions.length
+      }
+    };
+  } catch (error51) {
+    const errorType = isNetworkError(error51) ? "network_error" : "upload_failed";
+    const message = error51 instanceof Error ? error51.message : "Upload failed";
+    await logger.error("upload", "upload_failed", {
+      details: {
+        errorType,
+        queuedEntries: queuedEntries.length
+      },
+      error: error51
+    });
+    await recordFailure(ids, message, now());
+    return {
+      success: false,
+      uploaded: { messages: 0, sessions: 0 },
+      error: message,
+      errorType
+    };
+  } finally {
+    await onDemand.dispose();
+  }
+}
+
+// src/sync/sync.ts
+function createCollectionSummary(overrides = {}) {
+  return {
+    discoveredTranscripts: 0,
+    dropped: 0,
+    ignored: 0,
+    parsedTranscripts: 0,
+    queued: 0,
+    ...overrides
+  };
+}
+function formatSyncMessage(result) {
+  const base = `Discovered ${result.collection.discoveredTranscripts} transcript(s), parsed ${result.collection.parsedTranscripts}, queued ${result.collection.queued}, dropped ${result.collection.dropped}.`;
+  if (result.phase === "completed") {
+    return `${base} Uploaded ${result.uploaded.sessions} session(s) and ${result.uploaded.messages} message(s).`;
+  }
+  if (result.phase === "queued_only" && result.errorType) {
+    return `${base} Upload deferred: ${result.errorType}.`;
+  }
+  if (result.phase === "queued_only" && result.deferredReason) {
+    return `${base} Upload deferred: ${result.deferredReason}.`;
+  }
+  return base;
+}
+function resolveSyncPhase(uploadResult, collection) {
+  if (uploadResult.success) {
+    return "completed";
+  }
+  if (collection.queued > 0) {
+    return "queued_only";
+  }
+  return;
+}
+function resolveSyncMessage(input) {
+  const { collection, phase, uploadResult } = input;
+  if (uploadResult.success) {
+    return formatSyncMessage({
+      collection,
+      phase: "completed",
+      uploaded: uploadResult.uploaded
+    });
+  }
+  if (phase === "queued_only") {
+    return formatSyncMessage({
+      collection,
+      errorType: uploadResult.errorType,
+      phase,
+      uploaded: uploadResult.uploaded
+    });
+  }
+  return uploadResult.error ?? "Sync failed.";
+}
+function resolveTranscriptCwd(transcript) {
+  const turnContext = [...transcript.records].reverse().find((record2) => record2.recordType === "turn_context");
+  return transcript.sessionMeta?.cwd ?? (turnContext?.recordType === "turn_context" ? turnContext.cwd : undefined);
+}
+var CONVERSATIONAL_ROLES2 = new Set(["user", "assistant"]);
+function isActiveTranscriptForLocalDay(transcript, window2) {
+  return transcript.messages.some((message) => CONVERSATIONAL_ROLES2.has(message.role) && isInsideWindow(message.timestamp, window2));
+}
+async function filterPreparedPayloadToUnsyncedMessages(prepared) {
+  const filtered = await filterPayloadToUnsyncedMessages(prepared);
+  if (!filtered) {
+    return null;
+  }
+  return {
+    payload: filtered.payload,
+    privacy: filtered.privacy
+  };
+}
+async function runSync(dependencies = {}) {
+  const runId = `sync_${Date.now()}`;
+  const discover = dependencies.discover ?? discoverCodexRuntimeFiles;
+  const loadPluginSettings = dependencies.loadSettings ?? loadSettings;
+  const loadSession = dependencies.loadSession ?? loadAuthSession;
+  const loadWorkspace = dependencies.loadWorkspace ?? loadWorkspaceBinding;
+  const readSessionReferences = dependencies.readSessionReferences ?? buildSessionReferences;
+  const readAllTranscripts = dependencies.readTranscripts ?? readTranscripts;
+  const sanitize = dependencies.sanitize ?? sanitizeNormalizedPayloads;
+  const enqueue = dependencies.enqueue ?? enqueueSanitizedPayloads;
+  const upload = dependencies.upload ?? (() => uploadQueuedTranscripts());
+  await logger.info("sync", "sync_started", { runId });
+  const settings = await loadPluginSettings();
+  const runtime = await discover();
+  const collection = createCollectionSummary({
+    discoveredTranscripts: runtime.transcriptPaths.length
+  });
+  if (runtime.transcriptPaths.length === 0) {
+    const response2 = {
+      success: true,
+      phase: "completed",
+      collection,
+      uploaded: {
+        messages: 0,
+        sessions: 0
+      },
+      message: "Sync completed: no transcripts found."
+    };
+    await logger.info("sync", "collection_completed", { runId, details: collection });
+    await logger.info("sync", "sync_completed", {
+      runId,
+      details: { phase: response2.phase, uploaded: response2.uploaded, success: response2.success }
+    });
+    return response2;
+  }
+  const session = await loadSession();
+  if (!session) {
+    const response2 = {
+      success: false,
+      collection,
+      uploaded: {
+        messages: 0,
+        sessions: 0
+      },
+      errorType: "not_authenticated",
+      message: "Sync failed before collection: not authenticated."
+    };
+    await logger.info("sync", "collection_completed", { runId, details: collection });
+    await logger.info("sync", "sync_completed", {
+      runId,
+      details: { phase: response2.phase, uploaded: response2.uploaded, success: response2.success }
+    });
+    return response2;
+  }
+  const workspace = await loadWorkspace();
+  const sessionRefs = runtime.sessionIndexPath && runtime.historyPath ? await readSessionReferences({
+    historyPath: runtime.historyPath,
+    sessionIndexPath: runtime.sessionIndexPath
+  }) : [];
+  const transcripts = await readAllTranscripts(runtime.transcriptPaths);
+  const transcriptsForSync = transcripts.filter((transcript) => {
+    const cwd = resolveTranscriptCwd(transcript);
+    if (!cwd) {
+      return true;
+    }
+    return !isPathIgnored(cwd, settings.ignoredFolders);
+  });
+  collection.ignored = transcripts.length - transcriptsForSync.length;
+  const localDayWindow = createLocalDayWindow();
+  const activeTranscripts = transcriptsForSync.filter((transcript) => isActiveTranscriptForLocalDay(transcript, localDayWindow));
+  collection.parsedTranscripts = activeTranscripts.length;
+  const prepared = normalizeTranscriptsToPreparedPayloads({
+    transcripts: activeTranscripts,
+    sessionRefsById: buildSessionReferenceMap(sessionRefs),
+    userId: session.userId,
+    workspaceId: workspace?.active.id ?? null
+  });
+  const unsyncedPrepared = (await Promise.all(prepared.map((payload) => filterPreparedPayloadToUnsyncedMessages(payload)))).filter((payload) => payload !== null);
+  const sanitized = await sanitize(unsyncedPrepared, settings.privacy);
+  collection.dropped = sanitized.filter((result) => result.status === "dropped").length;
+  collection.queued = sanitized.filter((result) => result.status === "sanitized").length;
+  await enqueue(sanitized);
+  await logger.info("sync", "collection_completed", { runId, details: collection });
+  if (!settings.remoteSync.enabled) {
+    const response2 = {
+      success: true,
+      phase: "queued_only",
+      collection,
+      deferredReason: "remote_sync_disabled",
+      uploaded: {
+        messages: 0,
+        sessions: 0
+      },
+      message: formatSyncMessage({
+        collection,
+        deferredReason: "remote_sync_disabled",
+        phase: "queued_only",
+        uploaded: {
+          messages: 0,
+          sessions: 0
+        }
+      })
+    };
+    await logger.info("sync", "sync_completed", {
+      runId,
+      details: { phase: response2.phase, uploaded: response2.uploaded, success: response2.success }
+    });
+    return response2;
+  }
+  const uploadResult = await upload();
+  const phase = resolveSyncPhase(uploadResult, collection);
+  const response = {
+    success: uploadResult.success,
+    ...phase ? { phase } : {},
+    collection,
+    uploaded: uploadResult.uploaded,
+    ...uploadResult.errorType ? { errorType: uploadResult.errorType } : {},
+    message: resolveSyncMessage({
+      collection,
+      phase,
+      uploadResult
+    })
+  };
+  if (uploadResult.success && dependencies.getStandupReadiness) {
+    const readiness = await dependencies.getStandupReadiness();
+    if (readiness) {
+      response.standupReadiness = readiness;
+    }
+  }
+  await logger.info("sync", "sync_completed", {
+    runId,
+    details: { phase: response.phase, uploaded: response.uploaded, success: response.success }
+  });
+  return response;
+}
+
+// src/daemon/daemon.ts
+var DEFAULT_DAEMON_INTERVAL_MS = 60000;
+var DEFAULT_DAEMON_IDLE_MS = 10 * 60000;
+var DEFAULT_DAEMON_MAX_RSS_BYTES = 512 * 1024 * 1024;
+function shouldExitForMemory(memory, maxRssBytes) {
+  return memory.rss > maxRssBytes;
+}
+function shouldRunDaemonEntrypoint(argv = process.argv) {
+  const entrypoint = argv[1] ? import_node_path12.basename(argv[1]) : "";
+  return entrypoint === "daemon.js" || entrypoint === "daemon.ts";
+}
+function createDefaultRunDaemonCycleDependencies(overrides = {}) {
+  const refreshAuth = overrides.ensureAuthSessionFresh ?? ensureAuthSessionFresh;
+  const sync = overrides.runSync ?? runSync;
+  const lockSync = overrides.withSyncLock ?? withSyncLock;
+  return {
+    ensureAuthFresh: () => refreshAuth({ trigger: "daemon_cycle" }),
+    runSyncOnce: () => lockSync(() => sync())
+  };
+}
+async function runDaemonCycle(dependencies = {}) {
+  const defaultDependencies = createDefaultRunDaemonCycleDependencies();
+  const now = dependencies.now ?? (() => new Date);
+  const getMemoryUsage = dependencies.getMemoryUsage ?? (() => process.memoryUsage());
+  const maxRssBytes = dependencies.maxRssBytes ?? DEFAULT_DAEMON_MAX_RSS_BYTES;
+  const ensureAuthFresh = dependencies.ensureAuthFresh ?? defaultDependencies.ensureAuthFresh;
+  const runSyncOnce = dependencies.runSyncOnce ?? defaultDependencies.runSyncOnce;
+  const writeStatus = dependencies.writeStatus ?? writeDaemonStatus;
+  const cycleStartedAt = now().toISOString();
+  const runId = `daemon_${Date.now()}`;
+  await logger.info("daemon", "cycle_started", {
+    runId,
+    details: { pid: process.pid }
+  });
+  try {
+    await ensureAuthFresh();
+    const result = await runSyncOnce();
+    const memory = getMemoryUsage();
+    const exitForMemory = shouldExitForMemory(memory, maxRssBytes);
+    const finishedAt = now().toISOString();
+    await writeStatus({
+      version: 1,
+      pid: process.pid,
+      running: !exitForMemory,
+      lastCycleStartedAt: cycleStartedAt,
+      lastCycleFinishedAt: finishedAt,
+      lastHeartbeatAt: finishedAt,
+      ...result.success ? { lastSuccessAt: finishedAt } : { lastErrorAt: finishedAt },
+      ...result.errorType ? { lastErrorType: result.errorType } : {},
+      ...exitForMemory ? { lastExitReason: "memory_limit_exceeded" } : {},
+      memory: {
+        rssBytes: memory.rss,
+        heapUsedBytes: memory.heapUsed
+      },
+      lastResult: {
+        phase: result.phase,
+        queued: result.collection.queued,
+        uploadedMessages: result.uploaded.messages,
+        uploadedSessions: result.uploaded.sessions
+      }
+    });
+    await logger.info("daemon", "cycle_finished", {
+      runId,
+      details: {
+        heapUsedBytes: memory.heapUsed,
+        rssBytes: memory.rss,
+        shouldExit: exitForMemory
+      }
+    });
+    return { shouldExit: exitForMemory };
+  } catch (error51) {
+    const finishedAt = now().toISOString();
+    const memory = getMemoryUsage();
+    const exitForMemory = shouldExitForMemory(memory, maxRssBytes);
+    await writeStatus({
+      version: 1,
+      pid: process.pid,
+      running: !exitForMemory,
+      lastCycleStartedAt: cycleStartedAt,
+      lastCycleFinishedAt: finishedAt,
+      lastHeartbeatAt: finishedAt,
+      lastErrorAt: finishedAt,
+      lastErrorType: "daemon_cycle_failed",
+      lastErrorMessage: error51 instanceof Error ? error51.message : "Daemon cycle failed",
+      ...exitForMemory ? { lastExitReason: "memory_limit_exceeded" } : {},
+      memory: {
+        rssBytes: memory.rss,
+        heapUsedBytes: memory.heapUsed
+      }
+    }).catch(() => {
+      return;
+    });
+    await logger.error("daemon", "cycle_failed", { runId, error: error51 });
+    return { shouldExit: exitForMemory };
+  }
+}
+async function sleep4(ms, waitUntilShutdown) {
+  let timeout;
+  try {
+    await Promise.race([
+      new Promise((resolve3) => {
+        timeout = setTimeout(resolve3, ms);
+      }),
+      waitUntilShutdown
+    ]);
+  } finally {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  }
+}
+function isDaemonActivityState(value) {
+  if (!value || typeof value !== "object")
+    return false;
+  const candidate = value;
+  return candidate.version === 1 && typeof candidate.lastActivityAt === "string" && typeof candidate.lastTrigger === "string";
+}
+async function loadDaemonActivity() {
+  const activity = await readJsonFile(getDaemonActivityFilePath()).catch(() => null);
+  return isDaemonActivityState(activity) ? activity : null;
+}
+function isIdle(activity, now, idleMs) {
+  if (!activity) {
+    return false;
+  }
+  const lastActivityMs = Date.parse(activity.lastActivityAt);
+  return Number.isFinite(lastActivityMs) && now.getTime() - lastActivityMs > idleMs;
+}
+async function runDaemon(dependencies = {}) {
+  const idleMs = dependencies.idleMs ?? DEFAULT_DAEMON_IDLE_MS;
+  const intervalMs = dependencies.intervalMs ?? DEFAULT_DAEMON_INTERVAL_MS;
+  const loadActivity = dependencies.loadActivity ?? loadDaemonActivity;
+  const loadPluginSettings = dependencies.loadPluginSettings ?? loadSettings;
+  const now = dependencies.now ?? (() => new Date);
+  const runCycle = dependencies.runCycle ?? runDaemonCycle;
+  const sleepBetweenCycles = dependencies.sleep ?? sleep4;
+  const writeStatus = dependencies.writeStatus ?? writeDaemonStatus;
+  const processPid = dependencies.processPid ?? process.pid;
+  const onSignal = dependencies.onSignal ?? ((signal, handler) => process.once(signal, handler));
+  const writeIdleStatus = () => writeStatus({
+    version: 1,
+    pid: processPid,
+    running: false,
+    lastExitReason: "idle"
+  }).catch(() => {
+    return;
+  });
+  const writeDisabledStatus = () => writeStatus({
+    version: 1,
+    pid: processPid,
+    running: false,
+    lastExitReason: "background_sync_disabled"
+  }).catch(() => {
+    return;
+  });
+  const isBackgroundSyncEnabled = async () => {
+    const settings = await loadPluginSettings();
+    return settings.backgroundSync.enabled;
+  };
+  let shuttingDown = false;
+  let resolveShutdown;
+  const waitUntilShutdown = new Promise((resolve3) => {
+    resolveShutdown = resolve3;
+  });
+  onSignal("SIGTERM", () => {
+    shuttingDown = true;
+    resolveShutdown?.();
+  });
+  while (!shuttingDown) {
+    if (!await isBackgroundSyncEnabled()) {
+      await writeDisabledStatus();
+      return;
+    }
+    const result = await runCycle();
+    if (result.shouldExit) {
+      return;
+    }
+    if (!await isBackgroundSyncEnabled()) {
+      await writeDisabledStatus();
+      return;
+    }
+    if (isIdle(await loadActivity(), now(), idleMs)) {
+      await writeIdleStatus();
+      return;
+    }
+    if (!shuttingDown) {
+      await sleepBetweenCycles(intervalMs, waitUntilShutdown);
+    }
+  }
+  await writeIdleStatus();
+}
+if (shouldRunDaemonEntrypoint()) {
+  runDaemon();
+}
+
+//# debugId=628AD17B7D94F43464756E2164756E21

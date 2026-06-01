@@ -61,7 +61,7 @@ var __export = (target, all) => {
     });
 };
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/codegen/code.js
+// ../../node_modules/ajv/dist/compile/codegen/code.js
 var require_code = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.regexpCode = exports2.getEsmExportName = exports2.getProperty = exports2.safeStringify = exports2.stringify = exports2.strConcat = exports2.addCodeArg = exports2.str = exports2._ = exports2.nil = exports2._Code = exports2.Name = exports2.IDENTIFIER = exports2._CodeOrName = undefined;
@@ -215,7 +215,7 @@ var require_code = __commonJS((exports2) => {
   exports2.regexpCode = regexpCode;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/codegen/scope.js
+// ../../node_modules/ajv/dist/compile/codegen/scope.js
 var require_scope = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.ValueScope = exports2.ValueScopeName = exports2.Scope = exports2.varKinds = exports2.UsedValueState = undefined;
@@ -361,7 +361,7 @@ var require_scope = __commonJS((exports2) => {
   exports2.ValueScope = ValueScope;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/codegen/index.js
+// ../../node_modules/ajv/dist/compile/codegen/index.js
 var require_codegen = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.or = exports2.and = exports2.not = exports2.CodeGen = exports2.operators = exports2.varKinds = exports2.ValueScopeName = exports2.ValueScope = exports2.Scope = exports2.Name = exports2.regexpCode = exports2.stringify = exports2.getProperty = exports2.nil = exports2.strConcat = exports2.str = exports2._ = undefined;
@@ -1071,7 +1071,7 @@ var require_codegen = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/util.js
+// ../../node_modules/ajv/dist/compile/util.js
 var require_util = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.checkStrictMode = exports2.getErrorPath = exports2.Type = exports2.useFunc = exports2.setEvaluated = exports2.evaluatedPropsToName = exports2.mergeEvaluated = exports2.eachItem = exports2.unescapeJsonPointer = exports2.escapeJsonPointer = exports2.escapeFragment = exports2.unescapeFragment = exports2.schemaRefOrVal = exports2.schemaHasRulesButRef = exports2.schemaHasRules = exports2.checkUnknownRules = exports2.alwaysValidSchema = exports2.toHash = undefined;
@@ -1235,7 +1235,7 @@ var require_util = __commonJS((exports2) => {
   exports2.checkStrictMode = checkStrictMode;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/names.js
+// ../../node_modules/ajv/dist/compile/names.js
 var require_names = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -1260,7 +1260,7 @@ var require_names = __commonJS((exports2) => {
   exports2.default = names;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/errors.js
+// ../../node_modules/ajv/dist/compile/errors.js
 var require_errors = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.extendErrors = exports2.resetErrorsCount = exports2.reportExtraError = exports2.reportError = exports2.keyword$DataError = exports2.keywordError = undefined;
@@ -1378,7 +1378,7 @@ var require_errors = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/validate/boolSchema.js
+// ../../node_modules/ajv/dist/compile/validate/boolSchema.js
 var require_boolSchema = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.boolOrEmptySchema = exports2.topBoolOrEmptySchema = undefined;
@@ -1426,7 +1426,7 @@ var require_boolSchema = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/rules.js
+// ../../node_modules/ajv/dist/compile/rules.js
 var require_rules = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.getRules = exports2.isJSONType = undefined;
@@ -1454,7 +1454,7 @@ var require_rules = __commonJS((exports2) => {
   exports2.getRules = getRules;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/validate/applicability.js
+// ../../node_modules/ajv/dist/compile/validate/applicability.js
 var require_applicability = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.shouldUseRule = exports2.shouldUseGroup = exports2.schemaHasRulesForType = undefined;
@@ -1474,7 +1474,7 @@ var require_applicability = __commonJS((exports2) => {
   exports2.shouldUseRule = shouldUseRule;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/validate/dataType.js
+// ../../node_modules/ajv/dist/compile/validate/dataType.js
 var require_dataType = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.reportTypeError = exports2.checkDataTypes = exports2.checkDataType = exports2.coerceAndCheckDataType = exports2.getJSONTypes = exports2.getSchemaTypes = exports2.DataType = undefined;
@@ -1655,7 +1655,7 @@ var require_dataType = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/validate/defaults.js
+// ../../node_modules/ajv/dist/compile/validate/defaults.js
 var require_defaults = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.assignDefaults = undefined;
@@ -1689,7 +1689,7 @@ var require_defaults = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/code.js
+// ../../node_modules/ajv/dist/vocabularies/code.js
 var require_code2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.validateUnion = exports2.validateArray = exports2.usePattern = exports2.callValidateCode = exports2.schemaProperties = exports2.allSchemaProperties = exports2.noPropertyInData = exports2.propertyInData = exports2.isOwnProperty = exports2.hasPropFunc = exports2.reportMissingProp = exports2.checkMissingProp = exports2.checkReportMissingProp = undefined;
@@ -1818,7 +1818,7 @@ var require_code2 = __commonJS((exports2) => {
   exports2.validateUnion = validateUnion;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/validate/keyword.js
+// ../../node_modules/ajv/dist/compile/validate/keyword.js
 var require_keyword = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.validateKeywordUsage = exports2.validSchemaType = exports2.funcKeywordCode = exports2.macroKeywordCode = undefined;
@@ -1933,7 +1933,7 @@ var require_keyword = __commonJS((exports2) => {
   exports2.validateKeywordUsage = validateKeywordUsage;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/validate/subschema.js
+// ../../node_modules/ajv/dist/compile/validate/subschema.js
 var require_subschema = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.extendSubschemaMode = exports2.extendSubschemaData = exports2.getSubschema = undefined;
@@ -2013,7 +2013,7 @@ var require_subschema = __commonJS((exports2) => {
   exports2.extendSubschemaMode = extendSubschemaMode;
 });
 
-// ../../node_modules/.bun/fast-deep-equal@3.1.3/node_modules/fast-deep-equal/index.js
+// ../../node_modules/fast-deep-equal/index.js
 var require_fast_deep_equal = __commonJS((exports2, module2) => {
   module2.exports = function equal(a, b) {
     if (a === b)
@@ -2055,7 +2055,7 @@ var require_fast_deep_equal = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/json-schema-traverse@1.0.0/node_modules/json-schema-traverse/index.js
+// ../../node_modules/json-schema-traverse/index.js
 var require_json_schema_traverse = __commonJS((exports2, module2) => {
   var traverse = module2.exports = function(schema, opts, cb) {
     if (typeof opts == "function") {
@@ -2138,7 +2138,7 @@ var require_json_schema_traverse = __commonJS((exports2, module2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/resolve.js
+// ../../node_modules/ajv/dist/compile/resolve.js
 var require_resolve = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.getSchemaRefs = exports2.resolveUrl = exports2.normalizeId = exports2._getFullPath = exports2.getFullPath = exports2.inlineRef = undefined;
@@ -2291,7 +2291,7 @@ var require_resolve = __commonJS((exports2) => {
   exports2.getSchemaRefs = getSchemaRefs;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/validate/index.js
+// ../../node_modules/ajv/dist/compile/validate/index.js
 var require_validate = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.getData = exports2.KeywordCxt = exports2.validateFunctionCode = undefined;
@@ -2796,7 +2796,7 @@ var require_validate = __commonJS((exports2) => {
   exports2.getData = getData;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/runtime/validation_error.js
+// ../../node_modules/ajv/dist/runtime/validation_error.js
 var require_validation_error = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
 
@@ -2810,7 +2810,7 @@ var require_validation_error = __commonJS((exports2) => {
   exports2.default = ValidationError;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/ref_error.js
+// ../../node_modules/ajv/dist/compile/ref_error.js
 var require_ref_error = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var resolve_1 = require_resolve();
@@ -2825,7 +2825,7 @@ var require_ref_error = __commonJS((exports2) => {
   exports2.default = MissingRefError;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/compile/index.js
+// ../../node_modules/ajv/dist/compile/index.js
 var require_compile = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.resolveSchema = exports2.getCompilingSchema = exports2.resolveRef = exports2.compileSchema = exports2.SchemaEnv = undefined;
@@ -3046,7 +3046,7 @@ var require_compile = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/refs/data.json
+// ../../node_modules/ajv/dist/refs/data.json
 var require_data = __commonJS((exports2, module2) => {
   module2.exports = {
     $id: "https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#",
@@ -3063,7 +3063,7 @@ var require_data = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/fast-uri@3.1.2/node_modules/fast-uri/lib/utils.js
+// ../../node_modules/fast-uri/lib/utils.js
 var require_utils = __commonJS((exports2, module2) => {
   var isUUID = RegExp.prototype.test.bind(/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/iu);
   var isIPv4 = RegExp.prototype.test.bind(/^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)$/u);
@@ -3374,7 +3374,7 @@ var require_utils = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/fast-uri@3.1.2/node_modules/fast-uri/lib/schemes.js
+// ../../node_modules/fast-uri/lib/schemes.js
 var require_schemes = __commonJS((exports2, module2) => {
   var { isUUID } = require_utils();
   var URN_REG = /([\da-z][\d\-a-z]{0,31}):((?:[\w!$'()*+,\-.:;=@]|%[\da-f]{2})+)/iu;
@@ -3548,7 +3548,7 @@ var require_schemes = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/fast-uri@3.1.2/node_modules/fast-uri/index.js
+// ../../node_modules/fast-uri/index.js
 var require_fast_uri = __commonJS((exports2, module2) => {
   var { normalizeIPv6, removeDotSegments, recomposeAuthority, normalizePercentEncoding, normalizePathEncoding, escapePreservingEscapes, reescapeHostDelimiters, isIPv4, nonSimpleDomain } = require_utils();
   var { SCHEMES, getSchemeHandler } = require_schemes();
@@ -3830,7 +3830,7 @@ var require_fast_uri = __commonJS((exports2, module2) => {
   module2.exports.fastUri = fastUri;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/runtime/uri.js
+// ../../node_modules/ajv/dist/runtime/uri.js
 var require_uri = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var uri = require_fast_uri();
@@ -3838,7 +3838,7 @@ var require_uri = __commonJS((exports2) => {
   exports2.default = uri;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/core.js
+// ../../node_modules/ajv/dist/core.js
 var require_core = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.CodeGen = exports2.Name = exports2.nil = exports2.stringify = exports2.str = exports2._ = exports2.KeywordCxt = undefined;
@@ -4431,7 +4431,7 @@ var require_core = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/core/id.js
+// ../../node_modules/ajv/dist/vocabularies/core/id.js
 var require_id = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var def = {
@@ -4443,7 +4443,7 @@ var require_id = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/core/ref.js
+// ../../node_modules/ajv/dist/vocabularies/core/ref.js
 var require_ref = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.callRef = exports2.getValidate = undefined;
@@ -4562,7 +4562,7 @@ var require_ref = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/core/index.js
+// ../../node_modules/ajv/dist/vocabularies/core/index.js
 var require_core2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var id_1 = require_id();
@@ -4580,7 +4580,7 @@ var require_core2 = __commonJS((exports2) => {
   exports2.default = core2;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/limitNumber.js
+// ../../node_modules/ajv/dist/vocabularies/validation/limitNumber.js
 var require_limitNumber = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -4609,7 +4609,7 @@ var require_limitNumber = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/multipleOf.js
+// ../../node_modules/ajv/dist/vocabularies/validation/multipleOf.js
 var require_multipleOf = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -4634,7 +4634,7 @@ var require_multipleOf = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/runtime/ucs2length.js
+// ../../node_modules/ajv/dist/runtime/ucs2length.js
 var require_ucs2length = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   function ucs2length(str) {
@@ -4657,7 +4657,7 @@ var require_ucs2length = __commonJS((exports2) => {
   ucs2length.code = 'require("ajv/dist/runtime/ucs2length").default';
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/limitLength.js
+// ../../node_modules/ajv/dist/vocabularies/validation/limitLength.js
 var require_limitLength = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -4686,7 +4686,7 @@ var require_limitLength = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/pattern.js
+// ../../node_modules/ajv/dist/vocabularies/validation/pattern.js
 var require_pattern = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var code_1 = require_code2();
@@ -4720,7 +4720,7 @@ var require_pattern = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/limitProperties.js
+// ../../node_modules/ajv/dist/vocabularies/validation/limitProperties.js
 var require_limitProperties = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -4746,7 +4746,7 @@ var require_limitProperties = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/required.js
+// ../../node_modules/ajv/dist/vocabularies/validation/required.js
 var require_required = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var code_1 = require_code2();
@@ -4825,7 +4825,7 @@ var require_required = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/limitItems.js
+// ../../node_modules/ajv/dist/vocabularies/validation/limitItems.js
 var require_limitItems = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -4851,7 +4851,7 @@ var require_limitItems = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/runtime/equal.js
+// ../../node_modules/ajv/dist/runtime/equal.js
 var require_equal = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var equal = require_fast_deep_equal();
@@ -4859,7 +4859,7 @@ var require_equal = __commonJS((exports2) => {
   exports2.default = equal;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/uniqueItems.js
+// ../../node_modules/ajv/dist/vocabularies/validation/uniqueItems.js
 var require_uniqueItems = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var dataType_1 = require_dataType();
@@ -4923,7 +4923,7 @@ var require_uniqueItems = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/const.js
+// ../../node_modules/ajv/dist/vocabularies/validation/const.js
 var require_const = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -4949,7 +4949,7 @@ var require_const = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/enum.js
+// ../../node_modules/ajv/dist/vocabularies/validation/enum.js
 var require_enum = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -4995,7 +4995,7 @@ var require_enum = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/validation/index.js
+// ../../node_modules/ajv/dist/vocabularies/validation/index.js
 var require_validation = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var limitNumber_1 = require_limitNumber();
@@ -5025,7 +5025,7 @@ var require_validation = __commonJS((exports2) => {
   exports2.default = validation;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/additionalItems.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/additionalItems.js
 var require_additionalItems = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.validateAdditionalItems = undefined;
@@ -5075,7 +5075,7 @@ var require_additionalItems = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/items.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/items.js
 var require_items = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.validateTuple = undefined;
@@ -5129,7 +5129,7 @@ var require_items = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/prefixItems.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/prefixItems.js
 var require_prefixItems = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var items_1 = require_items();
@@ -5143,7 +5143,7 @@ var require_prefixItems = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/items2020.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/items2020.js
 var require_items2020 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -5175,7 +5175,7 @@ var require_items2020 = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/contains.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/contains.js
 var require_contains = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -5266,7 +5266,7 @@ var require_contains = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/dependencies.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/dependencies.js
 var require_dependencies = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.validateSchemaDeps = exports2.validatePropertyDeps = exports2.error = undefined;
@@ -5351,7 +5351,7 @@ var require_dependencies = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/propertyNames.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/propertyNames.js
 var require_propertyNames = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -5391,7 +5391,7 @@ var require_propertyNames = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/additionalProperties.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/additionalProperties.js
 var require_additionalProperties = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var code_1 = require_code2();
@@ -5494,7 +5494,7 @@ var require_additionalProperties = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/properties.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/properties.js
 var require_properties = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var validate_1 = require_validate();
@@ -5549,7 +5549,7 @@ var require_properties = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/patternProperties.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/patternProperties.js
 var require_patternProperties = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var code_1 = require_code2();
@@ -5620,7 +5620,7 @@ var require_patternProperties = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/not.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/not.js
 var require_not = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var util_1 = require_util();
@@ -5648,7 +5648,7 @@ var require_not = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/anyOf.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/anyOf.js
 var require_anyOf = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var code_1 = require_code2();
@@ -5662,7 +5662,7 @@ var require_anyOf = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/oneOf.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/oneOf.js
 var require_oneOf = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -5717,7 +5717,7 @@ var require_oneOf = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/allOf.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/allOf.js
 var require_allOf = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var util_1 = require_util();
@@ -5741,7 +5741,7 @@ var require_allOf = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/if.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/if.js
 var require_if = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -5807,7 +5807,7 @@ var require_if = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/thenElse.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/thenElse.js
 var require_thenElse = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var util_1 = require_util();
@@ -5822,7 +5822,7 @@ var require_thenElse = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/applicator/index.js
+// ../../node_modules/ajv/dist/vocabularies/applicator/index.js
 var require_applicator = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var additionalItems_1 = require_additionalItems();
@@ -5865,7 +5865,7 @@ var require_applicator = __commonJS((exports2) => {
   exports2.default = getApplicator;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/format/format.js
+// ../../node_modules/ajv/dist/vocabularies/format/format.js
 var require_format = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -5952,7 +5952,7 @@ var require_format = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/format/index.js
+// ../../node_modules/ajv/dist/vocabularies/format/index.js
 var require_format2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var format_1 = require_format();
@@ -5960,7 +5960,7 @@ var require_format2 = __commonJS((exports2) => {
   exports2.default = format;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/metadata.js
+// ../../node_modules/ajv/dist/vocabularies/metadata.js
 var require_metadata = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.contentVocabulary = exports2.metadataVocabulary = undefined;
@@ -5980,7 +5980,7 @@ var require_metadata = __commonJS((exports2) => {
   ];
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/draft7.js
+// ../../node_modules/ajv/dist/vocabularies/draft7.js
 var require_draft7 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var core_1 = require_core2();
@@ -5999,7 +5999,7 @@ var require_draft7 = __commonJS((exports2) => {
   exports2.default = draft7Vocabularies;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/discriminator/types.js
+// ../../node_modules/ajv/dist/vocabularies/discriminator/types.js
 var require_types = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.DiscrError = undefined;
@@ -6010,7 +6010,7 @@ var require_types = __commonJS((exports2) => {
   })(DiscrError || (exports2.DiscrError = DiscrError = {}));
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/vocabularies/discriminator/index.js
+// ../../node_modules/ajv/dist/vocabularies/discriminator/index.js
 var require_discriminator = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var codegen_1 = require_codegen();
@@ -6112,7 +6112,7 @@ var require_discriminator = __commonJS((exports2) => {
   exports2.default = def;
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/refs/json-schema-draft-07.json
+// ../../node_modules/ajv/dist/refs/json-schema-draft-07.json
 var require_json_schema_draft_07 = __commonJS((exports2, module2) => {
   module2.exports = {
     $schema: "http://json-schema.org/draft-07/schema#",
@@ -6267,7 +6267,7 @@ var require_json_schema_draft_07 = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/ajv@8.20.0/node_modules/ajv/dist/ajv.js
+// ../../node_modules/ajv/dist/ajv.js
 var require_ajv = __commonJS((exports2, module2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.MissingRefError = exports2.ValidationError = exports2.CodeGen = exports2.Name = exports2.nil = exports2.stringify = exports2.str = exports2._ = exports2.KeywordCxt = exports2.Ajv = undefined;
@@ -6335,7 +6335,7 @@ var require_ajv = __commonJS((exports2, module2) => {
   } });
 });
 
-// ../../node_modules/.bun/ajv-formats@3.0.1/node_modules/ajv-formats/dist/formats.js
+// ../../node_modules/ajv-formats/dist/formats.js
 var require_formats = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.formatNames = exports2.fastFormats = exports2.fullFormats = undefined;
@@ -6512,7 +6512,7 @@ var require_formats = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/ajv-formats@3.0.1/node_modules/ajv-formats/dist/limit.js
+// ../../node_modules/ajv-formats/dist/limit.js
 var require_limit = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.formatLimitDefinition = undefined;
@@ -6581,7 +6581,7 @@ var require_limit = __commonJS((exports2) => {
   exports2.default = formatLimitPlugin;
 });
 
-// ../../node_modules/.bun/ajv-formats@3.0.1/node_modules/ajv-formats/dist/index.js
+// ../../node_modules/ajv-formats/dist/index.js
 var require_dist = __commonJS((exports2, module2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var formats_1 = require_formats();
@@ -6620,7 +6620,7 @@ var require_dist = __commonJS((exports2, module2) => {
   exports2.default = formatsPlugin;
 });
 
-// ../../node_modules/.bun/tslib@2.8.1/node_modules/tslib/tslib.js
+// ../../node_modules/tslib/tslib.js
 var require_tslib = __commonJS((exports2, module2) => {
   var __extends;
   var __assign;
@@ -7225,7 +7225,7 @@ var require_tslib = __commonJS((exports2, module2) => {
   });
 });
 
-// ../../node_modules/.bun/@supabase+functions-js@2.105.4/node_modules/@supabase/functions-js/dist/main/helper.js
+// ../../node_modules/@supabase/functions-js/dist/main/helper.js
 var require_helper = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.resolveFetch = undefined;
@@ -7238,7 +7238,7 @@ var require_helper = __commonJS((exports2) => {
   exports2.resolveFetch = resolveFetch;
 });
 
-// ../../node_modules/.bun/@supabase+functions-js@2.105.4/node_modules/@supabase/functions-js/dist/main/types.js
+// ../../node_modules/@supabase/functions-js/dist/main/types.js
 var require_types2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.FunctionRegion = exports2.FunctionsHttpError = exports2.FunctionsRelayError = exports2.FunctionsFetchError = exports2.FunctionsError = undefined;
@@ -7299,7 +7299,7 @@ var require_types2 = __commonJS((exports2) => {
   })(FunctionRegion || (exports2.FunctionRegion = FunctionRegion = {}));
 });
 
-// ../../node_modules/.bun/@supabase+functions-js@2.105.4/node_modules/@supabase/functions-js/dist/main/FunctionsClient.js
+// ../../node_modules/@supabase/functions-js/dist/main/FunctionsClient.js
 var require_FunctionsClient = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.FunctionsClient = undefined;
@@ -7412,7 +7412,7 @@ var require_FunctionsClient = __commonJS((exports2) => {
   exports2.FunctionsClient = FunctionsClient;
 });
 
-// ../../node_modules/.bun/@supabase+functions-js@2.105.4/node_modules/@supabase/functions-js/dist/main/index.js
+// ../../node_modules/@supabase/functions-js/dist/main/index.js
 var require_main = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.FunctionRegion = exports2.FunctionsRelayError = exports2.FunctionsHttpError = exports2.FunctionsFetchError = exports2.FunctionsError = exports2.FunctionsClient = undefined;
@@ -7438,7 +7438,7 @@ var require_main = __commonJS((exports2) => {
   } });
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js
+// ../../node_modules/@supabase/realtime-js/dist/main/lib/websocket-factory.js
 var require_websocket_factory = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.WebSocketFactory = undefined;
@@ -7529,14 +7529,14 @@ Suggested solution: ${env.workaround}`;
   exports2.default = WebSocketFactory;
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/lib/version.js
+// ../../node_modules/@supabase/realtime-js/dist/main/lib/version.js
 var require_version = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.version = undefined;
   exports2.version = "2.105.4";
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/lib/constants.js
+// ../../node_modules/@supabase/realtime-js/dist/main/lib/constants.js
 var require_constants = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.CONNECTION_STATE = exports2.TRANSPORTS = exports2.CHANNEL_EVENTS = exports2.CHANNEL_STATES = exports2.SOCKET_STATES = exports2.MAX_PUSH_BUFFER_SIZE = exports2.WS_CLOSE_NORMAL = exports2.DEFAULT_TIMEOUT = exports2.VERSION = exports2.DEFAULT_VSN = exports2.VSN_2_0_0 = exports2.VSN_1_0_0 = exports2.DEFAULT_VERSION = undefined;
@@ -7581,7 +7581,7 @@ var require_constants = __commonJS((exports2) => {
   };
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/lib/serializer.js
+// ../../node_modules/@supabase/realtime-js/dist/main/lib/serializer.js
 var require_serializer = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
 
@@ -7726,7 +7726,7 @@ var require_serializer = __commonJS((exports2) => {
   exports2.default = Serializer;
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/lib/transformers.js
+// ../../node_modules/@supabase/realtime-js/dist/main/lib/transformers.js
 var require_transformers = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.httpEndpointURL = exports2.toTimestampString = exports2.toArray = exports2.toJson = exports2.toNumber = exports2.toBoolean = exports2.convertCell = exports2.convertColumn = exports2.convertChangeData = exports2.PostgresTypes = undefined;
@@ -7895,7 +7895,7 @@ var require_transformers = __commonJS((exports2) => {
   exports2.httpEndpointURL = httpEndpointURL;
 });
 
-// ../../node_modules/.bun/@supabase+phoenix@0.4.2/node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js
+// ../../node_modules/@supabase/phoenix/priv/static/phoenix.cjs.js
 var require_phoenix_cjs = __commonJS((exports2, module2) => {
   var __defProp2 = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -9273,7 +9273,7 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js
+// ../../node_modules/@supabase/realtime-js/dist/main/phoenix/presenceAdapter.js
 var require_presenceAdapter = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var phoenix_1 = require_phoenix_cjs();
@@ -9346,7 +9346,7 @@ var require_presenceAdapter = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js
+// ../../node_modules/@supabase/realtime-js/dist/main/RealtimePresence.js
 var require_RealtimePresence = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.REALTIME_PRESENCE_LISTEN_EVENTS = undefined;
@@ -9371,7 +9371,7 @@ var require_RealtimePresence = __commonJS((exports2) => {
   exports2.default = RealtimePresence;
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js
+// ../../node_modules/@supabase/realtime-js/dist/main/lib/normalizeChannelError.js
 var require_normalizeChannelError = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.normalizeChannelError = normalizeChannelError;
@@ -9394,7 +9394,7 @@ var require_normalizeChannelError = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js
+// ../../node_modules/@supabase/realtime-js/dist/main/phoenix/channelAdapter.js
 var require_channelAdapter = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var constants_1 = require_constants();
@@ -9496,7 +9496,7 @@ var require_channelAdapter = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js
+// ../../node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js
 var require_RealtimeChannel = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.REALTIME_CHANNEL_STATES = exports2.REALTIME_SUBSCRIBE_STATES = exports2.REALTIME_LISTEN_TYPES = exports2.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = undefined;
@@ -9874,7 +9874,7 @@ var require_RealtimeChannel = __commonJS((exports2) => {
   exports2.default = RealtimeChannel;
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js
+// ../../node_modules/@supabase/realtime-js/dist/main/phoenix/socketAdapter.js
 var require_socketAdapter = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var phoenix_1 = require_phoenix_cjs();
@@ -9987,7 +9987,7 @@ var require_socketAdapter = __commonJS((exports2) => {
   exports2.default = SocketAdapter;
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
+// ../../node_modules/@supabase/realtime-js/dist/main/RealtimeClient.js
 var require_RealtimeClient = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var tslib_1 = require_tslib();
@@ -10454,7 +10454,7 @@ var require_RealtimeClient = __commonJS((exports2) => {
   exports2.default = RealtimeClient;
 });
 
-// ../../node_modules/.bun/@supabase+realtime-js@2.105.4/node_modules/@supabase/realtime-js/dist/main/index.js
+// ../../node_modules/@supabase/realtime-js/dist/main/index.js
 var require_main2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.WebSocketFactory = exports2.REALTIME_CHANNEL_STATES = exports2.REALTIME_SUBSCRIBE_STATES = exports2.REALTIME_PRESENCE_LISTEN_EVENTS = exports2.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports2.REALTIME_LISTEN_TYPES = exports2.RealtimeClient = exports2.RealtimeChannel = exports2.RealtimePresence = undefined;
@@ -10484,14 +10484,14 @@ var require_main2 = __commonJS((exports2) => {
   exports2.WebSocketFactory = websocket_factory_1.default;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/version.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/version.js
 var require_version2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.version = undefined;
   exports2.version = "2.105.4";
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/constants.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/constants.js
 var require_constants2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.JWKS_TTL = exports2.BASE64URL_REGEX = exports2.API_VERSIONS = exports2.API_VERSION_HEADER_NAME = exports2.NETWORK_FAILURE = exports2.DEFAULT_HEADERS = exports2.AUDIENCE = exports2.STORAGE_KEY = exports2.GOTRUE_URL = exports2.EXPIRY_MARGIN_MS = exports2.AUTO_REFRESH_TICK_THRESHOLD = exports2.AUTO_REFRESH_TICK_DURATION_MS = undefined;
@@ -10518,7 +10518,7 @@ var require_constants2 = __commonJS((exports2) => {
   exports2.JWKS_TTL = 10 * 60 * 1000;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/errors.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/errors.js
 var require_errors2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.AuthInvalidJwtError = exports2.AuthWeakPasswordError = exports2.AuthRetryableFetchError = exports2.AuthPKCECodeVerifierMissingError = exports2.AuthPKCEGrantCodeExchangeError = exports2.AuthImplicitGrantRedirectError = exports2.AuthInvalidCredentialsError = exports2.AuthInvalidTokenResponseError = exports2.AuthSessionMissingError = exports2.CustomAuthError = exports2.AuthUnknownError = exports2.AuthApiError = exports2.AuthError = undefined;
@@ -10676,7 +10676,7 @@ var require_errors2 = __commonJS((exports2) => {
   exports2.AuthInvalidJwtError = AuthInvalidJwtError;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/base64url.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/base64url.js
 var require_base64url = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.byteToBase64URL = byteToBase64URL;
@@ -10864,7 +10864,7 @@ var require_base64url = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/helpers.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/helpers.js
 var require_helpers = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.Deferred = exports2.removeItemAsync = exports2.getItemAsync = exports2.setItemAsync = exports2.looksLikeFetchResponse = exports2.resolveFetch = exports2.supportsLocalStorage = exports2.isBrowser = undefined;
@@ -11179,7 +11179,7 @@ var require_helpers = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/fetch.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/fetch.js
 var require_fetch = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.handleError = handleError2;
@@ -11344,14 +11344,14 @@ var require_fetch = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/types.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/types.js
 var require_types3 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.SIGN_OUT_SCOPES = undefined;
   exports2.SIGN_OUT_SCOPES = ["global", "local", "others"];
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/GoTrueAdminApi.js
 var require_GoTrueAdminApi = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var tslib_1 = require_tslib();
@@ -11798,7 +11798,7 @@ var require_GoTrueAdminApi = __commonJS((exports2) => {
   exports2.default = GoTrueAdminApi;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/local-storage.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/local-storage.js
 var require_local_storage = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.memoryLocalStorageAdapter = memoryLocalStorageAdapter;
@@ -11817,7 +11817,7 @@ var require_local_storage = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/locks.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/locks.js
 var require_locks = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.ProcessLockAcquireTimeoutError = exports2.NavigatorLockAcquireTimeoutError = exports2.LockAcquireTimeoutError = exports2.internals = undefined;
@@ -11991,7 +11991,7 @@ var require_locks = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/polyfills.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/polyfills.js
 var require_polyfills = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.polyfillGlobalThis = polyfillGlobalThis;
@@ -12015,7 +12015,7 @@ var require_polyfills = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/web3/ethereum.js
 var require_ethereum = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.getAddress = getAddress;
@@ -12092,7 +12092,7 @@ ${suffix}`;
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/webauthn.errors.js
 var require_webauthn_errors = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.WebAuthnUnknownError = exports2.WebAuthnError = undefined;
@@ -12279,7 +12279,7 @@ var require_webauthn_errors = __commonJS((exports2) => {
   }
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/lib/webauthn.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/webauthn.js
 var require_webauthn = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.WebAuthnApi = exports2.DEFAULT_REQUEST_OPTIONS = exports2.DEFAULT_CREATION_OPTIONS = exports2.webAuthnAbortService = exports2.WebAuthnAbortService = exports2.identifyAuthenticationError = exports2.identifyRegistrationError = exports2.isWebAuthnError = exports2.WebAuthnError = undefined;
@@ -12733,7 +12733,7 @@ var require_webauthn = __commonJS((exports2) => {
   exports2.WebAuthnApi = WebAuthnApi;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/GoTrueClient.js
 var require_GoTrueClient = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var tslib_1 = require_tslib();
@@ -15257,7 +15257,7 @@ var require_GoTrueClient = __commonJS((exports2) => {
   exports2.default = GoTrueClient;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/AuthAdminApi.js
 var require_AuthAdminApi = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var tslib_1 = require_tslib();
@@ -15266,7 +15266,7 @@ var require_AuthAdminApi = __commonJS((exports2) => {
   exports2.default = AuthAdminApi;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/AuthClient.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/AuthClient.js
 var require_AuthClient = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   var tslib_1 = require_tslib();
@@ -15275,7 +15275,7 @@ var require_AuthClient = __commonJS((exports2) => {
   exports2.default = AuthClient;
 });
 
-// ../../node_modules/.bun/@supabase+auth-js@2.105.4/node_modules/@supabase/auth-js/dist/main/index.js
+// ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/index.js
 var require_main3 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.processLock = exports2.lockInternals = exports2.NavigatorLockAcquireTimeoutError = exports2.navigatorLock = exports2.AuthClient = exports2.AuthAdminApi = exports2.GoTrueClient = exports2.GoTrueAdminApi = undefined;
@@ -15305,7 +15305,7 @@ var require_main3 = __commonJS((exports2) => {
   } });
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/lib/parser.js
+// ../../node_modules/@iarna/toml/lib/parser.js
 var require_parser = __commonJS((exports2, module2) => {
   var ParserEND = 1114112;
 
@@ -15435,7 +15435,7 @@ var require_parser = __commonJS((exports2, module2) => {
   module2.exports = Parser;
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/lib/create-datetime.js
+// ../../node_modules/@iarna/toml/lib/create-datetime.js
 var require_create_datetime = __commonJS((exports2, module2) => {
   module2.exports = (value) => {
     const date6 = new Date(value);
@@ -15447,7 +15447,7 @@ var require_create_datetime = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/lib/format-num.js
+// ../../node_modules/@iarna/toml/lib/format-num.js
 var require_format_num = __commonJS((exports2, module2) => {
   module2.exports = (d, num) => {
     num = String(num);
@@ -15457,7 +15457,7 @@ var require_format_num = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/lib/create-datetime-float.js
+// ../../node_modules/@iarna/toml/lib/create-datetime-float.js
 var require_create_datetime_float = __commonJS((exports2, module2) => {
   var f = require_format_num();
 
@@ -15482,7 +15482,7 @@ var require_create_datetime_float = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/lib/create-date.js
+// ../../node_modules/@iarna/toml/lib/create-date.js
 var require_create_date = __commonJS((exports2, module2) => {
   var f = require_format_num();
   var DateTime = global.Date;
@@ -15506,7 +15506,7 @@ var require_create_date = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/lib/create-time.js
+// ../../node_modules/@iarna/toml/lib/create-time.js
 var require_create_time = __commonJS((exports2, module2) => {
   var f = require_format_num();
 
@@ -15529,7 +15529,7 @@ var require_create_time = __commonJS((exports2, module2) => {
   };
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/lib/toml-parser.js
+// ../../node_modules/@iarna/toml/lib/toml-parser.js
 var require_toml_parser = __commonJS((exports2, module2) => {
   module2.exports = makeParserClass(require_parser());
   module2.exports.makeParserClass = makeParserClass;
@@ -16837,7 +16837,7 @@ var require_toml_parser = __commonJS((exports2, module2) => {
   }
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/parse-pretty-error.js
+// ../../node_modules/@iarna/toml/parse-pretty-error.js
 var require_parse_pretty_error = __commonJS((exports2, module2) => {
   module2.exports = prettyError;
   function prettyError(err, buf) {
@@ -16877,7 +16877,7 @@ var require_parse_pretty_error = __commonJS((exports2, module2) => {
   }
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/parse-string.js
+// ../../node_modules/@iarna/toml/parse-string.js
 var require_parse_string = __commonJS((exports2, module2) => {
   module2.exports = parseString;
   var TOMLParser = require_toml_parser();
@@ -16896,7 +16896,7 @@ var require_parse_string = __commonJS((exports2, module2) => {
   }
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/parse-async.js
+// ../../node_modules/@iarna/toml/parse-async.js
 var require_parse_async = __commonJS((exports2, module2) => {
   module2.exports = parseAsync3;
   var TOMLParser = require_toml_parser();
@@ -16928,7 +16928,7 @@ var require_parse_async = __commonJS((exports2, module2) => {
   }
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/parse-stream.js
+// ../../node_modules/@iarna/toml/parse-stream.js
 var require_parse_stream = __commonJS((exports2, module2) => {
   module2.exports = parseStream;
   var stream = require("stream");
@@ -17007,7 +17007,7 @@ var require_parse_stream = __commonJS((exports2, module2) => {
   }
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/parse.js
+// ../../node_modules/@iarna/toml/parse.js
 var require_parse = __commonJS((exports2, module2) => {
   module2.exports = require_parse_string();
   module2.exports.async = require_parse_async();
@@ -17015,7 +17015,7 @@ var require_parse = __commonJS((exports2, module2) => {
   module2.exports.prettyError = require_parse_pretty_error();
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/stringify.js
+// ../../node_modules/@iarna/toml/stringify.js
 var require_stringify = __commonJS((exports2, module2) => {
   module2.exports = stringify;
   module2.exports.value = stringifyInline;
@@ -17294,13 +17294,13 @@ var require_stringify = __commonJS((exports2, module2) => {
   }
 });
 
-// ../../node_modules/.bun/@iarna+toml@2.2.5/node_modules/@iarna/toml/toml.js
+// ../../node_modules/@iarna/toml/toml.js
 var require_toml = __commonJS((exports2) => {
   exports2.parse = require_parse();
   exports2.stringify = require_stringify();
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v3/helpers/util.js
+// ../../node_modules/zod/v3/helpers/util.js
 var util;
 (function(util2) {
   util2.assertEqual = (_) => {};
@@ -17431,7 +17431,7 @@ var getParsedType = (data) => {
   }
 };
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v3/ZodError.js
+// ../../node_modules/zod/v3/ZodError.js
 var ZodIssueCode = util.arrayToEnum([
   "invalid_type",
   "invalid_literal",
@@ -17545,7 +17545,7 @@ ZodError.create = (issues) => {
   return error;
 };
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v3/locales/en.js
+// ../../node_modules/zod/v3/locales/en.js
 var errorMap = (issue, _ctx) => {
   let message;
   switch (issue.code) {
@@ -17648,13 +17648,13 @@ var errorMap = (issue, _ctx) => {
 };
 var en_default = errorMap;
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v3/errors.js
+// ../../node_modules/zod/v3/errors.js
 var overrideErrorMap = en_default;
 function getErrorMap() {
   return overrideErrorMap;
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v3/helpers/parseUtil.js
+// ../../node_modules/zod/v3/helpers/parseUtil.js
 var makeIssue = (params) => {
   const { data, path, errorMaps, issueData } = params;
   const fullPath = [...path, ...issueData.path || []];
@@ -17760,14 +17760,14 @@ var isDirty = (x) => x.status === "dirty";
 var isValid = (x) => x.status === "valid";
 var isAsync = (x) => typeof Promise !== "undefined" && x instanceof Promise;
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v3/helpers/errorUtil.js
+// ../../node_modules/zod/v3/helpers/errorUtil.js
 var errorUtil;
 (function(errorUtil2) {
   errorUtil2.errToObj = (message) => typeof message === "string" ? { message } : message || {};
   errorUtil2.toString = (message) => typeof message === "string" ? message : message?.message;
 })(errorUtil || (errorUtil = {}));
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v3/types.js
+// ../../node_modules/zod/v3/types.js
 class ParseInputLazyPath {
   constructor(parent, value, path, key) {
     this._cachedPath = [];
@@ -21111,7 +21111,7 @@ var nullableType = ZodNullable.create;
 var preprocessType = ZodEffects.createWithPreprocess;
 var pipelineType = ZodPipeline.create;
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/index.js
+// ../../node_modules/zod/v4/core/index.js
 var exports_core2 = {};
 __export(exports_core2, {
   version: () => version,
@@ -21390,7 +21390,7 @@ __export(exports_core2, {
   $ZodAny: () => $ZodAny
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/core.js
+// ../../node_modules/zod/v4/core/core.js
 var _a;
 var NEVER = /* @__PURE__ */ Object.freeze({
   status: "aborted"
@@ -21468,7 +21468,7 @@ function config(newConfig) {
     Object.assign(globalConfig, newConfig);
   return globalConfig;
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/util.js
+// ../../node_modules/zod/v4/core/util.js
 var exports_util = {};
 __export(exports_util, {
   unwrapMessage: () => unwrapMessage,
@@ -22160,7 +22160,7 @@ class Class {
   constructor(..._args) {}
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/errors.js
+// ../../node_modules/zod/v4/core/errors.js
 var initializer = (inst, def) => {
   inst.name = "$ZodError";
   Object.defineProperty(inst, "_zod", {
@@ -22300,7 +22300,7 @@ function prettifyError(error) {
 `);
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/parse.js
+// ../../node_modules/zod/v4/core/parse.js
 var _parse = (_Err) => (schema, value, _ctx, _params) => {
   const ctx = _ctx ? { ..._ctx, async: false } : { async: false };
   const result = schema._zod.run({ value, issues: [] }, ctx);
@@ -22387,7 +22387,7 @@ var _safeDecodeAsync = (_Err) => async (schema, value, _ctx) => {
   return _safeParseAsync(_Err)(schema, value, _ctx);
 };
 var safeDecodeAsync = /* @__PURE__ */ _safeDecodeAsync($ZodRealError);
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/regexes.js
+// ../../node_modules/zod/v4/core/regexes.js
 var exports_regexes = {};
 __export(exports_regexes, {
   xid: () => xid,
@@ -22546,7 +22546,7 @@ var sha512_hex = /^[0-9a-fA-F]{128}$/;
 var sha512_base64 = /* @__PURE__ */ fixedBase64(86, "==");
 var sha512_base64url = /* @__PURE__ */ fixedBase64url(86);
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/checks.js
+// ../../node_modules/zod/v4/core/checks.js
 var $ZodCheck = /* @__PURE__ */ $constructor("$ZodCheck", (inst, def) => {
   var _a2;
   inst._zod ?? (inst._zod = {});
@@ -23093,7 +23093,7 @@ var $ZodCheckOverwrite = /* @__PURE__ */ $constructor("$ZodCheckOverwrite", (ins
   };
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/doc.js
+// ../../node_modules/zod/v4/core/doc.js
 class Doc {
   constructor(args = []) {
     this.content = [];
@@ -23131,14 +23131,14 @@ class Doc {
   }
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/versions.js
+// ../../node_modules/zod/v4/core/versions.js
 var version = {
   major: 4,
   minor: 4,
   patch: 3
 };
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/schemas.js
+// ../../node_modules/zod/v4/core/schemas.js
 var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
   var _a2;
   inst ?? (inst = {});
@@ -25222,7 +25222,7 @@ function handleRefineResult(result, payload, input, inst) {
     payload.issues.push(issue(_iss));
   }
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/index.js
+// ../../node_modules/zod/v4/locales/index.js
 var exports_locales = {};
 __export(exports_locales, {
   zhTW: () => zh_TW_default,
@@ -25279,7 +25279,7 @@ __export(exports_locales, {
   ar: () => ar_default
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ar.js
+// ../../node_modules/zod/v4/locales/ar.js
 var error = () => {
   const Sizable = {
     string: { unit: "حرف", verb: "أن يحوي" },
@@ -25385,7 +25385,7 @@ function ar_default() {
     localeError: error()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/az.js
+// ../../node_modules/zod/v4/locales/az.js
 var error2 = () => {
   const Sizable = {
     string: { unit: "simvol", verb: "olmalıdır" },
@@ -25490,7 +25490,7 @@ function az_default() {
     localeError: error2()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/be.js
+// ../../node_modules/zod/v4/locales/be.js
 function getBelarusianPlural(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -25646,7 +25646,7 @@ function be_default() {
     localeError: error3()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/bg.js
+// ../../node_modules/zod/v4/locales/bg.js
 var error4 = () => {
   const Sizable = {
     string: { unit: "символа", verb: "да съдържа" },
@@ -25766,7 +25766,7 @@ function bg_default() {
     localeError: error4()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ca.js
+// ../../node_modules/zod/v4/locales/ca.js
 var error5 = () => {
   const Sizable = {
     string: { unit: "caràcters", verb: "contenir" },
@@ -25873,7 +25873,7 @@ function ca_default() {
     localeError: error5()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/cs.js
+// ../../node_modules/zod/v4/locales/cs.js
 var error6 = () => {
   const Sizable = {
     string: { unit: "znaků", verb: "mít" },
@@ -25984,7 +25984,7 @@ function cs_default() {
     localeError: error6()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/da.js
+// ../../node_modules/zod/v4/locales/da.js
 var error7 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "havde" },
@@ -26099,7 +26099,7 @@ function da_default() {
     localeError: error7()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/de.js
+// ../../node_modules/zod/v4/locales/de.js
 var error8 = () => {
   const Sizable = {
     string: { unit: "Zeichen", verb: "zu haben" },
@@ -26207,7 +26207,7 @@ function de_default() {
     localeError: error8()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/el.js
+// ../../node_modules/zod/v4/locales/el.js
 var error9 = () => {
   const Sizable = {
     string: { unit: "χαρακτήρες", verb: "να έχει" },
@@ -26316,7 +26316,7 @@ function el_default() {
     localeError: error9()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/en.js
+// ../../node_modules/zod/v4/locales/en.js
 var error10 = () => {
   const Sizable = {
     string: { unit: "characters", verb: "to have" },
@@ -26426,7 +26426,7 @@ function en_default2() {
     localeError: error10()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/eo.js
+// ../../node_modules/zod/v4/locales/eo.js
 var error11 = () => {
   const Sizable = {
     string: { unit: "karaktrojn", verb: "havi" },
@@ -26535,7 +26535,7 @@ function eo_default() {
     localeError: error11()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/es.js
+// ../../node_modules/zod/v4/locales/es.js
 var error12 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "tener" },
@@ -26667,7 +26667,7 @@ function es_default() {
     localeError: error12()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/fa.js
+// ../../node_modules/zod/v4/locales/fa.js
 var error13 = () => {
   const Sizable = {
     string: { unit: "کاراکتر", verb: "داشته باشد" },
@@ -26781,7 +26781,7 @@ function fa_default() {
     localeError: error13()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/fi.js
+// ../../node_modules/zod/v4/locales/fi.js
 var error14 = () => {
   const Sizable = {
     string: { unit: "merkkiä", subject: "merkkijonon" },
@@ -26893,7 +26893,7 @@ function fi_default() {
     localeError: error14()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/fr.js
+// ../../node_modules/zod/v4/locales/fr.js
 var error15 = () => {
   const Sizable = {
     string: { unit: "caractères", verb: "avoir" },
@@ -27018,7 +27018,7 @@ function fr_default() {
     localeError: error15()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/fr-CA.js
+// ../../node_modules/zod/v4/locales/fr-CA.js
 var error16 = () => {
   const Sizable = {
     string: { unit: "caractères", verb: "avoir" },
@@ -27125,7 +27125,7 @@ function fr_CA_default() {
     localeError: error16()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/he.js
+// ../../node_modules/zod/v4/locales/he.js
 var error17 = () => {
   const TypeNames = {
     string: { label: "מחרוזת", gender: "f" },
@@ -27318,7 +27318,7 @@ function he_default() {
     localeError: error17()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/hr.js
+// ../../node_modules/zod/v4/locales/hr.js
 var error18 = () => {
   const Sizable = {
     string: { unit: "znakova", verb: "imati" },
@@ -27440,7 +27440,7 @@ function hr_default() {
     localeError: error18()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/hu.js
+// ../../node_modules/zod/v4/locales/hu.js
 var error19 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "legyen" },
@@ -27548,7 +27548,7 @@ function hu_default() {
     localeError: error19()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/hy.js
+// ../../node_modules/zod/v4/locales/hy.js
 function getArmenianPlural(count, one, many) {
   return Math.abs(count) === 1 ? one : many;
 }
@@ -27695,7 +27695,7 @@ function hy_default() {
     localeError: error20()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/id.js
+// ../../node_modules/zod/v4/locales/id.js
 var error21 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "memiliki" },
@@ -27801,7 +27801,7 @@ function id_default() {
     localeError: error21()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/is.js
+// ../../node_modules/zod/v4/locales/is.js
 var error22 = () => {
   const Sizable = {
     string: { unit: "stafi", verb: "að hafa" },
@@ -27910,7 +27910,7 @@ function is_default() {
     localeError: error22()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/it.js
+// ../../node_modules/zod/v4/locales/it.js
 var error23 = () => {
   const Sizable = {
     string: { unit: "caratteri", verb: "avere" },
@@ -28018,7 +28018,7 @@ function it_default() {
     localeError: error23()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ja.js
+// ../../node_modules/zod/v4/locales/ja.js
 var error24 = () => {
   const Sizable = {
     string: { unit: "文字", verb: "である" },
@@ -28125,7 +28125,7 @@ function ja_default() {
     localeError: error24()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ka.js
+// ../../node_modules/zod/v4/locales/ka.js
 var error25 = () => {
   const Sizable = {
     string: { unit: "სიმბოლო", verb: "უნდა შეიცავდეს" },
@@ -28237,7 +28237,7 @@ function ka_default() {
     localeError: error25()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/km.js
+// ../../node_modules/zod/v4/locales/km.js
 var error26 = () => {
   const Sizable = {
     string: { unit: "តួអក្សរ", verb: "គួរមាន" },
@@ -28348,11 +28348,11 @@ function km_default() {
   };
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/kh.js
+// ../../node_modules/zod/v4/locales/kh.js
 function kh_default() {
   return km_default();
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ko.js
+// ../../node_modules/zod/v4/locales/ko.js
 var error27 = () => {
   const Sizable = {
     string: { unit: "문자", verb: "to have" },
@@ -28463,7 +28463,7 @@ function ko_default() {
     localeError: error27()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/lt.js
+// ../../node_modules/zod/v4/locales/lt.js
 var capitalizeFirstCharacter = (text) => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
@@ -28666,7 +28666,7 @@ function lt_default() {
     localeError: error28()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/mk.js
+// ../../node_modules/zod/v4/locales/mk.js
 var error29 = () => {
   const Sizable = {
     string: { unit: "знаци", verb: "да имаат" },
@@ -28775,7 +28775,7 @@ function mk_default() {
     localeError: error29()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ms.js
+// ../../node_modules/zod/v4/locales/ms.js
 var error30 = () => {
   const Sizable = {
     string: { unit: "aksara", verb: "mempunyai" },
@@ -28882,7 +28882,7 @@ function ms_default() {
     localeError: error30()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/nl.js
+// ../../node_modules/zod/v4/locales/nl.js
 var error31 = () => {
   const Sizable = {
     string: { unit: "tekens", verb: "heeft" },
@@ -28992,7 +28992,7 @@ function nl_default() {
     localeError: error31()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/no.js
+// ../../node_modules/zod/v4/locales/no.js
 var error32 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "å ha" },
@@ -29100,7 +29100,7 @@ function no_default() {
     localeError: error32()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ota.js
+// ../../node_modules/zod/v4/locales/ota.js
 var error33 = () => {
   const Sizable = {
     string: { unit: "harf", verb: "olmalıdır" },
@@ -29209,7 +29209,7 @@ function ota_default() {
     localeError: error33()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ps.js
+// ../../node_modules/zod/v4/locales/ps.js
 var error34 = () => {
   const Sizable = {
     string: { unit: "توکي", verb: "ولري" },
@@ -29323,7 +29323,7 @@ function ps_default() {
     localeError: error34()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/pl.js
+// ../../node_modules/zod/v4/locales/pl.js
 var error35 = () => {
   const Sizable = {
     string: { unit: "znaków", verb: "mieć" },
@@ -29432,7 +29432,7 @@ function pl_default() {
     localeError: error35()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/pt.js
+// ../../node_modules/zod/v4/locales/pt.js
 var error36 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "ter" },
@@ -29540,7 +29540,7 @@ function pt_default() {
     localeError: error36()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ro.js
+// ../../node_modules/zod/v4/locales/ro.js
 var error37 = () => {
   const Sizable = {
     string: { unit: "caractere", verb: "să aibă" },
@@ -29659,7 +29659,7 @@ function ro_default() {
     localeError: error37()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ru.js
+// ../../node_modules/zod/v4/locales/ru.js
 function getRussianPlural(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -29815,7 +29815,7 @@ function ru_default() {
     localeError: error38()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/sl.js
+// ../../node_modules/zod/v4/locales/sl.js
 var error39 = () => {
   const Sizable = {
     string: { unit: "znakov", verb: "imeti" },
@@ -29924,7 +29924,7 @@ function sl_default() {
     localeError: error39()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/sv.js
+// ../../node_modules/zod/v4/locales/sv.js
 var error40 = () => {
   const Sizable = {
     string: { unit: "tecken", verb: "att ha" },
@@ -30034,7 +30034,7 @@ function sv_default() {
     localeError: error40()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ta.js
+// ../../node_modules/zod/v4/locales/ta.js
 var error41 = () => {
   const Sizable = {
     string: { unit: "எழுத்துக்கள்", verb: "கொண்டிருக்க வேண்டும்" },
@@ -30144,7 +30144,7 @@ function ta_default() {
     localeError: error41()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/th.js
+// ../../node_modules/zod/v4/locales/th.js
 var error42 = () => {
   const Sizable = {
     string: { unit: "ตัวอักษร", verb: "ควรมี" },
@@ -30254,7 +30254,7 @@ function th_default() {
     localeError: error42()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/tr.js
+// ../../node_modules/zod/v4/locales/tr.js
 var error43 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "olmalı" },
@@ -30359,7 +30359,7 @@ function tr_default() {
     localeError: error43()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/uk.js
+// ../../node_modules/zod/v4/locales/uk.js
 var error44 = () => {
   const Sizable = {
     string: { unit: "символів", verb: "матиме" },
@@ -30468,11 +30468,11 @@ function uk_default() {
   };
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ua.js
+// ../../node_modules/zod/v4/locales/ua.js
 function ua_default() {
   return uk_default();
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/ur.js
+// ../../node_modules/zod/v4/locales/ur.js
 var error45 = () => {
   const Sizable = {
     string: { unit: "حروف", verb: "ہونا" },
@@ -30582,7 +30582,7 @@ function ur_default() {
     localeError: error45()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/uz.js
+// ../../node_modules/zod/v4/locales/uz.js
 var error46 = () => {
   const Sizable = {
     string: { unit: "belgi", verb: "bo‘lishi kerak" },
@@ -30692,7 +30692,7 @@ function uz_default() {
     localeError: error46()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/vi.js
+// ../../node_modules/zod/v4/locales/vi.js
 var error47 = () => {
   const Sizable = {
     string: { unit: "ký tự", verb: "có" },
@@ -30800,7 +30800,7 @@ function vi_default() {
     localeError: error47()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/zh-CN.js
+// ../../node_modules/zod/v4/locales/zh-CN.js
 var error48 = () => {
   const Sizable = {
     string: { unit: "字符", verb: "包含" },
@@ -30909,7 +30909,7 @@ function zh_CN_default() {
     localeError: error48()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/zh-TW.js
+// ../../node_modules/zod/v4/locales/zh-TW.js
 var error49 = () => {
   const Sizable = {
     string: { unit: "字元", verb: "擁有" },
@@ -31016,7 +31016,7 @@ function zh_TW_default() {
     localeError: error49()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/locales/yo.js
+// ../../node_modules/zod/v4/locales/yo.js
 var error50 = () => {
   const Sizable = {
     string: { unit: "àmi", verb: "ní" },
@@ -31123,7 +31123,7 @@ function yo_default() {
     localeError: error50()
   };
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/registries.js
+// ../../node_modules/zod/v4/core/registries.js
 var _a2;
 var $output = Symbol("ZodOutput");
 var $input = Symbol("ZodInput");
@@ -31173,7 +31173,7 @@ function registry() {
 }
 (_a2 = globalThis).__zod_globalRegistry ?? (_a2.__zod_globalRegistry = registry());
 var globalRegistry = globalThis.__zod_globalRegistry;
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/api.js
+// ../../node_modules/zod/v4/core/api.js
 function _string(Class2, params) {
   return new Class2({
     type: "string",
@@ -32093,7 +32093,7 @@ function _stringFormat(Class2, format, fnOrRegex, _params = {}) {
   const inst = new Class2(def);
   return inst;
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/to-json-schema.js
+// ../../node_modules/zod/v4/core/to-json-schema.js
 function initializeContext(params) {
   let target = params?.target ?? "draft-2020-12";
   if (target === "draft-4")
@@ -32445,7 +32445,7 @@ var createStandardJSONSchemaMethod = (schema, io, processors = {}) => (params) =
   extractDefs(ctx, schema);
   return finalize(ctx, schema);
 };
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/json-schema-processors.js
+// ../../node_modules/zod/v4/core/json-schema-processors.js
 var formatMap = {
   guid: "uuid",
   url: "uri",
@@ -32983,7 +32983,7 @@ function toJSONSchema(input, params) {
   extractDefs(ctx, input);
   return finalize(ctx, input);
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/json-schema-generator.js
+// ../../node_modules/zod/v4/core/json-schema-generator.js
 class JSONSchemaGenerator {
   get metadataRegistry() {
     return this.ctx.metadataRegistry;
@@ -33042,9 +33042,9 @@ class JSONSchemaGenerator {
     return plainResult;
   }
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/core/json-schema.js
+// ../../node_modules/zod/v4/core/json-schema.js
 var exports_json_schema = {};
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/mini/schemas.js
+// ../../node_modules/zod/v4/mini/schemas.js
 var ZodMiniType = /* @__PURE__ */ $constructor("ZodMiniType", (inst, def) => {
   if (!inst._zod)
     throw new Error("Uninitialized schema in ZodMiniType.");
@@ -33088,7 +33088,7 @@ function object(shape, params) {
   };
   return new ZodMiniObject(def);
 }
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/server/zod-compat.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/server/zod-compat.js
 function isZ4Schema(s) {
   const schema = s;
   return !!schema._zod;
@@ -33232,7 +33232,7 @@ function getLiteralValue(schema) {
   return;
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/external.js
+// ../../node_modules/zod/v4/classic/external.js
 var exports_external = {};
 __export(exports_external, {
   xor: () => xor,
@@ -33475,7 +33475,7 @@ __export(exports_external, {
   $brand: () => $brand
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/schemas.js
+// ../../node_modules/zod/v4/classic/schemas.js
 var exports_schemas2 = {};
 __export(exports_schemas2, {
   xor: () => xor,
@@ -33646,7 +33646,7 @@ __export(exports_schemas2, {
   ZodAny: () => ZodAny2
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/checks.js
+// ../../node_modules/zod/v4/classic/checks.js
 var exports_checks2 = {};
 __export(exports_checks2, {
   uppercase: () => _uppercase,
@@ -33680,7 +33680,7 @@ __export(exports_checks2, {
   endsWith: () => _endsWith
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/iso.js
+// ../../node_modules/zod/v4/classic/iso.js
 var exports_iso2 = {};
 __export(exports_iso2, {
   time: () => time2,
@@ -33721,7 +33721,7 @@ function duration2(params) {
   return _isoDuration(ZodISODuration, params);
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/errors.js
+// ../../node_modules/zod/v4/classic/errors.js
 var initializer2 = (inst, issues) => {
   $ZodError.init(inst, issues);
   inst.name = "ZodError";
@@ -33756,7 +33756,7 @@ var ZodRealError = /* @__PURE__ */ $constructor("ZodError", initializer2, {
   Parent: Error
 });
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/parse.js
+// ../../node_modules/zod/v4/classic/parse.js
 var parse4 = /* @__PURE__ */ _parse(ZodRealError);
 var parseAsync2 = /* @__PURE__ */ _parseAsync(ZodRealError);
 var safeParse3 = /* @__PURE__ */ _safeParse(ZodRealError);
@@ -33770,7 +33770,7 @@ var safeDecode2 = /* @__PURE__ */ _safeDecode(ZodRealError);
 var safeEncodeAsync2 = /* @__PURE__ */ _safeEncodeAsync(ZodRealError);
 var safeDecodeAsync2 = /* @__PURE__ */ _safeDecodeAsync(ZodRealError);
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/schemas.js
+// ../../node_modules/zod/v4/classic/schemas.js
 var _installedGroups = /* @__PURE__ */ new WeakMap;
 function _installLazyMethods(inst, group, methods) {
   const proto = Object.getPrototypeOf(inst);
@@ -35057,7 +35057,7 @@ function preprocess(fn, schema) {
     out: schema
   });
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/compat.js
+// ../../node_modules/zod/v4/classic/compat.js
 var ZodIssueCode2 = {
   invalid_type: "invalid_type",
   too_big: "too_big",
@@ -35081,7 +35081,7 @@ function getErrorMap2() {
 }
 var ZodFirstPartyTypeKind2;
 (function(ZodFirstPartyTypeKind3) {})(ZodFirstPartyTypeKind2 || (ZodFirstPartyTypeKind2 = {}));
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/from-json-schema.js
+// ../../node_modules/zod/v4/classic/from-json-schema.js
 var z = {
   ...exports_schemas2,
   ...exports_checks2,
@@ -35548,7 +35548,7 @@ function fromJSONSchema(schema, params) {
   };
   return convertSchema(normalized, ctx);
 }
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/coerce.js
+// ../../node_modules/zod/v4/classic/coerce.js
 var exports_coerce2 = {};
 __export(exports_coerce2, {
   string: () => string3,
@@ -35573,10 +35573,10 @@ function date4(params) {
   return _coercedDate(ZodDate2, params);
 }
 
-// ../../node_modules/.bun/zod@4.4.3/node_modules/zod/v4/classic/external.js
+// ../../node_modules/zod/v4/classic/external.js
 config(en_default2());
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/types.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/types.js
 var LATEST_PROTOCOL_VERSION = "2025-11-25";
 var SUPPORTED_PROTOCOL_VERSIONS = [LATEST_PROTOCOL_VERSION, "2025-06-18", "2025-03-26", "2024-11-05", "2024-10-07"];
 var RELATED_TASK_META_KEY = "io.modelcontextprotocol/related-task";
@@ -36421,12 +36421,12 @@ class UrlElicitationRequiredError extends McpError {
   }
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/interfaces.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/interfaces.js
 function isTerminal(status) {
   return status === "completed" || status === "failed" || status === "cancelled";
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/Options.js
+// ../../node_modules/zod-to-json-schema/dist/esm/Options.js
 var ignoreOverride = Symbol("Let zodToJsonSchema decide on which parser to use");
 var defaultOptions = {
   name: undefined,
@@ -36459,7 +36459,7 @@ var getDefaultOptions = (options) => typeof options === "string" ? {
   ...defaultOptions,
   ...options
 };
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/Refs.js
+// ../../node_modules/zod-to-json-schema/dist/esm/Refs.js
 var getRefs = (options) => {
   const _options = getDefaultOptions(options);
   const currentPath = _options.name !== undefined ? [..._options.basePath, _options.definitionPath, _options.name] : _options.basePath;
@@ -36478,7 +36478,7 @@ var getRefs = (options) => {
     ]))
   };
 };
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/errorMessages.js
+// ../../node_modules/zod-to-json-schema/dist/esm/errorMessages.js
 function addErrorMessage(res, key, errorMessage, refs) {
   if (!refs?.errorMessages)
     return;
@@ -36493,7 +36493,7 @@ function setResponseValueAndErrors(res, key, value, errorMessage, refs) {
   res[key] = value;
   addErrorMessage(res, key, errorMessage, refs);
 }
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/getRelativePath.js
+// ../../node_modules/zod-to-json-schema/dist/esm/getRelativePath.js
 var getRelativePath = (pathA, pathB) => {
   let i = 0;
   for (;i < pathA.length && i < pathB.length; i++) {
@@ -36502,7 +36502,7 @@ var getRelativePath = (pathA, pathB) => {
   }
   return [(pathA.length - i).toString(), ...pathB.slice(i)].join("/");
 };
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/any.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/any.js
 function parseAnyDef(refs) {
   if (refs.target !== "openAi") {
     return {};
@@ -36518,7 +36518,7 @@ function parseAnyDef(refs) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/array.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/array.js
 function parseArrayDef(def, refs) {
   const res = {
     type: "array"
@@ -36542,7 +36542,7 @@ function parseArrayDef(def, refs) {
   return res;
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/bigint.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/bigint.js
 function parseBigintDef(def, refs) {
   const res = {
     type: "integer",
@@ -36588,24 +36588,24 @@ function parseBigintDef(def, refs) {
   return res;
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/boolean.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/boolean.js
 function parseBooleanDef() {
   return {
     type: "boolean"
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/branded.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/branded.js
 function parseBrandedDef(_def, refs) {
   return parseDef(_def.type._def, refs);
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/catch.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/catch.js
 var parseCatchDef = (def, refs) => {
   return parseDef(def.innerType._def, refs);
 };
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/date.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/date.js
 function parseDateDef(def, refs, overrideDateStrategy) {
   const strategy = overrideDateStrategy ?? refs.dateStrategy;
   if (Array.isArray(strategy)) {
@@ -36650,7 +36650,7 @@ var integerDateParser = (def, refs) => {
   return res;
 };
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/default.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/default.js
 function parseDefaultDef(_def, refs) {
   return {
     ...parseDef(_def.innerType._def, refs),
@@ -36658,12 +36658,12 @@ function parseDefaultDef(_def, refs) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/effects.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/effects.js
 function parseEffectsDef(_def, refs) {
   return refs.effectStrategy === "input" ? parseDef(_def.schema._def, refs) : parseAnyDef(refs);
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/enum.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/enum.js
 function parseEnumDef(def) {
   return {
     type: "string",
@@ -36671,7 +36671,7 @@ function parseEnumDef(def) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/intersection.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/intersection.js
 var isJsonSchema7AllOfType = (type) => {
   if ("type" in type && type.type === "string")
     return false;
@@ -36713,7 +36713,7 @@ function parseIntersectionDef(def, refs) {
   } : undefined;
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/literal.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/literal.js
 function parseLiteralDef(def, refs) {
   const parsedType2 = typeof def.value;
   if (parsedType2 !== "bigint" && parsedType2 !== "number" && parsedType2 !== "boolean" && parsedType2 !== "string") {
@@ -36733,7 +36733,7 @@ function parseLiteralDef(def, refs) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/string.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/string.js
 var emojiRegex2 = undefined;
 var zodPatterns = {
   cuid: /^[cC][^\s-]{8,}$/,
@@ -37030,7 +37030,7 @@ function stringifyRegExpWithFlags(regex, refs) {
   return pattern;
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/record.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/record.js
 function parseRecordDef(def, refs) {
   if (refs.target === "openAi") {
     console.warn("Warning: OpenAI may not support records in schemas! Try an array of key-value pairs instead.");
@@ -37082,7 +37082,7 @@ function parseRecordDef(def, refs) {
   return schema;
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/map.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/map.js
 function parseMapDef(def, refs) {
   if (refs.mapStrategy === "record") {
     return parseRecordDef(def, refs);
@@ -37107,7 +37107,7 @@ function parseMapDef(def, refs) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/nativeEnum.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/nativeEnum.js
 function parseNativeEnumDef(def) {
   const object3 = def.values;
   const actualKeys = Object.keys(def.values).filter((key) => {
@@ -37121,7 +37121,7 @@ function parseNativeEnumDef(def) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/never.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/never.js
 function parseNeverDef(refs) {
   return refs.target === "openAi" ? undefined : {
     not: parseAnyDef({
@@ -37131,7 +37131,7 @@ function parseNeverDef(refs) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/null.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/null.js
 function parseNullDef(refs) {
   return refs.target === "openApi3" ? {
     enum: ["null"],
@@ -37141,7 +37141,7 @@ function parseNullDef(refs) {
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/union.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/union.js
 var primitiveMappings = {
   ZodString: "string",
   ZodNumber: "number",
@@ -37209,7 +37209,7 @@ var asAnyOf = (def, refs) => {
   return anyOf.length ? { anyOf } : undefined;
 };
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/nullable.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/nullable.js
 function parseNullableDef(def, refs) {
   if (["ZodString", "ZodNumber", "ZodBigInt", "ZodBoolean", "ZodNull"].includes(def.innerType._def.typeName) && (!def.innerType._def.checks || !def.innerType._def.checks.length)) {
     if (refs.target === "openApi3") {
@@ -37241,7 +37241,7 @@ function parseNullableDef(def, refs) {
   return base && { anyOf: [base, { type: "null" }] };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/number.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/number.js
 function parseNumberDef(def, refs) {
   const res = {
     type: "number"
@@ -37290,7 +37290,7 @@ function parseNumberDef(def, refs) {
   return res;
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/object.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/object.js
 function parseObjectDef(def, refs) {
   const forceOptionalIntoNullable = refs.target === "openAi";
   const result = {
@@ -37360,7 +37360,7 @@ function safeIsOptional(schema) {
   }
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/optional.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/optional.js
 var parseOptionalDef = (def, refs) => {
   if (refs.currentPath.toString() === refs.propertyPath?.toString()) {
     return parseDef(def.innerType._def, refs);
@@ -37379,7 +37379,7 @@ var parseOptionalDef = (def, refs) => {
   } : parseAnyDef(refs);
 };
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/pipeline.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/pipeline.js
 var parsePipelineDef = (def, refs) => {
   if (refs.pipeStrategy === "input") {
     return parseDef(def.in._def, refs);
@@ -37399,12 +37399,12 @@ var parsePipelineDef = (def, refs) => {
   };
 };
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/promise.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/promise.js
 function parsePromiseDef(def, refs) {
   return parseDef(def.type._def, refs);
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/set.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/set.js
 function parseSetDef(def, refs) {
   const items = parseDef(def.valueType._def, {
     ...refs,
@@ -37424,7 +37424,7 @@ function parseSetDef(def, refs) {
   return schema;
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/tuple.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/tuple.js
 function parseTupleDef(def, refs) {
   if (def.rest) {
     return {
@@ -37452,24 +37452,24 @@ function parseTupleDef(def, refs) {
   }
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/undefined.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/undefined.js
 function parseUndefinedDef(refs) {
   return {
     not: parseAnyDef(refs)
   };
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/unknown.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/unknown.js
 function parseUnknownDef(refs) {
   return parseAnyDef(refs);
 }
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parsers/readonly.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parsers/readonly.js
 var parseReadonlyDef = (def, refs) => {
   return parseDef(def.innerType._def, refs);
 };
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/selectParser.js
+// ../../node_modules/zod-to-json-schema/dist/esm/selectParser.js
 var selectParser = (def, typeName, refs) => {
   switch (typeName) {
     case ZodFirstPartyTypeKind.ZodString:
@@ -37547,7 +37547,7 @@ var selectParser = (def, typeName, refs) => {
   }
 };
 
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/parseDef.js
+// ../../node_modules/zod-to-json-schema/dist/esm/parseDef.js
 function parseDef(def, refs, forceResolution = false) {
   const seenItem = refs.seen.get(def);
   if (refs.override) {
@@ -37602,7 +37602,7 @@ var addMeta = (def, refs, jsonSchema) => {
   }
   return jsonSchema;
 };
-// ../../node_modules/.bun/zod-to-json-schema@3.25.2+68a1e3a0c4588df3/node_modules/zod-to-json-schema/dist/esm/zodToJsonSchema.js
+// ../../node_modules/zod-to-json-schema/dist/esm/zodToJsonSchema.js
 var zodToJsonSchema = (schema, options) => {
   const refs = getRefs(options);
   let definitions = typeof options === "object" && options.definitions ? Object.entries(options.definitions).reduce((acc, [name2, schema2]) => ({
@@ -37662,7 +37662,7 @@ var zodToJsonSchema = (schema, options) => {
   }
   return combined;
 };
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/server/zod-json-schema-compat.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/server/zod-json-schema-compat.js
 function mapMiniTarget(t) {
   if (!t)
     return "draft-7";
@@ -37704,7 +37704,7 @@ function parseWithCompat(schema, data) {
   return result.data;
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/shared/protocol.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/shared/protocol.js
 var DEFAULT_REQUEST_TIMEOUT_MSEC = 60000;
 
 class Protocol {
@@ -38545,7 +38545,7 @@ function mergeCapabilities(base, additional) {
   return result;
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/validation/ajv-provider.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/validation/ajv-provider.js
 var import_ajv = __toESM(require_ajv(), 1);
 var import_ajv_formats = __toESM(require_dist(), 1);
 function createDefaultAjvInstance() {
@@ -38585,7 +38585,7 @@ class AjvJsonSchemaValidator {
   }
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/server.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/server.js
 class ExperimentalServerTasks {
   constructor(_server) {
     this._server = _server;
@@ -38663,7 +38663,7 @@ class ExperimentalServerTasks {
   }
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/helpers.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/helpers.js
 function assertToolsCallTaskCapability(requests, method, entityName) {
   if (!requests) {
     throw new Error(`${entityName} does not support task creation (required for ${method})`);
@@ -38698,7 +38698,7 @@ function assertClientRequestTaskCapability(requests, method, entityName) {
   }
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/server/index.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/server/index.js
 class Server extends Protocol {
   constructor(_serverInfo, options) {
     super(options);
@@ -39031,7 +39031,7 @@ class Server extends Protocol {
   }
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/server/completable.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/server/completable.js
 var COMPLETABLE_SYMBOL = Symbol.for("mcp.completable");
 function isCompletable(schema) {
   return !!schema && typeof schema === "object" && COMPLETABLE_SYMBOL in schema;
@@ -39045,7 +39045,7 @@ var McpZodTypeKind;
   McpZodTypeKind2["Completable"] = "McpCompletable";
 })(McpZodTypeKind || (McpZodTypeKind = {}));
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/shared/toolNameValidation.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/shared/toolNameValidation.js
 var TOOL_NAME_REGEX = /^[A-Za-z0-9._-]{1,128}$/;
 function validateToolName(name) {
   const warnings = [];
@@ -39103,7 +39103,7 @@ function validateAndWarnToolName(name) {
   return result.isValid;
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/mcp-server.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/experimental/tasks/mcp-server.js
 class ExperimentalMcpServerTasks {
   constructor(_mcpServer) {
     this._mcpServer = _mcpServer;
@@ -39117,7 +39117,7 @@ class ExperimentalMcpServerTasks {
     return mcpServerInternal._createRegisteredTool(name, config2.title, config2.description, config2.inputSchema, config2.outputSchema, config2.annotations, execution, config2._meta, handler);
   }
 }
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.js
 class McpServer {
   constructor(serverInfo, options) {
     this._registeredResources = {};
@@ -39843,10 +39843,10 @@ var EMPTY_COMPLETION_RESULT = {
   }
 };
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/server/stdio.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/server/stdio.js
 var import_node_process = __toESM(require("node:process"));
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/shared/stdio.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/shared/stdio.js
 class ReadBuffer {
   append(chunk) {
     this._buffer = this._buffer ? Buffer.concat([this._buffer, chunk]) : chunk;
@@ -39876,7 +39876,7 @@ function serializeMessage(message) {
 `;
 }
 
-// ../../node_modules/.bun/@modelcontextprotocol+sdk@1.29.0+702d06f8eea47248/node_modules/@modelcontextprotocol/sdk/dist/esm/server/stdio.js
+// ../../node_modules/@modelcontextprotocol/sdk/dist/esm/server/stdio.js
 class StdioServerTransport {
   constructor(_stdin = import_node_process.default.stdin, _stdout = import_node_process.default.stdout) {
     this._stdin = _stdin;
@@ -39933,3782 +39933,6 @@ class StdioServerTransport {
     });
   }
 }
-// .codex-plugin/plugin.json
-var plugin_default = {
-  name: "zest",
-  version: "0.0.2",
-  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
-  author: {
-    name: "Zest",
-    email: "support@meetzest.com",
-    url: "https://meetzest.com"
-  },
-  homepage: "https://meetzest.com",
-  repository: "https://github.com/Winding-Labs/zest",
-  license: "MIT",
-  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
-  skills: "./skills/",
-  hooks: "./hooks/hooks.json",
-  mcpServers: "./.mcp.json",
-  interface: {
-    displayName: "Zest",
-    shortDescription: "AI workflow telemetry and standups for Codex.",
-    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
-    developerName: "Zest",
-    category: "Productivity",
-    capabilities: ["Interactive", "Read", "Write"],
-    websiteURL: "https://meetzest.com",
-    privacyPolicyURL: "https://meetzest.com/privacy",
-    termsOfServiceURL: "https://meetzest.com/terms",
-    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
-    brandColor: "#D4FF3D",
-    composerIcon: "./assets/zest-icon.svg",
-    logo: "./assets/zest.png",
-    screenshots: []
-  }
-};
-
-// ../../node_modules/.bun/open@10.2.0/node_modules/open/index.js
-var import_node_process7 = __toESM(require("node:process"));
-var import_node_buffer = require("node:buffer");
-var import_node_path = __toESM(require("node:path"));
-var import_node_url = require("node:url");
-var import_node_util5 = require("node:util");
-var import_node_child_process5 = __toESM(require("node:child_process"));
-var import_promises2 = __toESM(require("node:fs/promises"));
-
-// ../../node_modules/.bun/wsl-utils@0.1.0/node_modules/wsl-utils/index.js
-var import_node_process3 = __toESM(require("node:process"));
-var import_promises = __toESM(require("node:fs/promises"));
-
-// ../../node_modules/.bun/is-wsl@3.1.1/node_modules/is-wsl/index.js
-var import_node_process2 = __toESM(require("node:process"));
-var import_node_os = __toESM(require("node:os"));
-var import_node_fs3 = __toESM(require("node:fs"));
-
-// ../../node_modules/.bun/is-inside-container@1.0.0/node_modules/is-inside-container/index.js
-var import_node_fs2 = __toESM(require("node:fs"));
-
-// ../../node_modules/.bun/is-docker@3.0.0/node_modules/is-docker/index.js
-var import_node_fs = __toESM(require("node:fs"));
-var isDockerCached;
-function hasDockerEnv() {
-  try {
-    import_node_fs.default.statSync("/.dockerenv");
-    return true;
-  } catch {
-    return false;
-  }
-}
-function hasDockerCGroup() {
-  try {
-    return import_node_fs.default.readFileSync("/proc/self/cgroup", "utf8").includes("docker");
-  } catch {
-    return false;
-  }
-}
-function isDocker() {
-  if (isDockerCached === undefined) {
-    isDockerCached = hasDockerEnv() || hasDockerCGroup();
-  }
-  return isDockerCached;
-}
-
-// ../../node_modules/.bun/is-inside-container@1.0.0/node_modules/is-inside-container/index.js
-var cachedResult;
-var hasContainerEnv = () => {
-  try {
-    import_node_fs2.default.statSync("/run/.containerenv");
-    return true;
-  } catch {
-    return false;
-  }
-};
-function isInsideContainer() {
-  if (cachedResult === undefined) {
-    cachedResult = hasContainerEnv() || isDocker();
-  }
-  return cachedResult;
-}
-
-// ../../node_modules/.bun/is-wsl@3.1.1/node_modules/is-wsl/index.js
-var isWsl = () => {
-  if (import_node_process2.default.platform !== "linux") {
-    return false;
-  }
-  if (import_node_os.default.release().toLowerCase().includes("microsoft")) {
-    if (isInsideContainer()) {
-      return false;
-    }
-    return true;
-  }
-  try {
-    if (import_node_fs3.default.readFileSync("/proc/version", "utf8").toLowerCase().includes("microsoft")) {
-      return !isInsideContainer();
-    }
-  } catch {}
-  if (import_node_fs3.default.existsSync("/proc/sys/fs/binfmt_misc/WSLInterop") || import_node_fs3.default.existsSync("/run/WSL")) {
-    return !isInsideContainer();
-  }
-  return false;
-};
-var is_wsl_default = import_node_process2.default.env.__IS_WSL_TEST__ ? isWsl : isWsl();
-
-// ../../node_modules/.bun/wsl-utils@0.1.0/node_modules/wsl-utils/index.js
-var wslDrivesMountPoint = (() => {
-  const defaultMountPoint = "/mnt/";
-  let mountPoint;
-  return async function() {
-    if (mountPoint) {
-      return mountPoint;
-    }
-    const configFilePath = "/etc/wsl.conf";
-    let isConfigFileExists = false;
-    try {
-      await import_promises.default.access(configFilePath, import_promises.constants.F_OK);
-      isConfigFileExists = true;
-    } catch {}
-    if (!isConfigFileExists) {
-      return defaultMountPoint;
-    }
-    const configContent = await import_promises.default.readFile(configFilePath, { encoding: "utf8" });
-    const configMountPoint = /(?<!#.*)root\s*=\s*(?<mountPoint>.*)/g.exec(configContent);
-    if (!configMountPoint) {
-      return defaultMountPoint;
-    }
-    mountPoint = configMountPoint.groups.mountPoint.trim();
-    mountPoint = mountPoint.endsWith("/") ? mountPoint : `${mountPoint}/`;
-    return mountPoint;
-  };
-})();
-var powerShellPathFromWsl = async () => {
-  const mountPoint = await wslDrivesMountPoint();
-  return `${mountPoint}c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe`;
-};
-var powerShellPath = async () => {
-  if (is_wsl_default) {
-    return powerShellPathFromWsl();
-  }
-  return `${import_node_process3.default.env.SYSTEMROOT || import_node_process3.default.env.windir || String.raw`C:\Windows`}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`;
-};
-
-// ../../node_modules/.bun/define-lazy-prop@3.0.0/node_modules/define-lazy-prop/index.js
-function defineLazyProperty(object4, propertyName, valueGetter) {
-  const define2 = (value) => Object.defineProperty(object4, propertyName, { value, enumerable: true, writable: true });
-  Object.defineProperty(object4, propertyName, {
-    configurable: true,
-    enumerable: true,
-    get() {
-      const result = valueGetter();
-      define2(result);
-      return result;
-    },
-    set(value) {
-      define2(value);
-    }
-  });
-  return object4;
-}
-
-// ../../node_modules/.bun/default-browser@5.5.0/node_modules/default-browser/index.js
-var import_node_util4 = require("node:util");
-var import_node_process6 = __toESM(require("node:process"));
-var import_node_child_process4 = require("node:child_process");
-
-// ../../node_modules/.bun/default-browser-id@5.0.1/node_modules/default-browser-id/index.js
-var import_node_util = require("node:util");
-var import_node_process4 = __toESM(require("node:process"));
-var import_node_child_process = require("node:child_process");
-var execFileAsync = import_node_util.promisify(import_node_child_process.execFile);
-async function defaultBrowserId() {
-  if (import_node_process4.default.platform !== "darwin") {
-    throw new Error("macOS only");
-  }
-  const { stdout } = await execFileAsync("defaults", ["read", "com.apple.LaunchServices/com.apple.launchservices.secure", "LSHandlers"]);
-  const match = /LSHandlerRoleAll = "(?!-)(?<id>[^"]+?)";\s+?LSHandlerURLScheme = (?:http|https);/.exec(stdout);
-  const browserId = match?.groups.id ?? "com.apple.Safari";
-  if (browserId === "com.apple.safari") {
-    return "com.apple.Safari";
-  }
-  return browserId;
-}
-
-// ../../node_modules/.bun/run-applescript@7.1.0/node_modules/run-applescript/index.js
-var import_node_process5 = __toESM(require("node:process"));
-var import_node_util2 = require("node:util");
-var import_node_child_process2 = require("node:child_process");
-var execFileAsync2 = import_node_util2.promisify(import_node_child_process2.execFile);
-async function runAppleScript(script, { humanReadableOutput = true, signal } = {}) {
-  if (import_node_process5.default.platform !== "darwin") {
-    throw new Error("macOS only");
-  }
-  const outputArguments = humanReadableOutput ? [] : ["-ss"];
-  const execOptions = {};
-  if (signal) {
-    execOptions.signal = signal;
-  }
-  const { stdout } = await execFileAsync2("osascript", ["-e", script, outputArguments], execOptions);
-  return stdout.trim();
-}
-
-// ../../node_modules/.bun/bundle-name@4.1.0/node_modules/bundle-name/index.js
-async function bundleName(bundleId) {
-  return runAppleScript(`tell application "Finder" to set app_path to application file id "${bundleId}" as string
-tell application "System Events" to get value of property list item "CFBundleName" of property list file (app_path & ":Contents:Info.plist")`);
-}
-
-// ../../node_modules/.bun/default-browser@5.5.0/node_modules/default-browser/windows.js
-var import_node_util3 = require("node:util");
-var import_node_child_process3 = require("node:child_process");
-var execFileAsync3 = import_node_util3.promisify(import_node_child_process3.execFile);
-var windowsBrowserProgIds = {
-  MSEdgeHTM: { name: "Edge", id: "com.microsoft.edge" },
-  MSEdgeBHTML: { name: "Edge Beta", id: "com.microsoft.edge.beta" },
-  MSEdgeDHTML: { name: "Edge Dev", id: "com.microsoft.edge.dev" },
-  AppXq0fevzme2pys62n3e0fbqa7peapykr8v: { name: "Edge", id: "com.microsoft.edge.old" },
-  ChromeHTML: { name: "Chrome", id: "com.google.chrome" },
-  ChromeBHTML: { name: "Chrome Beta", id: "com.google.chrome.beta" },
-  ChromeDHTML: { name: "Chrome Dev", id: "com.google.chrome.dev" },
-  ChromiumHTM: { name: "Chromium", id: "org.chromium.Chromium" },
-  BraveHTML: { name: "Brave", id: "com.brave.Browser" },
-  BraveBHTML: { name: "Brave Beta", id: "com.brave.Browser.beta" },
-  BraveDHTML: { name: "Brave Dev", id: "com.brave.Browser.dev" },
-  BraveSSHTM: { name: "Brave Nightly", id: "com.brave.Browser.nightly" },
-  FirefoxURL: { name: "Firefox", id: "org.mozilla.firefox" },
-  OperaStable: { name: "Opera", id: "com.operasoftware.Opera" },
-  VivaldiHTM: { name: "Vivaldi", id: "com.vivaldi.Vivaldi" },
-  "IE.HTTP": { name: "Internet Explorer", id: "com.microsoft.ie" }
-};
-var _windowsBrowserProgIdMap = new Map(Object.entries(windowsBrowserProgIds));
-
-class UnknownBrowserError extends Error {
-}
-async function defaultBrowser(_execFileAsync = execFileAsync3) {
-  const { stdout } = await _execFileAsync("reg", [
-    "QUERY",
-    " HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\http\\UserChoice",
-    "/v",
-    "ProgId"
-  ]);
-  const match = /ProgId\s*REG_SZ\s*(?<id>\S+)/.exec(stdout);
-  if (!match) {
-    throw new UnknownBrowserError(`Cannot find Windows browser in stdout: ${JSON.stringify(stdout)}`);
-  }
-  const { id } = match.groups;
-  const dotIndex = id.lastIndexOf(".");
-  const hyphenIndex = id.lastIndexOf("-");
-  const baseIdByDot = dotIndex === -1 ? undefined : id.slice(0, dotIndex);
-  const baseIdByHyphen = hyphenIndex === -1 ? undefined : id.slice(0, hyphenIndex);
-  return windowsBrowserProgIds[id] ?? windowsBrowserProgIds[baseIdByDot] ?? windowsBrowserProgIds[baseIdByHyphen] ?? { name: id, id };
-}
-
-// ../../node_modules/.bun/default-browser@5.5.0/node_modules/default-browser/index.js
-var execFileAsync4 = import_node_util4.promisify(import_node_child_process4.execFile);
-var titleize = (string5) => string5.toLowerCase().replaceAll(/(?:^|\s|-)\S/g, (x) => x.toUpperCase());
-async function defaultBrowser2() {
-  if (import_node_process6.default.platform === "darwin") {
-    const id = await defaultBrowserId();
-    const name = await bundleName(id);
-    return { name, id };
-  }
-  if (import_node_process6.default.platform === "linux") {
-    const { stdout } = await execFileAsync4("xdg-mime", ["query", "default", "x-scheme-handler/http"]);
-    const id = stdout.trim();
-    const name = titleize(id.replace(/.desktop$/, "").replace("-", " "));
-    return { name, id };
-  }
-  if (import_node_process6.default.platform === "win32") {
-    return defaultBrowser();
-  }
-  throw new Error("Only macOS, Linux, and Windows are supported");
-}
-
-// ../../node_modules/.bun/open@10.2.0/node_modules/open/index.js
-var execFile5 = import_node_util5.promisify(import_node_child_process5.default.execFile);
-var __dirname2 = import_node_path.default.dirname(import_node_url.fileURLToPath("file:///home/runner/work/zest/zest/monorepo/node_modules/.bun/open@10.2.0/node_modules/open/index.js"));
-var localXdgOpenPath = import_node_path.default.join(__dirname2, "xdg-open");
-var { platform, arch } = import_node_process7.default;
-async function getWindowsDefaultBrowserFromWsl() {
-  const powershellPath = await powerShellPath();
-  const rawCommand = String.raw`(Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice").ProgId`;
-  const encodedCommand = import_node_buffer.Buffer.from(rawCommand, "utf16le").toString("base64");
-  const { stdout } = await execFile5(powershellPath, [
-    "-NoProfile",
-    "-NonInteractive",
-    "-ExecutionPolicy",
-    "Bypass",
-    "-EncodedCommand",
-    encodedCommand
-  ], { encoding: "utf8" });
-  const progId = stdout.trim();
-  const browserMap = {
-    ChromeHTML: "com.google.chrome",
-    BraveHTML: "com.brave.Browser",
-    MSEdgeHTM: "com.microsoft.edge",
-    FirefoxURL: "org.mozilla.firefox"
-  };
-  return browserMap[progId] ? { id: browserMap[progId] } : {};
-}
-var pTryEach = async (array3, mapper) => {
-  let latestError;
-  for (const item of array3) {
-    try {
-      return await mapper(item);
-    } catch (error51) {
-      latestError = error51;
-    }
-  }
-  throw latestError;
-};
-var baseOpen = async (options) => {
-  options = {
-    wait: false,
-    background: false,
-    newInstance: false,
-    allowNonzeroExitCode: false,
-    ...options
-  };
-  if (Array.isArray(options.app)) {
-    return pTryEach(options.app, (singleApp) => baseOpen({
-      ...options,
-      app: singleApp
-    }));
-  }
-  let { name: app, arguments: appArguments = [] } = options.app ?? {};
-  appArguments = [...appArguments];
-  if (Array.isArray(app)) {
-    return pTryEach(app, (appName) => baseOpen({
-      ...options,
-      app: {
-        name: appName,
-        arguments: appArguments
-      }
-    }));
-  }
-  if (app === "browser" || app === "browserPrivate") {
-    const ids = {
-      "com.google.chrome": "chrome",
-      "google-chrome.desktop": "chrome",
-      "com.brave.Browser": "brave",
-      "org.mozilla.firefox": "firefox",
-      "firefox.desktop": "firefox",
-      "com.microsoft.msedge": "edge",
-      "com.microsoft.edge": "edge",
-      "com.microsoft.edgemac": "edge",
-      "microsoft-edge.desktop": "edge"
-    };
-    const flags = {
-      chrome: "--incognito",
-      brave: "--incognito",
-      firefox: "--private-window",
-      edge: "--inPrivate"
-    };
-    const browser = is_wsl_default ? await getWindowsDefaultBrowserFromWsl() : await defaultBrowser2();
-    if (browser.id in ids) {
-      const browserName = ids[browser.id];
-      if (app === "browserPrivate") {
-        appArguments.push(flags[browserName]);
-      }
-      return baseOpen({
-        ...options,
-        app: {
-          name: apps[browserName],
-          arguments: appArguments
-        }
-      });
-    }
-    throw new Error(`${browser.name} is not supported as a default browser`);
-  }
-  let command;
-  const cliArguments = [];
-  const childProcessOptions = {};
-  if (platform === "darwin") {
-    command = "open";
-    if (options.wait) {
-      cliArguments.push("--wait-apps");
-    }
-    if (options.background) {
-      cliArguments.push("--background");
-    }
-    if (options.newInstance) {
-      cliArguments.push("--new");
-    }
-    if (app) {
-      cliArguments.push("-a", app);
-    }
-  } else if (platform === "win32" || is_wsl_default && !isInsideContainer() && !app) {
-    command = await powerShellPath();
-    cliArguments.push("-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-EncodedCommand");
-    if (!is_wsl_default) {
-      childProcessOptions.windowsVerbatimArguments = true;
-    }
-    const encodedArguments = ["Start"];
-    if (options.wait) {
-      encodedArguments.push("-Wait");
-    }
-    if (app) {
-      encodedArguments.push(`"\`"${app}\`""`);
-      if (options.target) {
-        appArguments.push(options.target);
-      }
-    } else if (options.target) {
-      encodedArguments.push(`"${options.target}"`);
-    }
-    if (appArguments.length > 0) {
-      appArguments = appArguments.map((argument) => `"\`"${argument}\`""`);
-      encodedArguments.push("-ArgumentList", appArguments.join(","));
-    }
-    options.target = import_node_buffer.Buffer.from(encodedArguments.join(" "), "utf16le").toString("base64");
-  } else {
-    if (app) {
-      command = app;
-    } else {
-      const isBundled = !__dirname2 || __dirname2 === "/";
-      let exeLocalXdgOpen = false;
-      try {
-        await import_promises2.default.access(localXdgOpenPath, import_promises2.constants.X_OK);
-        exeLocalXdgOpen = true;
-      } catch {}
-      const useSystemXdgOpen = import_node_process7.default.versions.electron ?? (platform === "android" || isBundled || !exeLocalXdgOpen);
-      command = useSystemXdgOpen ? "xdg-open" : localXdgOpenPath;
-    }
-    if (appArguments.length > 0) {
-      cliArguments.push(...appArguments);
-    }
-    if (!options.wait) {
-      childProcessOptions.stdio = "ignore";
-      childProcessOptions.detached = true;
-    }
-  }
-  if (platform === "darwin" && appArguments.length > 0) {
-    cliArguments.push("--args", ...appArguments);
-  }
-  if (options.target) {
-    cliArguments.push(options.target);
-  }
-  const subprocess = import_node_child_process5.default.spawn(command, cliArguments, childProcessOptions);
-  if (options.wait) {
-    return new Promise((resolve, reject) => {
-      subprocess.once("error", reject);
-      subprocess.once("close", (exitCode) => {
-        if (!options.allowNonzeroExitCode && exitCode > 0) {
-          reject(new Error(`Exited with code ${exitCode}`));
-          return;
-        }
-        resolve(subprocess);
-      });
-    });
-  }
-  subprocess.unref();
-  return subprocess;
-};
-var open = (target, options) => {
-  if (typeof target !== "string") {
-    throw new TypeError("Expected a `target`");
-  }
-  return baseOpen({
-    ...options,
-    target
-  });
-};
-function detectArchBinary(binary) {
-  if (typeof binary === "string" || Array.isArray(binary)) {
-    return binary;
-  }
-  const { [arch]: archBinary } = binary;
-  if (!archBinary) {
-    throw new Error(`${arch} is not supported`);
-  }
-  return archBinary;
-}
-function detectPlatformBinary({ [platform]: platformBinary }, { wsl }) {
-  if (wsl && is_wsl_default) {
-    return detectArchBinary(wsl);
-  }
-  if (!platformBinary) {
-    throw new Error(`${platform} is not supported`);
-  }
-  return detectArchBinary(platformBinary);
-}
-var apps = {};
-defineLazyProperty(apps, "chrome", () => detectPlatformBinary({
-  darwin: "google chrome",
-  win32: "chrome",
-  linux: ["google-chrome", "google-chrome-stable", "chromium"]
-}, {
-  wsl: {
-    ia32: "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe",
-    x64: ["/mnt/c/Program Files/Google/Chrome/Application/chrome.exe", "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"]
-  }
-}));
-defineLazyProperty(apps, "brave", () => detectPlatformBinary({
-  darwin: "brave browser",
-  win32: "brave",
-  linux: ["brave-browser", "brave"]
-}, {
-  wsl: {
-    ia32: "/mnt/c/Program Files (x86)/BraveSoftware/Brave-Browser/Application/brave.exe",
-    x64: ["/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe", "/mnt/c/Program Files (x86)/BraveSoftware/Brave-Browser/Application/brave.exe"]
-  }
-}));
-defineLazyProperty(apps, "firefox", () => detectPlatformBinary({
-  darwin: "firefox",
-  win32: String.raw`C:\Program Files\Mozilla Firefox\firefox.exe`,
-  linux: "firefox"
-}, {
-  wsl: "/mnt/c/Program Files/Mozilla Firefox/firefox.exe"
-}));
-defineLazyProperty(apps, "edge", () => detectPlatformBinary({
-  darwin: "microsoft edge",
-  win32: "msedge",
-  linux: ["microsoft-edge", "microsoft-edge-dev"]
-}, {
-  wsl: "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
-}));
-defineLazyProperty(apps, "browser", () => "browser");
-defineLazyProperty(apps, "browserPrivate", () => "browserPrivate");
-var open_default = open;
-
-// src/config/constants.ts
-function resolveConfigValue({
-  bundledValue,
-  runtimeValue,
-  fallback
-}) {
-  if (typeof bundledValue === "string" && bundledValue.length > 0) {
-    return bundledValue;
-  }
-  if (typeof runtimeValue === "string" && runtimeValue.length > 0) {
-    return runtimeValue;
-  }
-  return fallback;
-}
-var CLIENT_ID = "codex-cli";
-var WEB_APP_URL = resolveConfigValue({
-  bundledValue: "https://app.meetzest.com",
-  runtimeValue: process.env.ZEST_WEB_APP_URL,
-  fallback: "http://localhost:3000"
-});
-var SUPABASE_URL = resolveConfigValue({
-  bundledValue: "https://fnnlebrtmlxxjwdvngck.supabase.co",
-  runtimeValue: process.env.ZEST_SUPABASE_URL,
-  fallback: ""
-});
-var SUPABASE_ANON_KEY = resolveConfigValue({
-  bundledValue: "sb_publishable_gJsE8TaVHipVQfLNDFV3tA_z7SRAZBY",
-  runtimeValue: process.env.ZEST_SUPABASE_ANON_KEY,
-  fallback: ""
-});
-var DEBUG_MODE_ENABLED = resolveConfigValue({
-  bundledValue: "",
-  runtimeValue: process.env.ZEST_CODEX_DEBUG,
-  fallback: ""
-}) === "1";
-if (DEBUG_MODE_ENABLED) {
-  console.warn("[zest-codex] WARNING: Debug mode is active. URLs point to localhost. Do not use in production.");
-}
-var SYNC_DEBUG_LOGGING_ENABLED = resolveConfigValue({
-  bundledValue: "",
-  runtimeValue: process.env.ZEST_CODEX_ENABLE_LOGS,
-  fallback: ""
-}) === "1";
-var PLATFORM_TERMINAL = "terminal";
-var PLATFORM_CODEX_APP = "codex-app";
-var SOURCE = "codex";
-var DEVICE_AUTH_INITIATE_PATH = "/api/auth/device/initiate";
-var DEVICE_AUTH_POLL_PATH = "/api/auth/device/poll";
-
-// ../../node_modules/.bun/@supabase+supabase-js@2.105.4/node_modules/@supabase/supabase-js/dist/index.mjs
-var exports_dist3 = {};
-__export(exports_dist3, {
-  createClient: () => createClient,
-  SupabaseClient: () => SupabaseClient,
-  StorageApiError: () => StorageApiError,
-  PostgrestError: () => PostgrestError,
-  FunctionsRelayError: () => import_functions_js.FunctionsRelayError,
-  FunctionsHttpError: () => import_functions_js.FunctionsHttpError,
-  FunctionsFetchError: () => import_functions_js.FunctionsFetchError,
-  FunctionsError: () => import_functions_js.FunctionsError,
-  FunctionRegion: () => import_functions_js.FunctionRegion
-});
-var import_functions_js = __toESM(require_main(), 1);
-
-// ../../node_modules/.bun/@supabase+postgrest-js@2.105.4/node_modules/@supabase/postgrest-js/dist/index.mjs
-var exports_dist = {};
-__export(exports_dist, {
-  default: () => src_default,
-  PostgrestTransformBuilder: () => PostgrestTransformBuilder,
-  PostgrestQueryBuilder: () => PostgrestQueryBuilder,
-  PostgrestFilterBuilder: () => PostgrestFilterBuilder,
-  PostgrestError: () => PostgrestError,
-  PostgrestClient: () => PostgrestClient,
-  PostgrestBuilder: () => PostgrestBuilder
-});
-var DEFAULT_MAX_RETRIES = 3;
-var getRetryDelay = (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000);
-var RETRYABLE_STATUS_CODES = [520, 503];
-var RETRYABLE_METHODS = [
-  "GET",
-  "HEAD",
-  "OPTIONS"
-];
-var PostgrestError = class extends Error {
-  constructor(context) {
-    super(context.message);
-    this.name = "PostgrestError";
-    this.details = context.details;
-    this.hint = context.hint;
-    this.code = context.code;
-  }
-  toJSON() {
-    return {
-      name: this.name,
-      message: this.message,
-      details: this.details,
-      hint: this.hint,
-      code: this.code
-    };
-  }
-};
-function sleep(ms, signal) {
-  return new Promise((resolve) => {
-    if (signal === null || signal === undefined ? undefined : signal.aborted) {
-      resolve();
-      return;
-    }
-    const id = setTimeout(() => {
-      signal === null || signal === undefined || signal.removeEventListener("abort", onAbort);
-      resolve();
-    }, ms);
-    function onAbort() {
-      clearTimeout(id);
-      resolve();
-    }
-    signal === null || signal === undefined || signal.addEventListener("abort", onAbort);
-  });
-}
-function shouldRetry(method, status, attemptCount, retryEnabled) {
-  if (!retryEnabled || attemptCount >= DEFAULT_MAX_RETRIES)
-    return false;
-  if (!RETRYABLE_METHODS.includes(method))
-    return false;
-  if (!RETRYABLE_STATUS_CODES.includes(status))
-    return false;
-  return true;
-}
-var PostgrestBuilder = class {
-  constructor(builder) {
-    var _builder$shouldThrowO, _builder$isMaybeSingl, _builder$shouldStripN, _builder$urlLengthLim, _builder$retry;
-    this.shouldThrowOnError = false;
-    this.retryEnabled = true;
-    this.method = builder.method;
-    this.url = builder.url;
-    this.headers = new Headers(builder.headers);
-    this.schema = builder.schema;
-    this.body = builder.body;
-    this.shouldThrowOnError = (_builder$shouldThrowO = builder.shouldThrowOnError) !== null && _builder$shouldThrowO !== undefined ? _builder$shouldThrowO : false;
-    this.signal = builder.signal;
-    this.isMaybeSingle = (_builder$isMaybeSingl = builder.isMaybeSingle) !== null && _builder$isMaybeSingl !== undefined ? _builder$isMaybeSingl : false;
-    this.shouldStripNulls = (_builder$shouldStripN = builder.shouldStripNulls) !== null && _builder$shouldStripN !== undefined ? _builder$shouldStripN : false;
-    this.urlLengthLimit = (_builder$urlLengthLim = builder.urlLengthLimit) !== null && _builder$urlLengthLim !== undefined ? _builder$urlLengthLim : 8000;
-    this.retryEnabled = (_builder$retry = builder.retry) !== null && _builder$retry !== undefined ? _builder$retry : true;
-    if (builder.fetch)
-      this.fetch = builder.fetch;
-    else
-      this.fetch = fetch;
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  stripNulls() {
-    if (this.headers.get("Accept") === "text/csv")
-      throw new Error("stripNulls() cannot be used with csv()");
-    this.shouldStripNulls = true;
-    return this;
-  }
-  setHeader(name, value) {
-    this.headers = new Headers(this.headers);
-    this.headers.set(name, value);
-    return this;
-  }
-  retry(enabled) {
-    this.retryEnabled = enabled;
-    return this;
-  }
-  then(onfulfilled, onrejected) {
-    var _this = this;
-    if (this.schema === undefined) {} else if (["GET", "HEAD"].includes(this.method))
-      this.headers.set("Accept-Profile", this.schema);
-    else
-      this.headers.set("Content-Profile", this.schema);
-    if (this.method !== "GET" && this.method !== "HEAD")
-      this.headers.set("Content-Type", "application/json");
-    if (this.shouldStripNulls) {
-      const currentAccept = this.headers.get("Accept");
-      if (currentAccept === "application/vnd.pgrst.object+json")
-        this.headers.set("Accept", "application/vnd.pgrst.object+json;nulls=stripped");
-      else if (!currentAccept || currentAccept === "application/json")
-        this.headers.set("Accept", "application/vnd.pgrst.array+json;nulls=stripped");
-    }
-    const _fetch = this.fetch;
-    const executeWithRetry = async () => {
-      let attemptCount = 0;
-      while (true) {
-        const requestHeaders = new Headers(_this.headers);
-        if (attemptCount > 0)
-          requestHeaders.set("X-Retry-Count", String(attemptCount));
-        let res$1;
-        try {
-          res$1 = await _fetch(_this.url.toString(), {
-            method: _this.method,
-            headers: requestHeaders,
-            body: JSON.stringify(_this.body, (_, value) => typeof value === "bigint" ? value.toString() : value),
-            signal: _this.signal
-          });
-        } catch (fetchError) {
-          if ((fetchError === null || fetchError === undefined ? undefined : fetchError.name) === "AbortError" || (fetchError === null || fetchError === undefined ? undefined : fetchError.code) === "ABORT_ERR")
-            throw fetchError;
-          if (!RETRYABLE_METHODS.includes(_this.method))
-            throw fetchError;
-          if (_this.retryEnabled && attemptCount < DEFAULT_MAX_RETRIES) {
-            const delay = getRetryDelay(attemptCount);
-            attemptCount++;
-            await sleep(delay, _this.signal);
-            continue;
-          }
-          throw fetchError;
-        }
-        if (shouldRetry(_this.method, res$1.status, attemptCount, _this.retryEnabled)) {
-          var _res$headers$get, _res$headers;
-          const retryAfterHeader = (_res$headers$get = (_res$headers = res$1.headers) === null || _res$headers === undefined ? undefined : _res$headers.get("Retry-After")) !== null && _res$headers$get !== undefined ? _res$headers$get : null;
-          const delay = retryAfterHeader !== null ? Math.max(0, parseInt(retryAfterHeader, 10) || 0) * 1000 : getRetryDelay(attemptCount);
-          await res$1.text();
-          attemptCount++;
-          await sleep(delay, _this.signal);
-          continue;
-        }
-        return await _this.processResponse(res$1);
-      }
-    };
-    let res = executeWithRetry();
-    if (!this.shouldThrowOnError)
-      res = res.catch((fetchError) => {
-        var _fetchError$name2;
-        let errorDetails = "";
-        let hint = "";
-        let code = "";
-        const cause = fetchError === null || fetchError === undefined ? undefined : fetchError.cause;
-        if (cause) {
-          var _cause$message, _cause$code, _fetchError$name, _cause$name;
-          const causeMessage = (_cause$message = cause === null || cause === undefined ? undefined : cause.message) !== null && _cause$message !== undefined ? _cause$message : "";
-          const causeCode = (_cause$code = cause === null || cause === undefined ? undefined : cause.code) !== null && _cause$code !== undefined ? _cause$code : "";
-          errorDetails = `${(_fetchError$name = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name !== undefined ? _fetchError$name : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`;
-          errorDetails += `
-
-Caused by: ${(_cause$name = cause === null || cause === undefined ? undefined : cause.name) !== null && _cause$name !== undefined ? _cause$name : "Error"}: ${causeMessage}`;
-          if (causeCode)
-            errorDetails += ` (${causeCode})`;
-          if (cause === null || cause === undefined ? undefined : cause.stack)
-            errorDetails += `
-${cause.stack}`;
-        } else {
-          var _fetchError$stack;
-          errorDetails = (_fetchError$stack = fetchError === null || fetchError === undefined ? undefined : fetchError.stack) !== null && _fetchError$stack !== undefined ? _fetchError$stack : "";
-        }
-        const urlLength = this.url.toString().length;
-        if ((fetchError === null || fetchError === undefined ? undefined : fetchError.name) === "AbortError" || (fetchError === null || fetchError === undefined ? undefined : fetchError.code) === "ABORT_ERR") {
-          code = "";
-          hint = "Request was aborted (timeout or manual cancellation)";
-          if (urlLength > this.urlLengthLimit)
-            hint += `. Note: Your request URL is ${urlLength} characters, which may exceed server limits. If selecting many fields, consider using views. If filtering with large arrays (e.g., .in('id', [many IDs])), consider using an RPC function to pass values server-side.`;
-        } else if ((cause === null || cause === undefined ? undefined : cause.name) === "HeadersOverflowError" || (cause === null || cause === undefined ? undefined : cause.code) === "UND_ERR_HEADERS_OVERFLOW") {
-          code = "";
-          hint = "HTTP headers exceeded server limits (typically 16KB)";
-          if (urlLength > this.urlLengthLimit)
-            hint += `. Your request URL is ${urlLength} characters. If selecting many fields, consider using views. If filtering with large arrays (e.g., .in('id', [200+ IDs])), consider using an RPC function instead.`;
-        }
-        return {
-          success: false,
-          error: {
-            message: `${(_fetchError$name2 = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name2 !== undefined ? _fetchError$name2 : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`,
-            details: errorDetails,
-            hint,
-            code
-          },
-          data: null,
-          count: null,
-          status: 0,
-          statusText: ""
-        };
-      });
-    return res.then(onfulfilled, onrejected);
-  }
-  async processResponse(res) {
-    var _this2 = this;
-    let error51 = null;
-    let data = null;
-    let count = null;
-    let status = res.status;
-    let statusText = res.statusText;
-    if (res.ok) {
-      var _this$headers$get2, _res$headers$get2;
-      if (_this2.method !== "HEAD") {
-        var _this$headers$get;
-        const body = await res.text();
-        if (body === "") {} else if (_this2.headers.get("Accept") === "text/csv")
-          data = body;
-        else if (_this2.headers.get("Accept") && ((_this$headers$get = _this2.headers.get("Accept")) === null || _this$headers$get === undefined ? undefined : _this$headers$get.includes("application/vnd.pgrst.plan+text")))
-          data = body;
-        else
-          data = JSON.parse(body);
-      }
-      const countHeader = (_this$headers$get2 = _this2.headers.get("Prefer")) === null || _this$headers$get2 === undefined ? undefined : _this$headers$get2.match(/count=(exact|planned|estimated)/);
-      const contentRange = (_res$headers$get2 = res.headers.get("content-range")) === null || _res$headers$get2 === undefined ? undefined : _res$headers$get2.split("/");
-      if (countHeader && contentRange && contentRange.length > 1)
-        count = parseInt(contentRange[1]);
-      if (_this2.isMaybeSingle && Array.isArray(data))
-        if (data.length > 1) {
-          error51 = {
-            code: "PGRST116",
-            details: `Results contain ${data.length} rows, application/vnd.pgrst.object+json requires 1 row`,
-            hint: null,
-            message: "JSON object requested, multiple (or no) rows returned"
-          };
-          data = null;
-          count = null;
-          status = 406;
-          statusText = "Not Acceptable";
-        } else if (data.length === 1)
-          data = data[0];
-        else
-          data = null;
-    } else {
-      const body = await res.text();
-      try {
-        error51 = JSON.parse(body);
-        if (Array.isArray(error51) && res.status === 404) {
-          data = [];
-          error51 = null;
-          status = 200;
-          statusText = "OK";
-        }
-      } catch (_unused) {
-        if (res.status === 404 && body === "") {
-          status = 204;
-          statusText = "No Content";
-        } else
-          error51 = { message: body };
-      }
-      if (error51 && _this2.shouldThrowOnError)
-        throw new PostgrestError(error51);
-    }
-    return {
-      success: error51 === null,
-      error: error51,
-      data,
-      count,
-      status,
-      statusText
-    };
-  }
-  returns() {
-    return this;
-  }
-  overrideTypes() {
-    return this;
-  }
-};
-var PostgrestTransformBuilder = class extends PostgrestBuilder {
-  select(columns) {
-    let quoted = false;
-    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
-      if (/\s/.test(c) && !quoted)
-        return "";
-      if (c === '"')
-        quoted = !quoted;
-      return c;
-    }).join("");
-    this.url.searchParams.set("select", cleanedColumns);
-    this.headers.append("Prefer", "return=representation");
-    return this;
-  }
-  order(column, { ascending = true, nullsFirst, foreignTable, referencedTable = foreignTable } = {}) {
-    const key = referencedTable ? `${referencedTable}.order` : "order";
-    const existingOrder = this.url.searchParams.get(key);
-    this.url.searchParams.set(key, `${existingOrder ? `${existingOrder},` : ""}${column}.${ascending ? "asc" : "desc"}${nullsFirst === undefined ? "" : nullsFirst ? ".nullsfirst" : ".nullslast"}`);
-    return this;
-  }
-  limit(count, { foreignTable, referencedTable = foreignTable } = {}) {
-    const key = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
-    this.url.searchParams.set(key, `${count}`);
-    return this;
-  }
-  range(from, to, { foreignTable, referencedTable = foreignTable } = {}) {
-    const keyOffset = typeof referencedTable === "undefined" ? "offset" : `${referencedTable}.offset`;
-    const keyLimit = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
-    this.url.searchParams.set(keyOffset, `${from}`);
-    this.url.searchParams.set(keyLimit, `${to - from + 1}`);
-    return this;
-  }
-  abortSignal(signal) {
-    this.signal = signal;
-    return this;
-  }
-  single() {
-    this.headers.set("Accept", "application/vnd.pgrst.object+json");
-    return this;
-  }
-  maybeSingle() {
-    this.isMaybeSingle = true;
-    return this;
-  }
-  csv() {
-    this.headers.set("Accept", "text/csv");
-    return this;
-  }
-  geojson() {
-    this.headers.set("Accept", "application/geo+json");
-    return this;
-  }
-  explain({ analyze = false, verbose = false, settings = false, buffers = false, wal = false, format = "text" } = {}) {
-    var _this$headers$get;
-    const options = [
-      analyze ? "analyze" : null,
-      verbose ? "verbose" : null,
-      settings ? "settings" : null,
-      buffers ? "buffers" : null,
-      wal ? "wal" : null
-    ].filter(Boolean).join("|");
-    const forMediatype = (_this$headers$get = this.headers.get("Accept")) !== null && _this$headers$get !== undefined ? _this$headers$get : "application/json";
-    this.headers.set("Accept", `application/vnd.pgrst.plan+${format}; for="${forMediatype}"; options=${options};`);
-    if (format === "json")
-      return this;
-    else
-      return this;
-  }
-  rollback() {
-    this.headers.append("Prefer", "tx=rollback");
-    return this;
-  }
-  returns() {
-    return this;
-  }
-  maxAffected(value) {
-    this.headers.append("Prefer", "handling=strict");
-    this.headers.append("Prefer", `max-affected=${value}`);
-    return this;
-  }
-};
-var PostgrestReservedCharsRegexp = /* @__PURE__ */ new RegExp("[,()]");
-var PostgrestFilterBuilder = class extends PostgrestTransformBuilder {
-  eq(column, value) {
-    this.url.searchParams.append(column, `eq.${value}`);
-    return this;
-  }
-  neq(column, value) {
-    this.url.searchParams.append(column, `neq.${value}`);
-    return this;
-  }
-  gt(column, value) {
-    this.url.searchParams.append(column, `gt.${value}`);
-    return this;
-  }
-  gte(column, value) {
-    this.url.searchParams.append(column, `gte.${value}`);
-    return this;
-  }
-  lt(column, value) {
-    this.url.searchParams.append(column, `lt.${value}`);
-    return this;
-  }
-  lte(column, value) {
-    this.url.searchParams.append(column, `lte.${value}`);
-    return this;
-  }
-  like(column, pattern) {
-    this.url.searchParams.append(column, `like.${pattern}`);
-    return this;
-  }
-  likeAllOf(column, patterns) {
-    this.url.searchParams.append(column, `like(all).{${patterns.join(",")}}`);
-    return this;
-  }
-  likeAnyOf(column, patterns) {
-    this.url.searchParams.append(column, `like(any).{${patterns.join(",")}}`);
-    return this;
-  }
-  ilike(column, pattern) {
-    this.url.searchParams.append(column, `ilike.${pattern}`);
-    return this;
-  }
-  ilikeAllOf(column, patterns) {
-    this.url.searchParams.append(column, `ilike(all).{${patterns.join(",")}}`);
-    return this;
-  }
-  ilikeAnyOf(column, patterns) {
-    this.url.searchParams.append(column, `ilike(any).{${patterns.join(",")}}`);
-    return this;
-  }
-  regexMatch(column, pattern) {
-    this.url.searchParams.append(column, `match.${pattern}`);
-    return this;
-  }
-  regexIMatch(column, pattern) {
-    this.url.searchParams.append(column, `imatch.${pattern}`);
-    return this;
-  }
-  is(column, value) {
-    this.url.searchParams.append(column, `is.${value}`);
-    return this;
-  }
-  isDistinct(column, value) {
-    this.url.searchParams.append(column, `isdistinct.${value}`);
-    return this;
-  }
-  in(column, values) {
-    const cleanedValues = Array.from(new Set(values)).map((s) => {
-      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
-        return `"${s}"`;
-      else
-        return `${s}`;
-    }).join(",");
-    this.url.searchParams.append(column, `in.(${cleanedValues})`);
-    return this;
-  }
-  notIn(column, values) {
-    const cleanedValues = Array.from(new Set(values)).map((s) => {
-      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
-        return `"${s}"`;
-      else
-        return `${s}`;
-    }).join(",");
-    this.url.searchParams.append(column, `not.in.(${cleanedValues})`);
-    return this;
-  }
-  contains(column, value) {
-    if (typeof value === "string")
-      this.url.searchParams.append(column, `cs.${value}`);
-    else if (Array.isArray(value))
-      this.url.searchParams.append(column, `cs.{${value.join(",")}}`);
-    else
-      this.url.searchParams.append(column, `cs.${JSON.stringify(value)}`);
-    return this;
-  }
-  containedBy(column, value) {
-    if (typeof value === "string")
-      this.url.searchParams.append(column, `cd.${value}`);
-    else if (Array.isArray(value))
-      this.url.searchParams.append(column, `cd.{${value.join(",")}}`);
-    else
-      this.url.searchParams.append(column, `cd.${JSON.stringify(value)}`);
-    return this;
-  }
-  rangeGt(column, range) {
-    this.url.searchParams.append(column, `sr.${range}`);
-    return this;
-  }
-  rangeGte(column, range) {
-    this.url.searchParams.append(column, `nxl.${range}`);
-    return this;
-  }
-  rangeLt(column, range) {
-    this.url.searchParams.append(column, `sl.${range}`);
-    return this;
-  }
-  rangeLte(column, range) {
-    this.url.searchParams.append(column, `nxr.${range}`);
-    return this;
-  }
-  rangeAdjacent(column, range) {
-    this.url.searchParams.append(column, `adj.${range}`);
-    return this;
-  }
-  overlaps(column, value) {
-    if (typeof value === "string")
-      this.url.searchParams.append(column, `ov.${value}`);
-    else
-      this.url.searchParams.append(column, `ov.{${value.join(",")}}`);
-    return this;
-  }
-  textSearch(column, query, { config: config2, type } = {}) {
-    let typePart = "";
-    if (type === "plain")
-      typePart = "pl";
-    else if (type === "phrase")
-      typePart = "ph";
-    else if (type === "websearch")
-      typePart = "w";
-    const configPart = config2 === undefined ? "" : `(${config2})`;
-    this.url.searchParams.append(column, `${typePart}fts${configPart}.${query}`);
-    return this;
-  }
-  match(query) {
-    Object.entries(query).filter(([_, value]) => value !== undefined).forEach(([column, value]) => {
-      this.url.searchParams.append(column, `eq.${value}`);
-    });
-    return this;
-  }
-  not(column, operator, value) {
-    this.url.searchParams.append(column, `not.${operator}.${value}`);
-    return this;
-  }
-  or(filters, { foreignTable, referencedTable = foreignTable } = {}) {
-    const key = referencedTable ? `${referencedTable}.or` : "or";
-    this.url.searchParams.append(key, `(${filters})`);
-    return this;
-  }
-  filter(column, operator, value) {
-    this.url.searchParams.append(column, `${operator}.${value}`);
-    return this;
-  }
-};
-var PostgrestQueryBuilder = class {
-  constructor(url2, { headers = {}, schema, fetch: fetch$1, urlLengthLimit = 8000, retry }) {
-    this.url = url2;
-    this.headers = new Headers(headers);
-    this.schema = schema;
-    this.fetch = fetch$1;
-    this.urlLengthLimit = urlLengthLimit;
-    this.retry = retry;
-  }
-  cloneRequestState() {
-    return {
-      url: new URL(this.url.toString()),
-      headers: new Headers(this.headers)
-    };
-  }
-  select(columns, options) {
-    const { head = false, count } = options !== null && options !== undefined ? options : {};
-    const method = head ? "HEAD" : "GET";
-    let quoted = false;
-    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
-      if (/\s/.test(c) && !quoted)
-        return "";
-      if (c === '"')
-        quoted = !quoted;
-      return c;
-    }).join("");
-    const { url: url2, headers } = this.cloneRequestState();
-    url2.searchParams.set("select", cleanedColumns);
-    if (count)
-      headers.append("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: url2,
-      headers,
-      schema: this.schema,
-      fetch: this.fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-  insert(values, { count, defaultToNull = true } = {}) {
-    var _this$fetch;
-    const method = "POST";
-    const { url: url2, headers } = this.cloneRequestState();
-    if (count)
-      headers.append("Prefer", `count=${count}`);
-    if (!defaultToNull)
-      headers.append("Prefer", `missing=default`);
-    if (Array.isArray(values)) {
-      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
-      if (columns.length > 0) {
-        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
-        url2.searchParams.set("columns", uniqueColumns.join(","));
-      }
-    }
-    return new PostgrestFilterBuilder({
-      method,
-      url: url2,
-      headers,
-      schema: this.schema,
-      body: values,
-      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-  upsert(values, { onConflict, ignoreDuplicates = false, count, defaultToNull = true } = {}) {
-    var _this$fetch2;
-    const method = "POST";
-    const { url: url2, headers } = this.cloneRequestState();
-    headers.append("Prefer", `resolution=${ignoreDuplicates ? "ignore" : "merge"}-duplicates`);
-    if (onConflict !== undefined)
-      url2.searchParams.set("on_conflict", onConflict);
-    if (count)
-      headers.append("Prefer", `count=${count}`);
-    if (!defaultToNull)
-      headers.append("Prefer", "missing=default");
-    if (Array.isArray(values)) {
-      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
-      if (columns.length > 0) {
-        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
-        url2.searchParams.set("columns", uniqueColumns.join(","));
-      }
-    }
-    return new PostgrestFilterBuilder({
-      method,
-      url: url2,
-      headers,
-      schema: this.schema,
-      body: values,
-      fetch: (_this$fetch2 = this.fetch) !== null && _this$fetch2 !== undefined ? _this$fetch2 : fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-  update(values, { count } = {}) {
-    var _this$fetch3;
-    const method = "PATCH";
-    const { url: url2, headers } = this.cloneRequestState();
-    if (count)
-      headers.append("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: url2,
-      headers,
-      schema: this.schema,
-      body: values,
-      fetch: (_this$fetch3 = this.fetch) !== null && _this$fetch3 !== undefined ? _this$fetch3 : fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-  delete({ count } = {}) {
-    var _this$fetch4;
-    const method = "DELETE";
-    const { url: url2, headers } = this.cloneRequestState();
-    if (count)
-      headers.append("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: url2,
-      headers,
-      schema: this.schema,
-      fetch: (_this$fetch4 = this.fetch) !== null && _this$fetch4 !== undefined ? _this$fetch4 : fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-};
-function _typeof(o) {
-  "@babel/helpers - typeof";
-  return _typeof = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
-    return typeof o$1;
-  } : function(o$1) {
-    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-  }, _typeof(o);
-}
-function toPrimitive(t, r) {
-  if (_typeof(t) != "object" || !t)
-    return t;
-  var e = t[Symbol.toPrimitive];
-  if (e !== undefined) {
-    var i = e.call(t, r || "default");
-    if (_typeof(i) != "object")
-      return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (r === "string" ? String : Number)(t);
-}
-function toPropertyKey(t) {
-  var i = toPrimitive(t, "string");
-  return _typeof(i) == "symbol" ? i : i + "";
-}
-function _defineProperty(e, r, t) {
-  return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: true,
-    configurable: true,
-    writable: true
-  }) : e[r] = t, e;
-}
-function ownKeys(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r$1) {
-      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread2(e) {
-  for (var r = 1;r < arguments.length; r++) {
-    var t = arguments[r] != null ? arguments[r] : {};
-    r % 2 ? ownKeys(Object(t), true).forEach(function(r$1) {
-      _defineProperty(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
-    });
-  }
-  return e;
-}
-var PostgrestClient = class PostgrestClient2 {
-  constructor(url2, { headers = {}, schema, fetch: fetch$1, timeout, urlLengthLimit = 8000, retry } = {}) {
-    this.url = url2;
-    this.headers = new Headers(headers);
-    this.schemaName = schema;
-    this.urlLengthLimit = urlLengthLimit;
-    const originalFetch = fetch$1 !== null && fetch$1 !== undefined ? fetch$1 : globalThis.fetch;
-    if (timeout !== undefined && timeout > 0)
-      this.fetch = (input, init) => {
-        const controller = new AbortController;
-        const timeoutId = setTimeout(() => controller.abort(), timeout);
-        const existingSignal = init === null || init === undefined ? undefined : init.signal;
-        if (existingSignal) {
-          if (existingSignal.aborted) {
-            clearTimeout(timeoutId);
-            return originalFetch(input, init);
-          }
-          const abortHandler = () => {
-            clearTimeout(timeoutId);
-            controller.abort();
-          };
-          existingSignal.addEventListener("abort", abortHandler, { once: true });
-          return originalFetch(input, _objectSpread2(_objectSpread2({}, init), {}, { signal: controller.signal })).finally(() => {
-            clearTimeout(timeoutId);
-            existingSignal.removeEventListener("abort", abortHandler);
-          });
-        }
-        return originalFetch(input, _objectSpread2(_objectSpread2({}, init), {}, { signal: controller.signal })).finally(() => clearTimeout(timeoutId));
-      };
-    else
-      this.fetch = originalFetch;
-    this.retry = retry;
-  }
-  from(relation) {
-    if (!relation || typeof relation !== "string" || relation.trim() === "")
-      throw new Error("Invalid relation name: relation must be a non-empty string.");
-    return new PostgrestQueryBuilder(new URL(`${this.url}/${relation}`), {
-      headers: new Headers(this.headers),
-      schema: this.schemaName,
-      fetch: this.fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-  schema(schema) {
-    return new PostgrestClient2(this.url, {
-      headers: this.headers,
-      schema,
-      fetch: this.fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-  rpc(fn, args = {}, { head = false, get = false, count } = {}) {
-    var _this$fetch;
-    let method;
-    const url2 = new URL(`${this.url}/rpc/${fn}`);
-    let body;
-    const _isObject = (v) => v !== null && typeof v === "object" && (!Array.isArray(v) || v.some(_isObject));
-    const _hasObjectArg = head && Object.values(args).some(_isObject);
-    if (_hasObjectArg) {
-      method = "POST";
-      body = args;
-    } else if (head || get) {
-      method = head ? "HEAD" : "GET";
-      Object.entries(args).filter(([_, value]) => value !== undefined).map(([name, value]) => [name, Array.isArray(value) ? `{${value.join(",")}}` : `${value}`]).forEach(([name, value]) => {
-        url2.searchParams.append(name, value);
-      });
-    } else {
-      method = "POST";
-      body = args;
-    }
-    const headers = new Headers(this.headers);
-    if (_hasObjectArg)
-      headers.set("Prefer", count ? `count=${count},return=minimal` : "return=minimal");
-    else if (count)
-      headers.set("Prefer", `count=${count}`);
-    return new PostgrestFilterBuilder({
-      method,
-      url: url2,
-      headers,
-      schema: this.schemaName,
-      body,
-      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch,
-      urlLengthLimit: this.urlLengthLimit,
-      retry: this.retry
-    });
-  }
-};
-var src_default = {
-  PostgrestClient,
-  PostgrestQueryBuilder,
-  PostgrestFilterBuilder,
-  PostgrestTransformBuilder,
-  PostgrestBuilder,
-  PostgrestError
-};
-
-// ../../node_modules/.bun/@supabase+supabase-js@2.105.4/node_modules/@supabase/supabase-js/dist/index.mjs
-var import_realtime_js = __toESM(require_main2(), 1);
-
-// ../../node_modules/.bun/@supabase+storage-js@2.105.4/node_modules/@supabase/storage-js/dist/index.mjs
-var exports_dist2 = {};
-__export(exports_dist2, {
-  isStorageVectorsError: () => isStorageVectorsError,
-  isStorageError: () => isStorageError,
-  VectorIndexScope: () => VectorIndexScope,
-  VectorIndexApi: () => VectorIndexApi,
-  VectorDataApi: () => VectorDataApi,
-  VectorBucketScope: () => VectorBucketScope,
-  VectorBucketApi: () => VectorBucketApi,
-  StorageVectorsUnknownError: () => StorageVectorsUnknownError,
-  StorageVectorsErrorCode: () => StorageVectorsErrorCode,
-  StorageVectorsError: () => StorageVectorsError,
-  StorageVectorsClient: () => StorageVectorsClient,
-  StorageVectorsApiError: () => StorageVectorsApiError,
-  StorageUnknownError: () => StorageUnknownError,
-  StorageError: () => StorageError,
-  StorageClient: () => StorageClient,
-  StorageApiError: () => StorageApiError,
-  StorageAnalyticsClient: () => StorageAnalyticsClient
-});
-
-// ../../node_modules/.bun/iceberg-js@0.8.1/node_modules/iceberg-js/dist/index.mjs
-var IcebergError = class extends Error {
-  constructor(message, opts) {
-    super(message);
-    this.name = "IcebergError";
-    this.status = opts.status;
-    this.icebergType = opts.icebergType;
-    this.icebergCode = opts.icebergCode;
-    this.details = opts.details;
-    this.isCommitStateUnknown = opts.icebergType === "CommitStateUnknownException" || [500, 502, 504].includes(opts.status) && opts.icebergType?.includes("CommitState") === true;
-  }
-  isNotFound() {
-    return this.status === 404;
-  }
-  isConflict() {
-    return this.status === 409;
-  }
-  isAuthenticationTimeout() {
-    return this.status === 419;
-  }
-};
-function buildUrl(baseUrl, path2, query) {
-  const url2 = new URL(path2, baseUrl);
-  if (query) {
-    for (const [key, value] of Object.entries(query)) {
-      if (value !== undefined) {
-        url2.searchParams.set(key, value);
-      }
-    }
-  }
-  return url2.toString();
-}
-async function buildAuthHeaders(auth) {
-  if (!auth || auth.type === "none") {
-    return {};
-  }
-  if (auth.type === "bearer") {
-    return { Authorization: `Bearer ${auth.token}` };
-  }
-  if (auth.type === "header") {
-    return { [auth.name]: auth.value };
-  }
-  if (auth.type === "custom") {
-    return await auth.getHeaders();
-  }
-  return {};
-}
-function createFetchClient(options) {
-  const fetchFn = options.fetchImpl ?? globalThis.fetch;
-  return {
-    async request({
-      method,
-      path: path2,
-      query,
-      body,
-      headers
-    }) {
-      const url2 = buildUrl(options.baseUrl, path2, query);
-      const authHeaders = await buildAuthHeaders(options.auth);
-      const res = await fetchFn(url2, {
-        method,
-        headers: {
-          ...body ? { "Content-Type": "application/json" } : {},
-          ...authHeaders,
-          ...headers
-        },
-        body: body ? JSON.stringify(body) : undefined
-      });
-      const text = await res.text();
-      const isJson = (res.headers.get("content-type") || "").includes("application/json");
-      const data = isJson && text ? JSON.parse(text) : text;
-      if (!res.ok) {
-        const errBody = isJson ? data : undefined;
-        const errorDetail = errBody?.error;
-        throw new IcebergError(errorDetail?.message ?? `Request failed with status ${res.status}`, {
-          status: res.status,
-          icebergType: errorDetail?.type,
-          icebergCode: errorDetail?.code,
-          details: errBody
-        });
-      }
-      return { status: res.status, headers: res.headers, data };
-    }
-  };
-}
-function namespaceToPath(namespace) {
-  return namespace.join("\x1F");
-}
-var NamespaceOperations = class {
-  constructor(client, prefix = "") {
-    this.client = client;
-    this.prefix = prefix;
-  }
-  async listNamespaces(parent) {
-    const query = parent ? { parent: namespaceToPath(parent.namespace) } : undefined;
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces`,
-      query
-    });
-    return response.data.namespaces.map((ns) => ({ namespace: ns }));
-  }
-  async createNamespace(id, metadata) {
-    const request = {
-      namespace: id.namespace,
-      properties: metadata?.properties
-    };
-    const response = await this.client.request({
-      method: "POST",
-      path: `${this.prefix}/namespaces`,
-      body: request
-    });
-    return response.data;
-  }
-  async dropNamespace(id) {
-    await this.client.request({
-      method: "DELETE",
-      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
-    });
-  }
-  async loadNamespaceMetadata(id) {
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
-    });
-    return {
-      properties: response.data.properties
-    };
-  }
-  async namespaceExists(id) {
-    try {
-      await this.client.request({
-        method: "HEAD",
-        path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
-      });
-      return true;
-    } catch (error51) {
-      if (error51 instanceof IcebergError && error51.status === 404) {
-        return false;
-      }
-      throw error51;
-    }
-  }
-  async createNamespaceIfNotExists(id, metadata) {
-    try {
-      return await this.createNamespace(id, metadata);
-    } catch (error51) {
-      if (error51 instanceof IcebergError && error51.status === 409) {
-        return;
-      }
-      throw error51;
-    }
-  }
-};
-function namespaceToPath2(namespace) {
-  return namespace.join("\x1F");
-}
-var TableOperations = class {
-  constructor(client, prefix = "", accessDelegation) {
-    this.client = client;
-    this.prefix = prefix;
-    this.accessDelegation = accessDelegation;
-  }
-  async listTables(namespace) {
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`
-    });
-    return response.data.identifiers;
-  }
-  async createTable(namespace, request) {
-    const headers = {};
-    if (this.accessDelegation) {
-      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
-    }
-    const response = await this.client.request({
-      method: "POST",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`,
-      body: request,
-      headers
-    });
-    return response.data.metadata;
-  }
-  async updateTable(id, request) {
-    const response = await this.client.request({
-      method: "POST",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-      body: request
-    });
-    return {
-      "metadata-location": response.data["metadata-location"],
-      metadata: response.data.metadata
-    };
-  }
-  async dropTable(id, options) {
-    await this.client.request({
-      method: "DELETE",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-      query: { purgeRequested: String(options?.purge ?? false) }
-    });
-  }
-  async loadTable(id) {
-    const headers = {};
-    if (this.accessDelegation) {
-      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
-    }
-    const response = await this.client.request({
-      method: "GET",
-      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-      headers
-    });
-    return response.data.metadata;
-  }
-  async tableExists(id) {
-    const headers = {};
-    if (this.accessDelegation) {
-      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
-    }
-    try {
-      await this.client.request({
-        method: "HEAD",
-        path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
-        headers
-      });
-      return true;
-    } catch (error51) {
-      if (error51 instanceof IcebergError && error51.status === 404) {
-        return false;
-      }
-      throw error51;
-    }
-  }
-  async createTableIfNotExists(namespace, request) {
-    try {
-      return await this.createTable(namespace, request);
-    } catch (error51) {
-      if (error51 instanceof IcebergError && error51.status === 409) {
-        return await this.loadTable({ namespace: namespace.namespace, name: request.name });
-      }
-      throw error51;
-    }
-  }
-};
-var IcebergRestCatalog = class {
-  constructor(options) {
-    let prefix = "v1";
-    if (options.catalogName) {
-      prefix += `/${options.catalogName}`;
-    }
-    const baseUrl = options.baseUrl.endsWith("/") ? options.baseUrl : `${options.baseUrl}/`;
-    this.client = createFetchClient({
-      baseUrl,
-      auth: options.auth,
-      fetchImpl: options.fetch
-    });
-    this.accessDelegation = options.accessDelegation?.join(",");
-    this.namespaceOps = new NamespaceOperations(this.client, prefix);
-    this.tableOps = new TableOperations(this.client, prefix, this.accessDelegation);
-  }
-  async listNamespaces(parent) {
-    return this.namespaceOps.listNamespaces(parent);
-  }
-  async createNamespace(id, metadata) {
-    return this.namespaceOps.createNamespace(id, metadata);
-  }
-  async dropNamespace(id) {
-    await this.namespaceOps.dropNamespace(id);
-  }
-  async loadNamespaceMetadata(id) {
-    return this.namespaceOps.loadNamespaceMetadata(id);
-  }
-  async listTables(namespace) {
-    return this.tableOps.listTables(namespace);
-  }
-  async createTable(namespace, request) {
-    return this.tableOps.createTable(namespace, request);
-  }
-  async updateTable(id, request) {
-    return this.tableOps.updateTable(id, request);
-  }
-  async dropTable(id, options) {
-    await this.tableOps.dropTable(id, options);
-  }
-  async loadTable(id) {
-    return this.tableOps.loadTable(id);
-  }
-  async namespaceExists(id) {
-    return this.namespaceOps.namespaceExists(id);
-  }
-  async tableExists(id) {
-    return this.tableOps.tableExists(id);
-  }
-  async createNamespaceIfNotExists(id, metadata) {
-    return this.namespaceOps.createNamespaceIfNotExists(id, metadata);
-  }
-  async createTableIfNotExists(namespace, request) {
-    return this.tableOps.createTableIfNotExists(namespace, request);
-  }
-};
-
-// ../../node_modules/.bun/@supabase+storage-js@2.105.4/node_modules/@supabase/storage-js/dist/index.mjs
-function _typeof2(o) {
-  "@babel/helpers - typeof";
-  return _typeof2 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
-    return typeof o$1;
-  } : function(o$1) {
-    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-  }, _typeof2(o);
-}
-function toPrimitive2(t, r) {
-  if (_typeof2(t) != "object" || !t)
-    return t;
-  var e = t[Symbol.toPrimitive];
-  if (e !== undefined) {
-    var i = e.call(t, r || "default");
-    if (_typeof2(i) != "object")
-      return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (r === "string" ? String : Number)(t);
-}
-function toPropertyKey2(t) {
-  var i = toPrimitive2(t, "string");
-  return _typeof2(i) == "symbol" ? i : i + "";
-}
-function _defineProperty2(e, r, t) {
-  return (r = toPropertyKey2(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: true,
-    configurable: true,
-    writable: true
-  }) : e[r] = t, e;
-}
-function ownKeys2(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r$1) {
-      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread22(e) {
-  for (var r = 1;r < arguments.length; r++) {
-    var t = arguments[r] != null ? arguments[r] : {};
-    r % 2 ? ownKeys2(Object(t), true).forEach(function(r$1) {
-      _defineProperty2(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys2(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
-    });
-  }
-  return e;
-}
-var StorageError = class extends Error {
-  constructor(message, namespace = "storage", status, statusCode) {
-    super(message);
-    this.__isStorageError = true;
-    this.namespace = namespace;
-    this.name = namespace === "vectors" ? "StorageVectorsError" : "StorageError";
-    this.status = status;
-    this.statusCode = statusCode;
-  }
-  toJSON() {
-    return {
-      name: this.name,
-      message: this.message,
-      status: this.status,
-      statusCode: this.statusCode
-    };
-  }
-};
-function isStorageError(error51) {
-  return typeof error51 === "object" && error51 !== null && "__isStorageError" in error51;
-}
-var StorageApiError = class extends StorageError {
-  constructor(message, status, statusCode, namespace = "storage") {
-    super(message, namespace, status, statusCode);
-    this.name = namespace === "vectors" ? "StorageVectorsApiError" : "StorageApiError";
-    this.status = status;
-    this.statusCode = statusCode;
-  }
-  toJSON() {
-    return _objectSpread22({}, super.toJSON());
-  }
-};
-var StorageUnknownError = class extends StorageError {
-  constructor(message, originalError, namespace = "storage") {
-    super(message, namespace);
-    this.name = namespace === "vectors" ? "StorageVectorsUnknownError" : "StorageUnknownError";
-    this.originalError = originalError;
-  }
-};
-var StorageVectorsError = class extends StorageError {
-  constructor(message) {
-    super(message, "vectors");
-  }
-};
-function isStorageVectorsError(error51) {
-  return isStorageError(error51) && error51["namespace"] === "vectors";
-}
-var StorageVectorsApiError = class extends StorageApiError {
-  constructor(message, status, statusCode) {
-    super(message, status, statusCode, "vectors");
-  }
-};
-var StorageVectorsUnknownError = class extends StorageUnknownError {
-  constructor(message, originalError) {
-    super(message, originalError, "vectors");
-  }
-};
-var StorageVectorsErrorCode = /* @__PURE__ */ function(StorageVectorsErrorCode$1) {
-  StorageVectorsErrorCode$1["InternalError"] = "InternalError";
-  StorageVectorsErrorCode$1["S3VectorConflictException"] = "S3VectorConflictException";
-  StorageVectorsErrorCode$1["S3VectorNotFoundException"] = "S3VectorNotFoundException";
-  StorageVectorsErrorCode$1["S3VectorBucketNotEmpty"] = "S3VectorBucketNotEmpty";
-  StorageVectorsErrorCode$1["S3VectorMaxBucketsExceeded"] = "S3VectorMaxBucketsExceeded";
-  StorageVectorsErrorCode$1["S3VectorMaxIndexesExceeded"] = "S3VectorMaxIndexesExceeded";
-  return StorageVectorsErrorCode$1;
-}({});
-function setHeader(headers, name, value) {
-  const result = _objectSpread22({}, headers);
-  const nameLower = name.toLowerCase();
-  for (const key of Object.keys(result))
-    if (key.toLowerCase() === nameLower)
-      delete result[key];
-  result[nameLower] = value;
-  return result;
-}
-function normalizeHeaders(headers) {
-  const result = {};
-  for (const [key, value] of Object.entries(headers))
-    result[key.toLowerCase()] = value;
-  return result;
-}
-var resolveFetch = (customFetch) => {
-  if (customFetch)
-    return (...args) => customFetch(...args);
-  return (...args) => fetch(...args);
-};
-var isPlainObject3 = (value) => {
-  if (typeof value !== "object" || value === null)
-    return false;
-  const prototype = Object.getPrototypeOf(value);
-  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
-};
-var recursiveToCamel = (item) => {
-  if (Array.isArray(item))
-    return item.map((el) => recursiveToCamel(el));
-  else if (typeof item === "function" || item !== Object(item))
-    return item;
-  const result = {};
-  Object.entries(item).forEach(([key, value]) => {
-    const newKey = key.replace(/([-_][a-z])/gi, (c) => c.toUpperCase().replace(/[-_]/g, ""));
-    result[newKey] = recursiveToCamel(value);
-  });
-  return result;
-};
-var isValidBucketName = (bucketName) => {
-  if (!bucketName || typeof bucketName !== "string")
-    return false;
-  if (bucketName.length === 0 || bucketName.length > 100)
-    return false;
-  if (bucketName.trim() !== bucketName)
-    return false;
-  if (bucketName.includes("/") || bucketName.includes("\\"))
-    return false;
-  return /^[\w!.\*'() &$@=;:+,?-]+$/.test(bucketName);
-};
-var _getErrorMessage = (err) => {
-  if (typeof err === "object" && err !== null) {
-    const e = err;
-    if (typeof e.msg === "string")
-      return e.msg;
-    if (typeof e.message === "string")
-      return e.message;
-    if (typeof e.error_description === "string")
-      return e.error_description;
-    if (typeof e.error === "string")
-      return e.error;
-    if (typeof e.error === "object" && e.error !== null) {
-      const nested = e.error;
-      if (typeof nested.message === "string")
-        return nested.message;
-    }
-  }
-  return JSON.stringify(err);
-};
-var handleError = async (error51, reject, options, namespace) => {
-  if (error51 !== null && typeof error51 === "object" && "json" in error51 && typeof error51.json === "function") {
-    const responseError = error51;
-    let status = parseInt(String(responseError.status), 10);
-    if (!Number.isFinite(status))
-      status = 500;
-    responseError.json().then((err) => {
-      const statusCode = (err === null || err === undefined ? undefined : err.statusCode) || (err === null || err === undefined ? undefined : err.code) || status + "";
-      reject(new StorageApiError(_getErrorMessage(err), status, statusCode, namespace));
-    }).catch(() => {
-      const statusCode = status + "";
-      reject(new StorageApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode, namespace));
-    });
-  } else
-    reject(new StorageUnknownError(_getErrorMessage(error51), error51, namespace));
-};
-var _getRequestParams = (method, options, parameters, body) => {
-  const params = {
-    method,
-    headers: (options === null || options === undefined ? undefined : options.headers) || {}
-  };
-  if (method === "GET" || method === "HEAD" || !body)
-    return _objectSpread22(_objectSpread22({}, params), parameters);
-  if (isPlainObject3(body)) {
-    var _contentType;
-    const headers = (options === null || options === undefined ? undefined : options.headers) || {};
-    let contentType;
-    for (const [key, value] of Object.entries(headers))
-      if (key.toLowerCase() === "content-type")
-        contentType = value;
-    params.headers = setHeader(headers, "Content-Type", (_contentType = contentType) !== null && _contentType !== undefined ? _contentType : "application/json");
-    params.body = JSON.stringify(body);
-  } else
-    params.body = body;
-  if (options === null || options === undefined ? undefined : options.duplex)
-    params.duplex = options.duplex;
-  return _objectSpread22(_objectSpread22({}, params), parameters);
-};
-async function _handleRequest(fetcher, method, url2, options, parameters, body, namespace) {
-  return new Promise((resolve, reject) => {
-    fetcher(url2, _getRequestParams(method, options, parameters, body)).then((result) => {
-      if (!result.ok)
-        throw result;
-      if (options === null || options === undefined ? undefined : options.noResolveJson)
-        return result;
-      if (namespace === "vectors") {
-        const contentType = result.headers.get("content-type");
-        if (result.headers.get("content-length") === "0" || result.status === 204)
-          return {};
-        if (!contentType || !contentType.includes("application/json"))
-          return {};
-      }
-      return result.json();
-    }).then((data) => resolve(data)).catch((error51) => handleError(error51, reject, options, namespace));
-  });
-}
-function createFetchApi(namespace = "storage") {
-  return {
-    get: async (fetcher, url2, options, parameters) => {
-      return _handleRequest(fetcher, "GET", url2, options, parameters, undefined, namespace);
-    },
-    post: async (fetcher, url2, body, options, parameters) => {
-      return _handleRequest(fetcher, "POST", url2, options, parameters, body, namespace);
-    },
-    put: async (fetcher, url2, body, options, parameters) => {
-      return _handleRequest(fetcher, "PUT", url2, options, parameters, body, namespace);
-    },
-    head: async (fetcher, url2, options, parameters) => {
-      return _handleRequest(fetcher, "HEAD", url2, _objectSpread22(_objectSpread22({}, options), {}, { noResolveJson: true }), parameters, undefined, namespace);
-    },
-    remove: async (fetcher, url2, body, options, parameters) => {
-      return _handleRequest(fetcher, "DELETE", url2, options, parameters, body, namespace);
-    }
-  };
-}
-var defaultApi = createFetchApi("storage");
-var { get, post, put, head, remove } = defaultApi;
-var vectorsApi = createFetchApi("vectors");
-var BaseApiClient = class {
-  constructor(url2, headers = {}, fetch$1, namespace = "storage") {
-    this.shouldThrowOnError = false;
-    this.url = url2;
-    this.headers = normalizeHeaders(headers);
-    this.fetch = resolveFetch(fetch$1);
-    this.namespace = namespace;
-  }
-  throwOnError() {
-    this.shouldThrowOnError = true;
-    return this;
-  }
-  setHeader(name, value) {
-    this.headers = setHeader(this.headers, name, value);
-    return this;
-  }
-  async handleOperation(operation) {
-    var _this = this;
-    try {
-      return {
-        data: await operation(),
-        error: null
-      };
-    } catch (error51) {
-      if (_this.shouldThrowOnError)
-        throw error51;
-      if (isStorageError(error51))
-        return {
-          data: null,
-          error: error51
-        };
-      throw error51;
-    }
-  }
-};
-var StreamDownloadBuilder = class {
-  constructor(downloadFn, shouldThrowOnError) {
-    this.downloadFn = downloadFn;
-    this.shouldThrowOnError = shouldThrowOnError;
-  }
-  then(onfulfilled, onrejected) {
-    return this.execute().then(onfulfilled, onrejected);
-  }
-  async execute() {
-    var _this = this;
-    try {
-      return {
-        data: (await _this.downloadFn()).body,
-        error: null
-      };
-    } catch (error51) {
-      if (_this.shouldThrowOnError)
-        throw error51;
-      if (isStorageError(error51))
-        return {
-          data: null,
-          error: error51
-        };
-      throw error51;
-    }
-  }
-};
-var _Symbol$toStringTag;
-_Symbol$toStringTag = Symbol.toStringTag;
-var BlobDownloadBuilder = class {
-  constructor(downloadFn, shouldThrowOnError) {
-    this.downloadFn = downloadFn;
-    this.shouldThrowOnError = shouldThrowOnError;
-    this[_Symbol$toStringTag] = "BlobDownloadBuilder";
-    this.promise = null;
-  }
-  asStream() {
-    return new StreamDownloadBuilder(this.downloadFn, this.shouldThrowOnError);
-  }
-  then(onfulfilled, onrejected) {
-    return this.getPromise().then(onfulfilled, onrejected);
-  }
-  catch(onrejected) {
-    return this.getPromise().catch(onrejected);
-  }
-  finally(onfinally) {
-    return this.getPromise().finally(onfinally);
-  }
-  getPromise() {
-    if (!this.promise)
-      this.promise = this.execute();
-    return this.promise;
-  }
-  async execute() {
-    var _this = this;
-    try {
-      return {
-        data: await (await _this.downloadFn()).blob(),
-        error: null
-      };
-    } catch (error51) {
-      if (_this.shouldThrowOnError)
-        throw error51;
-      if (isStorageError(error51))
-        return {
-          data: null,
-          error: error51
-        };
-      throw error51;
-    }
-  }
-};
-var DEFAULT_SEARCH_OPTIONS = {
-  limit: 100,
-  offset: 0,
-  sortBy: {
-    column: "name",
-    order: "asc"
-  }
-};
-var DEFAULT_FILE_OPTIONS = {
-  cacheControl: "3600",
-  contentType: "text/plain;charset=UTF-8",
-  upsert: false
-};
-var StorageFileApi = class extends BaseApiClient {
-  constructor(url2, headers = {}, bucketId, fetch$1) {
-    super(url2, headers, fetch$1, "storage");
-    this.bucketId = bucketId;
-  }
-  async uploadOrUpdate(method, path2, fileBody, fileOptions) {
-    var _this = this;
-    return _this.handleOperation(async () => {
-      let body;
-      const options = _objectSpread22(_objectSpread22({}, DEFAULT_FILE_OPTIONS), fileOptions);
-      let headers = _objectSpread22(_objectSpread22({}, _this.headers), method === "POST" && { "x-upsert": String(options.upsert) });
-      const metadata = options.metadata;
-      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
-        body = new FormData;
-        body.append("cacheControl", options.cacheControl);
-        if (metadata)
-          body.append("metadata", _this.encodeMetadata(metadata));
-        body.append("", fileBody);
-      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
-        body = fileBody;
-        if (!body.has("cacheControl"))
-          body.append("cacheControl", options.cacheControl);
-        if (metadata && !body.has("metadata"))
-          body.append("metadata", _this.encodeMetadata(metadata));
-      } else {
-        body = fileBody;
-        headers["cache-control"] = `max-age=${options.cacheControl}`;
-        headers["content-type"] = options.contentType;
-        if (metadata)
-          headers["x-metadata"] = _this.toBase64(_this.encodeMetadata(metadata));
-        if ((typeof ReadableStream !== "undefined" && body instanceof ReadableStream || body && typeof body === "object" && ("pipe" in body) && typeof body.pipe === "function") && !options.duplex)
-          options.duplex = "half";
-      }
-      if (fileOptions === null || fileOptions === undefined ? undefined : fileOptions.headers)
-        for (const [key, value] of Object.entries(fileOptions.headers))
-          headers = setHeader(headers, key, value);
-      const cleanPath = _this._removeEmptyFolders(path2);
-      const _path = _this._getFinalPath(cleanPath);
-      const data = await (method == "PUT" ? put : post)(_this.fetch, `${_this.url}/object/${_path}`, body, _objectSpread22({ headers }, (options === null || options === undefined ? undefined : options.duplex) ? { duplex: options.duplex } : {}));
-      return {
-        path: cleanPath,
-        id: data.Id,
-        fullPath: data.Key
-      };
-    });
-  }
-  async upload(path2, fileBody, fileOptions) {
-    return this.uploadOrUpdate("POST", path2, fileBody, fileOptions);
-  }
-  async uploadToSignedUrl(path2, token, fileBody, fileOptions) {
-    var _this3 = this;
-    const cleanPath = _this3._removeEmptyFolders(path2);
-    const _path = _this3._getFinalPath(cleanPath);
-    const url2 = new URL(_this3.url + `/object/upload/sign/${_path}`);
-    url2.searchParams.set("token", token);
-    return _this3.handleOperation(async () => {
-      let body;
-      const options = _objectSpread22(_objectSpread22({}, DEFAULT_FILE_OPTIONS), fileOptions);
-      let headers = _objectSpread22(_objectSpread22({}, _this3.headers), { "x-upsert": String(options.upsert) });
-      const metadata = options.metadata;
-      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
-        body = new FormData;
-        body.append("cacheControl", options.cacheControl);
-        if (metadata)
-          body.append("metadata", _this3.encodeMetadata(metadata));
-        body.append("", fileBody);
-      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
-        body = fileBody;
-        if (!body.has("cacheControl"))
-          body.append("cacheControl", options.cacheControl);
-        if (metadata && !body.has("metadata"))
-          body.append("metadata", _this3.encodeMetadata(metadata));
-      } else {
-        body = fileBody;
-        headers["cache-control"] = `max-age=${options.cacheControl}`;
-        headers["content-type"] = options.contentType;
-        if (metadata)
-          headers["x-metadata"] = _this3.toBase64(_this3.encodeMetadata(metadata));
-        if ((typeof ReadableStream !== "undefined" && body instanceof ReadableStream || body && typeof body === "object" && ("pipe" in body) && typeof body.pipe === "function") && !options.duplex)
-          options.duplex = "half";
-      }
-      if (fileOptions === null || fileOptions === undefined ? undefined : fileOptions.headers)
-        for (const [key, value] of Object.entries(fileOptions.headers))
-          headers = setHeader(headers, key, value);
-      return {
-        path: cleanPath,
-        fullPath: (await put(_this3.fetch, url2.toString(), body, _objectSpread22({ headers }, (options === null || options === undefined ? undefined : options.duplex) ? { duplex: options.duplex } : {}))).Key
-      };
-    });
-  }
-  async createSignedUploadUrl(path2, options) {
-    var _this4 = this;
-    return _this4.handleOperation(async () => {
-      let _path = _this4._getFinalPath(path2);
-      const headers = _objectSpread22({}, _this4.headers);
-      if (options === null || options === undefined ? undefined : options.upsert)
-        headers["x-upsert"] = "true";
-      const data = await post(_this4.fetch, `${_this4.url}/object/upload/sign/${_path}`, {}, { headers });
-      const url2 = new URL(_this4.url + data.url);
-      const token = url2.searchParams.get("token");
-      if (!token)
-        throw new StorageError("No token returned by API");
-      return {
-        signedUrl: url2.toString(),
-        path: path2,
-        token
-      };
-    });
-  }
-  async update(path2, fileBody, fileOptions) {
-    return this.uploadOrUpdate("PUT", path2, fileBody, fileOptions);
-  }
-  async move(fromPath, toPath, options) {
-    var _this6 = this;
-    return _this6.handleOperation(async () => {
-      return await post(_this6.fetch, `${_this6.url}/object/move`, {
-        bucketId: _this6.bucketId,
-        sourceKey: fromPath,
-        destinationKey: toPath,
-        destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
-      }, { headers: _this6.headers });
-    });
-  }
-  async copy(fromPath, toPath, options) {
-    var _this7 = this;
-    return _this7.handleOperation(async () => {
-      return { path: (await post(_this7.fetch, `${_this7.url}/object/copy`, {
-        bucketId: _this7.bucketId,
-        sourceKey: fromPath,
-        destinationKey: toPath,
-        destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
-      }, { headers: _this7.headers })).Key };
-    });
-  }
-  async createSignedUrl(path2, expiresIn, options) {
-    var _this8 = this;
-    return _this8.handleOperation(async () => {
-      let _path = _this8._getFinalPath(path2);
-      const hasTransform = typeof (options === null || options === undefined ? undefined : options.transform) === "object" && options.transform !== null && Object.keys(options.transform).length > 0;
-      let data = await post(_this8.fetch, `${_this8.url}/object/sign/${_path}`, _objectSpread22({ expiresIn }, hasTransform ? { transform: options.transform } : {}), { headers: _this8.headers });
-      const query = new URLSearchParams;
-      if (options === null || options === undefined ? undefined : options.download)
-        query.set("download", options.download === true ? "" : options.download);
-      if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
-        query.set("cacheNonce", String(options.cacheNonce));
-      const queryString = query.toString();
-      return { signedUrl: encodeURI(`${_this8.url}${data.signedURL}${queryString ? `&${queryString}` : ""}`) };
-    });
-  }
-  async createSignedUrls(paths, expiresIn, options) {
-    var _this9 = this;
-    return _this9.handleOperation(async () => {
-      const data = await post(_this9.fetch, `${_this9.url}/object/sign/${_this9.bucketId}`, {
-        expiresIn,
-        paths
-      }, { headers: _this9.headers });
-      const query = new URLSearchParams;
-      if (options === null || options === undefined ? undefined : options.download)
-        query.set("download", options.download === true ? "" : options.download);
-      if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
-        query.set("cacheNonce", String(options.cacheNonce));
-      const queryString = query.toString();
-      return data.map((datum) => _objectSpread22(_objectSpread22({}, datum), {}, { signedUrl: datum.signedURL ? encodeURI(`${_this9.url}${datum.signedURL}${queryString ? `&${queryString}` : ""}`) : null }));
-    });
-  }
-  download(path2, options, parameters) {
-    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) === "object" && options.transform !== null && Object.keys(options.transform).length > 0 ? "render/image/authenticated" : "object";
-    const query = new URLSearchParams;
-    if (options === null || options === undefined ? undefined : options.transform)
-      this.applyTransformOptsToQuery(query, options.transform);
-    if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
-      query.set("cacheNonce", String(options.cacheNonce));
-    const queryString = query.toString();
-    const _path = this._getFinalPath(path2);
-    const downloadFn = () => get(this.fetch, `${this.url}/${renderPath}/${_path}${queryString ? `?${queryString}` : ""}`, {
-      headers: this.headers,
-      noResolveJson: true
-    }, parameters);
-    return new BlobDownloadBuilder(downloadFn, this.shouldThrowOnError);
-  }
-  async info(path2) {
-    var _this10 = this;
-    const _path = _this10._getFinalPath(path2);
-    return _this10.handleOperation(async () => {
-      return recursiveToCamel(await get(_this10.fetch, `${_this10.url}/object/info/${_path}`, { headers: _this10.headers }));
-    });
-  }
-  async exists(path2) {
-    var _this11 = this;
-    const _path = _this11._getFinalPath(path2);
-    try {
-      await head(_this11.fetch, `${_this11.url}/object/${_path}`, { headers: _this11.headers });
-      return {
-        data: true,
-        error: null
-      };
-    } catch (error51) {
-      if (_this11.shouldThrowOnError)
-        throw error51;
-      if (isStorageError(error51)) {
-        var _error$originalError;
-        const status = error51 instanceof StorageApiError ? error51.status : error51 instanceof StorageUnknownError ? (_error$originalError = error51.originalError) === null || _error$originalError === undefined ? undefined : _error$originalError.status : undefined;
-        if (status !== undefined && [400, 404].includes(status))
-          return {
-            data: false,
-            error: error51
-          };
-      }
-      throw error51;
-    }
-  }
-  getPublicUrl(path2, options) {
-    const _path = this._getFinalPath(path2);
-    const query = new URLSearchParams;
-    if (options === null || options === undefined ? undefined : options.download)
-      query.set("download", options.download === true ? "" : options.download);
-    if (options === null || options === undefined ? undefined : options.transform)
-      this.applyTransformOptsToQuery(query, options.transform);
-    if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
-      query.set("cacheNonce", String(options.cacheNonce));
-    const queryString = query.toString();
-    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) === "object" && options.transform !== null && Object.keys(options.transform).length > 0 ? "render/image" : "object";
-    return { data: { publicUrl: encodeURI(`${this.url}/${renderPath}/public/${_path}`) + (queryString ? `?${queryString}` : "") } };
-  }
-  async remove(paths) {
-    var _this12 = this;
-    return _this12.handleOperation(async () => {
-      return await remove(_this12.fetch, `${_this12.url}/object/${_this12.bucketId}`, { prefixes: paths }, { headers: _this12.headers });
-    });
-  }
-  async list(path2, options, parameters) {
-    var _this13 = this;
-    return _this13.handleOperation(async () => {
-      const body = _objectSpread22(_objectSpread22(_objectSpread22({}, DEFAULT_SEARCH_OPTIONS), options), {}, { prefix: path2 || "" });
-      return await post(_this13.fetch, `${_this13.url}/object/list/${_this13.bucketId}`, body, { headers: _this13.headers }, parameters);
-    });
-  }
-  async listV2(options, parameters) {
-    var _this14 = this;
-    return _this14.handleOperation(async () => {
-      const body = _objectSpread22({}, options);
-      return await post(_this14.fetch, `${_this14.url}/object/list-v2/${_this14.bucketId}`, body, { headers: _this14.headers }, parameters);
-    });
-  }
-  encodeMetadata(metadata) {
-    return JSON.stringify(metadata);
-  }
-  toBase64(data) {
-    if (typeof Buffer !== "undefined")
-      return Buffer.from(data).toString("base64");
-    return btoa(data);
-  }
-  _getFinalPath(path2) {
-    return `${this.bucketId}/${path2.replace(/^\/+/, "")}`;
-  }
-  _removeEmptyFolders(path2) {
-    return path2.replace(/^\/|\/$/g, "").replace(/\/+/g, "/");
-  }
-  applyTransformOptsToQuery(query, transform2) {
-    if (transform2.width)
-      query.set("width", transform2.width.toString());
-    if (transform2.height)
-      query.set("height", transform2.height.toString());
-    if (transform2.resize)
-      query.set("resize", transform2.resize);
-    if (transform2.format)
-      query.set("format", transform2.format);
-    if (transform2.quality)
-      query.set("quality", transform2.quality.toString());
-    return query;
-  }
-};
-var version2 = "2.105.4";
-var DEFAULT_HEADERS = { "X-Client-Info": `storage-js/${version2}` };
-var StorageBucketApi = class extends BaseApiClient {
-  constructor(url2, headers = {}, fetch$1, opts) {
-    const baseUrl = new URL(url2);
-    if (opts === null || opts === undefined ? undefined : opts.useNewHostname) {
-      if (/supabase\.(co|in|red)$/.test(baseUrl.hostname) && !baseUrl.hostname.includes("storage.supabase."))
-        baseUrl.hostname = baseUrl.hostname.replace("supabase.", "storage.supabase.");
-    }
-    const finalUrl = baseUrl.href.replace(/\/$/, "");
-    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), headers);
-    super(finalUrl, finalHeaders, fetch$1, "storage");
-  }
-  async listBuckets(options) {
-    var _this = this;
-    return _this.handleOperation(async () => {
-      const queryString = _this.listBucketOptionsToQueryString(options);
-      return await get(_this.fetch, `${_this.url}/bucket${queryString}`, { headers: _this.headers });
-    });
-  }
-  async getBucket(id) {
-    var _this2 = this;
-    return _this2.handleOperation(async () => {
-      return await get(_this2.fetch, `${_this2.url}/bucket/${id}`, { headers: _this2.headers });
-    });
-  }
-  async createBucket(id, options = { public: false }) {
-    var _this3 = this;
-    return _this3.handleOperation(async () => {
-      return await post(_this3.fetch, `${_this3.url}/bucket`, {
-        id,
-        name: id,
-        type: options.type,
-        public: options.public,
-        file_size_limit: options.fileSizeLimit,
-        allowed_mime_types: options.allowedMimeTypes
-      }, { headers: _this3.headers });
-    });
-  }
-  async updateBucket(id, options) {
-    var _this4 = this;
-    return _this4.handleOperation(async () => {
-      return await put(_this4.fetch, `${_this4.url}/bucket/${id}`, {
-        id,
-        name: id,
-        public: options.public,
-        file_size_limit: options.fileSizeLimit,
-        allowed_mime_types: options.allowedMimeTypes
-      }, { headers: _this4.headers });
-    });
-  }
-  async emptyBucket(id) {
-    var _this5 = this;
-    return _this5.handleOperation(async () => {
-      return await post(_this5.fetch, `${_this5.url}/bucket/${id}/empty`, {}, { headers: _this5.headers });
-    });
-  }
-  async deleteBucket(id) {
-    var _this6 = this;
-    return _this6.handleOperation(async () => {
-      return await remove(_this6.fetch, `${_this6.url}/bucket/${id}`, {}, { headers: _this6.headers });
-    });
-  }
-  listBucketOptionsToQueryString(options) {
-    const params = {};
-    if (options) {
-      if ("limit" in options)
-        params.limit = String(options.limit);
-      if ("offset" in options)
-        params.offset = String(options.offset);
-      if (options.search)
-        params.search = options.search;
-      if (options.sortColumn)
-        params.sortColumn = options.sortColumn;
-      if (options.sortOrder)
-        params.sortOrder = options.sortOrder;
-    }
-    return Object.keys(params).length > 0 ? "?" + new URLSearchParams(params).toString() : "";
-  }
-};
-var StorageAnalyticsClient = class extends BaseApiClient {
-  constructor(url2, headers = {}, fetch$1) {
-    const finalUrl = url2.replace(/\/$/, "");
-    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), headers);
-    super(finalUrl, finalHeaders, fetch$1, "storage");
-  }
-  async createBucket(name) {
-    var _this = this;
-    return _this.handleOperation(async () => {
-      return await post(_this.fetch, `${_this.url}/bucket`, { name }, { headers: _this.headers });
-    });
-  }
-  async listBuckets(options) {
-    var _this2 = this;
-    return _this2.handleOperation(async () => {
-      const queryParams = new URLSearchParams;
-      if ((options === null || options === undefined ? undefined : options.limit) !== undefined)
-        queryParams.set("limit", options.limit.toString());
-      if ((options === null || options === undefined ? undefined : options.offset) !== undefined)
-        queryParams.set("offset", options.offset.toString());
-      if (options === null || options === undefined ? undefined : options.sortColumn)
-        queryParams.set("sortColumn", options.sortColumn);
-      if (options === null || options === undefined ? undefined : options.sortOrder)
-        queryParams.set("sortOrder", options.sortOrder);
-      if (options === null || options === undefined ? undefined : options.search)
-        queryParams.set("search", options.search);
-      const queryString = queryParams.toString();
-      const url2 = queryString ? `${_this2.url}/bucket?${queryString}` : `${_this2.url}/bucket`;
-      return await get(_this2.fetch, url2, { headers: _this2.headers });
-    });
-  }
-  async deleteBucket(bucketName) {
-    var _this3 = this;
-    return _this3.handleOperation(async () => {
-      return await remove(_this3.fetch, `${_this3.url}/bucket/${bucketName}`, {}, { headers: _this3.headers });
-    });
-  }
-  from(bucketName) {
-    var _this4 = this;
-    if (!isValidBucketName(bucketName))
-      throw new StorageError("Invalid bucket name: File, folder, and bucket names must follow AWS object key naming guidelines and should avoid the use of any other characters.");
-    const catalog = new IcebergRestCatalog({
-      baseUrl: this.url,
-      catalogName: bucketName,
-      auth: {
-        type: "custom",
-        getHeaders: async () => _this4.headers
-      },
-      fetch: this.fetch
-    });
-    const shouldThrowOnError = this.shouldThrowOnError;
-    return new Proxy(catalog, { get(target, prop) {
-      const value = target[prop];
-      if (typeof value !== "function")
-        return value;
-      return async (...args) => {
-        try {
-          return {
-            data: await value.apply(target, args),
-            error: null
-          };
-        } catch (error51) {
-          if (shouldThrowOnError)
-            throw error51;
-          return {
-            data: null,
-            error: error51
-          };
-        }
-      };
-    } });
-  }
-};
-var VectorIndexApi = class extends BaseApiClient {
-  constructor(url2, headers = {}, fetch$1) {
-    const finalUrl = url2.replace(/\/$/, "");
-    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), {}, { "Content-Type": "application/json" }, headers);
-    super(finalUrl, finalHeaders, fetch$1, "vectors");
-  }
-  async createIndex(options) {
-    var _this = this;
-    return _this.handleOperation(async () => {
-      return await vectorsApi.post(_this.fetch, `${_this.url}/CreateIndex`, options, { headers: _this.headers }) || {};
-    });
-  }
-  async getIndex(vectorBucketName, indexName) {
-    var _this2 = this;
-    return _this2.handleOperation(async () => {
-      return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetIndex`, {
-        vectorBucketName,
-        indexName
-      }, { headers: _this2.headers });
-    });
-  }
-  async listIndexes(options) {
-    var _this3 = this;
-    return _this3.handleOperation(async () => {
-      return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListIndexes`, options, { headers: _this3.headers });
-    });
-  }
-  async deleteIndex(vectorBucketName, indexName) {
-    var _this4 = this;
-    return _this4.handleOperation(async () => {
-      return await vectorsApi.post(_this4.fetch, `${_this4.url}/DeleteIndex`, {
-        vectorBucketName,
-        indexName
-      }, { headers: _this4.headers }) || {};
-    });
-  }
-};
-var VectorDataApi = class extends BaseApiClient {
-  constructor(url2, headers = {}, fetch$1) {
-    const finalUrl = url2.replace(/\/$/, "");
-    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), {}, { "Content-Type": "application/json" }, headers);
-    super(finalUrl, finalHeaders, fetch$1, "vectors");
-  }
-  async putVectors(options) {
-    var _this = this;
-    if (options.vectors.length < 1 || options.vectors.length > 500)
-      throw new Error("Vector batch size must be between 1 and 500 items");
-    return _this.handleOperation(async () => {
-      return await vectorsApi.post(_this.fetch, `${_this.url}/PutVectors`, options, { headers: _this.headers }) || {};
-    });
-  }
-  async getVectors(options) {
-    var _this2 = this;
-    return _this2.handleOperation(async () => {
-      return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetVectors`, options, { headers: _this2.headers });
-    });
-  }
-  async listVectors(options) {
-    var _this3 = this;
-    if (options.segmentCount !== undefined) {
-      if (options.segmentCount < 1 || options.segmentCount > 16)
-        throw new Error("segmentCount must be between 1 and 16");
-      if (options.segmentIndex !== undefined) {
-        if (options.segmentIndex < 0 || options.segmentIndex >= options.segmentCount)
-          throw new Error(`segmentIndex must be between 0 and ${options.segmentCount - 1}`);
-      }
-    }
-    return _this3.handleOperation(async () => {
-      return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListVectors`, options, { headers: _this3.headers });
-    });
-  }
-  async queryVectors(options) {
-    var _this4 = this;
-    return _this4.handleOperation(async () => {
-      return await vectorsApi.post(_this4.fetch, `${_this4.url}/QueryVectors`, options, { headers: _this4.headers });
-    });
-  }
-  async deleteVectors(options) {
-    var _this5 = this;
-    if (options.keys.length < 1 || options.keys.length > 500)
-      throw new Error("Keys batch size must be between 1 and 500 items");
-    return _this5.handleOperation(async () => {
-      return await vectorsApi.post(_this5.fetch, `${_this5.url}/DeleteVectors`, options, { headers: _this5.headers }) || {};
-    });
-  }
-};
-var VectorBucketApi = class extends BaseApiClient {
-  constructor(url2, headers = {}, fetch$1) {
-    const finalUrl = url2.replace(/\/$/, "");
-    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), {}, { "Content-Type": "application/json" }, headers);
-    super(finalUrl, finalHeaders, fetch$1, "vectors");
-  }
-  async createBucket(vectorBucketName) {
-    var _this = this;
-    return _this.handleOperation(async () => {
-      return await vectorsApi.post(_this.fetch, `${_this.url}/CreateVectorBucket`, { vectorBucketName }, { headers: _this.headers }) || {};
-    });
-  }
-  async getBucket(vectorBucketName) {
-    var _this2 = this;
-    return _this2.handleOperation(async () => {
-      return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetVectorBucket`, { vectorBucketName }, { headers: _this2.headers });
-    });
-  }
-  async listBuckets(options = {}) {
-    var _this3 = this;
-    return _this3.handleOperation(async () => {
-      return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListVectorBuckets`, options, { headers: _this3.headers });
-    });
-  }
-  async deleteBucket(vectorBucketName) {
-    var _this4 = this;
-    return _this4.handleOperation(async () => {
-      return await vectorsApi.post(_this4.fetch, `${_this4.url}/DeleteVectorBucket`, { vectorBucketName }, { headers: _this4.headers }) || {};
-    });
-  }
-};
-var StorageVectorsClient = class extends VectorBucketApi {
-  constructor(url2, options = {}) {
-    super(url2, options.headers || {}, options.fetch);
-  }
-  from(vectorBucketName) {
-    return new VectorBucketScope(this.url, this.headers, vectorBucketName, this.fetch);
-  }
-  async createBucket(vectorBucketName) {
-    var _superprop_getCreateBucket = () => super.createBucket, _this = this;
-    return _superprop_getCreateBucket().call(_this, vectorBucketName);
-  }
-  async getBucket(vectorBucketName) {
-    var _superprop_getGetBucket = () => super.getBucket, _this2 = this;
-    return _superprop_getGetBucket().call(_this2, vectorBucketName);
-  }
-  async listBuckets(options = {}) {
-    var _superprop_getListBuckets = () => super.listBuckets, _this3 = this;
-    return _superprop_getListBuckets().call(_this3, options);
-  }
-  async deleteBucket(vectorBucketName) {
-    var _superprop_getDeleteBucket = () => super.deleteBucket, _this4 = this;
-    return _superprop_getDeleteBucket().call(_this4, vectorBucketName);
-  }
-};
-var VectorBucketScope = class extends VectorIndexApi {
-  constructor(url2, headers, vectorBucketName, fetch$1) {
-    super(url2, headers, fetch$1);
-    this.vectorBucketName = vectorBucketName;
-  }
-  async createIndex(options) {
-    var _superprop_getCreateIndex = () => super.createIndex, _this5 = this;
-    return _superprop_getCreateIndex().call(_this5, _objectSpread22(_objectSpread22({}, options), {}, { vectorBucketName: _this5.vectorBucketName }));
-  }
-  async listIndexes(options = {}) {
-    var _superprop_getListIndexes = () => super.listIndexes, _this6 = this;
-    return _superprop_getListIndexes().call(_this6, _objectSpread22(_objectSpread22({}, options), {}, { vectorBucketName: _this6.vectorBucketName }));
-  }
-  async getIndex(indexName) {
-    var _superprop_getGetIndex = () => super.getIndex, _this7 = this;
-    return _superprop_getGetIndex().call(_this7, _this7.vectorBucketName, indexName);
-  }
-  async deleteIndex(indexName) {
-    var _superprop_getDeleteIndex = () => super.deleteIndex, _this8 = this;
-    return _superprop_getDeleteIndex().call(_this8, _this8.vectorBucketName, indexName);
-  }
-  index(indexName) {
-    return new VectorIndexScope(this.url, this.headers, this.vectorBucketName, indexName, this.fetch);
-  }
-};
-var VectorIndexScope = class extends VectorDataApi {
-  constructor(url2, headers, vectorBucketName, indexName, fetch$1) {
-    super(url2, headers, fetch$1);
-    this.vectorBucketName = vectorBucketName;
-    this.indexName = indexName;
-  }
-  async putVectors(options) {
-    var _superprop_getPutVectors = () => super.putVectors, _this9 = this;
-    return _superprop_getPutVectors().call(_this9, _objectSpread22(_objectSpread22({}, options), {}, {
-      vectorBucketName: _this9.vectorBucketName,
-      indexName: _this9.indexName
-    }));
-  }
-  async getVectors(options) {
-    var _superprop_getGetVectors = () => super.getVectors, _this10 = this;
-    return _superprop_getGetVectors().call(_this10, _objectSpread22(_objectSpread22({}, options), {}, {
-      vectorBucketName: _this10.vectorBucketName,
-      indexName: _this10.indexName
-    }));
-  }
-  async listVectors(options = {}) {
-    var _superprop_getListVectors = () => super.listVectors, _this11 = this;
-    return _superprop_getListVectors().call(_this11, _objectSpread22(_objectSpread22({}, options), {}, {
-      vectorBucketName: _this11.vectorBucketName,
-      indexName: _this11.indexName
-    }));
-  }
-  async queryVectors(options) {
-    var _superprop_getQueryVectors = () => super.queryVectors, _this12 = this;
-    return _superprop_getQueryVectors().call(_this12, _objectSpread22(_objectSpread22({}, options), {}, {
-      vectorBucketName: _this12.vectorBucketName,
-      indexName: _this12.indexName
-    }));
-  }
-  async deleteVectors(options) {
-    var _superprop_getDeleteVectors = () => super.deleteVectors, _this13 = this;
-    return _superprop_getDeleteVectors().call(_this13, _objectSpread22(_objectSpread22({}, options), {}, {
-      vectorBucketName: _this13.vectorBucketName,
-      indexName: _this13.indexName
-    }));
-  }
-};
-var StorageClient = class extends StorageBucketApi {
-  constructor(url2, headers = {}, fetch$1, opts) {
-    super(url2, headers, fetch$1, opts);
-  }
-  from(id) {
-    return new StorageFileApi(this.url, this.headers, id, this.fetch);
-  }
-  get vectors() {
-    return new StorageVectorsClient(this.url + "/vector", {
-      headers: this.headers,
-      fetch: this.fetch
-    });
-  }
-  get analytics() {
-    return new StorageAnalyticsClient(this.url + "/iceberg", this.headers, this.fetch);
-  }
-};
-
-// ../../node_modules/.bun/@supabase+supabase-js@2.105.4/node_modules/@supabase/supabase-js/dist/index.mjs
-var import_auth_js = __toESM(require_main3(), 1);
-__reExport(exports_dist3, __toESM(require_main2(), 1), module.exports);
-__reExport(exports_dist3, __toESM(require_main3(), 1), module.exports);
-var version3 = "2.105.4";
-var JS_ENV = "";
-if (typeof Deno !== "undefined")
-  JS_ENV = "deno";
-else if (typeof document !== "undefined")
-  JS_ENV = "web";
-else if (typeof navigator !== "undefined" && navigator.product === "ReactNative")
-  JS_ENV = "react-native";
-else
-  JS_ENV = "node";
-var DEFAULT_HEADERS2 = { "X-Client-Info": `supabase-js-${JS_ENV}/${version3}` };
-var DEFAULT_GLOBAL_OPTIONS = { headers: DEFAULT_HEADERS2 };
-var DEFAULT_DB_OPTIONS = { schema: "public" };
-var DEFAULT_AUTH_OPTIONS = {
-  autoRefreshToken: true,
-  persistSession: true,
-  detectSessionInUrl: true,
-  flowType: "implicit"
-};
-var DEFAULT_REALTIME_OPTIONS = {};
-function _typeof3(o) {
-  "@babel/helpers - typeof";
-  return _typeof3 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
-    return typeof o$1;
-  } : function(o$1) {
-    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
-  }, _typeof3(o);
-}
-function toPrimitive3(t, r) {
-  if (_typeof3(t) != "object" || !t)
-    return t;
-  var e = t[Symbol.toPrimitive];
-  if (e !== undefined) {
-    var i = e.call(t, r || "default");
-    if (_typeof3(i) != "object")
-      return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return (r === "string" ? String : Number)(t);
-}
-function toPropertyKey3(t) {
-  var i = toPrimitive3(t, "string");
-  return _typeof3(i) == "symbol" ? i : i + "";
-}
-function _defineProperty3(e, r, t) {
-  return (r = toPropertyKey3(r)) in e ? Object.defineProperty(e, r, {
-    value: t,
-    enumerable: true,
-    configurable: true,
-    writable: true
-  }) : e[r] = t, e;
-}
-function ownKeys3(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r$1) {
-      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread23(e) {
-  for (var r = 1;r < arguments.length; r++) {
-    var t = arguments[r] != null ? arguments[r] : {};
-    r % 2 ? ownKeys3(Object(t), true).forEach(function(r$1) {
-      _defineProperty3(e, r$1, t[r$1]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys3(Object(t)).forEach(function(r$1) {
-      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
-    });
-  }
-  return e;
-}
-var resolveFetch2 = (customFetch) => {
-  if (customFetch)
-    return (...args) => customFetch(...args);
-  return (...args) => fetch(...args);
-};
-var resolveHeadersConstructor = () => {
-  return Headers;
-};
-var fetchWithAuth = (supabaseKey, getAccessToken, customFetch) => {
-  const fetch$1 = resolveFetch2(customFetch);
-  const HeadersConstructor = resolveHeadersConstructor();
-  return async (input, init) => {
-    var _await$getAccessToken;
-    const accessToken = (_await$getAccessToken = await getAccessToken()) !== null && _await$getAccessToken !== undefined ? _await$getAccessToken : supabaseKey;
-    let headers = new HeadersConstructor(init === null || init === undefined ? undefined : init.headers);
-    if (!headers.has("apikey"))
-      headers.set("apikey", supabaseKey);
-    if (!headers.has("Authorization"))
-      headers.set("Authorization", `Bearer ${accessToken}`);
-    return fetch$1(input, _objectSpread23(_objectSpread23({}, init), {}, { headers }));
-  };
-};
-function ensureTrailingSlash(url2) {
-  return url2.endsWith("/") ? url2 : url2 + "/";
-}
-function applySettingDefaults(options, defaults) {
-  var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header;
-  const { db: dbOptions, auth: authOptions, realtime: realtimeOptions, global: globalOptions } = options;
-  const { db: DEFAULT_DB_OPTIONS$1, auth: DEFAULT_AUTH_OPTIONS$1, realtime: DEFAULT_REALTIME_OPTIONS$1, global: DEFAULT_GLOBAL_OPTIONS$1 } = defaults;
-  const result = {
-    db: _objectSpread23(_objectSpread23({}, DEFAULT_DB_OPTIONS$1), dbOptions),
-    auth: _objectSpread23(_objectSpread23({}, DEFAULT_AUTH_OPTIONS$1), authOptions),
-    realtime: _objectSpread23(_objectSpread23({}, DEFAULT_REALTIME_OPTIONS$1), realtimeOptions),
-    storage: {},
-    global: _objectSpread23(_objectSpread23(_objectSpread23({}, DEFAULT_GLOBAL_OPTIONS$1), globalOptions), {}, { headers: _objectSpread23(_objectSpread23({}, (_DEFAULT_GLOBAL_OPTIO = DEFAULT_GLOBAL_OPTIONS$1 === null || DEFAULT_GLOBAL_OPTIONS$1 === undefined ? undefined : DEFAULT_GLOBAL_OPTIONS$1.headers) !== null && _DEFAULT_GLOBAL_OPTIO !== undefined ? _DEFAULT_GLOBAL_OPTIO : {}), (_globalOptions$header = globalOptions === null || globalOptions === undefined ? undefined : globalOptions.headers) !== null && _globalOptions$header !== undefined ? _globalOptions$header : {}) }),
-    accessToken: async () => ""
-  };
-  if (options.accessToken)
-    result.accessToken = options.accessToken;
-  else
-    delete result.accessToken;
-  return result;
-}
-function validateSupabaseUrl(supabaseUrl) {
-  const trimmedUrl = supabaseUrl === null || supabaseUrl === undefined ? undefined : supabaseUrl.trim();
-  if (!trimmedUrl)
-    throw new Error("supabaseUrl is required.");
-  if (!trimmedUrl.match(/^https?:\/\//i))
-    throw new Error("Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.");
-  try {
-    return new URL(ensureTrailingSlash(trimmedUrl));
-  } catch (_unused) {
-    throw Error("Invalid supabaseUrl: Provided URL is malformed.");
-  }
-}
-var SupabaseAuthClient = class extends import_auth_js.AuthClient {
-  constructor(options) {
-    super(options);
-  }
-};
-var SupabaseClient = class {
-  constructor(supabaseUrl, supabaseKey, options) {
-    var _settings$auth$storag, _settings$global$head;
-    this.supabaseUrl = supabaseUrl;
-    this.supabaseKey = supabaseKey;
-    const baseUrl = validateSupabaseUrl(supabaseUrl);
-    if (!supabaseKey)
-      throw new Error("supabaseKey is required.");
-    this.realtimeUrl = new URL("realtime/v1", baseUrl);
-    this.realtimeUrl.protocol = this.realtimeUrl.protocol.replace("http", "ws");
-    this.authUrl = new URL("auth/v1", baseUrl);
-    this.storageUrl = new URL("storage/v1", baseUrl);
-    this.functionsUrl = new URL("functions/v1", baseUrl);
-    const defaultStorageKey = `sb-${baseUrl.hostname.split(".")[0]}-auth-token`;
-    const DEFAULTS = {
-      db: DEFAULT_DB_OPTIONS,
-      realtime: DEFAULT_REALTIME_OPTIONS,
-      auth: _objectSpread23(_objectSpread23({}, DEFAULT_AUTH_OPTIONS), {}, { storageKey: defaultStorageKey }),
-      global: DEFAULT_GLOBAL_OPTIONS
-    };
-    const settings = applySettingDefaults(options !== null && options !== undefined ? options : {}, DEFAULTS);
-    this.storageKey = (_settings$auth$storag = settings.auth.storageKey) !== null && _settings$auth$storag !== undefined ? _settings$auth$storag : "";
-    this.headers = (_settings$global$head = settings.global.headers) !== null && _settings$global$head !== undefined ? _settings$global$head : {};
-    if (!settings.accessToken) {
-      var _settings$auth;
-      this.auth = this._initSupabaseAuthClient((_settings$auth = settings.auth) !== null && _settings$auth !== undefined ? _settings$auth : {}, this.headers, settings.global.fetch);
-    } else {
-      this.accessToken = settings.accessToken;
-      this.auth = new Proxy({}, { get: (_, prop) => {
-        throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(prop)} is not possible`);
-      } });
-    }
-    this.fetch = fetchWithAuth(supabaseKey, this._getAccessToken.bind(this), settings.global.fetch);
-    this.realtime = this._initRealtimeClient(_objectSpread23({
-      headers: this.headers,
-      accessToken: this._getAccessToken.bind(this),
-      fetch: this.fetch
-    }, settings.realtime));
-    if (this.accessToken)
-      Promise.resolve(this.accessToken()).then((token) => this.realtime.setAuth(token)).catch((e) => console.warn("Failed to set initial Realtime auth token:", e));
-    this.rest = new PostgrestClient(new URL("rest/v1", baseUrl).href, {
-      headers: this.headers,
-      schema: settings.db.schema,
-      fetch: this.fetch,
-      timeout: settings.db.timeout,
-      urlLengthLimit: settings.db.urlLengthLimit
-    });
-    this.storage = new StorageClient(this.storageUrl.href, this.headers, this.fetch, options === null || options === undefined ? undefined : options.storage);
-    if (!settings.accessToken)
-      this._listenForAuthEvents();
-  }
-  get functions() {
-    return new import_functions_js.FunctionsClient(this.functionsUrl.href, {
-      headers: this.headers,
-      customFetch: this.fetch
-    });
-  }
-  from(relation) {
-    return this.rest.from(relation);
-  }
-  schema(schema) {
-    return this.rest.schema(schema);
-  }
-  rpc(fn, args = {}, options = {
-    head: false,
-    get: false,
-    count: undefined
-  }) {
-    return this.rest.rpc(fn, args, options);
-  }
-  channel(name, opts = { config: {} }) {
-    return this.realtime.channel(name, opts);
-  }
-  getChannels() {
-    return this.realtime.getChannels();
-  }
-  removeChannel(channel) {
-    return this.realtime.removeChannel(channel);
-  }
-  removeAllChannels() {
-    return this.realtime.removeAllChannels();
-  }
-  async _getAccessToken() {
-    var _this = this;
-    var _data$session$access_, _data$session;
-    if (_this.accessToken)
-      return await _this.accessToken();
-    const { data } = await _this.auth.getSession();
-    return (_data$session$access_ = (_data$session = data.session) === null || _data$session === undefined ? undefined : _data$session.access_token) !== null && _data$session$access_ !== undefined ? _data$session$access_ : _this.supabaseKey;
-  }
-  _initSupabaseAuthClient({ autoRefreshToken, persistSession, detectSessionInUrl, storage, userStorage, storageKey, flowType, lock, debug, throwOnError, experimental, lockAcquireTimeout, skipAutoInitialize }, headers, fetch$1) {
-    const authHeaders = {
-      Authorization: `Bearer ${this.supabaseKey}`,
-      apikey: `${this.supabaseKey}`
-    };
-    return new SupabaseAuthClient({
-      url: this.authUrl.href,
-      headers: _objectSpread23(_objectSpread23({}, authHeaders), headers),
-      storageKey,
-      autoRefreshToken,
-      persistSession,
-      detectSessionInUrl,
-      storage,
-      userStorage,
-      flowType,
-      lock,
-      debug,
-      throwOnError,
-      experimental,
-      fetch: fetch$1,
-      lockAcquireTimeout,
-      skipAutoInitialize,
-      hasCustomAuthorizationHeader: Object.keys(this.headers).some((key) => key.toLowerCase() === "authorization")
-    });
-  }
-  _initRealtimeClient(options) {
-    return new import_realtime_js.RealtimeClient(this.realtimeUrl.href, _objectSpread23(_objectSpread23({}, options), {}, { params: _objectSpread23(_objectSpread23({}, { apikey: this.supabaseKey }), options === null || options === undefined ? undefined : options.params) }));
-  }
-  _listenForAuthEvents() {
-    return this.auth.onAuthStateChange((event, session) => {
-      this._handleTokenChanged(event, "CLIENT", session === null || session === undefined ? undefined : session.access_token);
-    });
-  }
-  _handleTokenChanged(event, source, token) {
-    if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN") && this.changedAccessToken !== token) {
-      this.changedAccessToken = token;
-      this.realtime.setAuth(token);
-    } else if (event === "SIGNED_OUT") {
-      this.realtime.setAuth();
-      if (source == "STORAGE")
-        this.auth.signOut();
-      this.changedAccessToken = undefined;
-    }
-  }
-};
-var createClient = (supabaseUrl, supabaseKey, options) => {
-  return new SupabaseClient(supabaseUrl, supabaseKey, options);
-};
-function shouldShowDeprecationWarning() {
-  if (typeof window !== "undefined")
-    return false;
-  const _process = globalThis["process"];
-  if (!_process)
-    return false;
-  const processVersion = _process["version"];
-  if (processVersion === undefined || processVersion === null)
-    return false;
-  const versionMatch = processVersion.match(/^v(\d+)\./);
-  if (!versionMatch)
-    return false;
-  return parseInt(versionMatch[1], 10) <= 18;
-}
-if (shouldShowDeprecationWarning())
-  console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
-
-// src/state/files.ts
-var import_promises3 = require("node:fs/promises");
-var import_node_path2 = require("node:path");
-var import_toml = __toESM(require_toml(), 1);
-var DIRECTORY_MODE = 448;
-var FILE_MODE = 384;
-async function ensureParentDirectory(filePath) {
-  await import_promises3.mkdir(import_node_path2.dirname(filePath), { recursive: true, mode: DIRECTORY_MODE });
-}
-async function writeFileAtomic(filePath, content) {
-  await ensureParentDirectory(filePath);
-  const temporaryFilePath = import_node_path2.join(import_node_path2.dirname(filePath), `.${import_node_path2.basename(filePath)}.${process.pid}.${Date.now()}.tmp`);
-  let handle;
-  try {
-    handle = await import_promises3.open(temporaryFilePath, "w", FILE_MODE);
-    await handle.writeFile(content, { encoding: "utf-8" });
-    await handle.sync();
-    await handle.close();
-    handle = undefined;
-    await import_promises3.rename(temporaryFilePath, filePath);
-  } catch (error51) {
-    if (handle) {
-      await handle.close().catch(() => {
-        return;
-      });
-    }
-    await import_promises3.unlink(temporaryFilePath).catch(() => {
-      return;
-    });
-    throw error51;
-  }
-}
-async function readJsonFile(filePath) {
-  try {
-    const content = await import_promises3.readFile(filePath, "utf-8");
-    return JSON.parse(content);
-  } catch (error51) {
-    if (error51.code === "ENOENT") {
-      return null;
-    }
-    throw error51;
-  }
-}
-async function writeJsonFileAtomic(filePath, value) {
-  await writeFileAtomic(filePath, `${JSON.stringify(value, null, 2)}
-`);
-}
-async function readTomlFile(filePath) {
-  try {
-    const content = await import_promises3.readFile(filePath, "utf-8");
-    return import_toml.parse(content);
-  } catch (error51) {
-    if (error51.code === "ENOENT") {
-      return null;
-    }
-    throw error51;
-  }
-}
-async function writeTomlFileAtomic(filePath, value) {
-  await writeFileAtomic(filePath, import_toml.stringify(value));
-}
-async function removeStateFile(filePath) {
-  try {
-    await import_promises3.unlink(filePath);
-  } catch (error51) {
-    if (error51.code !== "ENOENT") {
-      throw error51;
-    }
-  }
-}
-async function appendTextFile(filePath, content) {
-  await ensureParentDirectory(filePath);
-  await import_promises3.appendFile(filePath, content, { encoding: "utf-8", mode: FILE_MODE });
-}
-
-// src/state/paths.ts
-var import_node_os2 = require("node:os");
-var import_node_path3 = require("node:path");
-var DEFAULT_STATE_DIR_NAME = `.codex-${plugin_default.name}`;
-function getDefaultStateRootDir() {
-  return import_node_path3.join(import_node_os2.homedir(), DEFAULT_STATE_DIR_NAME);
-}
-function getStateRootDir() {
-  return process.env.ZEST_CODEX_STATE_DIR ?? getDefaultStateRootDir();
-}
-function resolveStatePath(...segments) {
-  const stateRootDir = getStateRootDir();
-  const resolvedPath = import_node_path3.resolve(stateRootDir, ...segments);
-  const relativePath = import_node_path3.relative(stateRootDir, resolvedPath);
-  if (relativePath.length === 0) {
-    return resolvedPath;
-  }
-  if (relativePath === ".." || relativePath.startsWith(`..${"/"}`) || import_node_path3.isAbsolute(relativePath)) {
-    throw new Error(`State path must stay within ${stateRootDir}`);
-  }
-  return resolvedPath;
-}
-function resolveDefaultStatePath(...segments) {
-  const stateRootDir = getDefaultStateRootDir();
-  const resolvedPath = import_node_path3.resolve(stateRootDir, ...segments);
-  const relativePath = import_node_path3.relative(stateRootDir, resolvedPath);
-  if (relativePath.length === 0) {
-    return resolvedPath;
-  }
-  if (relativePath === ".." || relativePath.startsWith(`..${"/"}`) || import_node_path3.isAbsolute(relativePath)) {
-    throw new Error(`State path must stay within ${stateRootDir}`);
-  }
-  return resolvedPath;
-}
-
-// src/auth/session.ts
-var AUTH_SESSION_VERSION = 1;
-function getAuthSessionFilePath() {
-  return resolveStatePath("auth", "session.json");
-}
-function isNonEmptyString(value) {
-  return typeof value === "string" && value.trim().length > 0;
-}
-function isAuthSessionValid(value) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-  const candidate = value;
-  if (candidate.version !== AUTH_SESSION_VERSION) {
-    return false;
-  }
-  if (!isNonEmptyString(candidate.accessToken) || !isNonEmptyString(candidate.refreshToken) || !isNonEmptyString(candidate.userId) || !isNonEmptyString(candidate.email)) {
-    return false;
-  }
-  if (candidate.refreshTokenExpiresAt !== undefined && (typeof candidate.refreshTokenExpiresAt !== "number" || !Number.isFinite(candidate.refreshTokenExpiresAt))) {
-    return false;
-  }
-  return true;
-}
-async function loadAuthSession() {
-  const filePath = getAuthSessionFilePath();
-  const session = await readJsonFile(filePath);
-  if (session === null) {
-    return null;
-  }
-  if (!isAuthSessionValid(session)) {
-    await removeStateFile(filePath);
-    return null;
-  }
-  return session;
-}
-async function saveAuthSession(session) {
-  await writeJsonFileAtomic(getAuthSessionFilePath(), session);
-}
-async function clearAuthSession() {
-  await removeStateFile(getAuthSessionFilePath());
-}
-
-// src/supabase/session-storage-adapter.ts
-function getJwtExpiresAt(token) {
-  const [, payload] = token.split(".");
-  if (!payload) {
-    return;
-  }
-  try {
-    const decoded = JSON.parse(Buffer.from(payload, "base64url").toString("utf-8"));
-    return typeof decoded.exp === "number" && Number.isFinite(decoded.exp) ? decoded.exp : undefined;
-  } catch {
-    return;
-  }
-}
-function isRefreshTokenExpired(session) {
-  return session.refreshTokenExpiresAt !== undefined && session.refreshTokenExpiresAt <= Date.now();
-}
-function createGoTrueSession(session) {
-  if (isRefreshTokenExpired(session)) {
-    return null;
-  }
-  const expiresAt = getJwtExpiresAt(session.accessToken) ?? 0;
-  const now = Math.floor(Date.now() / 1000);
-  return {
-    access_token: session.accessToken,
-    expires_at: expiresAt,
-    expires_in: Math.max(0, expiresAt - now),
-    refresh_token: session.refreshToken,
-    token_type: "bearer",
-    user: {
-      app_metadata: {},
-      aud: "authenticated",
-      created_at: "",
-      email: session.email,
-      id: session.userId,
-      user_metadata: {}
-    }
-  };
-}
-async function persistGoTrueSession(session) {
-  if (!session.access_token || !session.refresh_token || !session.user?.id) {
-    throw new Error("invalid Supabase session");
-  }
-  const existingSession = await loadAuthSession();
-  const refreshTokenRotated = existingSession !== null && existingSession.refreshToken !== session.refresh_token;
-  await saveAuthSession({
-    accessToken: session.access_token,
-    email: session.user.email || existingSession?.email || "",
-    refreshToken: session.refresh_token,
-    refreshTokenExpiresAt: refreshTokenRotated ? undefined : existingSession?.refreshTokenExpiresAt,
-    userId: session.user.id,
-    version: 1
-  });
-}
-function createSessionStorageAdapter(isRemovalAllowed = () => true) {
-  return {
-    async getItem(key) {
-      if (key.endsWith("-code-verifier")) {
-        return null;
-      }
-      const session = await loadAuthSession();
-      if (!session) {
-        return null;
-      }
-      const gotrueSession = createGoTrueSession(session);
-      return gotrueSession ? JSON.stringify(gotrueSession) : null;
-    },
-    async removeItem(key) {
-      if (key.endsWith("-code-verifier") || !isRemovalAllowed()) {
-        return;
-      }
-      await clearAuthSession();
-    },
-    async setItem(key, value) {
-      if (key.endsWith("-code-verifier")) {
-        return;
-      }
-      let session;
-      try {
-        session = JSON.parse(value);
-      } catch {
-        return;
-      }
-      await persistGoTrueSession(session);
-    }
-  };
-}
-
-// src/supabase/client.ts
-function createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey, storage) {
-  return createClientImpl(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-      persistSession: true,
-      storage
-    }
-  });
-}
-function isExpiringWithin(expiresAt, minTtlSeconds) {
-  return expiresAt !== undefined && expiresAt - Math.floor(Date.now() / 1000) <= minTtlSeconds;
-}
-function isStoredAccessTokenExpiringWithin(session, minTtlSeconds) {
-  const expiresAt = getJwtExpiresAt(session.accessToken);
-  return expiresAt === undefined || isExpiringWithin(expiresAt, minTtlSeconds);
-}
-async function createOnDemandClient(options = {}) {
-  const createClientImpl = options.createClientImpl ?? createClient;
-  const loadSession = options.loadSession ?? loadAuthSession;
-  const refreshMinTtlSeconds = options.refreshMinTtlSeconds ?? 0;
-  const supabaseUrl = options.supabaseUrl ?? SUPABASE_URL;
-  const supabaseAnonKey = options.supabaseAnonKey ?? SUPABASE_ANON_KEY;
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return null;
-  }
-  const session = await loadSession();
-  if (!session) {
-    return null;
-  }
-  const storage = createSessionStorageAdapter(() => false);
-  const client = createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey, storage);
-  const { error: error51 } = await client.auth.setSession({
-    access_token: session.accessToken,
-    refresh_token: session.refreshToken
-  });
-  if (error51) {
-    await client.removeAllChannels();
-    return null;
-  }
-  const getSession = typeof client.auth.getSession === "function" ? client.auth.getSession.bind(client.auth) : null;
-  const activeSession = getSession ? (await getSession()).data.session : null;
-  if (activeSession && isExpiringWithin(activeSession.expires_at, refreshMinTtlSeconds) || isStoredAccessTokenExpiringWithin(session, refreshMinTtlSeconds)) {
-    const { data, error: refreshError } = await client.auth.refreshSession();
-    if (refreshError || !data.session) {
-      await client.removeAllChannels();
-      return null;
-    }
-    try {
-      await persistGoTrueSession(data.session);
-    } catch {
-      await client.removeAllChannels();
-      return null;
-    }
-  }
-  return {
-    client,
-    dispose: async () => {
-      await client.removeAllChannels();
-    }
-  };
-}
-
-// src/workspace/binding.ts
-var WORKSPACE_BINDING_VERSION = 1;
-function isNonEmptyString2(value) {
-  return typeof value === "string" && value.trim().length > 0;
-}
-function getWorkspaceBindingFilePath() {
-  return resolveStatePath("workspace", "binding.toml");
-}
-function isWorkspaceBindingValid(value) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-  const candidate = value;
-  if (candidate.version !== WORKSPACE_BINDING_VERSION) {
-    return false;
-  }
-  if (!candidate.active || typeof candidate.active !== "object") {
-    return false;
-  }
-  if (!isNonEmptyString2(candidate.active.id)) {
-    return false;
-  }
-  if (candidate.active.name !== undefined && !isNonEmptyString2(candidate.active.name)) {
-    return false;
-  }
-  if (candidate.sync !== undefined) {
-    if (!candidate.sync || typeof candidate.sync !== "object") {
-      return false;
-    }
-    if (typeof candidate.sync.enabled !== "boolean") {
-      return false;
-    }
-  }
-  return true;
-}
-async function loadWorkspaceBinding() {
-  const filePath = getWorkspaceBindingFilePath();
-  const binding = await readTomlFile(filePath);
-  if (binding === null) {
-    return null;
-  }
-  if (!isWorkspaceBindingValid(binding)) {
-    await removeStateFile(filePath);
-    return null;
-  }
-  return binding;
-}
-async function saveWorkspaceBinding(binding) {
-  await writeTomlFileAtomic(getWorkspaceBindingFilePath(), {
-    active: {
-      ...binding.active.name ? { name: binding.active.name } : {},
-      id: binding.active.id
-    },
-    ...binding.sync ? { sync: { enabled: binding.sync.enabled } } : {},
-    version: binding.version
-  });
-}
-async function saveActiveWorkspaceBinding(workspaceId, workspaceName) {
-  await saveWorkspaceBinding({
-    active: {
-      id: workspaceId,
-      ...workspaceName ? { name: workspaceName } : {}
-    },
-    version: WORKSPACE_BINDING_VERSION
-  });
-}
-
-// src/workspace/resolve.ts
-function normalizeWorkspaceName(name) {
-  if (typeof name !== "string") {
-    return;
-  }
-  const trimmedName = name.trim();
-  return trimmedName.length > 0 ? trimmedName : undefined;
-}
-async function resolveWorkspaceName(workspaceId) {
-  const onDemand = await createOnDemandClient();
-  if (!onDemand) {
-    return;
-  }
-  try {
-    const { data, error: error51 } = await onDemand.client.from("workspaces").select("name").eq("id", workspaceId).maybeSingle();
-    if (error51) {
-      return;
-    }
-    return normalizeWorkspaceName(data?.name);
-  } catch {
-    return;
-  } finally {
-    await onDemand.dispose();
-  }
-}
-async function saveResolvedWorkspaceBinding(workspaceId, resolveName = resolveWorkspaceName) {
-  let workspaceName;
-  try {
-    workspaceName = await resolveName(workspaceId);
-  } catch {
-    workspaceName = undefined;
-  }
-  await saveActiveWorkspaceBinding(workspaceId, workspaceName);
-  return workspaceName;
-}
-
-// src/auth/login.ts
-function getFetchImplementation(fetchImplementation) {
-  const implementation = fetchImplementation ?? globalThis.fetch;
-  if (!implementation) {
-    throw new Error("Global fetch is not available");
-  }
-  return implementation;
-}
-function createUrl(baseUrl, path2) {
-  return new URL(path2, baseUrl).toString();
-}
-async function parseJsonResponse(response) {
-  return await response.json();
-}
-async function initiateDeviceLogin(fetchImplementation, webAppUrl, clientId) {
-  const response = await fetchImplementation(createUrl(webAppUrl, DEVICE_AUTH_INITIATE_PATH), {
-    body: JSON.stringify({ clientId }),
-    headers: {
-      "Content-Type": "application/json"
-    },
-    method: "POST"
-  });
-  if (!response.ok) {
-    const errorPayload = await parseJsonResponse(response).catch(() => null);
-    throw new Error(errorPayload?.error || "Failed to initiate device login");
-  }
-  return parseJsonResponse(response);
-}
-function normalizeAuthorizedSession(session) {
-  const email3 = session.user.email?.trim();
-  if (!email3) {
-    throw new Error("Authorized session is missing a user email");
-  }
-  let refreshTokenExpiresAt;
-  if (session.refresh_token_expires_at !== undefined) {
-    refreshTokenExpiresAt = session.refresh_token_expires_at * 1000;
-  } else if (session.refresh_token_expires_in !== undefined) {
-    refreshTokenExpiresAt = Date.now() + session.refresh_token_expires_in * 1000;
-  }
-  return {
-    accessToken: session.access_token,
-    email: email3,
-    refreshToken: session.refresh_token,
-    refreshTokenExpiresAt,
-    userId: session.user.id,
-    version: AUTH_SESSION_VERSION
-  };
-}
-function normalizeWorkspaceId(workspaceId) {
-  if (typeof workspaceId !== "string") {
-    return;
-  }
-  const trimmedWorkspaceId = workspaceId.trim();
-  return trimmedWorkspaceId.length > 0 ? trimmedWorkspaceId : undefined;
-}
-function mapPollingError(message, start) {
-  const normalizedMessage = message.toLowerCase();
-  if (normalizedMessage.includes("denied")) {
-    return {
-      deviceCode: start.deviceCode,
-      message: "Authorization was denied by the user.",
-      reason: "cancelled",
-      status: "failed",
-      verificationUrl: start.verificationUrl
-    };
-  }
-  if (normalizedMessage.includes("expired")) {
-    return {
-      deviceCode: start.deviceCode,
-      message: "The device code expired before authorization completed.",
-      reason: "expired",
-      status: "failed",
-      verificationUrl: start.verificationUrl
-    };
-  }
-  return;
-}
-async function startLogin(dependencies = {}) {
-  const fetchImplementation = getFetchImplementation(dependencies.fetch);
-  const webAppUrl = dependencies.webAppUrl ?? WEB_APP_URL;
-  const clientId = dependencies.clientId ?? CLIENT_ID;
-  const start = await initiateDeviceLogin(fetchImplementation, webAppUrl, clientId);
-  try {
-    await Promise.resolve((dependencies.openUrl ?? open_default)(start.verificationUrl));
-  } catch {}
-  return start;
-}
-async function completeLogin(start, dependencies = {}) {
-  const fetchImplementation = getFetchImplementation(dependencies.fetch);
-  const webAppUrl = dependencies.webAppUrl ?? WEB_APP_URL;
-  const sleep2 = dependencies.sleep ?? ((ms) => new Promise((resolve2) => setTimeout(resolve2, ms)));
-  const maxAttempts = Math.max(1, Math.floor(start.expiresIn / start.interval));
-  for (let attempt = 0;attempt < maxAttempts; attempt += 1) {
-    try {
-      const response = await fetchImplementation(createUrl(webAppUrl, DEVICE_AUTH_POLL_PATH), {
-        body: JSON.stringify({ authCode: start.authCode }),
-        headers: {
-          "Content-Type": "application/json"
-        },
-        method: "POST"
-      });
-      if (!response.ok) {
-        const errorPayload = await parseJsonResponse(response).catch(() => null);
-        const failure = mapPollingError(errorPayload?.error || "Authentication polling failed", start);
-        if (failure) {
-          return failure;
-        }
-        throw new Error(errorPayload?.error || "Authentication polling failed");
-      }
-      const payload = await parseJsonResponse(response);
-      if (payload.status === "authorized" && payload.session) {
-        const persistedSession = normalizeAuthorizedSession(payload.session);
-        await saveAuthSession(persistedSession);
-        const workspaceId = normalizeWorkspaceId(payload.session.workspace_id);
-        if (workspaceId) {
-          await saveResolvedWorkspaceBinding(workspaceId, dependencies.resolveWorkspaceName);
-        }
-        return {
-          deviceCode: start.deviceCode,
-          email: persistedSession.email,
-          status: "authenticated",
-          userId: persistedSession.userId,
-          verificationUrl: start.verificationUrl
-        };
-      }
-      if (payload.status === "pending" && attempt < maxAttempts - 1) {
-        await sleep2(start.interval * 1000);
-      }
-    } catch (error51) {
-      if (attempt === maxAttempts - 1) {
-        return {
-          deviceCode: start.deviceCode,
-          message: error51 instanceof Error ? error51.message : "Authentication polling failed",
-          reason: "auth_error",
-          status: "failed",
-          verificationUrl: start.verificationUrl
-        };
-      }
-      await sleep2(start.interval * 1000);
-    }
-  }
-  return {
-    deviceCode: start.deviceCode,
-    message: "Authorization timed out before the device flow completed.",
-    reason: "timeout",
-    status: "failed",
-    verificationUrl: start.verificationUrl
-  };
-}
-async function loginWithDeviceFlow(dependencies = {}) {
-  const start = await startLogin(dependencies);
-  return completeLogin(start, dependencies);
-}
-
-// src/codex/legacy-alpha-cleanup.ts
-var import_promises4 = require("node:fs/promises");
-var import_node_os3 = require("node:os");
-var import_node_path4 = require("node:path");
-var LEGACY_MARKETPLACE_NAME = "zest-alpha";
-var LEGACY_PLUGIN_NAME = "zest";
-var LEGACY_PLUGIN_CONFIG_PREFIX = `[plugins."${LEGACY_PLUGIN_NAME}@${LEGACY_MARKETPLACE_NAME}"`;
-function getCodexHomeDir(options) {
-  return options.codexHomeDir ?? import_node_path4.join(import_node_os3.homedir(), ".codex");
-}
-function getAgentsHomeDir(options) {
-  return options.agentsHomeDir ?? import_node_path4.join(import_node_os3.homedir(), ".agents");
-}
-function getStateRootDir2(options) {
-  return options.stateRootDir ?? process.env.ZEST_CODEX_STATE_DIR ?? import_node_path4.join(import_node_os3.homedir(), ".codex-zest");
-}
-function createBackupSuffix(now) {
-  return now.toISOString().replace(/\D/g, "").slice(0, 14);
-}
-async function backupFile(filePath, suffix) {
-  const backupPath = `${filePath}.bak.zest-alpha-cleanup.${suffix}`;
-  await import_promises4.copyFile(filePath, backupPath);
-  return backupPath;
-}
-async function removeIfExists(filePath) {
-  try {
-    await import_promises4.stat(filePath);
-  } catch (error51) {
-    if (error51.code === "ENOENT") {
-      return false;
-    }
-    throw error51;
-  }
-  await import_promises4.rm(filePath, { force: true, recursive: true });
-  return true;
-}
-function removeLegacyConfigBlocks(content) {
-  const lines = content.split(/\r?\n/u);
-  const output = [];
-  let removed = false;
-  let skipping = false;
-  for (const line of lines) {
-    if (/^\s*\[/.test(line)) {
-      skipping = line.trim().startsWith(LEGACY_PLUGIN_CONFIG_PREFIX);
-    }
-    if (skipping) {
-      removed = true;
-      continue;
-    }
-    output.push(line);
-  }
-  return {
-    changed: removed,
-    content: output.join(`
-`).replace(/\n{3,}/gu, `
-
-`)
-  };
-}
-function isLegacyMarketplaceOnly(marketplace) {
-  if (marketplace.name !== LEGACY_MARKETPLACE_NAME || !Array.isArray(marketplace.plugins)) {
-    return false;
-  }
-  if (marketplace.plugins.length !== 1) {
-    return false;
-  }
-  const [plugin] = marketplace.plugins;
-  return Boolean(plugin && typeof plugin === "object" && plugin.name === LEGACY_PLUGIN_NAME);
-}
-async function cleanupLegacyConfig(configPath, suffix) {
-  let content;
-  try {
-    content = await import_promises4.readFile(configPath, "utf-8");
-  } catch (error51) {
-    if (error51.code === "ENOENT") {
-      return { removed: false };
-    }
-    throw error51;
-  }
-  const result = removeLegacyConfigBlocks(content);
-  if (!result.changed) {
-    return { removed: false };
-  }
-  const backup = await backupFile(configPath, suffix);
-  await import_promises4.writeFile(configPath, result.content, { encoding: "utf-8", mode: 384 });
-  return { backup, removed: true };
-}
-async function cleanupLegacyMarketplace(marketplacePath, suffix) {
-  let content;
-  try {
-    content = await import_promises4.readFile(marketplacePath, "utf-8");
-  } catch (error51) {
-    if (error51.code === "ENOENT") {
-      return { removed: false, skipped: "missing" };
-    }
-    throw error51;
-  }
-  let marketplace;
-  try {
-    marketplace = JSON.parse(content);
-  } catch {
-    return { removed: false, skipped: "not_zest_alpha" };
-  }
-  if (marketplace.name !== LEGACY_MARKETPLACE_NAME) {
-    return { removed: false, skipped: "not_zest_alpha" };
-  }
-  if (!isLegacyMarketplaceOnly(marketplace)) {
-    return { removed: false, skipped: "contains_other_entries" };
-  }
-  const backup = await backupFile(marketplacePath, suffix);
-  await import_promises4.rm(marketplacePath, { force: true });
-  return { backup, removed: true, skipped: false };
-}
-async function cleanupLegacyAlphaInstall(options = {}) {
-  const codexHomeDir = getCodexHomeDir(options);
-  const agentsHomeDir = getAgentsHomeDir(options);
-  const stateRootDir = getStateRootDir2(options);
-  const suffix = createBackupSuffix(options.now ?? new Date);
-  const backups = [];
-  const legacyCachePath = import_node_path4.join(codexHomeDir, "plugins", "cache", LEGACY_MARKETPLACE_NAME);
-  const removedLegacyCache = await removeIfExists(legacyCachePath);
-  const config2 = await cleanupLegacyConfig(import_node_path4.join(codexHomeDir, "config.toml"), suffix);
-  if (config2.backup) {
-    backups.push(config2.backup);
-  }
-  const marketplacePath = import_node_path4.join(agentsHomeDir, "plugins", "marketplace.json");
-  const marketplace = await cleanupLegacyMarketplace(marketplacePath, suffix);
-  if (marketplace.backup) {
-    backups.push(marketplace.backup);
-  }
-  const removedUpdateMetadataCache = await removeIfExists(import_node_path4.join(stateRootDir, "update", "check.json"));
-  const removed = {
-    legacyCache: removedLegacyCache,
-    legacyConfigBlocks: config2.removed,
-    legacyMarketplace: marketplace.removed,
-    updateMetadataCache: removedUpdateMetadataCache
-  };
-  const changed = Object.values(removed).some(Boolean);
-  return {
-    backups,
-    removed,
-    restartRequired: changed,
-    skipped: {
-      legacyMarketplace: marketplace.skipped
-    },
-    status: changed ? "cleaned" : "nothing_to_clean"
-  };
-}
-
-// src/privacy/sanitize.ts
-var import_node_path5 = require("node:path");
 
 // ../../packages/privacy-redaction/src/config/defaults.ts
 var DEFAULT_MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
@@ -43732,6 +39956,7 @@ function createPrivacyConfig(partial2) {
     customExclusionPatterns: partial2.customExclusionPatterns ?? DEFAULT_PRIVACY_CONFIG.customExclusionPatterns
   };
 }
+
 // ../../packages/privacy-redaction/src/detection/cache.ts
 class DetectionCache {
   cache = new Map;
@@ -44915,23 +41140,24 @@ class PrivacyService {
     return this.detector.getCacheSize();
   }
 }
+
 // ../../packages/privacy-redaction/src/manager/node-fs-adapter.ts
-var import_promises5 = require("node:fs/promises");
+var import_promises = require("node:fs/promises");
 function createNodeFsAdapter(workspaceRoot) {
   return {
-    async readFile(path2) {
-      return import_promises5.readFile(path2, "utf-8");
+    async readFile(path) {
+      return import_promises.readFile(path, "utf-8");
     },
-    async fileExists(path2) {
+    async fileExists(path) {
       try {
-        await import_promises5.stat(path2);
+        await import_promises.stat(path);
         return true;
       } catch {
         return false;
       }
     },
-    async readDir(path2) {
-      return import_promises5.readdir(path2);
+    async readDir(path) {
+      return import_promises.readdir(path);
     },
     getWorkspaceRoot() {
       return workspaceRoot;
@@ -44939,314 +41165,3637 @@ function createNodeFsAdapter(workspaceRoot) {
   };
 }
 
-// src/privacy/sanitize.ts
-function createPrivacyServiceForSource(sourcePath) {
-  return new PrivacyService({
-    enableCache: true,
-    fs: createNodeFsAdapter(import_node_path5.dirname(sourcePath))
-  });
-}
-function mapFieldSummary(field, result) {
-  return {
-    detectionCount: result.detections.length,
-    field,
-    patterns: [...new Set(result.detections.map((detection) => detection.pattern))].sort(),
-    wasRedacted: result.wasRedacted
-  };
-}
-function sanitizeSessionTitle(session, service, summaries, sourcePath) {
-  if (!session.title) {
-    return session;
+// ../../packages/privacy-redaction/src/manager/privacy-manager.ts
+var PrivacySettingsSchema = exports_external.object({
+  approach: exports_external.enum(["detection", "encryption", "hybrid"]).default("detection"),
+  aggressiveMode: exports_external.boolean().default(false),
+  enableGitignore: exports_external.boolean().default(true),
+  enableZestRules: exports_external.boolean().default(true),
+  customExclusionPatterns: exports_external.array(exports_external.string()).default([])
+});
+var DEFAULT_PRIVACY_SETTINGS = {
+  approach: "detection",
+  aggressiveMode: false,
+  enableGitignore: true,
+  enableZestRules: true,
+  customExclusionPatterns: []
+};
+// .codex-plugin/plugin.json
+var plugin_default = {
+  name: "zest",
+  version: "0.0.3",
+  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
+  author: {
+    name: "Zest",
+    email: "support@meetzest.com",
+    url: "https://meetzest.com"
+  },
+  homepage: "https://meetzest.com",
+  repository: "https://github.com/Winding-Labs/zest",
+  license: "MIT",
+  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
+  skills: "./skills/",
+  hooks: "./hooks/hooks.json",
+  mcpServers: "./.mcp.json",
+  interface: {
+    displayName: "Zest",
+    shortDescription: "AI workflow telemetry and standups for Codex.",
+    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
+    developerName: "Zest",
+    category: "Productivity",
+    capabilities: ["Interactive", "Read", "Write"],
+    websiteURL: "https://meetzest.com",
+    privacyPolicyURL: "https://meetzest.com/privacy",
+    termsOfServiceURL: "https://meetzest.com/terms",
+    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
+    brandColor: "#D4FF3D",
+    composerIcon: "./assets/zest-icon.svg",
+    logo: "./assets/zest.png",
+    screenshots: []
   }
-  const result = service.processContent(session.title, sourcePath);
-  if (result.hasSensitiveData) {
-    summaries.push(mapFieldSummary("session.title", result));
-  }
-  return {
-    ...session,
-    title: result.content
-  };
-}
-function sanitizeMessages(messages, service, summaries, sourcePath) {
-  return messages.map((message) => {
-    const result = service.processContent(message.content, sourcePath);
-    if (result.hasSensitiveData) {
-      summaries.push(mapFieldSummary(`messages.${message.message_index}.content`, result));
-    }
-    return {
-      ...message,
-      content: result.content
-    };
-  });
-}
-function createDroppedResult(input, droppedReason, details = {}) {
-  return {
-    status: "dropped",
-    payload: input.payload,
-    privacy: input.privacy,
-    metadata: {
-      fields: [],
-      droppedReason,
-      ...details
-    }
-  };
-}
-async function sanitizeNormalizedPayload(input) {
-  if (input.privacy.sourceKind !== "transcript") {
-    return createDroppedResult(input, "unsupported_source");
-  }
-  if (!input.privacy.sourcePathAllowlisted) {
-    return createDroppedResult(input, "source_not_allowlisted");
-  }
-  const service = createPrivacyServiceForSource(input.privacy.sourcePath);
-  await service.initialize();
-  const exclusion = service.shouldExcludeFile(input.privacy.sourcePath);
-  if (exclusion.excluded) {
-    return createDroppedResult(input, "source_excluded", {
-      exclusionMatch: exclusion.matchedRule,
-      exclusionReason: exclusion.reason
-    });
-  }
-  const fields = [];
-  return {
-    status: "sanitized",
-    privacy: input.privacy,
-    payload: {
-      ...input.payload,
-      session: sanitizeSessionTitle(input.payload.session, service, fields, input.privacy.sourcePath),
-      messages: sanitizeMessages(input.payload.messages, service, fields, input.privacy.sourcePath)
-    },
-    metadata: {
-      fields
-    }
-  };
-}
-async function sanitizeNormalizedPayloads(inputs) {
-  return Promise.all(inputs.map((input) => sanitizeNormalizedPayload(input)));
-}
-function formatExclusionReason(reason) {
-  return reason;
-}
+};
 
-// src/codex/discovery.ts
-var import_promises6 = require("node:fs/promises");
-var import_node_path7 = require("node:path");
+// ../../node_modules/open/index.js
+var import_node_process7 = __toESM(require("node:process"));
+var import_node_buffer = require("node:buffer");
+var import_node_path = __toESM(require("node:path"));
+var import_node_url = require("node:url");
+var import_node_util5 = require("node:util");
+var import_node_child_process5 = __toESM(require("node:child_process"));
+var import_promises3 = __toESM(require("node:fs/promises"));
 
-// src/codex/paths.ts
-var import_node_os4 = require("node:os");
-var import_node_path6 = require("node:path");
-var DEFAULT_CODEX_DIR_NAME = ".codex";
-var ALLOWLISTED_TOP_LEVEL_FILES = new Set([
-  "config.toml",
-  "session_index.jsonl",
-  "history.jsonl"
-]);
-function getCodexRootDir() {
-  return process.env.ZEST_CODEX_ROOT_DIR ?? import_node_path6.join(import_node_os4.homedir(), DEFAULT_CODEX_DIR_NAME);
-}
-function isWithinRoot(rootDir, targetPath) {
-  const rel = import_node_path6.relative(rootDir, targetPath);
-  if (rel.length === 0)
+// ../../node_modules/wsl-utils/index.js
+var import_node_process3 = __toESM(require("node:process"));
+var import_promises2 = __toESM(require("node:fs/promises"));
+
+// ../../node_modules/wsl-utils/node_modules/is-wsl/index.js
+var import_node_process2 = __toESM(require("node:process"));
+var import_node_os = __toESM(require("node:os"));
+var import_node_fs3 = __toESM(require("node:fs"));
+
+// ../../node_modules/is-inside-container/index.js
+var import_node_fs2 = __toESM(require("node:fs"));
+
+// ../../node_modules/is-inside-container/node_modules/is-docker/index.js
+var import_node_fs = __toESM(require("node:fs"));
+var isDockerCached;
+function hasDockerEnv() {
+  try {
+    import_node_fs.default.statSync("/.dockerenv");
+    return true;
+  } catch {
     return false;
-  return !(rel === ".." || rel.startsWith("../") || import_node_path6.isAbsolute(rel));
+  }
 }
-function matchesAllowlist(relativePath) {
-  if (ALLOWLISTED_TOP_LEVEL_FILES.has(relativePath)) {
+function hasDockerCGroup() {
+  try {
+    return import_node_fs.default.readFileSync("/proc/self/cgroup", "utf8").includes("docker");
+  } catch {
+    return false;
+  }
+}
+function isDocker() {
+  if (isDockerCached === undefined) {
+    isDockerCached = hasDockerEnv() || hasDockerCGroup();
+  }
+  return isDockerCached;
+}
+
+// ../../node_modules/is-inside-container/index.js
+var cachedResult;
+var hasContainerEnv = () => {
+  try {
+    import_node_fs2.default.statSync("/run/.containerenv");
+    return true;
+  } catch {
+    return false;
+  }
+};
+function isInsideContainer() {
+  if (cachedResult === undefined) {
+    cachedResult = hasContainerEnv() || isDocker();
+  }
+  return cachedResult;
+}
+
+// ../../node_modules/wsl-utils/node_modules/is-wsl/index.js
+var isWsl = () => {
+  if (import_node_process2.default.platform !== "linux") {
+    return false;
+  }
+  if (import_node_os.default.release().toLowerCase().includes("microsoft")) {
+    if (isInsideContainer()) {
+      return false;
+    }
     return true;
   }
-  if (relativePath.startsWith("sessions/") && relativePath.endsWith(".jsonl")) {
-    const inner = relativePath.slice("sessions/".length);
-    return inner.length > ".jsonl".length && !inner.includes("..");
+  try {
+    if (import_node_fs3.default.readFileSync("/proc/version", "utf8").toLowerCase().includes("microsoft")) {
+      return !isInsideContainer();
+    }
+  } catch {}
+  if (import_node_fs3.default.existsSync("/proc/sys/fs/binfmt_misc/WSLInterop") || import_node_fs3.default.existsSync("/run/WSL")) {
+    return !isInsideContainer();
   }
   return false;
-}
-function resolveCodexPath(...segments) {
-  const rootDir = getCodexRootDir();
-  const resolvedPath = import_node_path6.resolve(rootDir, ...segments);
-  if (!isWithinRoot(rootDir, resolvedPath)) {
-    throw new Error(`Codex path must stay within ${rootDir}`);
+};
+var is_wsl_default = import_node_process2.default.env.__IS_WSL_TEST__ ? isWsl : isWsl();
+
+// ../../node_modules/wsl-utils/index.js
+var wslDrivesMountPoint = (() => {
+  const defaultMountPoint = "/mnt/";
+  let mountPoint;
+  return async function() {
+    if (mountPoint) {
+      return mountPoint;
+    }
+    const configFilePath = "/etc/wsl.conf";
+    let isConfigFileExists = false;
+    try {
+      await import_promises2.default.access(configFilePath, import_promises2.constants.F_OK);
+      isConfigFileExists = true;
+    } catch {}
+    if (!isConfigFileExists) {
+      return defaultMountPoint;
+    }
+    const configContent = await import_promises2.default.readFile(configFilePath, { encoding: "utf8" });
+    const configMountPoint = /(?<!#.*)root\s*=\s*(?<mountPoint>.*)/g.exec(configContent);
+    if (!configMountPoint) {
+      return defaultMountPoint;
+    }
+    mountPoint = configMountPoint.groups.mountPoint.trim();
+    mountPoint = mountPoint.endsWith("/") ? mountPoint : `${mountPoint}/`;
+    return mountPoint;
+  };
+})();
+var powerShellPathFromWsl = async () => {
+  const mountPoint = await wslDrivesMountPoint();
+  return `${mountPoint}c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe`;
+};
+var powerShellPath = async () => {
+  if (is_wsl_default) {
+    return powerShellPathFromWsl();
   }
-  const rel = import_node_path6.relative(rootDir, resolvedPath);
-  if (!matchesAllowlist(rel)) {
-    throw new Error(`Codex path is not allowlisted: ${rel}`);
+  return `${import_node_process3.default.env.SYSTEMROOT || import_node_process3.default.env.windir || String.raw`C:\Windows`}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`;
+};
+
+// ../../node_modules/define-lazy-prop/index.js
+function defineLazyProperty(object4, propertyName, valueGetter) {
+  const define2 = (value) => Object.defineProperty(object4, propertyName, { value, enumerable: true, writable: true });
+  Object.defineProperty(object4, propertyName, {
+    configurable: true,
+    enumerable: true,
+    get() {
+      const result = valueGetter();
+      define2(result);
+      return result;
+    },
+    set(value) {
+      define2(value);
+    }
+  });
+  return object4;
+}
+
+// ../../node_modules/default-browser/index.js
+var import_node_util4 = require("node:util");
+var import_node_process6 = __toESM(require("node:process"));
+var import_node_child_process4 = require("node:child_process");
+
+// ../../node_modules/default-browser-id/index.js
+var import_node_util = require("node:util");
+var import_node_process4 = __toESM(require("node:process"));
+var import_node_child_process = require("node:child_process");
+var execFileAsync = import_node_util.promisify(import_node_child_process.execFile);
+async function defaultBrowserId() {
+  if (import_node_process4.default.platform !== "darwin") {
+    throw new Error("macOS only");
+  }
+  const { stdout } = await execFileAsync("defaults", ["read", "com.apple.LaunchServices/com.apple.launchservices.secure", "LSHandlers"]);
+  const match = /LSHandlerRoleAll = "(?!-)(?<id>[^"]+?)";\s+?LSHandlerURLScheme = (?:http|https);/.exec(stdout);
+  const browserId = match?.groups.id ?? "com.apple.Safari";
+  if (browserId === "com.apple.safari") {
+    return "com.apple.Safari";
+  }
+  return browserId;
+}
+
+// ../../node_modules/run-applescript/index.js
+var import_node_process5 = __toESM(require("node:process"));
+var import_node_util2 = require("node:util");
+var import_node_child_process2 = require("node:child_process");
+var execFileAsync2 = import_node_util2.promisify(import_node_child_process2.execFile);
+async function runAppleScript(script, { humanReadableOutput = true, signal } = {}) {
+  if (import_node_process5.default.platform !== "darwin") {
+    throw new Error("macOS only");
+  }
+  const outputArguments = humanReadableOutput ? [] : ["-ss"];
+  const execOptions = {};
+  if (signal) {
+    execOptions.signal = signal;
+  }
+  const { stdout } = await execFileAsync2("osascript", ["-e", script, outputArguments], execOptions);
+  return stdout.trim();
+}
+
+// ../../node_modules/bundle-name/index.js
+async function bundleName(bundleId) {
+  return runAppleScript(`tell application "Finder" to set app_path to application file id "${bundleId}" as string
+tell application "System Events" to get value of property list item "CFBundleName" of property list file (app_path & ":Contents:Info.plist")`);
+}
+
+// ../../node_modules/default-browser/windows.js
+var import_node_util3 = require("node:util");
+var import_node_child_process3 = require("node:child_process");
+var execFileAsync3 = import_node_util3.promisify(import_node_child_process3.execFile);
+var windowsBrowserProgIds = {
+  MSEdgeHTM: { name: "Edge", id: "com.microsoft.edge" },
+  MSEdgeBHTML: { name: "Edge Beta", id: "com.microsoft.edge.beta" },
+  MSEdgeDHTML: { name: "Edge Dev", id: "com.microsoft.edge.dev" },
+  AppXq0fevzme2pys62n3e0fbqa7peapykr8v: { name: "Edge", id: "com.microsoft.edge.old" },
+  ChromeHTML: { name: "Chrome", id: "com.google.chrome" },
+  ChromeBHTML: { name: "Chrome Beta", id: "com.google.chrome.beta" },
+  ChromeDHTML: { name: "Chrome Dev", id: "com.google.chrome.dev" },
+  ChromiumHTM: { name: "Chromium", id: "org.chromium.Chromium" },
+  BraveHTML: { name: "Brave", id: "com.brave.Browser" },
+  BraveBHTML: { name: "Brave Beta", id: "com.brave.Browser.beta" },
+  BraveDHTML: { name: "Brave Dev", id: "com.brave.Browser.dev" },
+  BraveSSHTM: { name: "Brave Nightly", id: "com.brave.Browser.nightly" },
+  FirefoxURL: { name: "Firefox", id: "org.mozilla.firefox" },
+  OperaStable: { name: "Opera", id: "com.operasoftware.Opera" },
+  VivaldiHTM: { name: "Vivaldi", id: "com.vivaldi.Vivaldi" },
+  "IE.HTTP": { name: "Internet Explorer", id: "com.microsoft.ie" }
+};
+var _windowsBrowserProgIdMap = new Map(Object.entries(windowsBrowserProgIds));
+
+class UnknownBrowserError extends Error {
+}
+async function defaultBrowser(_execFileAsync = execFileAsync3) {
+  const { stdout } = await _execFileAsync("reg", [
+    "QUERY",
+    " HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\http\\UserChoice",
+    "/v",
+    "ProgId"
+  ]);
+  const match = /ProgId\s*REG_SZ\s*(?<id>\S+)/.exec(stdout);
+  if (!match) {
+    throw new UnknownBrowserError(`Cannot find Windows browser in stdout: ${JSON.stringify(stdout)}`);
+  }
+  const { id } = match.groups;
+  const dotIndex = id.lastIndexOf(".");
+  const hyphenIndex = id.lastIndexOf("-");
+  const baseIdByDot = dotIndex === -1 ? undefined : id.slice(0, dotIndex);
+  const baseIdByHyphen = hyphenIndex === -1 ? undefined : id.slice(0, hyphenIndex);
+  return windowsBrowserProgIds[id] ?? windowsBrowserProgIds[baseIdByDot] ?? windowsBrowserProgIds[baseIdByHyphen] ?? { name: id, id };
+}
+
+// ../../node_modules/default-browser/index.js
+var execFileAsync4 = import_node_util4.promisify(import_node_child_process4.execFile);
+var titleize = (string5) => string5.toLowerCase().replaceAll(/(?:^|\s|-)\S/g, (x) => x.toUpperCase());
+async function defaultBrowser2() {
+  if (import_node_process6.default.platform === "darwin") {
+    const id = await defaultBrowserId();
+    const name = await bundleName(id);
+    return { name, id };
+  }
+  if (import_node_process6.default.platform === "linux") {
+    const { stdout } = await execFileAsync4("xdg-mime", ["query", "default", "x-scheme-handler/http"]);
+    const id = stdout.trim();
+    const name = titleize(id.replace(/.desktop$/, "").replace("-", " "));
+    return { name, id };
+  }
+  if (import_node_process6.default.platform === "win32") {
+    return defaultBrowser();
+  }
+  throw new Error("Only macOS, Linux, and Windows are supported");
+}
+
+// ../../node_modules/open/index.js
+var execFile5 = import_node_util5.promisify(import_node_child_process5.default.execFile);
+var __dirname2 = import_node_path.default.dirname(import_node_url.fileURLToPath("file:///home/runner/work/zest/zest/monorepo/node_modules/open/index.js"));
+var localXdgOpenPath = import_node_path.default.join(__dirname2, "xdg-open");
+var { platform, arch } = import_node_process7.default;
+async function getWindowsDefaultBrowserFromWsl() {
+  const powershellPath = await powerShellPath();
+  const rawCommand = String.raw`(Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice").ProgId`;
+  const encodedCommand = import_node_buffer.Buffer.from(rawCommand, "utf16le").toString("base64");
+  const { stdout } = await execFile5(powershellPath, [
+    "-NoProfile",
+    "-NonInteractive",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-EncodedCommand",
+    encodedCommand
+  ], { encoding: "utf8" });
+  const progId = stdout.trim();
+  const browserMap = {
+    ChromeHTML: "com.google.chrome",
+    BraveHTML: "com.brave.Browser",
+    MSEdgeHTM: "com.microsoft.edge",
+    FirefoxURL: "org.mozilla.firefox"
+  };
+  return browserMap[progId] ? { id: browserMap[progId] } : {};
+}
+var pTryEach = async (array3, mapper) => {
+  let latestError;
+  for (const item of array3) {
+    try {
+      return await mapper(item);
+    } catch (error51) {
+      latestError = error51;
+    }
+  }
+  throw latestError;
+};
+var baseOpen = async (options) => {
+  options = {
+    wait: false,
+    background: false,
+    newInstance: false,
+    allowNonzeroExitCode: false,
+    ...options
+  };
+  if (Array.isArray(options.app)) {
+    return pTryEach(options.app, (singleApp) => baseOpen({
+      ...options,
+      app: singleApp
+    }));
+  }
+  let { name: app, arguments: appArguments = [] } = options.app ?? {};
+  appArguments = [...appArguments];
+  if (Array.isArray(app)) {
+    return pTryEach(app, (appName) => baseOpen({
+      ...options,
+      app: {
+        name: appName,
+        arguments: appArguments
+      }
+    }));
+  }
+  if (app === "browser" || app === "browserPrivate") {
+    const ids = {
+      "com.google.chrome": "chrome",
+      "google-chrome.desktop": "chrome",
+      "com.brave.Browser": "brave",
+      "org.mozilla.firefox": "firefox",
+      "firefox.desktop": "firefox",
+      "com.microsoft.msedge": "edge",
+      "com.microsoft.edge": "edge",
+      "com.microsoft.edgemac": "edge",
+      "microsoft-edge.desktop": "edge"
+    };
+    const flags = {
+      chrome: "--incognito",
+      brave: "--incognito",
+      firefox: "--private-window",
+      edge: "--inPrivate"
+    };
+    const browser = is_wsl_default ? await getWindowsDefaultBrowserFromWsl() : await defaultBrowser2();
+    if (browser.id in ids) {
+      const browserName = ids[browser.id];
+      if (app === "browserPrivate") {
+        appArguments.push(flags[browserName]);
+      }
+      return baseOpen({
+        ...options,
+        app: {
+          name: apps[browserName],
+          arguments: appArguments
+        }
+      });
+    }
+    throw new Error(`${browser.name} is not supported as a default browser`);
+  }
+  let command;
+  const cliArguments = [];
+  const childProcessOptions = {};
+  if (platform === "darwin") {
+    command = "open";
+    if (options.wait) {
+      cliArguments.push("--wait-apps");
+    }
+    if (options.background) {
+      cliArguments.push("--background");
+    }
+    if (options.newInstance) {
+      cliArguments.push("--new");
+    }
+    if (app) {
+      cliArguments.push("-a", app);
+    }
+  } else if (platform === "win32" || is_wsl_default && !isInsideContainer() && !app) {
+    command = await powerShellPath();
+    cliArguments.push("-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-EncodedCommand");
+    if (!is_wsl_default) {
+      childProcessOptions.windowsVerbatimArguments = true;
+    }
+    const encodedArguments = ["Start"];
+    if (options.wait) {
+      encodedArguments.push("-Wait");
+    }
+    if (app) {
+      encodedArguments.push(`"\`"${app}\`""`);
+      if (options.target) {
+        appArguments.push(options.target);
+      }
+    } else if (options.target) {
+      encodedArguments.push(`"${options.target}"`);
+    }
+    if (appArguments.length > 0) {
+      appArguments = appArguments.map((argument) => `"\`"${argument}\`""`);
+      encodedArguments.push("-ArgumentList", appArguments.join(","));
+    }
+    options.target = import_node_buffer.Buffer.from(encodedArguments.join(" "), "utf16le").toString("base64");
+  } else {
+    if (app) {
+      command = app;
+    } else {
+      const isBundled = !__dirname2 || __dirname2 === "/";
+      let exeLocalXdgOpen = false;
+      try {
+        await import_promises3.default.access(localXdgOpenPath, import_promises3.constants.X_OK);
+        exeLocalXdgOpen = true;
+      } catch {}
+      const useSystemXdgOpen = import_node_process7.default.versions.electron ?? (platform === "android" || isBundled || !exeLocalXdgOpen);
+      command = useSystemXdgOpen ? "xdg-open" : localXdgOpenPath;
+    }
+    if (appArguments.length > 0) {
+      cliArguments.push(...appArguments);
+    }
+    if (!options.wait) {
+      childProcessOptions.stdio = "ignore";
+      childProcessOptions.detached = true;
+    }
+  }
+  if (platform === "darwin" && appArguments.length > 0) {
+    cliArguments.push("--args", ...appArguments);
+  }
+  if (options.target) {
+    cliArguments.push(options.target);
+  }
+  const subprocess = import_node_child_process5.default.spawn(command, cliArguments, childProcessOptions);
+  if (options.wait) {
+    return new Promise((resolve, reject) => {
+      subprocess.once("error", reject);
+      subprocess.once("close", (exitCode) => {
+        if (!options.allowNonzeroExitCode && exitCode > 0) {
+          reject(new Error(`Exited with code ${exitCode}`));
+          return;
+        }
+        resolve(subprocess);
+      });
+    });
+  }
+  subprocess.unref();
+  return subprocess;
+};
+var open = (target, options) => {
+  if (typeof target !== "string") {
+    throw new TypeError("Expected a `target`");
+  }
+  return baseOpen({
+    ...options,
+    target
+  });
+};
+function detectArchBinary(binary) {
+  if (typeof binary === "string" || Array.isArray(binary)) {
+    return binary;
+  }
+  const { [arch]: archBinary } = binary;
+  if (!archBinary) {
+    throw new Error(`${arch} is not supported`);
+  }
+  return archBinary;
+}
+function detectPlatformBinary({ [platform]: platformBinary }, { wsl }) {
+  if (wsl && is_wsl_default) {
+    return detectArchBinary(wsl);
+  }
+  if (!platformBinary) {
+    throw new Error(`${platform} is not supported`);
+  }
+  return detectArchBinary(platformBinary);
+}
+var apps = {};
+defineLazyProperty(apps, "chrome", () => detectPlatformBinary({
+  darwin: "google chrome",
+  win32: "chrome",
+  linux: ["google-chrome", "google-chrome-stable", "chromium"]
+}, {
+  wsl: {
+    ia32: "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+    x64: ["/mnt/c/Program Files/Google/Chrome/Application/chrome.exe", "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"]
+  }
+}));
+defineLazyProperty(apps, "brave", () => detectPlatformBinary({
+  darwin: "brave browser",
+  win32: "brave",
+  linux: ["brave-browser", "brave"]
+}, {
+  wsl: {
+    ia32: "/mnt/c/Program Files (x86)/BraveSoftware/Brave-Browser/Application/brave.exe",
+    x64: ["/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe", "/mnt/c/Program Files (x86)/BraveSoftware/Brave-Browser/Application/brave.exe"]
+  }
+}));
+defineLazyProperty(apps, "firefox", () => detectPlatformBinary({
+  darwin: "firefox",
+  win32: String.raw`C:\Program Files\Mozilla Firefox\firefox.exe`,
+  linux: "firefox"
+}, {
+  wsl: "/mnt/c/Program Files/Mozilla Firefox/firefox.exe"
+}));
+defineLazyProperty(apps, "edge", () => detectPlatformBinary({
+  darwin: "microsoft edge",
+  win32: "msedge",
+  linux: ["microsoft-edge", "microsoft-edge-dev"]
+}, {
+  wsl: "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
+}));
+defineLazyProperty(apps, "browser", () => "browser");
+defineLazyProperty(apps, "browserPrivate", () => "browserPrivate");
+var open_default = open;
+
+// src/config/constants.ts
+function resolveConfigValue({
+  bundledValue,
+  runtimeValue,
+  fallback
+}) {
+  if (typeof bundledValue === "string" && bundledValue.length > 0) {
+    return bundledValue;
+  }
+  if (typeof runtimeValue === "string" && runtimeValue.length > 0) {
+    return runtimeValue;
+  }
+  return fallback;
+}
+var CLIENT_ID = "codex-cli";
+var WEB_APP_URL = resolveConfigValue({
+  bundledValue: "https://app.meetzest.com",
+  runtimeValue: process.env.ZEST_WEB_APP_URL,
+  fallback: "http://localhost:3000"
+});
+var SUPABASE_URL = resolveConfigValue({
+  bundledValue: "https://fnnlebrtmlxxjwdvngck.supabase.co",
+  runtimeValue: process.env.ZEST_SUPABASE_URL,
+  fallback: ""
+});
+var SUPABASE_ANON_KEY = resolveConfigValue({
+  bundledValue: "sb_publishable_gJsE8TaVHipVQfLNDFV3tA_z7SRAZBY",
+  runtimeValue: process.env.ZEST_SUPABASE_ANON_KEY,
+  fallback: ""
+});
+var DEBUG_MODE_ENABLED = resolveConfigValue({
+  bundledValue: "",
+  runtimeValue: process.env.ZEST_CODEX_DEBUG,
+  fallback: ""
+}) === "1";
+if (DEBUG_MODE_ENABLED) {
+  console.warn("[zest-codex] WARNING: Debug mode is active. URLs point to localhost. Do not use in production.");
+}
+var SYNC_DEBUG_LOGGING_ENABLED = resolveConfigValue({
+  bundledValue: "",
+  runtimeValue: process.env.ZEST_CODEX_ENABLE_LOGS,
+  fallback: ""
+}) === "1";
+var PLATFORM_TERMINAL = "terminal";
+var PLATFORM_CODEX_APP = "codex-app";
+var SOURCE = "codex";
+var DEFAULT_STANDUP_MODEL = "anthropic/claude-sonnet-4-6";
+var DEVICE_AUTH_INITIATE_PATH = "/api/auth/device/initiate";
+var DEVICE_AUTH_POLL_PATH = "/api/auth/device/poll";
+
+// ../../node_modules/@supabase/supabase-js/dist/index.mjs
+var exports_dist3 = {};
+__export(exports_dist3, {
+  createClient: () => createClient,
+  SupabaseClient: () => SupabaseClient,
+  StorageApiError: () => StorageApiError,
+  PostgrestError: () => PostgrestError,
+  FunctionsRelayError: () => import_functions_js.FunctionsRelayError,
+  FunctionsHttpError: () => import_functions_js.FunctionsHttpError,
+  FunctionsFetchError: () => import_functions_js.FunctionsFetchError,
+  FunctionsError: () => import_functions_js.FunctionsError,
+  FunctionRegion: () => import_functions_js.FunctionRegion
+});
+var import_functions_js = __toESM(require_main(), 1);
+
+// ../../node_modules/@supabase/postgrest-js/dist/index.mjs
+var exports_dist = {};
+__export(exports_dist, {
+  default: () => src_default,
+  PostgrestTransformBuilder: () => PostgrestTransformBuilder,
+  PostgrestQueryBuilder: () => PostgrestQueryBuilder,
+  PostgrestFilterBuilder: () => PostgrestFilterBuilder,
+  PostgrestError: () => PostgrestError,
+  PostgrestClient: () => PostgrestClient,
+  PostgrestBuilder: () => PostgrestBuilder
+});
+var DEFAULT_MAX_RETRIES = 3;
+var getRetryDelay = (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000);
+var RETRYABLE_STATUS_CODES = [520, 503];
+var RETRYABLE_METHODS = [
+  "GET",
+  "HEAD",
+  "OPTIONS"
+];
+var PostgrestError = class extends Error {
+  constructor(context) {
+    super(context.message);
+    this.name = "PostgrestError";
+    this.details = context.details;
+    this.hint = context.hint;
+    this.code = context.code;
+  }
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      details: this.details,
+      hint: this.hint,
+      code: this.code
+    };
+  }
+};
+function sleep(ms, signal) {
+  return new Promise((resolve) => {
+    if (signal === null || signal === undefined ? undefined : signal.aborted) {
+      resolve();
+      return;
+    }
+    const id = setTimeout(() => {
+      signal === null || signal === undefined || signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    function onAbort() {
+      clearTimeout(id);
+      resolve();
+    }
+    signal === null || signal === undefined || signal.addEventListener("abort", onAbort);
+  });
+}
+function shouldRetry(method, status, attemptCount, retryEnabled) {
+  if (!retryEnabled || attemptCount >= DEFAULT_MAX_RETRIES)
+    return false;
+  if (!RETRYABLE_METHODS.includes(method))
+    return false;
+  if (!RETRYABLE_STATUS_CODES.includes(status))
+    return false;
+  return true;
+}
+var PostgrestBuilder = class {
+  constructor(builder) {
+    var _builder$shouldThrowO, _builder$isMaybeSingl, _builder$shouldStripN, _builder$urlLengthLim, _builder$retry;
+    this.shouldThrowOnError = false;
+    this.retryEnabled = true;
+    this.method = builder.method;
+    this.url = builder.url;
+    this.headers = new Headers(builder.headers);
+    this.schema = builder.schema;
+    this.body = builder.body;
+    this.shouldThrowOnError = (_builder$shouldThrowO = builder.shouldThrowOnError) !== null && _builder$shouldThrowO !== undefined ? _builder$shouldThrowO : false;
+    this.signal = builder.signal;
+    this.isMaybeSingle = (_builder$isMaybeSingl = builder.isMaybeSingle) !== null && _builder$isMaybeSingl !== undefined ? _builder$isMaybeSingl : false;
+    this.shouldStripNulls = (_builder$shouldStripN = builder.shouldStripNulls) !== null && _builder$shouldStripN !== undefined ? _builder$shouldStripN : false;
+    this.urlLengthLimit = (_builder$urlLengthLim = builder.urlLengthLimit) !== null && _builder$urlLengthLim !== undefined ? _builder$urlLengthLim : 8000;
+    this.retryEnabled = (_builder$retry = builder.retry) !== null && _builder$retry !== undefined ? _builder$retry : true;
+    if (builder.fetch)
+      this.fetch = builder.fetch;
+    else
+      this.fetch = fetch;
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  stripNulls() {
+    if (this.headers.get("Accept") === "text/csv")
+      throw new Error("stripNulls() cannot be used with csv()");
+    this.shouldStripNulls = true;
+    return this;
+  }
+  setHeader(name, value) {
+    this.headers = new Headers(this.headers);
+    this.headers.set(name, value);
+    return this;
+  }
+  retry(enabled) {
+    this.retryEnabled = enabled;
+    return this;
+  }
+  then(onfulfilled, onrejected) {
+    var _this = this;
+    if (this.schema === undefined) {} else if (["GET", "HEAD"].includes(this.method))
+      this.headers.set("Accept-Profile", this.schema);
+    else
+      this.headers.set("Content-Profile", this.schema);
+    if (this.method !== "GET" && this.method !== "HEAD")
+      this.headers.set("Content-Type", "application/json");
+    if (this.shouldStripNulls) {
+      const currentAccept = this.headers.get("Accept");
+      if (currentAccept === "application/vnd.pgrst.object+json")
+        this.headers.set("Accept", "application/vnd.pgrst.object+json;nulls=stripped");
+      else if (!currentAccept || currentAccept === "application/json")
+        this.headers.set("Accept", "application/vnd.pgrst.array+json;nulls=stripped");
+    }
+    const _fetch = this.fetch;
+    const executeWithRetry = async () => {
+      let attemptCount = 0;
+      while (true) {
+        const requestHeaders = new Headers(_this.headers);
+        if (attemptCount > 0)
+          requestHeaders.set("X-Retry-Count", String(attemptCount));
+        let res$1;
+        try {
+          res$1 = await _fetch(_this.url.toString(), {
+            method: _this.method,
+            headers: requestHeaders,
+            body: JSON.stringify(_this.body, (_, value) => typeof value === "bigint" ? value.toString() : value),
+            signal: _this.signal
+          });
+        } catch (fetchError) {
+          if ((fetchError === null || fetchError === undefined ? undefined : fetchError.name) === "AbortError" || (fetchError === null || fetchError === undefined ? undefined : fetchError.code) === "ABORT_ERR")
+            throw fetchError;
+          if (!RETRYABLE_METHODS.includes(_this.method))
+            throw fetchError;
+          if (_this.retryEnabled && attemptCount < DEFAULT_MAX_RETRIES) {
+            const delay = getRetryDelay(attemptCount);
+            attemptCount++;
+            await sleep(delay, _this.signal);
+            continue;
+          }
+          throw fetchError;
+        }
+        if (shouldRetry(_this.method, res$1.status, attemptCount, _this.retryEnabled)) {
+          var _res$headers$get, _res$headers;
+          const retryAfterHeader = (_res$headers$get = (_res$headers = res$1.headers) === null || _res$headers === undefined ? undefined : _res$headers.get("Retry-After")) !== null && _res$headers$get !== undefined ? _res$headers$get : null;
+          const delay = retryAfterHeader !== null ? Math.max(0, parseInt(retryAfterHeader, 10) || 0) * 1000 : getRetryDelay(attemptCount);
+          await res$1.text();
+          attemptCount++;
+          await sleep(delay, _this.signal);
+          continue;
+        }
+        return await _this.processResponse(res$1);
+      }
+    };
+    let res = executeWithRetry();
+    if (!this.shouldThrowOnError)
+      res = res.catch((fetchError) => {
+        var _fetchError$name2;
+        let errorDetails = "";
+        let hint = "";
+        let code = "";
+        const cause = fetchError === null || fetchError === undefined ? undefined : fetchError.cause;
+        if (cause) {
+          var _cause$message, _cause$code, _fetchError$name, _cause$name;
+          const causeMessage = (_cause$message = cause === null || cause === undefined ? undefined : cause.message) !== null && _cause$message !== undefined ? _cause$message : "";
+          const causeCode = (_cause$code = cause === null || cause === undefined ? undefined : cause.code) !== null && _cause$code !== undefined ? _cause$code : "";
+          errorDetails = `${(_fetchError$name = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name !== undefined ? _fetchError$name : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`;
+          errorDetails += `
+
+Caused by: ${(_cause$name = cause === null || cause === undefined ? undefined : cause.name) !== null && _cause$name !== undefined ? _cause$name : "Error"}: ${causeMessage}`;
+          if (causeCode)
+            errorDetails += ` (${causeCode})`;
+          if (cause === null || cause === undefined ? undefined : cause.stack)
+            errorDetails += `
+${cause.stack}`;
+        } else {
+          var _fetchError$stack;
+          errorDetails = (_fetchError$stack = fetchError === null || fetchError === undefined ? undefined : fetchError.stack) !== null && _fetchError$stack !== undefined ? _fetchError$stack : "";
+        }
+        const urlLength = this.url.toString().length;
+        if ((fetchError === null || fetchError === undefined ? undefined : fetchError.name) === "AbortError" || (fetchError === null || fetchError === undefined ? undefined : fetchError.code) === "ABORT_ERR") {
+          code = "";
+          hint = "Request was aborted (timeout or manual cancellation)";
+          if (urlLength > this.urlLengthLimit)
+            hint += `. Note: Your request URL is ${urlLength} characters, which may exceed server limits. If selecting many fields, consider using views. If filtering with large arrays (e.g., .in('id', [many IDs])), consider using an RPC function to pass values server-side.`;
+        } else if ((cause === null || cause === undefined ? undefined : cause.name) === "HeadersOverflowError" || (cause === null || cause === undefined ? undefined : cause.code) === "UND_ERR_HEADERS_OVERFLOW") {
+          code = "";
+          hint = "HTTP headers exceeded server limits (typically 16KB)";
+          if (urlLength > this.urlLengthLimit)
+            hint += `. Your request URL is ${urlLength} characters. If selecting many fields, consider using views. If filtering with large arrays (e.g., .in('id', [200+ IDs])), consider using an RPC function instead.`;
+        }
+        return {
+          success: false,
+          error: {
+            message: `${(_fetchError$name2 = fetchError === null || fetchError === undefined ? undefined : fetchError.name) !== null && _fetchError$name2 !== undefined ? _fetchError$name2 : "FetchError"}: ${fetchError === null || fetchError === undefined ? undefined : fetchError.message}`,
+            details: errorDetails,
+            hint,
+            code
+          },
+          data: null,
+          count: null,
+          status: 0,
+          statusText: ""
+        };
+      });
+    return res.then(onfulfilled, onrejected);
+  }
+  async processResponse(res) {
+    var _this2 = this;
+    let error51 = null;
+    let data = null;
+    let count = null;
+    let status = res.status;
+    let statusText = res.statusText;
+    if (res.ok) {
+      var _this$headers$get2, _res$headers$get2;
+      if (_this2.method !== "HEAD") {
+        var _this$headers$get;
+        const body = await res.text();
+        if (body === "") {} else if (_this2.headers.get("Accept") === "text/csv")
+          data = body;
+        else if (_this2.headers.get("Accept") && ((_this$headers$get = _this2.headers.get("Accept")) === null || _this$headers$get === undefined ? undefined : _this$headers$get.includes("application/vnd.pgrst.plan+text")))
+          data = body;
+        else
+          data = JSON.parse(body);
+      }
+      const countHeader = (_this$headers$get2 = _this2.headers.get("Prefer")) === null || _this$headers$get2 === undefined ? undefined : _this$headers$get2.match(/count=(exact|planned|estimated)/);
+      const contentRange = (_res$headers$get2 = res.headers.get("content-range")) === null || _res$headers$get2 === undefined ? undefined : _res$headers$get2.split("/");
+      if (countHeader && contentRange && contentRange.length > 1)
+        count = parseInt(contentRange[1]);
+      if (_this2.isMaybeSingle && Array.isArray(data))
+        if (data.length > 1) {
+          error51 = {
+            code: "PGRST116",
+            details: `Results contain ${data.length} rows, application/vnd.pgrst.object+json requires 1 row`,
+            hint: null,
+            message: "JSON object requested, multiple (or no) rows returned"
+          };
+          data = null;
+          count = null;
+          status = 406;
+          statusText = "Not Acceptable";
+        } else if (data.length === 1)
+          data = data[0];
+        else
+          data = null;
+    } else {
+      const body = await res.text();
+      try {
+        error51 = JSON.parse(body);
+        if (Array.isArray(error51) && res.status === 404) {
+          data = [];
+          error51 = null;
+          status = 200;
+          statusText = "OK";
+        }
+      } catch (_unused) {
+        if (res.status === 404 && body === "") {
+          status = 204;
+          statusText = "No Content";
+        } else
+          error51 = { message: body };
+      }
+      if (error51 && _this2.shouldThrowOnError)
+        throw new PostgrestError(error51);
+    }
+    return {
+      success: error51 === null,
+      error: error51,
+      data,
+      count,
+      status,
+      statusText
+    };
+  }
+  returns() {
+    return this;
+  }
+  overrideTypes() {
+    return this;
+  }
+};
+var PostgrestTransformBuilder = class extends PostgrestBuilder {
+  select(columns) {
+    let quoted = false;
+    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
+      if (/\s/.test(c) && !quoted)
+        return "";
+      if (c === '"')
+        quoted = !quoted;
+      return c;
+    }).join("");
+    this.url.searchParams.set("select", cleanedColumns);
+    this.headers.append("Prefer", "return=representation");
+    return this;
+  }
+  order(column, { ascending = true, nullsFirst, foreignTable, referencedTable = foreignTable } = {}) {
+    const key = referencedTable ? `${referencedTable}.order` : "order";
+    const existingOrder = this.url.searchParams.get(key);
+    this.url.searchParams.set(key, `${existingOrder ? `${existingOrder},` : ""}${column}.${ascending ? "asc" : "desc"}${nullsFirst === undefined ? "" : nullsFirst ? ".nullsfirst" : ".nullslast"}`);
+    return this;
+  }
+  limit(count, { foreignTable, referencedTable = foreignTable } = {}) {
+    const key = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
+    this.url.searchParams.set(key, `${count}`);
+    return this;
+  }
+  range(from, to, { foreignTable, referencedTable = foreignTable } = {}) {
+    const keyOffset = typeof referencedTable === "undefined" ? "offset" : `${referencedTable}.offset`;
+    const keyLimit = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
+    this.url.searchParams.set(keyOffset, `${from}`);
+    this.url.searchParams.set(keyLimit, `${to - from + 1}`);
+    return this;
+  }
+  abortSignal(signal) {
+    this.signal = signal;
+    return this;
+  }
+  single() {
+    this.headers.set("Accept", "application/vnd.pgrst.object+json");
+    return this;
+  }
+  maybeSingle() {
+    this.isMaybeSingle = true;
+    return this;
+  }
+  csv() {
+    this.headers.set("Accept", "text/csv");
+    return this;
+  }
+  geojson() {
+    this.headers.set("Accept", "application/geo+json");
+    return this;
+  }
+  explain({ analyze = false, verbose = false, settings = false, buffers = false, wal = false, format = "text" } = {}) {
+    var _this$headers$get;
+    const options = [
+      analyze ? "analyze" : null,
+      verbose ? "verbose" : null,
+      settings ? "settings" : null,
+      buffers ? "buffers" : null,
+      wal ? "wal" : null
+    ].filter(Boolean).join("|");
+    const forMediatype = (_this$headers$get = this.headers.get("Accept")) !== null && _this$headers$get !== undefined ? _this$headers$get : "application/json";
+    this.headers.set("Accept", `application/vnd.pgrst.plan+${format}; for="${forMediatype}"; options=${options};`);
+    if (format === "json")
+      return this;
+    else
+      return this;
+  }
+  rollback() {
+    this.headers.append("Prefer", "tx=rollback");
+    return this;
+  }
+  returns() {
+    return this;
+  }
+  maxAffected(value) {
+    this.headers.append("Prefer", "handling=strict");
+    this.headers.append("Prefer", `max-affected=${value}`);
+    return this;
+  }
+};
+var PostgrestReservedCharsRegexp = /* @__PURE__ */ new RegExp("[,()]");
+var PostgrestFilterBuilder = class extends PostgrestTransformBuilder {
+  eq(column, value) {
+    this.url.searchParams.append(column, `eq.${value}`);
+    return this;
+  }
+  neq(column, value) {
+    this.url.searchParams.append(column, `neq.${value}`);
+    return this;
+  }
+  gt(column, value) {
+    this.url.searchParams.append(column, `gt.${value}`);
+    return this;
+  }
+  gte(column, value) {
+    this.url.searchParams.append(column, `gte.${value}`);
+    return this;
+  }
+  lt(column, value) {
+    this.url.searchParams.append(column, `lt.${value}`);
+    return this;
+  }
+  lte(column, value) {
+    this.url.searchParams.append(column, `lte.${value}`);
+    return this;
+  }
+  like(column, pattern) {
+    this.url.searchParams.append(column, `like.${pattern}`);
+    return this;
+  }
+  likeAllOf(column, patterns) {
+    this.url.searchParams.append(column, `like(all).{${patterns.join(",")}}`);
+    return this;
+  }
+  likeAnyOf(column, patterns) {
+    this.url.searchParams.append(column, `like(any).{${patterns.join(",")}}`);
+    return this;
+  }
+  ilike(column, pattern) {
+    this.url.searchParams.append(column, `ilike.${pattern}`);
+    return this;
+  }
+  ilikeAllOf(column, patterns) {
+    this.url.searchParams.append(column, `ilike(all).{${patterns.join(",")}}`);
+    return this;
+  }
+  ilikeAnyOf(column, patterns) {
+    this.url.searchParams.append(column, `ilike(any).{${patterns.join(",")}}`);
+    return this;
+  }
+  regexMatch(column, pattern) {
+    this.url.searchParams.append(column, `match.${pattern}`);
+    return this;
+  }
+  regexIMatch(column, pattern) {
+    this.url.searchParams.append(column, `imatch.${pattern}`);
+    return this;
+  }
+  is(column, value) {
+    this.url.searchParams.append(column, `is.${value}`);
+    return this;
+  }
+  isDistinct(column, value) {
+    this.url.searchParams.append(column, `isdistinct.${value}`);
+    return this;
+  }
+  in(column, values) {
+    const cleanedValues = Array.from(new Set(values)).map((s) => {
+      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
+        return `"${s}"`;
+      else
+        return `${s}`;
+    }).join(",");
+    this.url.searchParams.append(column, `in.(${cleanedValues})`);
+    return this;
+  }
+  notIn(column, values) {
+    const cleanedValues = Array.from(new Set(values)).map((s) => {
+      if (typeof s === "string" && PostgrestReservedCharsRegexp.test(s))
+        return `"${s}"`;
+      else
+        return `${s}`;
+    }).join(",");
+    this.url.searchParams.append(column, `not.in.(${cleanedValues})`);
+    return this;
+  }
+  contains(column, value) {
+    if (typeof value === "string")
+      this.url.searchParams.append(column, `cs.${value}`);
+    else if (Array.isArray(value))
+      this.url.searchParams.append(column, `cs.{${value.join(",")}}`);
+    else
+      this.url.searchParams.append(column, `cs.${JSON.stringify(value)}`);
+    return this;
+  }
+  containedBy(column, value) {
+    if (typeof value === "string")
+      this.url.searchParams.append(column, `cd.${value}`);
+    else if (Array.isArray(value))
+      this.url.searchParams.append(column, `cd.{${value.join(",")}}`);
+    else
+      this.url.searchParams.append(column, `cd.${JSON.stringify(value)}`);
+    return this;
+  }
+  rangeGt(column, range) {
+    this.url.searchParams.append(column, `sr.${range}`);
+    return this;
+  }
+  rangeGte(column, range) {
+    this.url.searchParams.append(column, `nxl.${range}`);
+    return this;
+  }
+  rangeLt(column, range) {
+    this.url.searchParams.append(column, `sl.${range}`);
+    return this;
+  }
+  rangeLte(column, range) {
+    this.url.searchParams.append(column, `nxr.${range}`);
+    return this;
+  }
+  rangeAdjacent(column, range) {
+    this.url.searchParams.append(column, `adj.${range}`);
+    return this;
+  }
+  overlaps(column, value) {
+    if (typeof value === "string")
+      this.url.searchParams.append(column, `ov.${value}`);
+    else
+      this.url.searchParams.append(column, `ov.{${value.join(",")}}`);
+    return this;
+  }
+  textSearch(column, query, { config: config2, type } = {}) {
+    let typePart = "";
+    if (type === "plain")
+      typePart = "pl";
+    else if (type === "phrase")
+      typePart = "ph";
+    else if (type === "websearch")
+      typePart = "w";
+    const configPart = config2 === undefined ? "" : `(${config2})`;
+    this.url.searchParams.append(column, `${typePart}fts${configPart}.${query}`);
+    return this;
+  }
+  match(query) {
+    Object.entries(query).filter(([_, value]) => value !== undefined).forEach(([column, value]) => {
+      this.url.searchParams.append(column, `eq.${value}`);
+    });
+    return this;
+  }
+  not(column, operator, value) {
+    this.url.searchParams.append(column, `not.${operator}.${value}`);
+    return this;
+  }
+  or(filters, { foreignTable, referencedTable = foreignTable } = {}) {
+    const key = referencedTable ? `${referencedTable}.or` : "or";
+    this.url.searchParams.append(key, `(${filters})`);
+    return this;
+  }
+  filter(column, operator, value) {
+    this.url.searchParams.append(column, `${operator}.${value}`);
+    return this;
+  }
+};
+var PostgrestQueryBuilder = class {
+  constructor(url2, { headers = {}, schema, fetch: fetch$1, urlLengthLimit = 8000, retry }) {
+    this.url = url2;
+    this.headers = new Headers(headers);
+    this.schema = schema;
+    this.fetch = fetch$1;
+    this.urlLengthLimit = urlLengthLimit;
+    this.retry = retry;
+  }
+  cloneRequestState() {
+    return {
+      url: new URL(this.url.toString()),
+      headers: new Headers(this.headers)
+    };
+  }
+  select(columns, options) {
+    const { head = false, count } = options !== null && options !== undefined ? options : {};
+    const method = head ? "HEAD" : "GET";
+    let quoted = false;
+    const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
+      if (/\s/.test(c) && !quoted)
+        return "";
+      if (c === '"')
+        quoted = !quoted;
+      return c;
+    }).join("");
+    const { url: url2, headers } = this.cloneRequestState();
+    url2.searchParams.set("select", cleanedColumns);
+    if (count)
+      headers.append("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: url2,
+      headers,
+      schema: this.schema,
+      fetch: this.fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+  insert(values, { count, defaultToNull = true } = {}) {
+    var _this$fetch;
+    const method = "POST";
+    const { url: url2, headers } = this.cloneRequestState();
+    if (count)
+      headers.append("Prefer", `count=${count}`);
+    if (!defaultToNull)
+      headers.append("Prefer", `missing=default`);
+    if (Array.isArray(values)) {
+      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
+      if (columns.length > 0) {
+        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
+        url2.searchParams.set("columns", uniqueColumns.join(","));
+      }
+    }
+    return new PostgrestFilterBuilder({
+      method,
+      url: url2,
+      headers,
+      schema: this.schema,
+      body: values,
+      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+  upsert(values, { onConflict, ignoreDuplicates = false, count, defaultToNull = true } = {}) {
+    var _this$fetch2;
+    const method = "POST";
+    const { url: url2, headers } = this.cloneRequestState();
+    headers.append("Prefer", `resolution=${ignoreDuplicates ? "ignore" : "merge"}-duplicates`);
+    if (onConflict !== undefined)
+      url2.searchParams.set("on_conflict", onConflict);
+    if (count)
+      headers.append("Prefer", `count=${count}`);
+    if (!defaultToNull)
+      headers.append("Prefer", "missing=default");
+    if (Array.isArray(values)) {
+      const columns = values.reduce((acc, x) => acc.concat(Object.keys(x)), []);
+      if (columns.length > 0) {
+        const uniqueColumns = [...new Set(columns)].map((column) => `"${column}"`);
+        url2.searchParams.set("columns", uniqueColumns.join(","));
+      }
+    }
+    return new PostgrestFilterBuilder({
+      method,
+      url: url2,
+      headers,
+      schema: this.schema,
+      body: values,
+      fetch: (_this$fetch2 = this.fetch) !== null && _this$fetch2 !== undefined ? _this$fetch2 : fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+  update(values, { count } = {}) {
+    var _this$fetch3;
+    const method = "PATCH";
+    const { url: url2, headers } = this.cloneRequestState();
+    if (count)
+      headers.append("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: url2,
+      headers,
+      schema: this.schema,
+      body: values,
+      fetch: (_this$fetch3 = this.fetch) !== null && _this$fetch3 !== undefined ? _this$fetch3 : fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+  delete({ count } = {}) {
+    var _this$fetch4;
+    const method = "DELETE";
+    const { url: url2, headers } = this.cloneRequestState();
+    if (count)
+      headers.append("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: url2,
+      headers,
+      schema: this.schema,
+      fetch: (_this$fetch4 = this.fetch) !== null && _this$fetch4 !== undefined ? _this$fetch4 : fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+};
+function _typeof(o) {
+  "@babel/helpers - typeof";
+  return _typeof = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
+    return typeof o$1;
+  } : function(o$1) {
+    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+  }, _typeof(o);
+}
+function toPrimitive(t, r) {
+  if (_typeof(t) != "object" || !t)
+    return t;
+  var e = t[Symbol.toPrimitive];
+  if (e !== undefined) {
+    var i = e.call(t, r || "default");
+    if (_typeof(i) != "object")
+      return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (r === "string" ? String : Number)(t);
+}
+function toPropertyKey(t) {
+  var i = toPrimitive(t, "string");
+  return _typeof(i) == "symbol" ? i : i + "";
+}
+function _defineProperty(e, r, t) {
+  return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }) : e[r] = t, e;
+}
+function ownKeys(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r$1) {
+      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread2(e) {
+  for (var r = 1;r < arguments.length; r++) {
+    var t = arguments[r] != null ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), true).forEach(function(r$1) {
+      _defineProperty(e, r$1, t[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    });
+  }
+  return e;
+}
+var PostgrestClient = class PostgrestClient2 {
+  constructor(url2, { headers = {}, schema, fetch: fetch$1, timeout, urlLengthLimit = 8000, retry } = {}) {
+    this.url = url2;
+    this.headers = new Headers(headers);
+    this.schemaName = schema;
+    this.urlLengthLimit = urlLengthLimit;
+    const originalFetch = fetch$1 !== null && fetch$1 !== undefined ? fetch$1 : globalThis.fetch;
+    if (timeout !== undefined && timeout > 0)
+      this.fetch = (input, init) => {
+        const controller = new AbortController;
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        const existingSignal = init === null || init === undefined ? undefined : init.signal;
+        if (existingSignal) {
+          if (existingSignal.aborted) {
+            clearTimeout(timeoutId);
+            return originalFetch(input, init);
+          }
+          const abortHandler = () => {
+            clearTimeout(timeoutId);
+            controller.abort();
+          };
+          existingSignal.addEventListener("abort", abortHandler, { once: true });
+          return originalFetch(input, _objectSpread2(_objectSpread2({}, init), {}, { signal: controller.signal })).finally(() => {
+            clearTimeout(timeoutId);
+            existingSignal.removeEventListener("abort", abortHandler);
+          });
+        }
+        return originalFetch(input, _objectSpread2(_objectSpread2({}, init), {}, { signal: controller.signal })).finally(() => clearTimeout(timeoutId));
+      };
+    else
+      this.fetch = originalFetch;
+    this.retry = retry;
+  }
+  from(relation) {
+    if (!relation || typeof relation !== "string" || relation.trim() === "")
+      throw new Error("Invalid relation name: relation must be a non-empty string.");
+    return new PostgrestQueryBuilder(new URL(`${this.url}/${relation}`), {
+      headers: new Headers(this.headers),
+      schema: this.schemaName,
+      fetch: this.fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+  schema(schema) {
+    return new PostgrestClient2(this.url, {
+      headers: this.headers,
+      schema,
+      fetch: this.fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+  rpc(fn, args = {}, { head = false, get = false, count } = {}) {
+    var _this$fetch;
+    let method;
+    const url2 = new URL(`${this.url}/rpc/${fn}`);
+    let body;
+    const _isObject = (v) => v !== null && typeof v === "object" && (!Array.isArray(v) || v.some(_isObject));
+    const _hasObjectArg = head && Object.values(args).some(_isObject);
+    if (_hasObjectArg) {
+      method = "POST";
+      body = args;
+    } else if (head || get) {
+      method = head ? "HEAD" : "GET";
+      Object.entries(args).filter(([_, value]) => value !== undefined).map(([name, value]) => [name, Array.isArray(value) ? `{${value.join(",")}}` : `${value}`]).forEach(([name, value]) => {
+        url2.searchParams.append(name, value);
+      });
+    } else {
+      method = "POST";
+      body = args;
+    }
+    const headers = new Headers(this.headers);
+    if (_hasObjectArg)
+      headers.set("Prefer", count ? `count=${count},return=minimal` : "return=minimal");
+    else if (count)
+      headers.set("Prefer", `count=${count}`);
+    return new PostgrestFilterBuilder({
+      method,
+      url: url2,
+      headers,
+      schema: this.schemaName,
+      body,
+      fetch: (_this$fetch = this.fetch) !== null && _this$fetch !== undefined ? _this$fetch : fetch,
+      urlLengthLimit: this.urlLengthLimit,
+      retry: this.retry
+    });
+  }
+};
+var src_default = {
+  PostgrestClient,
+  PostgrestQueryBuilder,
+  PostgrestFilterBuilder,
+  PostgrestTransformBuilder,
+  PostgrestBuilder,
+  PostgrestError
+};
+
+// ../../node_modules/@supabase/supabase-js/dist/index.mjs
+var import_realtime_js = __toESM(require_main2(), 1);
+
+// ../../node_modules/@supabase/storage-js/dist/index.mjs
+var exports_dist2 = {};
+__export(exports_dist2, {
+  isStorageVectorsError: () => isStorageVectorsError,
+  isStorageError: () => isStorageError,
+  VectorIndexScope: () => VectorIndexScope,
+  VectorIndexApi: () => VectorIndexApi,
+  VectorDataApi: () => VectorDataApi,
+  VectorBucketScope: () => VectorBucketScope,
+  VectorBucketApi: () => VectorBucketApi,
+  StorageVectorsUnknownError: () => StorageVectorsUnknownError,
+  StorageVectorsErrorCode: () => StorageVectorsErrorCode,
+  StorageVectorsError: () => StorageVectorsError,
+  StorageVectorsClient: () => StorageVectorsClient,
+  StorageVectorsApiError: () => StorageVectorsApiError,
+  StorageUnknownError: () => StorageUnknownError,
+  StorageError: () => StorageError,
+  StorageClient: () => StorageClient,
+  StorageApiError: () => StorageApiError,
+  StorageAnalyticsClient: () => StorageAnalyticsClient
+});
+
+// ../../node_modules/iceberg-js/dist/index.mjs
+var IcebergError = class extends Error {
+  constructor(message, opts) {
+    super(message);
+    this.name = "IcebergError";
+    this.status = opts.status;
+    this.icebergType = opts.icebergType;
+    this.icebergCode = opts.icebergCode;
+    this.details = opts.details;
+    this.isCommitStateUnknown = opts.icebergType === "CommitStateUnknownException" || [500, 502, 504].includes(opts.status) && opts.icebergType?.includes("CommitState") === true;
+  }
+  isNotFound() {
+    return this.status === 404;
+  }
+  isConflict() {
+    return this.status === 409;
+  }
+  isAuthenticationTimeout() {
+    return this.status === 419;
+  }
+};
+function buildUrl(baseUrl, path2, query) {
+  const url2 = new URL(path2, baseUrl);
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined) {
+        url2.searchParams.set(key, value);
+      }
+    }
+  }
+  return url2.toString();
+}
+async function buildAuthHeaders(auth) {
+  if (!auth || auth.type === "none") {
+    return {};
+  }
+  if (auth.type === "bearer") {
+    return { Authorization: `Bearer ${auth.token}` };
+  }
+  if (auth.type === "header") {
+    return { [auth.name]: auth.value };
+  }
+  if (auth.type === "custom") {
+    return await auth.getHeaders();
+  }
+  return {};
+}
+function createFetchClient(options) {
+  const fetchFn = options.fetchImpl ?? globalThis.fetch;
+  return {
+    async request({
+      method,
+      path: path2,
+      query,
+      body,
+      headers
+    }) {
+      const url2 = buildUrl(options.baseUrl, path2, query);
+      const authHeaders = await buildAuthHeaders(options.auth);
+      const res = await fetchFn(url2, {
+        method,
+        headers: {
+          ...body ? { "Content-Type": "application/json" } : {},
+          ...authHeaders,
+          ...headers
+        },
+        body: body ? JSON.stringify(body) : undefined
+      });
+      const text = await res.text();
+      const isJson = (res.headers.get("content-type") || "").includes("application/json");
+      const data = isJson && text ? JSON.parse(text) : text;
+      if (!res.ok) {
+        const errBody = isJson ? data : undefined;
+        const errorDetail = errBody?.error;
+        throw new IcebergError(errorDetail?.message ?? `Request failed with status ${res.status}`, {
+          status: res.status,
+          icebergType: errorDetail?.type,
+          icebergCode: errorDetail?.code,
+          details: errBody
+        });
+      }
+      return { status: res.status, headers: res.headers, data };
+    }
+  };
+}
+function namespaceToPath(namespace) {
+  return namespace.join("\x1F");
+}
+var NamespaceOperations = class {
+  constructor(client, prefix = "") {
+    this.client = client;
+    this.prefix = prefix;
+  }
+  async listNamespaces(parent) {
+    const query = parent ? { parent: namespaceToPath(parent.namespace) } : undefined;
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces`,
+      query
+    });
+    return response.data.namespaces.map((ns) => ({ namespace: ns }));
+  }
+  async createNamespace(id, metadata) {
+    const request = {
+      namespace: id.namespace,
+      properties: metadata?.properties
+    };
+    const response = await this.client.request({
+      method: "POST",
+      path: `${this.prefix}/namespaces`,
+      body: request
+    });
+    return response.data;
+  }
+  async dropNamespace(id) {
+    await this.client.request({
+      method: "DELETE",
+      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+    });
+  }
+  async loadNamespaceMetadata(id) {
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+    });
+    return {
+      properties: response.data.properties
+    };
+  }
+  async namespaceExists(id) {
+    try {
+      await this.client.request({
+        method: "HEAD",
+        path: `${this.prefix}/namespaces/${namespaceToPath(id.namespace)}`
+      });
+      return true;
+    } catch (error51) {
+      if (error51 instanceof IcebergError && error51.status === 404) {
+        return false;
+      }
+      throw error51;
+    }
+  }
+  async createNamespaceIfNotExists(id, metadata) {
+    try {
+      return await this.createNamespace(id, metadata);
+    } catch (error51) {
+      if (error51 instanceof IcebergError && error51.status === 409) {
+        return;
+      }
+      throw error51;
+    }
+  }
+};
+function namespaceToPath2(namespace) {
+  return namespace.join("\x1F");
+}
+var TableOperations = class {
+  constructor(client, prefix = "", accessDelegation) {
+    this.client = client;
+    this.prefix = prefix;
+    this.accessDelegation = accessDelegation;
+  }
+  async listTables(namespace) {
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`
+    });
+    return response.data.identifiers;
+  }
+  async createTable(namespace, request) {
+    const headers = {};
+    if (this.accessDelegation) {
+      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+    }
+    const response = await this.client.request({
+      method: "POST",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(namespace.namespace)}/tables`,
+      body: request,
+      headers
+    });
+    return response.data.metadata;
+  }
+  async updateTable(id, request) {
+    const response = await this.client.request({
+      method: "POST",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+      body: request
+    });
+    return {
+      "metadata-location": response.data["metadata-location"],
+      metadata: response.data.metadata
+    };
+  }
+  async dropTable(id, options) {
+    await this.client.request({
+      method: "DELETE",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+      query: { purgeRequested: String(options?.purge ?? false) }
+    });
+  }
+  async loadTable(id) {
+    const headers = {};
+    if (this.accessDelegation) {
+      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+    }
+    const response = await this.client.request({
+      method: "GET",
+      path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+      headers
+    });
+    return response.data.metadata;
+  }
+  async tableExists(id) {
+    const headers = {};
+    if (this.accessDelegation) {
+      headers["X-Iceberg-Access-Delegation"] = this.accessDelegation;
+    }
+    try {
+      await this.client.request({
+        method: "HEAD",
+        path: `${this.prefix}/namespaces/${namespaceToPath2(id.namespace)}/tables/${id.name}`,
+        headers
+      });
+      return true;
+    } catch (error51) {
+      if (error51 instanceof IcebergError && error51.status === 404) {
+        return false;
+      }
+      throw error51;
+    }
+  }
+  async createTableIfNotExists(namespace, request) {
+    try {
+      return await this.createTable(namespace, request);
+    } catch (error51) {
+      if (error51 instanceof IcebergError && error51.status === 409) {
+        return await this.loadTable({ namespace: namespace.namespace, name: request.name });
+      }
+      throw error51;
+    }
+  }
+};
+var IcebergRestCatalog = class {
+  constructor(options) {
+    let prefix = "v1";
+    if (options.catalogName) {
+      prefix += `/${options.catalogName}`;
+    }
+    const baseUrl = options.baseUrl.endsWith("/") ? options.baseUrl : `${options.baseUrl}/`;
+    this.client = createFetchClient({
+      baseUrl,
+      auth: options.auth,
+      fetchImpl: options.fetch
+    });
+    this.accessDelegation = options.accessDelegation?.join(",");
+    this.namespaceOps = new NamespaceOperations(this.client, prefix);
+    this.tableOps = new TableOperations(this.client, prefix, this.accessDelegation);
+  }
+  async listNamespaces(parent) {
+    return this.namespaceOps.listNamespaces(parent);
+  }
+  async createNamespace(id, metadata) {
+    return this.namespaceOps.createNamespace(id, metadata);
+  }
+  async dropNamespace(id) {
+    await this.namespaceOps.dropNamespace(id);
+  }
+  async loadNamespaceMetadata(id) {
+    return this.namespaceOps.loadNamespaceMetadata(id);
+  }
+  async listTables(namespace) {
+    return this.tableOps.listTables(namespace);
+  }
+  async createTable(namespace, request) {
+    return this.tableOps.createTable(namespace, request);
+  }
+  async updateTable(id, request) {
+    return this.tableOps.updateTable(id, request);
+  }
+  async dropTable(id, options) {
+    await this.tableOps.dropTable(id, options);
+  }
+  async loadTable(id) {
+    return this.tableOps.loadTable(id);
+  }
+  async namespaceExists(id) {
+    return this.namespaceOps.namespaceExists(id);
+  }
+  async tableExists(id) {
+    return this.tableOps.tableExists(id);
+  }
+  async createNamespaceIfNotExists(id, metadata) {
+    return this.namespaceOps.createNamespaceIfNotExists(id, metadata);
+  }
+  async createTableIfNotExists(namespace, request) {
+    return this.tableOps.createTableIfNotExists(namespace, request);
+  }
+};
+
+// ../../node_modules/@supabase/storage-js/dist/index.mjs
+function _typeof2(o) {
+  "@babel/helpers - typeof";
+  return _typeof2 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
+    return typeof o$1;
+  } : function(o$1) {
+    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+  }, _typeof2(o);
+}
+function toPrimitive2(t, r) {
+  if (_typeof2(t) != "object" || !t)
+    return t;
+  var e = t[Symbol.toPrimitive];
+  if (e !== undefined) {
+    var i = e.call(t, r || "default");
+    if (_typeof2(i) != "object")
+      return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (r === "string" ? String : Number)(t);
+}
+function toPropertyKey2(t) {
+  var i = toPrimitive2(t, "string");
+  return _typeof2(i) == "symbol" ? i : i + "";
+}
+function _defineProperty2(e, r, t) {
+  return (r = toPropertyKey2(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }) : e[r] = t, e;
+}
+function ownKeys2(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r$1) {
+      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread22(e) {
+  for (var r = 1;r < arguments.length; r++) {
+    var t = arguments[r] != null ? arguments[r] : {};
+    r % 2 ? ownKeys2(Object(t), true).forEach(function(r$1) {
+      _defineProperty2(e, r$1, t[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys2(Object(t)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    });
+  }
+  return e;
+}
+var StorageError = class extends Error {
+  constructor(message, namespace = "storage", status, statusCode) {
+    super(message);
+    this.__isStorageError = true;
+    this.namespace = namespace;
+    this.name = namespace === "vectors" ? "StorageVectorsError" : "StorageError";
+    this.status = status;
+    this.statusCode = statusCode;
+  }
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      status: this.status,
+      statusCode: this.statusCode
+    };
+  }
+};
+function isStorageError(error51) {
+  return typeof error51 === "object" && error51 !== null && "__isStorageError" in error51;
+}
+var StorageApiError = class extends StorageError {
+  constructor(message, status, statusCode, namespace = "storage") {
+    super(message, namespace, status, statusCode);
+    this.name = namespace === "vectors" ? "StorageVectorsApiError" : "StorageApiError";
+    this.status = status;
+    this.statusCode = statusCode;
+  }
+  toJSON() {
+    return _objectSpread22({}, super.toJSON());
+  }
+};
+var StorageUnknownError = class extends StorageError {
+  constructor(message, originalError, namespace = "storage") {
+    super(message, namespace);
+    this.name = namespace === "vectors" ? "StorageVectorsUnknownError" : "StorageUnknownError";
+    this.originalError = originalError;
+  }
+};
+var StorageVectorsError = class extends StorageError {
+  constructor(message) {
+    super(message, "vectors");
+  }
+};
+function isStorageVectorsError(error51) {
+  return isStorageError(error51) && error51["namespace"] === "vectors";
+}
+var StorageVectorsApiError = class extends StorageApiError {
+  constructor(message, status, statusCode) {
+    super(message, status, statusCode, "vectors");
+  }
+};
+var StorageVectorsUnknownError = class extends StorageUnknownError {
+  constructor(message, originalError) {
+    super(message, originalError, "vectors");
+  }
+};
+var StorageVectorsErrorCode = /* @__PURE__ */ function(StorageVectorsErrorCode$1) {
+  StorageVectorsErrorCode$1["InternalError"] = "InternalError";
+  StorageVectorsErrorCode$1["S3VectorConflictException"] = "S3VectorConflictException";
+  StorageVectorsErrorCode$1["S3VectorNotFoundException"] = "S3VectorNotFoundException";
+  StorageVectorsErrorCode$1["S3VectorBucketNotEmpty"] = "S3VectorBucketNotEmpty";
+  StorageVectorsErrorCode$1["S3VectorMaxBucketsExceeded"] = "S3VectorMaxBucketsExceeded";
+  StorageVectorsErrorCode$1["S3VectorMaxIndexesExceeded"] = "S3VectorMaxIndexesExceeded";
+  return StorageVectorsErrorCode$1;
+}({});
+function setHeader(headers, name, value) {
+  const result = _objectSpread22({}, headers);
+  const nameLower = name.toLowerCase();
+  for (const key of Object.keys(result))
+    if (key.toLowerCase() === nameLower)
+      delete result[key];
+  result[nameLower] = value;
+  return result;
+}
+function normalizeHeaders(headers) {
+  const result = {};
+  for (const [key, value] of Object.entries(headers))
+    result[key.toLowerCase()] = value;
+  return result;
+}
+var resolveFetch = (customFetch) => {
+  if (customFetch)
+    return (...args) => customFetch(...args);
+  return (...args) => fetch(...args);
+};
+var isPlainObject3 = (value) => {
+  if (typeof value !== "object" || value === null)
+    return false;
+  const prototype = Object.getPrototypeOf(value);
+  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in value) && !(Symbol.iterator in value);
+};
+var recursiveToCamel = (item) => {
+  if (Array.isArray(item))
+    return item.map((el) => recursiveToCamel(el));
+  else if (typeof item === "function" || item !== Object(item))
+    return item;
+  const result = {};
+  Object.entries(item).forEach(([key, value]) => {
+    const newKey = key.replace(/([-_][a-z])/gi, (c) => c.toUpperCase().replace(/[-_]/g, ""));
+    result[newKey] = recursiveToCamel(value);
+  });
+  return result;
+};
+var isValidBucketName = (bucketName) => {
+  if (!bucketName || typeof bucketName !== "string")
+    return false;
+  if (bucketName.length === 0 || bucketName.length > 100)
+    return false;
+  if (bucketName.trim() !== bucketName)
+    return false;
+  if (bucketName.includes("/") || bucketName.includes("\\"))
+    return false;
+  return /^[\w!.\*'() &$@=;:+,?-]+$/.test(bucketName);
+};
+var _getErrorMessage = (err) => {
+  if (typeof err === "object" && err !== null) {
+    const e = err;
+    if (typeof e.msg === "string")
+      return e.msg;
+    if (typeof e.message === "string")
+      return e.message;
+    if (typeof e.error_description === "string")
+      return e.error_description;
+    if (typeof e.error === "string")
+      return e.error;
+    if (typeof e.error === "object" && e.error !== null) {
+      const nested = e.error;
+      if (typeof nested.message === "string")
+        return nested.message;
+    }
+  }
+  return JSON.stringify(err);
+};
+var handleError = async (error51, reject, options, namespace) => {
+  if (error51 !== null && typeof error51 === "object" && "json" in error51 && typeof error51.json === "function") {
+    const responseError = error51;
+    let status = parseInt(String(responseError.status), 10);
+    if (!Number.isFinite(status))
+      status = 500;
+    responseError.json().then((err) => {
+      const statusCode = (err === null || err === undefined ? undefined : err.statusCode) || (err === null || err === undefined ? undefined : err.code) || status + "";
+      reject(new StorageApiError(_getErrorMessage(err), status, statusCode, namespace));
+    }).catch(() => {
+      const statusCode = status + "";
+      reject(new StorageApiError(responseError.statusText || `HTTP ${status} error`, status, statusCode, namespace));
+    });
+  } else
+    reject(new StorageUnknownError(_getErrorMessage(error51), error51, namespace));
+};
+var _getRequestParams = (method, options, parameters, body) => {
+  const params = {
+    method,
+    headers: (options === null || options === undefined ? undefined : options.headers) || {}
+  };
+  if (method === "GET" || method === "HEAD" || !body)
+    return _objectSpread22(_objectSpread22({}, params), parameters);
+  if (isPlainObject3(body)) {
+    var _contentType;
+    const headers = (options === null || options === undefined ? undefined : options.headers) || {};
+    let contentType;
+    for (const [key, value] of Object.entries(headers))
+      if (key.toLowerCase() === "content-type")
+        contentType = value;
+    params.headers = setHeader(headers, "Content-Type", (_contentType = contentType) !== null && _contentType !== undefined ? _contentType : "application/json");
+    params.body = JSON.stringify(body);
+  } else
+    params.body = body;
+  if (options === null || options === undefined ? undefined : options.duplex)
+    params.duplex = options.duplex;
+  return _objectSpread22(_objectSpread22({}, params), parameters);
+};
+async function _handleRequest(fetcher, method, url2, options, parameters, body, namespace) {
+  return new Promise((resolve, reject) => {
+    fetcher(url2, _getRequestParams(method, options, parameters, body)).then((result) => {
+      if (!result.ok)
+        throw result;
+      if (options === null || options === undefined ? undefined : options.noResolveJson)
+        return result;
+      if (namespace === "vectors") {
+        const contentType = result.headers.get("content-type");
+        if (result.headers.get("content-length") === "0" || result.status === 204)
+          return {};
+        if (!contentType || !contentType.includes("application/json"))
+          return {};
+      }
+      return result.json();
+    }).then((data) => resolve(data)).catch((error51) => handleError(error51, reject, options, namespace));
+  });
+}
+function createFetchApi(namespace = "storage") {
+  return {
+    get: async (fetcher, url2, options, parameters) => {
+      return _handleRequest(fetcher, "GET", url2, options, parameters, undefined, namespace);
+    },
+    post: async (fetcher, url2, body, options, parameters) => {
+      return _handleRequest(fetcher, "POST", url2, options, parameters, body, namespace);
+    },
+    put: async (fetcher, url2, body, options, parameters) => {
+      return _handleRequest(fetcher, "PUT", url2, options, parameters, body, namespace);
+    },
+    head: async (fetcher, url2, options, parameters) => {
+      return _handleRequest(fetcher, "HEAD", url2, _objectSpread22(_objectSpread22({}, options), {}, { noResolveJson: true }), parameters, undefined, namespace);
+    },
+    remove: async (fetcher, url2, body, options, parameters) => {
+      return _handleRequest(fetcher, "DELETE", url2, options, parameters, body, namespace);
+    }
+  };
+}
+var defaultApi = createFetchApi("storage");
+var { get, post, put, head, remove } = defaultApi;
+var vectorsApi = createFetchApi("vectors");
+var BaseApiClient = class {
+  constructor(url2, headers = {}, fetch$1, namespace = "storage") {
+    this.shouldThrowOnError = false;
+    this.url = url2;
+    this.headers = normalizeHeaders(headers);
+    this.fetch = resolveFetch(fetch$1);
+    this.namespace = namespace;
+  }
+  throwOnError() {
+    this.shouldThrowOnError = true;
+    return this;
+  }
+  setHeader(name, value) {
+    this.headers = setHeader(this.headers, name, value);
+    return this;
+  }
+  async handleOperation(operation) {
+    var _this = this;
+    try {
+      return {
+        data: await operation(),
+        error: null
+      };
+    } catch (error51) {
+      if (_this.shouldThrowOnError)
+        throw error51;
+      if (isStorageError(error51))
+        return {
+          data: null,
+          error: error51
+        };
+      throw error51;
+    }
+  }
+};
+var StreamDownloadBuilder = class {
+  constructor(downloadFn, shouldThrowOnError) {
+    this.downloadFn = downloadFn;
+    this.shouldThrowOnError = shouldThrowOnError;
+  }
+  then(onfulfilled, onrejected) {
+    return this.execute().then(onfulfilled, onrejected);
+  }
+  async execute() {
+    var _this = this;
+    try {
+      return {
+        data: (await _this.downloadFn()).body,
+        error: null
+      };
+    } catch (error51) {
+      if (_this.shouldThrowOnError)
+        throw error51;
+      if (isStorageError(error51))
+        return {
+          data: null,
+          error: error51
+        };
+      throw error51;
+    }
+  }
+};
+var _Symbol$toStringTag;
+_Symbol$toStringTag = Symbol.toStringTag;
+var BlobDownloadBuilder = class {
+  constructor(downloadFn, shouldThrowOnError) {
+    this.downloadFn = downloadFn;
+    this.shouldThrowOnError = shouldThrowOnError;
+    this[_Symbol$toStringTag] = "BlobDownloadBuilder";
+    this.promise = null;
+  }
+  asStream() {
+    return new StreamDownloadBuilder(this.downloadFn, this.shouldThrowOnError);
+  }
+  then(onfulfilled, onrejected) {
+    return this.getPromise().then(onfulfilled, onrejected);
+  }
+  catch(onrejected) {
+    return this.getPromise().catch(onrejected);
+  }
+  finally(onfinally) {
+    return this.getPromise().finally(onfinally);
+  }
+  getPromise() {
+    if (!this.promise)
+      this.promise = this.execute();
+    return this.promise;
+  }
+  async execute() {
+    var _this = this;
+    try {
+      return {
+        data: await (await _this.downloadFn()).blob(),
+        error: null
+      };
+    } catch (error51) {
+      if (_this.shouldThrowOnError)
+        throw error51;
+      if (isStorageError(error51))
+        return {
+          data: null,
+          error: error51
+        };
+      throw error51;
+    }
+  }
+};
+var DEFAULT_SEARCH_OPTIONS = {
+  limit: 100,
+  offset: 0,
+  sortBy: {
+    column: "name",
+    order: "asc"
+  }
+};
+var DEFAULT_FILE_OPTIONS = {
+  cacheControl: "3600",
+  contentType: "text/plain;charset=UTF-8",
+  upsert: false
+};
+var StorageFileApi = class extends BaseApiClient {
+  constructor(url2, headers = {}, bucketId, fetch$1) {
+    super(url2, headers, fetch$1, "storage");
+    this.bucketId = bucketId;
+  }
+  async uploadOrUpdate(method, path2, fileBody, fileOptions) {
+    var _this = this;
+    return _this.handleOperation(async () => {
+      let body;
+      const options = _objectSpread22(_objectSpread22({}, DEFAULT_FILE_OPTIONS), fileOptions);
+      let headers = _objectSpread22(_objectSpread22({}, _this.headers), method === "POST" && { "x-upsert": String(options.upsert) });
+      const metadata = options.metadata;
+      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
+        body = new FormData;
+        body.append("cacheControl", options.cacheControl);
+        if (metadata)
+          body.append("metadata", _this.encodeMetadata(metadata));
+        body.append("", fileBody);
+      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
+        body = fileBody;
+        if (!body.has("cacheControl"))
+          body.append("cacheControl", options.cacheControl);
+        if (metadata && !body.has("metadata"))
+          body.append("metadata", _this.encodeMetadata(metadata));
+      } else {
+        body = fileBody;
+        headers["cache-control"] = `max-age=${options.cacheControl}`;
+        headers["content-type"] = options.contentType;
+        if (metadata)
+          headers["x-metadata"] = _this.toBase64(_this.encodeMetadata(metadata));
+        if ((typeof ReadableStream !== "undefined" && body instanceof ReadableStream || body && typeof body === "object" && ("pipe" in body) && typeof body.pipe === "function") && !options.duplex)
+          options.duplex = "half";
+      }
+      if (fileOptions === null || fileOptions === undefined ? undefined : fileOptions.headers)
+        for (const [key, value] of Object.entries(fileOptions.headers))
+          headers = setHeader(headers, key, value);
+      const cleanPath = _this._removeEmptyFolders(path2);
+      const _path = _this._getFinalPath(cleanPath);
+      const data = await (method == "PUT" ? put : post)(_this.fetch, `${_this.url}/object/${_path}`, body, _objectSpread22({ headers }, (options === null || options === undefined ? undefined : options.duplex) ? { duplex: options.duplex } : {}));
+      return {
+        path: cleanPath,
+        id: data.Id,
+        fullPath: data.Key
+      };
+    });
+  }
+  async upload(path2, fileBody, fileOptions) {
+    return this.uploadOrUpdate("POST", path2, fileBody, fileOptions);
+  }
+  async uploadToSignedUrl(path2, token, fileBody, fileOptions) {
+    var _this3 = this;
+    const cleanPath = _this3._removeEmptyFolders(path2);
+    const _path = _this3._getFinalPath(cleanPath);
+    const url2 = new URL(_this3.url + `/object/upload/sign/${_path}`);
+    url2.searchParams.set("token", token);
+    return _this3.handleOperation(async () => {
+      let body;
+      const options = _objectSpread22(_objectSpread22({}, DEFAULT_FILE_OPTIONS), fileOptions);
+      let headers = _objectSpread22(_objectSpread22({}, _this3.headers), { "x-upsert": String(options.upsert) });
+      const metadata = options.metadata;
+      if (typeof Blob !== "undefined" && fileBody instanceof Blob) {
+        body = new FormData;
+        body.append("cacheControl", options.cacheControl);
+        if (metadata)
+          body.append("metadata", _this3.encodeMetadata(metadata));
+        body.append("", fileBody);
+      } else if (typeof FormData !== "undefined" && fileBody instanceof FormData) {
+        body = fileBody;
+        if (!body.has("cacheControl"))
+          body.append("cacheControl", options.cacheControl);
+        if (metadata && !body.has("metadata"))
+          body.append("metadata", _this3.encodeMetadata(metadata));
+      } else {
+        body = fileBody;
+        headers["cache-control"] = `max-age=${options.cacheControl}`;
+        headers["content-type"] = options.contentType;
+        if (metadata)
+          headers["x-metadata"] = _this3.toBase64(_this3.encodeMetadata(metadata));
+        if ((typeof ReadableStream !== "undefined" && body instanceof ReadableStream || body && typeof body === "object" && ("pipe" in body) && typeof body.pipe === "function") && !options.duplex)
+          options.duplex = "half";
+      }
+      if (fileOptions === null || fileOptions === undefined ? undefined : fileOptions.headers)
+        for (const [key, value] of Object.entries(fileOptions.headers))
+          headers = setHeader(headers, key, value);
+      return {
+        path: cleanPath,
+        fullPath: (await put(_this3.fetch, url2.toString(), body, _objectSpread22({ headers }, (options === null || options === undefined ? undefined : options.duplex) ? { duplex: options.duplex } : {}))).Key
+      };
+    });
+  }
+  async createSignedUploadUrl(path2, options) {
+    var _this4 = this;
+    return _this4.handleOperation(async () => {
+      let _path = _this4._getFinalPath(path2);
+      const headers = _objectSpread22({}, _this4.headers);
+      if (options === null || options === undefined ? undefined : options.upsert)
+        headers["x-upsert"] = "true";
+      const data = await post(_this4.fetch, `${_this4.url}/object/upload/sign/${_path}`, {}, { headers });
+      const url2 = new URL(_this4.url + data.url);
+      const token = url2.searchParams.get("token");
+      if (!token)
+        throw new StorageError("No token returned by API");
+      return {
+        signedUrl: url2.toString(),
+        path: path2,
+        token
+      };
+    });
+  }
+  async update(path2, fileBody, fileOptions) {
+    return this.uploadOrUpdate("PUT", path2, fileBody, fileOptions);
+  }
+  async move(fromPath, toPath, options) {
+    var _this6 = this;
+    return _this6.handleOperation(async () => {
+      return await post(_this6.fetch, `${_this6.url}/object/move`, {
+        bucketId: _this6.bucketId,
+        sourceKey: fromPath,
+        destinationKey: toPath,
+        destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
+      }, { headers: _this6.headers });
+    });
+  }
+  async copy(fromPath, toPath, options) {
+    var _this7 = this;
+    return _this7.handleOperation(async () => {
+      return { path: (await post(_this7.fetch, `${_this7.url}/object/copy`, {
+        bucketId: _this7.bucketId,
+        sourceKey: fromPath,
+        destinationKey: toPath,
+        destinationBucket: options === null || options === undefined ? undefined : options.destinationBucket
+      }, { headers: _this7.headers })).Key };
+    });
+  }
+  async createSignedUrl(path2, expiresIn, options) {
+    var _this8 = this;
+    return _this8.handleOperation(async () => {
+      let _path = _this8._getFinalPath(path2);
+      const hasTransform = typeof (options === null || options === undefined ? undefined : options.transform) === "object" && options.transform !== null && Object.keys(options.transform).length > 0;
+      let data = await post(_this8.fetch, `${_this8.url}/object/sign/${_path}`, _objectSpread22({ expiresIn }, hasTransform ? { transform: options.transform } : {}), { headers: _this8.headers });
+      const query = new URLSearchParams;
+      if (options === null || options === undefined ? undefined : options.download)
+        query.set("download", options.download === true ? "" : options.download);
+      if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
+        query.set("cacheNonce", String(options.cacheNonce));
+      const queryString = query.toString();
+      return { signedUrl: encodeURI(`${_this8.url}${data.signedURL}${queryString ? `&${queryString}` : ""}`) };
+    });
+  }
+  async createSignedUrls(paths, expiresIn, options) {
+    var _this9 = this;
+    return _this9.handleOperation(async () => {
+      const data = await post(_this9.fetch, `${_this9.url}/object/sign/${_this9.bucketId}`, {
+        expiresIn,
+        paths
+      }, { headers: _this9.headers });
+      const query = new URLSearchParams;
+      if (options === null || options === undefined ? undefined : options.download)
+        query.set("download", options.download === true ? "" : options.download);
+      if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
+        query.set("cacheNonce", String(options.cacheNonce));
+      const queryString = query.toString();
+      return data.map((datum) => _objectSpread22(_objectSpread22({}, datum), {}, { signedUrl: datum.signedURL ? encodeURI(`${_this9.url}${datum.signedURL}${queryString ? `&${queryString}` : ""}`) : null }));
+    });
+  }
+  download(path2, options, parameters) {
+    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) === "object" && options.transform !== null && Object.keys(options.transform).length > 0 ? "render/image/authenticated" : "object";
+    const query = new URLSearchParams;
+    if (options === null || options === undefined ? undefined : options.transform)
+      this.applyTransformOptsToQuery(query, options.transform);
+    if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
+      query.set("cacheNonce", String(options.cacheNonce));
+    const queryString = query.toString();
+    const _path = this._getFinalPath(path2);
+    const downloadFn = () => get(this.fetch, `${this.url}/${renderPath}/${_path}${queryString ? `?${queryString}` : ""}`, {
+      headers: this.headers,
+      noResolveJson: true
+    }, parameters);
+    return new BlobDownloadBuilder(downloadFn, this.shouldThrowOnError);
+  }
+  async info(path2) {
+    var _this10 = this;
+    const _path = _this10._getFinalPath(path2);
+    return _this10.handleOperation(async () => {
+      return recursiveToCamel(await get(_this10.fetch, `${_this10.url}/object/info/${_path}`, { headers: _this10.headers }));
+    });
+  }
+  async exists(path2) {
+    var _this11 = this;
+    const _path = _this11._getFinalPath(path2);
+    try {
+      await head(_this11.fetch, `${_this11.url}/object/${_path}`, { headers: _this11.headers });
+      return {
+        data: true,
+        error: null
+      };
+    } catch (error51) {
+      if (_this11.shouldThrowOnError)
+        throw error51;
+      if (isStorageError(error51)) {
+        var _error$originalError;
+        const status = error51 instanceof StorageApiError ? error51.status : error51 instanceof StorageUnknownError ? (_error$originalError = error51.originalError) === null || _error$originalError === undefined ? undefined : _error$originalError.status : undefined;
+        if (status !== undefined && [400, 404].includes(status))
+          return {
+            data: false,
+            error: error51
+          };
+      }
+      throw error51;
+    }
+  }
+  getPublicUrl(path2, options) {
+    const _path = this._getFinalPath(path2);
+    const query = new URLSearchParams;
+    if (options === null || options === undefined ? undefined : options.download)
+      query.set("download", options.download === true ? "" : options.download);
+    if (options === null || options === undefined ? undefined : options.transform)
+      this.applyTransformOptsToQuery(query, options.transform);
+    if ((options === null || options === undefined ? undefined : options.cacheNonce) != null)
+      query.set("cacheNonce", String(options.cacheNonce));
+    const queryString = query.toString();
+    const renderPath = typeof (options === null || options === undefined ? undefined : options.transform) === "object" && options.transform !== null && Object.keys(options.transform).length > 0 ? "render/image" : "object";
+    return { data: { publicUrl: encodeURI(`${this.url}/${renderPath}/public/${_path}`) + (queryString ? `?${queryString}` : "") } };
+  }
+  async remove(paths) {
+    var _this12 = this;
+    return _this12.handleOperation(async () => {
+      return await remove(_this12.fetch, `${_this12.url}/object/${_this12.bucketId}`, { prefixes: paths }, { headers: _this12.headers });
+    });
+  }
+  async list(path2, options, parameters) {
+    var _this13 = this;
+    return _this13.handleOperation(async () => {
+      const body = _objectSpread22(_objectSpread22(_objectSpread22({}, DEFAULT_SEARCH_OPTIONS), options), {}, { prefix: path2 || "" });
+      return await post(_this13.fetch, `${_this13.url}/object/list/${_this13.bucketId}`, body, { headers: _this13.headers }, parameters);
+    });
+  }
+  async listV2(options, parameters) {
+    var _this14 = this;
+    return _this14.handleOperation(async () => {
+      const body = _objectSpread22({}, options);
+      return await post(_this14.fetch, `${_this14.url}/object/list-v2/${_this14.bucketId}`, body, { headers: _this14.headers }, parameters);
+    });
+  }
+  encodeMetadata(metadata) {
+    return JSON.stringify(metadata);
+  }
+  toBase64(data) {
+    if (typeof Buffer !== "undefined")
+      return Buffer.from(data).toString("base64");
+    return btoa(data);
+  }
+  _getFinalPath(path2) {
+    return `${this.bucketId}/${path2.replace(/^\/+/, "")}`;
+  }
+  _removeEmptyFolders(path2) {
+    return path2.replace(/^\/|\/$/g, "").replace(/\/+/g, "/");
+  }
+  applyTransformOptsToQuery(query, transform2) {
+    if (transform2.width)
+      query.set("width", transform2.width.toString());
+    if (transform2.height)
+      query.set("height", transform2.height.toString());
+    if (transform2.resize)
+      query.set("resize", transform2.resize);
+    if (transform2.format)
+      query.set("format", transform2.format);
+    if (transform2.quality)
+      query.set("quality", transform2.quality.toString());
+    return query;
+  }
+};
+var version2 = "2.105.4";
+var DEFAULT_HEADERS = { "X-Client-Info": `storage-js/${version2}` };
+var StorageBucketApi = class extends BaseApiClient {
+  constructor(url2, headers = {}, fetch$1, opts) {
+    const baseUrl = new URL(url2);
+    if (opts === null || opts === undefined ? undefined : opts.useNewHostname) {
+      if (/supabase\.(co|in|red)$/.test(baseUrl.hostname) && !baseUrl.hostname.includes("storage.supabase."))
+        baseUrl.hostname = baseUrl.hostname.replace("supabase.", "storage.supabase.");
+    }
+    const finalUrl = baseUrl.href.replace(/\/$/, "");
+    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), headers);
+    super(finalUrl, finalHeaders, fetch$1, "storage");
+  }
+  async listBuckets(options) {
+    var _this = this;
+    return _this.handleOperation(async () => {
+      const queryString = _this.listBucketOptionsToQueryString(options);
+      return await get(_this.fetch, `${_this.url}/bucket${queryString}`, { headers: _this.headers });
+    });
+  }
+  async getBucket(id) {
+    var _this2 = this;
+    return _this2.handleOperation(async () => {
+      return await get(_this2.fetch, `${_this2.url}/bucket/${id}`, { headers: _this2.headers });
+    });
+  }
+  async createBucket(id, options = { public: false }) {
+    var _this3 = this;
+    return _this3.handleOperation(async () => {
+      return await post(_this3.fetch, `${_this3.url}/bucket`, {
+        id,
+        name: id,
+        type: options.type,
+        public: options.public,
+        file_size_limit: options.fileSizeLimit,
+        allowed_mime_types: options.allowedMimeTypes
+      }, { headers: _this3.headers });
+    });
+  }
+  async updateBucket(id, options) {
+    var _this4 = this;
+    return _this4.handleOperation(async () => {
+      return await put(_this4.fetch, `${_this4.url}/bucket/${id}`, {
+        id,
+        name: id,
+        public: options.public,
+        file_size_limit: options.fileSizeLimit,
+        allowed_mime_types: options.allowedMimeTypes
+      }, { headers: _this4.headers });
+    });
+  }
+  async emptyBucket(id) {
+    var _this5 = this;
+    return _this5.handleOperation(async () => {
+      return await post(_this5.fetch, `${_this5.url}/bucket/${id}/empty`, {}, { headers: _this5.headers });
+    });
+  }
+  async deleteBucket(id) {
+    var _this6 = this;
+    return _this6.handleOperation(async () => {
+      return await remove(_this6.fetch, `${_this6.url}/bucket/${id}`, {}, { headers: _this6.headers });
+    });
+  }
+  listBucketOptionsToQueryString(options) {
+    const params = {};
+    if (options) {
+      if ("limit" in options)
+        params.limit = String(options.limit);
+      if ("offset" in options)
+        params.offset = String(options.offset);
+      if (options.search)
+        params.search = options.search;
+      if (options.sortColumn)
+        params.sortColumn = options.sortColumn;
+      if (options.sortOrder)
+        params.sortOrder = options.sortOrder;
+    }
+    return Object.keys(params).length > 0 ? "?" + new URLSearchParams(params).toString() : "";
+  }
+};
+var StorageAnalyticsClient = class extends BaseApiClient {
+  constructor(url2, headers = {}, fetch$1) {
+    const finalUrl = url2.replace(/\/$/, "");
+    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), headers);
+    super(finalUrl, finalHeaders, fetch$1, "storage");
+  }
+  async createBucket(name) {
+    var _this = this;
+    return _this.handleOperation(async () => {
+      return await post(_this.fetch, `${_this.url}/bucket`, { name }, { headers: _this.headers });
+    });
+  }
+  async listBuckets(options) {
+    var _this2 = this;
+    return _this2.handleOperation(async () => {
+      const queryParams = new URLSearchParams;
+      if ((options === null || options === undefined ? undefined : options.limit) !== undefined)
+        queryParams.set("limit", options.limit.toString());
+      if ((options === null || options === undefined ? undefined : options.offset) !== undefined)
+        queryParams.set("offset", options.offset.toString());
+      if (options === null || options === undefined ? undefined : options.sortColumn)
+        queryParams.set("sortColumn", options.sortColumn);
+      if (options === null || options === undefined ? undefined : options.sortOrder)
+        queryParams.set("sortOrder", options.sortOrder);
+      if (options === null || options === undefined ? undefined : options.search)
+        queryParams.set("search", options.search);
+      const queryString = queryParams.toString();
+      const url2 = queryString ? `${_this2.url}/bucket?${queryString}` : `${_this2.url}/bucket`;
+      return await get(_this2.fetch, url2, { headers: _this2.headers });
+    });
+  }
+  async deleteBucket(bucketName) {
+    var _this3 = this;
+    return _this3.handleOperation(async () => {
+      return await remove(_this3.fetch, `${_this3.url}/bucket/${bucketName}`, {}, { headers: _this3.headers });
+    });
+  }
+  from(bucketName) {
+    var _this4 = this;
+    if (!isValidBucketName(bucketName))
+      throw new StorageError("Invalid bucket name: File, folder, and bucket names must follow AWS object key naming guidelines and should avoid the use of any other characters.");
+    const catalog = new IcebergRestCatalog({
+      baseUrl: this.url,
+      catalogName: bucketName,
+      auth: {
+        type: "custom",
+        getHeaders: async () => _this4.headers
+      },
+      fetch: this.fetch
+    });
+    const shouldThrowOnError = this.shouldThrowOnError;
+    return new Proxy(catalog, { get(target, prop) {
+      const value = target[prop];
+      if (typeof value !== "function")
+        return value;
+      return async (...args) => {
+        try {
+          return {
+            data: await value.apply(target, args),
+            error: null
+          };
+        } catch (error51) {
+          if (shouldThrowOnError)
+            throw error51;
+          return {
+            data: null,
+            error: error51
+          };
+        }
+      };
+    } });
+  }
+};
+var VectorIndexApi = class extends BaseApiClient {
+  constructor(url2, headers = {}, fetch$1) {
+    const finalUrl = url2.replace(/\/$/, "");
+    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), {}, { "Content-Type": "application/json" }, headers);
+    super(finalUrl, finalHeaders, fetch$1, "vectors");
+  }
+  async createIndex(options) {
+    var _this = this;
+    return _this.handleOperation(async () => {
+      return await vectorsApi.post(_this.fetch, `${_this.url}/CreateIndex`, options, { headers: _this.headers }) || {};
+    });
+  }
+  async getIndex(vectorBucketName, indexName) {
+    var _this2 = this;
+    return _this2.handleOperation(async () => {
+      return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetIndex`, {
+        vectorBucketName,
+        indexName
+      }, { headers: _this2.headers });
+    });
+  }
+  async listIndexes(options) {
+    var _this3 = this;
+    return _this3.handleOperation(async () => {
+      return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListIndexes`, options, { headers: _this3.headers });
+    });
+  }
+  async deleteIndex(vectorBucketName, indexName) {
+    var _this4 = this;
+    return _this4.handleOperation(async () => {
+      return await vectorsApi.post(_this4.fetch, `${_this4.url}/DeleteIndex`, {
+        vectorBucketName,
+        indexName
+      }, { headers: _this4.headers }) || {};
+    });
+  }
+};
+var VectorDataApi = class extends BaseApiClient {
+  constructor(url2, headers = {}, fetch$1) {
+    const finalUrl = url2.replace(/\/$/, "");
+    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), {}, { "Content-Type": "application/json" }, headers);
+    super(finalUrl, finalHeaders, fetch$1, "vectors");
+  }
+  async putVectors(options) {
+    var _this = this;
+    if (options.vectors.length < 1 || options.vectors.length > 500)
+      throw new Error("Vector batch size must be between 1 and 500 items");
+    return _this.handleOperation(async () => {
+      return await vectorsApi.post(_this.fetch, `${_this.url}/PutVectors`, options, { headers: _this.headers }) || {};
+    });
+  }
+  async getVectors(options) {
+    var _this2 = this;
+    return _this2.handleOperation(async () => {
+      return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetVectors`, options, { headers: _this2.headers });
+    });
+  }
+  async listVectors(options) {
+    var _this3 = this;
+    if (options.segmentCount !== undefined) {
+      if (options.segmentCount < 1 || options.segmentCount > 16)
+        throw new Error("segmentCount must be between 1 and 16");
+      if (options.segmentIndex !== undefined) {
+        if (options.segmentIndex < 0 || options.segmentIndex >= options.segmentCount)
+          throw new Error(`segmentIndex must be between 0 and ${options.segmentCount - 1}`);
+      }
+    }
+    return _this3.handleOperation(async () => {
+      return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListVectors`, options, { headers: _this3.headers });
+    });
+  }
+  async queryVectors(options) {
+    var _this4 = this;
+    return _this4.handleOperation(async () => {
+      return await vectorsApi.post(_this4.fetch, `${_this4.url}/QueryVectors`, options, { headers: _this4.headers });
+    });
+  }
+  async deleteVectors(options) {
+    var _this5 = this;
+    if (options.keys.length < 1 || options.keys.length > 500)
+      throw new Error("Keys batch size must be between 1 and 500 items");
+    return _this5.handleOperation(async () => {
+      return await vectorsApi.post(_this5.fetch, `${_this5.url}/DeleteVectors`, options, { headers: _this5.headers }) || {};
+    });
+  }
+};
+var VectorBucketApi = class extends BaseApiClient {
+  constructor(url2, headers = {}, fetch$1) {
+    const finalUrl = url2.replace(/\/$/, "");
+    const finalHeaders = _objectSpread22(_objectSpread22({}, DEFAULT_HEADERS), {}, { "Content-Type": "application/json" }, headers);
+    super(finalUrl, finalHeaders, fetch$1, "vectors");
+  }
+  async createBucket(vectorBucketName) {
+    var _this = this;
+    return _this.handleOperation(async () => {
+      return await vectorsApi.post(_this.fetch, `${_this.url}/CreateVectorBucket`, { vectorBucketName }, { headers: _this.headers }) || {};
+    });
+  }
+  async getBucket(vectorBucketName) {
+    var _this2 = this;
+    return _this2.handleOperation(async () => {
+      return await vectorsApi.post(_this2.fetch, `${_this2.url}/GetVectorBucket`, { vectorBucketName }, { headers: _this2.headers });
+    });
+  }
+  async listBuckets(options = {}) {
+    var _this3 = this;
+    return _this3.handleOperation(async () => {
+      return await vectorsApi.post(_this3.fetch, `${_this3.url}/ListVectorBuckets`, options, { headers: _this3.headers });
+    });
+  }
+  async deleteBucket(vectorBucketName) {
+    var _this4 = this;
+    return _this4.handleOperation(async () => {
+      return await vectorsApi.post(_this4.fetch, `${_this4.url}/DeleteVectorBucket`, { vectorBucketName }, { headers: _this4.headers }) || {};
+    });
+  }
+};
+var StorageVectorsClient = class extends VectorBucketApi {
+  constructor(url2, options = {}) {
+    super(url2, options.headers || {}, options.fetch);
+  }
+  from(vectorBucketName) {
+    return new VectorBucketScope(this.url, this.headers, vectorBucketName, this.fetch);
+  }
+  async createBucket(vectorBucketName) {
+    var _superprop_getCreateBucket = () => super.createBucket, _this = this;
+    return _superprop_getCreateBucket().call(_this, vectorBucketName);
+  }
+  async getBucket(vectorBucketName) {
+    var _superprop_getGetBucket = () => super.getBucket, _this2 = this;
+    return _superprop_getGetBucket().call(_this2, vectorBucketName);
+  }
+  async listBuckets(options = {}) {
+    var _superprop_getListBuckets = () => super.listBuckets, _this3 = this;
+    return _superprop_getListBuckets().call(_this3, options);
+  }
+  async deleteBucket(vectorBucketName) {
+    var _superprop_getDeleteBucket = () => super.deleteBucket, _this4 = this;
+    return _superprop_getDeleteBucket().call(_this4, vectorBucketName);
+  }
+};
+var VectorBucketScope = class extends VectorIndexApi {
+  constructor(url2, headers, vectorBucketName, fetch$1) {
+    super(url2, headers, fetch$1);
+    this.vectorBucketName = vectorBucketName;
+  }
+  async createIndex(options) {
+    var _superprop_getCreateIndex = () => super.createIndex, _this5 = this;
+    return _superprop_getCreateIndex().call(_this5, _objectSpread22(_objectSpread22({}, options), {}, { vectorBucketName: _this5.vectorBucketName }));
+  }
+  async listIndexes(options = {}) {
+    var _superprop_getListIndexes = () => super.listIndexes, _this6 = this;
+    return _superprop_getListIndexes().call(_this6, _objectSpread22(_objectSpread22({}, options), {}, { vectorBucketName: _this6.vectorBucketName }));
+  }
+  async getIndex(indexName) {
+    var _superprop_getGetIndex = () => super.getIndex, _this7 = this;
+    return _superprop_getGetIndex().call(_this7, _this7.vectorBucketName, indexName);
+  }
+  async deleteIndex(indexName) {
+    var _superprop_getDeleteIndex = () => super.deleteIndex, _this8 = this;
+    return _superprop_getDeleteIndex().call(_this8, _this8.vectorBucketName, indexName);
+  }
+  index(indexName) {
+    return new VectorIndexScope(this.url, this.headers, this.vectorBucketName, indexName, this.fetch);
+  }
+};
+var VectorIndexScope = class extends VectorDataApi {
+  constructor(url2, headers, vectorBucketName, indexName, fetch$1) {
+    super(url2, headers, fetch$1);
+    this.vectorBucketName = vectorBucketName;
+    this.indexName = indexName;
+  }
+  async putVectors(options) {
+    var _superprop_getPutVectors = () => super.putVectors, _this9 = this;
+    return _superprop_getPutVectors().call(_this9, _objectSpread22(_objectSpread22({}, options), {}, {
+      vectorBucketName: _this9.vectorBucketName,
+      indexName: _this9.indexName
+    }));
+  }
+  async getVectors(options) {
+    var _superprop_getGetVectors = () => super.getVectors, _this10 = this;
+    return _superprop_getGetVectors().call(_this10, _objectSpread22(_objectSpread22({}, options), {}, {
+      vectorBucketName: _this10.vectorBucketName,
+      indexName: _this10.indexName
+    }));
+  }
+  async listVectors(options = {}) {
+    var _superprop_getListVectors = () => super.listVectors, _this11 = this;
+    return _superprop_getListVectors().call(_this11, _objectSpread22(_objectSpread22({}, options), {}, {
+      vectorBucketName: _this11.vectorBucketName,
+      indexName: _this11.indexName
+    }));
+  }
+  async queryVectors(options) {
+    var _superprop_getQueryVectors = () => super.queryVectors, _this12 = this;
+    return _superprop_getQueryVectors().call(_this12, _objectSpread22(_objectSpread22({}, options), {}, {
+      vectorBucketName: _this12.vectorBucketName,
+      indexName: _this12.indexName
+    }));
+  }
+  async deleteVectors(options) {
+    var _superprop_getDeleteVectors = () => super.deleteVectors, _this13 = this;
+    return _superprop_getDeleteVectors().call(_this13, _objectSpread22(_objectSpread22({}, options), {}, {
+      vectorBucketName: _this13.vectorBucketName,
+      indexName: _this13.indexName
+    }));
+  }
+};
+var StorageClient = class extends StorageBucketApi {
+  constructor(url2, headers = {}, fetch$1, opts) {
+    super(url2, headers, fetch$1, opts);
+  }
+  from(id) {
+    return new StorageFileApi(this.url, this.headers, id, this.fetch);
+  }
+  get vectors() {
+    return new StorageVectorsClient(this.url + "/vector", {
+      headers: this.headers,
+      fetch: this.fetch
+    });
+  }
+  get analytics() {
+    return new StorageAnalyticsClient(this.url + "/iceberg", this.headers, this.fetch);
+  }
+};
+
+// ../../node_modules/@supabase/supabase-js/dist/index.mjs
+var import_auth_js = __toESM(require_main3(), 1);
+__reExport(exports_dist3, __toESM(require_main2(), 1), module.exports);
+__reExport(exports_dist3, __toESM(require_main3(), 1), module.exports);
+var version3 = "2.105.4";
+var JS_ENV = "";
+if (typeof Deno !== "undefined")
+  JS_ENV = "deno";
+else if (typeof document !== "undefined")
+  JS_ENV = "web";
+else if (typeof navigator !== "undefined" && navigator.product === "ReactNative")
+  JS_ENV = "react-native";
+else
+  JS_ENV = "node";
+var DEFAULT_HEADERS2 = { "X-Client-Info": `supabase-js-${JS_ENV}/${version3}` };
+var DEFAULT_GLOBAL_OPTIONS = { headers: DEFAULT_HEADERS2 };
+var DEFAULT_DB_OPTIONS = { schema: "public" };
+var DEFAULT_AUTH_OPTIONS = {
+  autoRefreshToken: true,
+  persistSession: true,
+  detectSessionInUrl: true,
+  flowType: "implicit"
+};
+var DEFAULT_REALTIME_OPTIONS = {};
+function _typeof3(o) {
+  "@babel/helpers - typeof";
+  return _typeof3 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
+    return typeof o$1;
+  } : function(o$1) {
+    return o$1 && typeof Symbol == "function" && o$1.constructor === Symbol && o$1 !== Symbol.prototype ? "symbol" : typeof o$1;
+  }, _typeof3(o);
+}
+function toPrimitive3(t, r) {
+  if (_typeof3(t) != "object" || !t)
+    return t;
+  var e = t[Symbol.toPrimitive];
+  if (e !== undefined) {
+    var i = e.call(t, r || "default");
+    if (_typeof3(i) != "object")
+      return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (r === "string" ? String : Number)(t);
+}
+function toPropertyKey3(t) {
+  var i = toPrimitive3(t, "string");
+  return _typeof3(i) == "symbol" ? i : i + "";
+}
+function _defineProperty3(e, r, t) {
+  return (r = toPropertyKey3(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }) : e[r] = t, e;
+}
+function ownKeys3(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r$1) {
+      return Object.getOwnPropertyDescriptor(e, r$1).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread23(e) {
+  for (var r = 1;r < arguments.length; r++) {
+    var t = arguments[r] != null ? arguments[r] : {};
+    r % 2 ? ownKeys3(Object(t), true).forEach(function(r$1) {
+      _defineProperty3(e, r$1, t[r$1]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys3(Object(t)).forEach(function(r$1) {
+      Object.defineProperty(e, r$1, Object.getOwnPropertyDescriptor(t, r$1));
+    });
+  }
+  return e;
+}
+var resolveFetch2 = (customFetch) => {
+  if (customFetch)
+    return (...args) => customFetch(...args);
+  return (...args) => fetch(...args);
+};
+var resolveHeadersConstructor = () => {
+  return Headers;
+};
+var fetchWithAuth = (supabaseKey, getAccessToken, customFetch) => {
+  const fetch$1 = resolveFetch2(customFetch);
+  const HeadersConstructor = resolveHeadersConstructor();
+  return async (input, init) => {
+    var _await$getAccessToken;
+    const accessToken = (_await$getAccessToken = await getAccessToken()) !== null && _await$getAccessToken !== undefined ? _await$getAccessToken : supabaseKey;
+    let headers = new HeadersConstructor(init === null || init === undefined ? undefined : init.headers);
+    if (!headers.has("apikey"))
+      headers.set("apikey", supabaseKey);
+    if (!headers.has("Authorization"))
+      headers.set("Authorization", `Bearer ${accessToken}`);
+    return fetch$1(input, _objectSpread23(_objectSpread23({}, init), {}, { headers }));
+  };
+};
+function ensureTrailingSlash(url2) {
+  return url2.endsWith("/") ? url2 : url2 + "/";
+}
+function applySettingDefaults(options, defaults) {
+  var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header;
+  const { db: dbOptions, auth: authOptions, realtime: realtimeOptions, global: globalOptions } = options;
+  const { db: DEFAULT_DB_OPTIONS$1, auth: DEFAULT_AUTH_OPTIONS$1, realtime: DEFAULT_REALTIME_OPTIONS$1, global: DEFAULT_GLOBAL_OPTIONS$1 } = defaults;
+  const result = {
+    db: _objectSpread23(_objectSpread23({}, DEFAULT_DB_OPTIONS$1), dbOptions),
+    auth: _objectSpread23(_objectSpread23({}, DEFAULT_AUTH_OPTIONS$1), authOptions),
+    realtime: _objectSpread23(_objectSpread23({}, DEFAULT_REALTIME_OPTIONS$1), realtimeOptions),
+    storage: {},
+    global: _objectSpread23(_objectSpread23(_objectSpread23({}, DEFAULT_GLOBAL_OPTIONS$1), globalOptions), {}, { headers: _objectSpread23(_objectSpread23({}, (_DEFAULT_GLOBAL_OPTIO = DEFAULT_GLOBAL_OPTIONS$1 === null || DEFAULT_GLOBAL_OPTIONS$1 === undefined ? undefined : DEFAULT_GLOBAL_OPTIONS$1.headers) !== null && _DEFAULT_GLOBAL_OPTIO !== undefined ? _DEFAULT_GLOBAL_OPTIO : {}), (_globalOptions$header = globalOptions === null || globalOptions === undefined ? undefined : globalOptions.headers) !== null && _globalOptions$header !== undefined ? _globalOptions$header : {}) }),
+    accessToken: async () => ""
+  };
+  if (options.accessToken)
+    result.accessToken = options.accessToken;
+  else
+    delete result.accessToken;
+  return result;
+}
+function validateSupabaseUrl(supabaseUrl) {
+  const trimmedUrl = supabaseUrl === null || supabaseUrl === undefined ? undefined : supabaseUrl.trim();
+  if (!trimmedUrl)
+    throw new Error("supabaseUrl is required.");
+  if (!trimmedUrl.match(/^https?:\/\//i))
+    throw new Error("Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.");
+  try {
+    return new URL(ensureTrailingSlash(trimmedUrl));
+  } catch (_unused) {
+    throw Error("Invalid supabaseUrl: Provided URL is malformed.");
+  }
+}
+var SupabaseAuthClient = class extends import_auth_js.AuthClient {
+  constructor(options) {
+    super(options);
+  }
+};
+var SupabaseClient = class {
+  constructor(supabaseUrl, supabaseKey, options) {
+    var _settings$auth$storag, _settings$global$head;
+    this.supabaseUrl = supabaseUrl;
+    this.supabaseKey = supabaseKey;
+    const baseUrl = validateSupabaseUrl(supabaseUrl);
+    if (!supabaseKey)
+      throw new Error("supabaseKey is required.");
+    this.realtimeUrl = new URL("realtime/v1", baseUrl);
+    this.realtimeUrl.protocol = this.realtimeUrl.protocol.replace("http", "ws");
+    this.authUrl = new URL("auth/v1", baseUrl);
+    this.storageUrl = new URL("storage/v1", baseUrl);
+    this.functionsUrl = new URL("functions/v1", baseUrl);
+    const defaultStorageKey = `sb-${baseUrl.hostname.split(".")[0]}-auth-token`;
+    const DEFAULTS = {
+      db: DEFAULT_DB_OPTIONS,
+      realtime: DEFAULT_REALTIME_OPTIONS,
+      auth: _objectSpread23(_objectSpread23({}, DEFAULT_AUTH_OPTIONS), {}, { storageKey: defaultStorageKey }),
+      global: DEFAULT_GLOBAL_OPTIONS
+    };
+    const settings = applySettingDefaults(options !== null && options !== undefined ? options : {}, DEFAULTS);
+    this.storageKey = (_settings$auth$storag = settings.auth.storageKey) !== null && _settings$auth$storag !== undefined ? _settings$auth$storag : "";
+    this.headers = (_settings$global$head = settings.global.headers) !== null && _settings$global$head !== undefined ? _settings$global$head : {};
+    if (!settings.accessToken) {
+      var _settings$auth;
+      this.auth = this._initSupabaseAuthClient((_settings$auth = settings.auth) !== null && _settings$auth !== undefined ? _settings$auth : {}, this.headers, settings.global.fetch);
+    } else {
+      this.accessToken = settings.accessToken;
+      this.auth = new Proxy({}, { get: (_, prop) => {
+        throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(prop)} is not possible`);
+      } });
+    }
+    this.fetch = fetchWithAuth(supabaseKey, this._getAccessToken.bind(this), settings.global.fetch);
+    this.realtime = this._initRealtimeClient(_objectSpread23({
+      headers: this.headers,
+      accessToken: this._getAccessToken.bind(this),
+      fetch: this.fetch
+    }, settings.realtime));
+    if (this.accessToken)
+      Promise.resolve(this.accessToken()).then((token) => this.realtime.setAuth(token)).catch((e) => console.warn("Failed to set initial Realtime auth token:", e));
+    this.rest = new PostgrestClient(new URL("rest/v1", baseUrl).href, {
+      headers: this.headers,
+      schema: settings.db.schema,
+      fetch: this.fetch,
+      timeout: settings.db.timeout,
+      urlLengthLimit: settings.db.urlLengthLimit
+    });
+    this.storage = new StorageClient(this.storageUrl.href, this.headers, this.fetch, options === null || options === undefined ? undefined : options.storage);
+    if (!settings.accessToken)
+      this._listenForAuthEvents();
+  }
+  get functions() {
+    return new import_functions_js.FunctionsClient(this.functionsUrl.href, {
+      headers: this.headers,
+      customFetch: this.fetch
+    });
+  }
+  from(relation) {
+    return this.rest.from(relation);
+  }
+  schema(schema) {
+    return this.rest.schema(schema);
+  }
+  rpc(fn, args = {}, options = {
+    head: false,
+    get: false,
+    count: undefined
+  }) {
+    return this.rest.rpc(fn, args, options);
+  }
+  channel(name, opts = { config: {} }) {
+    return this.realtime.channel(name, opts);
+  }
+  getChannels() {
+    return this.realtime.getChannels();
+  }
+  removeChannel(channel) {
+    return this.realtime.removeChannel(channel);
+  }
+  removeAllChannels() {
+    return this.realtime.removeAllChannels();
+  }
+  async _getAccessToken() {
+    var _this = this;
+    var _data$session$access_, _data$session;
+    if (_this.accessToken)
+      return await _this.accessToken();
+    const { data } = await _this.auth.getSession();
+    return (_data$session$access_ = (_data$session = data.session) === null || _data$session === undefined ? undefined : _data$session.access_token) !== null && _data$session$access_ !== undefined ? _data$session$access_ : _this.supabaseKey;
+  }
+  _initSupabaseAuthClient({ autoRefreshToken, persistSession, detectSessionInUrl, storage, userStorage, storageKey, flowType, lock, debug, throwOnError, experimental, lockAcquireTimeout, skipAutoInitialize }, headers, fetch$1) {
+    const authHeaders = {
+      Authorization: `Bearer ${this.supabaseKey}`,
+      apikey: `${this.supabaseKey}`
+    };
+    return new SupabaseAuthClient({
+      url: this.authUrl.href,
+      headers: _objectSpread23(_objectSpread23({}, authHeaders), headers),
+      storageKey,
+      autoRefreshToken,
+      persistSession,
+      detectSessionInUrl,
+      storage,
+      userStorage,
+      flowType,
+      lock,
+      debug,
+      throwOnError,
+      experimental,
+      fetch: fetch$1,
+      lockAcquireTimeout,
+      skipAutoInitialize,
+      hasCustomAuthorizationHeader: Object.keys(this.headers).some((key) => key.toLowerCase() === "authorization")
+    });
+  }
+  _initRealtimeClient(options) {
+    return new import_realtime_js.RealtimeClient(this.realtimeUrl.href, _objectSpread23(_objectSpread23({}, options), {}, { params: _objectSpread23(_objectSpread23({}, { apikey: this.supabaseKey }), options === null || options === undefined ? undefined : options.params) }));
+  }
+  _listenForAuthEvents() {
+    return this.auth.onAuthStateChange((event, session) => {
+      this._handleTokenChanged(event, "CLIENT", session === null || session === undefined ? undefined : session.access_token);
+    });
+  }
+  _handleTokenChanged(event, source, token) {
+    if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN") && this.changedAccessToken !== token) {
+      this.changedAccessToken = token;
+      this.realtime.setAuth(token);
+    } else if (event === "SIGNED_OUT") {
+      this.realtime.setAuth();
+      if (source == "STORAGE")
+        this.auth.signOut();
+      this.changedAccessToken = undefined;
+    }
+  }
+};
+var createClient = (supabaseUrl, supabaseKey, options) => {
+  return new SupabaseClient(supabaseUrl, supabaseKey, options);
+};
+function shouldShowDeprecationWarning() {
+  if (typeof window !== "undefined")
+    return false;
+  const _process = globalThis["process"];
+  if (!_process)
+    return false;
+  const processVersion = _process["version"];
+  if (processVersion === undefined || processVersion === null)
+    return false;
+  const versionMatch = processVersion.match(/^v(\d+)\./);
+  if (!versionMatch)
+    return false;
+  return parseInt(versionMatch[1], 10) <= 18;
+}
+if (shouldShowDeprecationWarning())
+  console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
+
+// src/state/files.ts
+var import_promises4 = require("node:fs/promises");
+var import_node_path2 = require("node:path");
+var import_toml = __toESM(require_toml(), 1);
+var DIRECTORY_MODE = 448;
+var FILE_MODE = 384;
+async function ensureParentDirectory(filePath) {
+  await import_promises4.mkdir(import_node_path2.dirname(filePath), { recursive: true, mode: DIRECTORY_MODE });
+}
+async function writeFileAtomic(filePath, content) {
+  await ensureParentDirectory(filePath);
+  const temporaryFilePath = import_node_path2.join(import_node_path2.dirname(filePath), `.${import_node_path2.basename(filePath)}.${process.pid}.${Date.now()}.tmp`);
+  let handle;
+  try {
+    handle = await import_promises4.open(temporaryFilePath, "w", FILE_MODE);
+    await handle.writeFile(content, { encoding: "utf-8" });
+    await handle.sync();
+    await handle.close();
+    handle = undefined;
+    await import_promises4.rename(temporaryFilePath, filePath);
+  } catch (error51) {
+    if (handle) {
+      await handle.close().catch(() => {
+        return;
+      });
+    }
+    await import_promises4.unlink(temporaryFilePath).catch(() => {
+      return;
+    });
+    throw error51;
+  }
+}
+async function readJsonFile(filePath) {
+  try {
+    const content = await import_promises4.readFile(filePath, "utf-8");
+    return JSON.parse(content);
+  } catch (error51) {
+    if (error51.code === "ENOENT") {
+      return null;
+    }
+    throw error51;
+  }
+}
+async function writeJsonFileAtomic(filePath, value) {
+  await writeFileAtomic(filePath, `${JSON.stringify(value, null, 2)}
+`);
+}
+async function readTomlFile(filePath) {
+  try {
+    const content = await import_promises4.readFile(filePath, "utf-8");
+    return import_toml.parse(content);
+  } catch (error51) {
+    if (error51.code === "ENOENT") {
+      return null;
+    }
+    throw error51;
+  }
+}
+async function writeTomlFileAtomic(filePath, value) {
+  await writeFileAtomic(filePath, import_toml.stringify(value));
+}
+async function removeStateFile(filePath) {
+  try {
+    await import_promises4.unlink(filePath);
+  } catch (error51) {
+    if (error51.code !== "ENOENT") {
+      throw error51;
+    }
+  }
+}
+
+// src/state/paths.ts
+var import_node_os2 = require("node:os");
+var import_node_path3 = require("node:path");
+var DEFAULT_STATE_DIR_NAME = `.codex-${plugin_default.name}`;
+function getDefaultStateRootDir() {
+  return import_node_path3.join(import_node_os2.homedir(), DEFAULT_STATE_DIR_NAME);
+}
+function getStateRootDir() {
+  return process.env.ZEST_CODEX_STATE_DIR ?? getDefaultStateRootDir();
+}
+function resolveStatePath(...segments) {
+  const stateRootDir = getStateRootDir();
+  const resolvedPath = import_node_path3.resolve(stateRootDir, ...segments);
+  const relativePath = import_node_path3.relative(stateRootDir, resolvedPath);
+  if (relativePath.length === 0) {
+    return resolvedPath;
+  }
+  if (relativePath === ".." || relativePath.startsWith(`..${"/"}`) || import_node_path3.isAbsolute(relativePath)) {
+    throw new Error(`State path must stay within ${stateRootDir}`);
   }
   return resolvedPath;
 }
-function isAllowlistedCodexPath(absolutePath) {
-  const rootDir = getCodexRootDir();
-  if (!isWithinRoot(rootDir, absolutePath)) {
-    return false;
-  }
-  return matchesAllowlist(import_node_path6.relative(rootDir, absolutePath));
-}
 
-// src/codex/discovery.ts
-async function directoryExists(path2) {
-  try {
-    await import_promises6.readdir(path2);
-    return true;
-  } catch {
-    return false;
-  }
+// src/auth/session.ts
+var AUTH_SESSION_VERSION = 1;
+function getAuthSessionFilePath() {
+  return resolveStatePath("auth", "session.json");
 }
-async function pathExists(path2) {
-  try {
-    await import_promises6.access(path2);
-    return true;
-  } catch {
-    return false;
-  }
-}
-function formatDatePath(now) {
-  const year = String(now.getFullYear());
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return import_node_path7.join("sessions", year, month, day);
-}
-function isCurrentDayTranscript(path2, rootDir, now) {
-  const relativePath = import_node_path7.relative(rootDir, path2);
-  const currentDayPrefix = `${formatDatePath(now)}/`;
-  return relativePath.startsWith(currentDayPrefix);
-}
-async function collectTranscriptPaths(dirPath) {
-  const entries = await import_promises6.readdir(dirPath, { recursive: true, withFileTypes: true });
-  const transcriptPaths = [];
-  const rootDir = getCodexRootDir();
-  const now = new Date;
-  for (const entry of entries) {
-    if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
-      continue;
-    }
-    const parentPath = typeof entry.parentPath === "string" ? entry.parentPath : ("path" in entry) && typeof entry.path === "string" ? import_node_path7.join(dirPath, entry.path) : dirPath;
-    const absolutePath = import_node_path7.join(parentPath, entry.name);
-    if (isAllowlistedCodexPath(absolutePath) && isCurrentDayTranscript(absolutePath, rootDir, now)) {
-      transcriptPaths.push(absolutePath);
-    }
-  }
-  return transcriptPaths.sort((left, right) => left.localeCompare(right));
-}
-async function discoverCodexRuntimeFiles() {
-  const rootDir = getCodexRootDir();
-  const transcriptDir = import_node_path7.join(rootDir, "sessions");
-  const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir) : [];
-  const sessionIndexPath = resolveCodexPath("session_index.jsonl");
-  const historyPath = resolveCodexPath("history.jsonl");
-  return {
-    ...await pathExists(historyPath) ? { historyPath } : {},
-    ...await pathExists(sessionIndexPath) ? { sessionIndexPath } : {},
-    transcriptPaths
-  };
-}
-
-// src/collector/session-references.ts
-var import_node_fs4 = require("node:fs");
-var import_node_readline = __toESM(require("node:readline"));
-function isRecord(value) {
-  return typeof value === "object" && value !== null;
-}
-function isNonEmptyString3(value) {
+function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
-function isFiniteNumber(value) {
-  return typeof value === "number" && Number.isFinite(value);
-}
-async function readJsonLines(filePath, parseLine) {
-  const stream = import_node_fs4.createReadStream(filePath, { encoding: "utf-8" });
-  const lines = import_node_readline.default.createInterface({
-    crlfDelay: Number.POSITIVE_INFINITY,
-    input: stream
-  });
-  const entries = [];
-  try {
-    for await (const rawLine of lines) {
-      const line = rawLine.trim();
-      if (line.length === 0) {
-        continue;
-      }
-      let parsed;
-      try {
-        parsed = JSON.parse(line);
-      } catch {
-        continue;
-      }
-      const entry = parseLine(parsed);
-      if (entry !== null) {
-        entries.push(entry);
-      }
-    }
-  } finally {
-    lines.close();
-    stream.destroy();
+function isAuthSessionValid(value) {
+  if (!value || typeof value !== "object") {
+    return false;
   }
-  return entries;
+  const candidate = value;
+  if (candidate.version !== AUTH_SESSION_VERSION) {
+    return false;
+  }
+  if (!isNonEmptyString(candidate.accessToken) || !isNonEmptyString(candidate.refreshToken) || !isNonEmptyString(candidate.userId) || !isNonEmptyString(candidate.email)) {
+    return false;
+  }
+  if (candidate.refreshTokenExpiresAt !== undefined && (typeof candidate.refreshTokenExpiresAt !== "number" || !Number.isFinite(candidate.refreshTokenExpiresAt))) {
+    return false;
+  }
+  return true;
 }
-function parseSessionIndexEntry(value) {
-  if (!isRecord(value) || !isNonEmptyString3(value.id) || !isNonEmptyString3(value.updated_at)) {
+async function loadAuthSession() {
+  const filePath = getAuthSessionFilePath();
+  const session = await readJsonFile(filePath);
+  if (session === null) {
     return null;
   }
-  if (value.thread_name !== undefined && !isNonEmptyString3(value.thread_name)) {
+  if (!isAuthSessionValid(session)) {
+    await removeStateFile(filePath);
     return null;
   }
-  return {
-    id: value.id,
-    ...value.thread_name ? { threadName: value.thread_name } : {},
-    updatedAt: value.updated_at
-  };
+  return session;
 }
-function parseHistoryEntry(value) {
-  if (!isRecord(value)) {
-    return null;
-  }
-  if (!isNonEmptyString3(value.session_id) || !isFiniteNumber(value.ts) || !isNonEmptyString3(value.text)) {
-    return null;
-  }
-  return {
-    sessionId: value.session_id,
-    text: value.text,
-    timestamp: value.ts
-  };
+async function saveAuthSession(session) {
+  await writeJsonFileAtomic(getAuthSessionFilePath(), session);
 }
-async function readSessionIndex(filePath) {
-  return readJsonLines(filePath, parseSessionIndexEntry);
-}
-async function readHistory(filePath) {
-  return readJsonLines(filePath, parseHistoryEntry);
-}
-async function buildSessionReferences(input) {
-  const [sessionIndexEntries, historyEntries] = await Promise.all([
-    readSessionIndex(input.sessionIndexPath),
-    readHistory(input.historyPath)
-  ]);
-  const latestHistoryBySessionId = new Map;
-  for (const entry of historyEntries) {
-    const existing = latestHistoryBySessionId.get(entry.sessionId);
-    if (!existing || entry.timestamp >= existing.timestamp) {
-      latestHistoryBySessionId.set(entry.sessionId, {
-        text: entry.text,
-        timestamp: entry.timestamp
-      });
-    }
-  }
-  return sessionIndexEntries.map((entry) => {
-    const latestHistory = latestHistoryBySessionId.get(entry.id);
-    return {
-      ...latestHistory ? {
-        latestPromptAt: new Date(latestHistory.timestamp * 1000).toISOString(),
-        latestPromptText: latestHistory.text
-      } : {},
-      ...entry.threadName ? { title: entry.threadName } : {},
-      sessionId: entry.id,
-      updatedAt: entry.updatedAt
-    };
-  });
-}
-function buildSessionReferenceMap(references) {
-  return new Map(references.map((reference) => [reference.sessionId, reference]));
+async function clearAuthSession() {
+  await removeStateFile(getAuthSessionFilePath());
 }
 
+// src/supabase/session-storage-adapter.ts
+function getJwtExpiresAt(token) {
+  const [, payload] = token.split(".");
+  if (!payload) {
+    return;
+  }
+  try {
+    const decoded = JSON.parse(Buffer.from(payload, "base64url").toString("utf-8"));
+    return typeof decoded.exp === "number" && Number.isFinite(decoded.exp) ? decoded.exp : undefined;
+  } catch {
+    return;
+  }
+}
+function isRefreshTokenExpired(session) {
+  return session.refreshTokenExpiresAt !== undefined && session.refreshTokenExpiresAt <= Date.now();
+}
+function createGoTrueSession(session) {
+  if (isRefreshTokenExpired(session)) {
+    return null;
+  }
+  const expiresAt = getJwtExpiresAt(session.accessToken) ?? 0;
+  const now = Math.floor(Date.now() / 1000);
+  return {
+    access_token: session.accessToken,
+    expires_at: expiresAt,
+    expires_in: Math.max(0, expiresAt - now),
+    refresh_token: session.refreshToken,
+    token_type: "bearer",
+    user: {
+      app_metadata: {},
+      aud: "authenticated",
+      created_at: "",
+      email: session.email,
+      id: session.userId,
+      user_metadata: {}
+    }
+  };
+}
+async function persistGoTrueSession(session) {
+  if (!session.access_token || !session.refresh_token || !session.user?.id) {
+    throw new Error("invalid Supabase session");
+  }
+  const existingSession = await loadAuthSession();
+  const refreshTokenRotated = existingSession !== null && existingSession.refreshToken !== session.refresh_token;
+  await saveAuthSession({
+    accessToken: session.access_token,
+    email: session.user.email || existingSession?.email || "",
+    refreshToken: session.refresh_token,
+    refreshTokenExpiresAt: refreshTokenRotated ? undefined : existingSession?.refreshTokenExpiresAt,
+    userId: session.user.id,
+    version: 1
+  });
+}
+function createSessionStorageAdapter(isRemovalAllowed = () => true) {
+  return {
+    async getItem(key) {
+      if (key.endsWith("-code-verifier")) {
+        return null;
+      }
+      const session = await loadAuthSession();
+      if (!session) {
+        return null;
+      }
+      const gotrueSession = createGoTrueSession(session);
+      return gotrueSession ? JSON.stringify(gotrueSession) : null;
+    },
+    async removeItem(key) {
+      if (key.endsWith("-code-verifier") || !isRemovalAllowed()) {
+        return;
+      }
+      await clearAuthSession();
+    },
+    async setItem(key, value) {
+      if (key.endsWith("-code-verifier")) {
+        return;
+      }
+      let session;
+      try {
+        session = JSON.parse(value);
+      } catch {
+        return;
+      }
+      await persistGoTrueSession(session);
+    }
+  };
+}
+
+// src/supabase/client.ts
+function createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey, storage) {
+  return createClientImpl(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+      persistSession: true,
+      storage
+    }
+  });
+}
+function isExpiringWithin(expiresAt, minTtlSeconds) {
+  return expiresAt !== undefined && expiresAt - Math.floor(Date.now() / 1000) <= minTtlSeconds;
+}
+function isStoredAccessTokenExpiringWithin(session, minTtlSeconds) {
+  const expiresAt = getJwtExpiresAt(session.accessToken);
+  return expiresAt === undefined || isExpiringWithin(expiresAt, minTtlSeconds);
+}
+async function createOnDemandClient(options = {}) {
+  const createClientImpl = options.createClientImpl ?? createClient;
+  const loadSession = options.loadSession ?? loadAuthSession;
+  const refreshMinTtlSeconds = options.refreshMinTtlSeconds ?? 0;
+  const supabaseUrl = options.supabaseUrl ?? SUPABASE_URL;
+  const supabaseAnonKey = options.supabaseAnonKey ?? SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return null;
+  }
+  const session = await loadSession();
+  if (!session) {
+    return null;
+  }
+  const storage = createSessionStorageAdapter(() => false);
+  const client = createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey, storage);
+  const { error: error51 } = await client.auth.setSession({
+    access_token: session.accessToken,
+    refresh_token: session.refreshToken
+  });
+  if (error51) {
+    await client.removeAllChannels();
+    return null;
+  }
+  const getSession = typeof client.auth.getSession === "function" ? client.auth.getSession.bind(client.auth) : null;
+  const activeSession = getSession ? (await getSession()).data.session : null;
+  if (activeSession && isExpiringWithin(activeSession.expires_at, refreshMinTtlSeconds) || isStoredAccessTokenExpiringWithin(session, refreshMinTtlSeconds)) {
+    const { data, error: refreshError } = await client.auth.refreshSession();
+    if (refreshError || !data.session) {
+      await client.removeAllChannels();
+      return null;
+    }
+    try {
+      await persistGoTrueSession(data.session);
+    } catch {
+      await client.removeAllChannels();
+      return null;
+    }
+  }
+  return {
+    client,
+    dispose: async () => {
+      await client.removeAllChannels();
+    }
+  };
+}
+
+// src/workspace/binding.ts
+var WORKSPACE_BINDING_VERSION = 1;
+function isNonEmptyString2(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+function getWorkspaceBindingFilePath() {
+  return resolveStatePath("workspace", "binding.toml");
+}
+function isWorkspaceBindingValid(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const candidate = value;
+  if (candidate.version !== WORKSPACE_BINDING_VERSION) {
+    return false;
+  }
+  if (!candidate.active || typeof candidate.active !== "object") {
+    return false;
+  }
+  if (!isNonEmptyString2(candidate.active.id)) {
+    return false;
+  }
+  if (candidate.active.name !== undefined && !isNonEmptyString2(candidate.active.name)) {
+    return false;
+  }
+  if (candidate.sync !== undefined) {
+    if (!candidate.sync || typeof candidate.sync !== "object") {
+      return false;
+    }
+    if (typeof candidate.sync.enabled !== "boolean") {
+      return false;
+    }
+  }
+  return true;
+}
+async function loadWorkspaceBinding() {
+  const filePath = getWorkspaceBindingFilePath();
+  const binding = await readTomlFile(filePath);
+  if (binding === null) {
+    return null;
+  }
+  if (!isWorkspaceBindingValid(binding)) {
+    await removeStateFile(filePath);
+    return null;
+  }
+  return binding;
+}
+async function saveWorkspaceBinding(binding) {
+  await writeTomlFileAtomic(getWorkspaceBindingFilePath(), {
+    active: {
+      ...binding.active.name ? { name: binding.active.name } : {},
+      id: binding.active.id
+    },
+    ...binding.sync ? { sync: { enabled: binding.sync.enabled } } : {},
+    version: binding.version
+  });
+}
+async function saveActiveWorkspaceBinding(workspaceId, workspaceName) {
+  await saveWorkspaceBinding({
+    active: {
+      id: workspaceId,
+      ...workspaceName ? { name: workspaceName } : {}
+    },
+    version: WORKSPACE_BINDING_VERSION
+  });
+}
+
+// src/workspace/resolve.ts
+function normalizeWorkspaceName(name) {
+  if (typeof name !== "string") {
+    return;
+  }
+  const trimmedName = name.trim();
+  return trimmedName.length > 0 ? trimmedName : undefined;
+}
+async function resolveWorkspaceName(workspaceId) {
+  const onDemand = await createOnDemandClient();
+  if (!onDemand) {
+    return;
+  }
+  try {
+    const { data, error: error51 } = await onDemand.client.from("workspaces").select("name").eq("id", workspaceId).maybeSingle();
+    if (error51) {
+      return;
+    }
+    return normalizeWorkspaceName(data?.name);
+  } catch {
+    return;
+  } finally {
+    await onDemand.dispose();
+  }
+}
+async function saveResolvedWorkspaceBinding(workspaceId, resolveName = resolveWorkspaceName) {
+  let workspaceName;
+  try {
+    workspaceName = await resolveName(workspaceId);
+  } catch {
+    workspaceName = undefined;
+  }
+  await saveActiveWorkspaceBinding(workspaceId, workspaceName);
+  return workspaceName;
+}
+
+// src/auth/login.ts
+function getFetchImplementation(fetchImplementation) {
+  const implementation = fetchImplementation ?? globalThis.fetch;
+  if (!implementation) {
+    throw new Error("Global fetch is not available");
+  }
+  return implementation;
+}
+function createUrl(baseUrl, path2) {
+  return new URL(path2, baseUrl).toString();
+}
+async function parseJsonResponse(response) {
+  return await response.json();
+}
+async function initiateDeviceLogin(fetchImplementation, webAppUrl, clientId) {
+  const response = await fetchImplementation(createUrl(webAppUrl, DEVICE_AUTH_INITIATE_PATH), {
+    body: JSON.stringify({ clientId }),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: "POST"
+  });
+  if (!response.ok) {
+    const errorPayload = await parseJsonResponse(response).catch(() => null);
+    throw new Error(errorPayload?.error || "Failed to initiate device login");
+  }
+  return parseJsonResponse(response);
+}
+function normalizeAuthorizedSession(session) {
+  const email3 = session.user.email?.trim();
+  if (!email3) {
+    throw new Error("Authorized session is missing a user email");
+  }
+  let refreshTokenExpiresAt;
+  if (session.refresh_token_expires_at !== undefined) {
+    refreshTokenExpiresAt = session.refresh_token_expires_at * 1000;
+  } else if (session.refresh_token_expires_in !== undefined) {
+    refreshTokenExpiresAt = Date.now() + session.refresh_token_expires_in * 1000;
+  }
+  return {
+    accessToken: session.access_token,
+    email: email3,
+    refreshToken: session.refresh_token,
+    refreshTokenExpiresAt,
+    userId: session.user.id,
+    version: AUTH_SESSION_VERSION
+  };
+}
+function normalizeWorkspaceId(workspaceId) {
+  if (typeof workspaceId !== "string") {
+    return;
+  }
+  const trimmedWorkspaceId = workspaceId.trim();
+  return trimmedWorkspaceId.length > 0 ? trimmedWorkspaceId : undefined;
+}
+function mapPollingError(message, start) {
+  const normalizedMessage = message.toLowerCase();
+  if (normalizedMessage.includes("denied")) {
+    return {
+      deviceCode: start.deviceCode,
+      message: "Authorization was denied by the user.",
+      reason: "cancelled",
+      status: "failed",
+      verificationUrl: start.verificationUrl
+    };
+  }
+  if (normalizedMessage.includes("expired")) {
+    return {
+      deviceCode: start.deviceCode,
+      message: "The device code expired before authorization completed.",
+      reason: "expired",
+      status: "failed",
+      verificationUrl: start.verificationUrl
+    };
+  }
+  return;
+}
+async function startLogin(dependencies = {}) {
+  const fetchImplementation = getFetchImplementation(dependencies.fetch);
+  const webAppUrl = dependencies.webAppUrl ?? WEB_APP_URL;
+  const clientId = dependencies.clientId ?? CLIENT_ID;
+  const start = await initiateDeviceLogin(fetchImplementation, webAppUrl, clientId);
+  try {
+    await Promise.resolve((dependencies.openUrl ?? open_default)(start.verificationUrl));
+  } catch {}
+  return start;
+}
+async function completeLogin(start, dependencies = {}) {
+  const fetchImplementation = getFetchImplementation(dependencies.fetch);
+  const webAppUrl = dependencies.webAppUrl ?? WEB_APP_URL;
+  const sleep2 = dependencies.sleep ?? ((ms) => new Promise((resolve2) => setTimeout(resolve2, ms)));
+  const maxAttempts = Math.max(1, Math.floor(start.expiresIn / start.interval));
+  for (let attempt = 0;attempt < maxAttempts; attempt += 1) {
+    try {
+      const response = await fetchImplementation(createUrl(webAppUrl, DEVICE_AUTH_POLL_PATH), {
+        body: JSON.stringify({ authCode: start.authCode }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: "POST"
+      });
+      if (!response.ok) {
+        const errorPayload = await parseJsonResponse(response).catch(() => null);
+        const failure = mapPollingError(errorPayload?.error || "Authentication polling failed", start);
+        if (failure) {
+          return failure;
+        }
+        throw new Error(errorPayload?.error || "Authentication polling failed");
+      }
+      const payload = await parseJsonResponse(response);
+      if (payload.status === "authorized" && payload.session) {
+        const persistedSession = normalizeAuthorizedSession(payload.session);
+        await saveAuthSession(persistedSession);
+        const workspaceId = normalizeWorkspaceId(payload.session.workspace_id);
+        if (workspaceId) {
+          await saveResolvedWorkspaceBinding(workspaceId, dependencies.resolveWorkspaceName);
+        }
+        return {
+          deviceCode: start.deviceCode,
+          email: persistedSession.email,
+          status: "authenticated",
+          userId: persistedSession.userId,
+          verificationUrl: start.verificationUrl
+        };
+      }
+      if (payload.status === "pending" && attempt < maxAttempts - 1) {
+        await sleep2(start.interval * 1000);
+      }
+    } catch (error51) {
+      if (attempt === maxAttempts - 1) {
+        return {
+          deviceCode: start.deviceCode,
+          message: error51 instanceof Error ? error51.message : "Authentication polling failed",
+          reason: "auth_error",
+          status: "failed",
+          verificationUrl: start.verificationUrl
+        };
+      }
+      await sleep2(start.interval * 1000);
+    }
+  }
+  return {
+    deviceCode: start.deviceCode,
+    message: "Authorization timed out before the device flow completed.",
+    reason: "timeout",
+    status: "failed",
+    verificationUrl: start.verificationUrl
+  };
+}
+async function loginWithDeviceFlow(dependencies = {}) {
+  const start = await startLogin(dependencies);
+  return completeLogin(start, dependencies);
+}
+
+// src/codex/current-folder.ts
+var import_node_path6 = require("node:path");
+
 // src/collector/transcript-parser.ts
-var import_node_fs5 = require("node:fs");
-var import_node_readline2 = __toESM(require("node:readline"));
+var import_node_fs4 = require("node:fs");
+var import_node_readline = __toESM(require("node:readline"));
 
 // src/collector/session-signals.ts
 var BUILTIN_FUNCTION_CALL_NAMES = new Set([
@@ -45367,13 +44916,13 @@ function messageFromEvent(record3) {
 }
 
 // src/collector/transcript-parser/guards.ts
-function isRecord2(value) {
+function isRecord(value) {
   return typeof value === "object" && value !== null;
 }
 function isString(value) {
   return typeof value === "string";
 }
-function isNonEmptyString4(value) {
+function isNonEmptyString3(value) {
   return isString(value) && value.trim().length > 0;
 }
 function isNumber(value) {
@@ -45394,7 +44943,7 @@ function toStringArray(value) {
 
 // src/collector/transcript-parser/field-parsers.ts
 function parseDuration(value) {
-  if (!isRecord2(value)) {
+  if (!isRecord(value)) {
     return;
   }
   const secs = isNumber(value.secs) ? value.secs : undefined;
@@ -45405,7 +44954,7 @@ function parseDuration(value) {
   return { ...secs !== undefined ? { secs } : {}, ...nanos !== undefined ? { nanos } : {} };
 }
 function parseTokenUsage(value) {
-  if (!isRecord2(value)) {
+  if (!isRecord(value)) {
     return;
   }
   const inputTokens = isNumber(value.input_tokens) ? value.input_tokens : undefined;
@@ -45425,7 +44974,7 @@ function parseTokenUsage(value) {
   };
 }
 function parseRateLimitWindow(value) {
-  if (!isRecord2(value)) {
+  if (!isRecord(value)) {
     return;
   }
   const usedPercent = isNumber(value.used_percent) ? value.used_percent : undefined;
@@ -45441,12 +44990,12 @@ function parseRateLimitWindow(value) {
   };
 }
 function parseGitContext(value) {
-  if (!isRecord2(value)) {
+  if (!isRecord(value)) {
     return;
   }
-  const branch = isNonEmptyString4(value.branch) ? value.branch : undefined;
-  const commitHash = isNonEmptyString4(value.commit_hash) ? value.commit_hash : undefined;
-  const repositoryUrl = isNonEmptyString4(value.repository_url) ? value.repository_url : undefined;
+  const branch = isNonEmptyString3(value.branch) ? value.branch : undefined;
+  const commitHash = isNonEmptyString3(value.commit_hash) ? value.commit_hash : undefined;
+  const repositoryUrl = isNonEmptyString3(value.repository_url) ? value.repository_url : undefined;
   if (branch === undefined && commitHash === undefined && repositoryUrl === undefined) {
     return;
   }
@@ -45457,7 +45006,7 @@ function parseGitContext(value) {
   };
 }
 function parseSandboxPolicy(value) {
-  if (!isRecord2(value) || !isNonEmptyString4(value.type)) {
+  if (!isRecord(value) || !isNonEmptyString3(value.type)) {
     return;
   }
   return {
@@ -45469,14 +45018,14 @@ function parseSandboxPolicy(value) {
   };
 }
 function parseCollaborationMode(value) {
-  if (!isRecord2(value) || !isNonEmptyString4(value.mode)) {
+  if (!isRecord(value) || !isNonEmptyString3(value.mode)) {
     return;
   }
-  const settings = isRecord2(value.settings) ? value.settings : undefined;
+  const settings = isRecord(value.settings) ? value.settings : undefined;
   return {
     mode: value.mode,
-    ...settings && isNonEmptyString4(settings.model) ? { model: settings.model } : {},
-    ...settings && isNonEmptyString4(settings.reasoning_effort) ? { reasoningEffort: settings.reasoning_effort } : {}
+    ...settings && isNonEmptyString3(settings.model) ? { model: settings.model } : {},
+    ...settings && isNonEmptyString3(settings.reasoning_effort) ? { reasoningEffort: settings.reasoning_effort } : {}
   };
 }
 function parseMessageContentBlocks(value) {
@@ -45485,7 +45034,7 @@ function parseMessageContentBlocks(value) {
   }
   const blocks = [];
   for (const entry of value) {
-    if (!isRecord2(entry) || !isNonEmptyString4(entry.type)) {
+    if (!isRecord(entry) || !isNonEmptyString3(entry.type)) {
       return null;
     }
     if (entry.type === "input_text" || entry.type === "output_text") {
@@ -45509,7 +45058,7 @@ function parseMessageContentBlocks(value) {
 
 // src/collector/transcript-parser/record-parsers.ts
 function parseSessionMetaRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.id) || !isNonEmptyString4(payload.cwd) || !isNonEmptyString4(payload.originator) || !isNonEmptyString4(payload.source) || !isNonEmptyString4(payload.cli_version) || !isNonEmptyString4(payload.model_provider)) {
+  if (!isRecord(payload) || !isNonEmptyString3(payload.id) || !isNonEmptyString3(payload.cwd) || !isNonEmptyString3(payload.originator) || !isNonEmptyString3(payload.source) || !isNonEmptyString3(payload.cli_version) || !isNonEmptyString3(payload.model_provider)) {
     return null;
   }
   const git = parseGitContext(payload.git);
@@ -45527,12 +45076,12 @@ function parseSessionMetaRecord(payload, timestamp, lineNumber) {
   };
 }
 function parseEventRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.type)) {
+  if (!isRecord(payload) || !isNonEmptyString3(payload.type)) {
     return null;
   }
   switch (payload.type) {
     case "task_started":
-      if (!isNonEmptyString4(payload.turn_id)) {
+      if (!isNonEmptyString3(payload.turn_id)) {
         return null;
       }
       return {
@@ -45542,10 +45091,10 @@ function parseEventRecord(payload, timestamp, lineNumber) {
         timestamp,
         turnId: payload.turn_id,
         ...isNumber(payload.model_context_window) ? { modelContextWindow: payload.model_context_window } : {},
-        ...isNonEmptyString4(payload.collaboration_mode_kind) ? { collaborationModeKind: payload.collaboration_mode_kind } : {}
+        ...isNonEmptyString3(payload.collaboration_mode_kind) ? { collaborationModeKind: payload.collaboration_mode_kind } : {}
       };
     case "task_complete":
-      if (!isNonEmptyString4(payload.turn_id)) {
+      if (!isNonEmptyString3(payload.turn_id)) {
         return null;
       }
       return {
@@ -45557,7 +45106,7 @@ function parseEventRecord(payload, timestamp, lineNumber) {
         ...isString(payload.last_agent_message) ? { lastAgentMessage: payload.last_agent_message } : {}
       };
     case "turn_aborted":
-      if (!isNonEmptyString4(payload.turn_id)) {
+      if (!isNonEmptyString3(payload.turn_id)) {
         return null;
       }
       return {
@@ -45566,7 +45115,7 @@ function parseEventRecord(payload, timestamp, lineNumber) {
         lineNumber,
         timestamp,
         turnId: payload.turn_id,
-        ...isNonEmptyString4(payload.reason) ? { reason: payload.reason } : {}
+        ...isNonEmptyString3(payload.reason) ? { reason: payload.reason } : {}
       };
     case "user_message":
       if (!isString(payload.message)) {
@@ -45592,18 +45141,18 @@ function parseEventRecord(payload, timestamp, lineNumber) {
         lineNumber,
         timestamp,
         message: payload.message,
-        ...isNonEmptyString4(payload.phase) ? { phase: payload.phase } : {},
+        ...isNonEmptyString3(payload.phase) ? { phase: payload.phase } : {},
         hasMemoryCitation: payload.memory_citation !== null && payload.memory_citation !== undefined
       };
     case "token_count": {
-      const info = isRecord2(payload.info) ? {
+      const info = isRecord(payload.info) ? {
         ...parseTokenUsage(payload.info.total_token_usage) ? { totalTokenUsage: parseTokenUsage(payload.info.total_token_usage) } : {},
         ...parseTokenUsage(payload.info.last_token_usage) ? { lastTokenUsage: parseTokenUsage(payload.info.last_token_usage) } : {},
         ...isNumber(payload.info.model_context_window) ? { modelContextWindow: payload.info.model_context_window } : {}
       } : undefined;
-      const rateLimits = isRecord2(payload.rate_limits) ? {
-        ...isNonEmptyString4(payload.rate_limits.limit_id) ? { limitId: payload.rate_limits.limit_id } : {},
-        ...isNonEmptyString4(payload.rate_limits.plan_type) ? { planType: payload.rate_limits.plan_type } : {},
+      const rateLimits = isRecord(payload.rate_limits) ? {
+        ...isNonEmptyString3(payload.rate_limits.limit_id) ? { limitId: payload.rate_limits.limit_id } : {},
+        ...isNonEmptyString3(payload.rate_limits.plan_type) ? { planType: payload.rate_limits.plan_type } : {},
         ...parseRateLimitWindow(payload.rate_limits.primary) ? { primary: parseRateLimitWindow(payload.rate_limits.primary) } : {},
         ...parseRateLimitWindow(payload.rate_limits.secondary) ? { secondary: parseRateLimitWindow(payload.rate_limits.secondary) } : {}
       } : undefined;
@@ -45628,21 +45177,21 @@ function parseEventRecord(payload, timestamp, lineNumber) {
         timestamp,
         command: toStringArray(payload.command),
         parsedCmd: toStringArray(payload.parsed_cmd),
-        ...isNonEmptyString4(payload.call_id) ? { callId: payload.call_id } : {},
-        ...isNonEmptyString4(payload.turn_id) ? { turnId: payload.turn_id } : {},
-        ...isNonEmptyString4(payload.cwd) ? { cwd: payload.cwd } : {},
+        ...isNonEmptyString3(payload.call_id) ? { callId: payload.call_id } : {},
+        ...isNonEmptyString3(payload.turn_id) ? { turnId: payload.turn_id } : {},
+        ...isNonEmptyString3(payload.cwd) ? { cwd: payload.cwd } : {},
         ...isNumber(payload.exit_code) ? { exitCode: payload.exit_code } : {},
-        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {},
+        ...isNonEmptyString3(payload.status) ? { status: payload.status } : {},
         ...duration3 ? { duration: duration3 } : {}
       };
     }
     case "mcp_tool_call_end": {
-      const invocation = isRecord2(payload.invocation) ? payload.invocation : undefined;
-      if (!invocation || !isNonEmptyString4(invocation.server) || !isNonEmptyString4(invocation.tool)) {
+      const invocation = isRecord(payload.invocation) ? payload.invocation : undefined;
+      if (!invocation || !isNonEmptyString3(invocation.server) || !isNonEmptyString3(invocation.tool)) {
         return null;
       }
       const duration3 = parseDuration(payload.duration);
-      const resultKind = isRecord2(payload.result) ? "Ok" in payload.result ? "ok" : ("Err" in payload.result) ? "err" : undefined : undefined;
+      const resultKind = isRecord(payload.result) ? "Ok" in payload.result ? "ok" : ("Err" in payload.result) ? "err" : undefined : undefined;
       return {
         recordType: "event_msg",
         eventType: "mcp_tool_call_end",
@@ -45650,22 +45199,22 @@ function parseEventRecord(payload, timestamp, lineNumber) {
         timestamp,
         server: invocation.server,
         tool: invocation.tool,
-        ...isNonEmptyString4(payload.call_id) ? { callId: payload.call_id } : {},
+        ...isNonEmptyString3(payload.call_id) ? { callId: payload.call_id } : {},
         ...duration3 ? { duration: duration3 } : {},
         ...resultKind ? { resultKind } : {}
       };
     }
     case "item_completed": {
-      const item = isRecord2(payload.item) ? payload.item : undefined;
+      const item = isRecord(payload.item) ? payload.item : undefined;
       return {
         recordType: "event_msg",
         eventType: "item_completed",
         lineNumber,
         timestamp,
-        ...isNonEmptyString4(payload.thread_id) ? { threadId: payload.thread_id } : {},
-        ...isNonEmptyString4(payload.turn_id) ? { turnId: payload.turn_id } : {},
-        ...item && isNonEmptyString4(item.type) ? { itemType: item.type } : {},
-        ...item && isNonEmptyString4(item.id) ? { itemId: item.id } : {}
+        ...isNonEmptyString3(payload.thread_id) ? { threadId: payload.thread_id } : {},
+        ...isNonEmptyString3(payload.turn_id) ? { turnId: payload.turn_id } : {},
+        ...item && isNonEmptyString3(item.type) ? { itemType: item.type } : {},
+        ...item && isNonEmptyString3(item.id) ? { itemId: item.id } : {}
       };
     }
     case "context_compacted":
@@ -45688,12 +45237,12 @@ function parseEventRecord(payload, timestamp, lineNumber) {
   }
 }
 function parseResponseItemRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.type)) {
+  if (!isRecord(payload) || !isNonEmptyString3(payload.type)) {
     return null;
   }
   switch (payload.type) {
     case "message": {
-      if (!isNonEmptyString4(payload.role)) {
+      if (!isNonEmptyString3(payload.role)) {
         return null;
       }
       const content = parseMessageContentBlocks(payload.content);
@@ -45707,22 +45256,22 @@ function parseResponseItemRecord(payload, timestamp, lineNumber) {
         timestamp,
         role: payload.role,
         content,
-        ...isNonEmptyString4(payload.phase) ? { phase: payload.phase } : {}
+        ...isNonEmptyString3(payload.phase) ? { phase: payload.phase } : {}
       };
     }
     case "reasoning": {
-      const summary = isArray(payload.summary) ? payload.summary.filter(isRecord2).map((entry) => isString(entry.text) ? entry.text : null).filter((entry) => entry !== null) : [];
+      const summary = isArray(payload.summary) ? payload.summary.filter(isRecord).map((entry) => isString(entry.text) ? entry.text : null).filter((entry) => entry !== null) : [];
       return {
         recordType: "response_item",
         itemType: "reasoning",
         lineNumber,
         timestamp,
         summaryText: summary,
-        hasEncryptedContent: isNonEmptyString4(payload.encrypted_content)
+        hasEncryptedContent: isNonEmptyString3(payload.encrypted_content)
       };
     }
     case "function_call":
-      if (!isNonEmptyString4(payload.name) || !isNonEmptyString4(payload.call_id) || !isString(payload.arguments)) {
+      if (!isNonEmptyString3(payload.name) || !isNonEmptyString3(payload.call_id) || !isString(payload.arguments)) {
         return null;
       }
       return {
@@ -45731,12 +45280,12 @@ function parseResponseItemRecord(payload, timestamp, lineNumber) {
         lineNumber,
         timestamp,
         name: payload.name,
-        ...isNonEmptyString4(payload.namespace) ? { namespace: payload.namespace } : {},
+        ...isNonEmptyString3(payload.namespace) ? { namespace: payload.namespace } : {},
         callId: payload.call_id,
         arguments: payload.arguments
       };
     case "function_call_output":
-      if (!isNonEmptyString4(payload.call_id) || !isString(payload.output)) {
+      if (!isNonEmptyString3(payload.call_id) || !isString(payload.output)) {
         return null;
       }
       return {
@@ -45748,7 +45297,7 @@ function parseResponseItemRecord(payload, timestamp, lineNumber) {
         output: payload.output
       };
     case "custom_tool_call":
-      if (!isNonEmptyString4(payload.call_id) || !isNonEmptyString4(payload.name) || !isString(payload.input)) {
+      if (!isNonEmptyString3(payload.call_id) || !isNonEmptyString3(payload.name) || !isString(payload.input)) {
         return null;
       }
       return {
@@ -45759,10 +45308,10 @@ function parseResponseItemRecord(payload, timestamp, lineNumber) {
         callId: payload.call_id,
         name: payload.name,
         input: payload.input,
-        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {}
+        ...isNonEmptyString3(payload.status) ? { status: payload.status } : {}
       };
     case "custom_tool_call_output":
-      if (!isNonEmptyString4(payload.call_id) || !isString(payload.output)) {
+      if (!isNonEmptyString3(payload.call_id) || !isString(payload.output)) {
         return null;
       }
       return {
@@ -45774,16 +45323,16 @@ function parseResponseItemRecord(payload, timestamp, lineNumber) {
         output: payload.output
       };
     case "web_search_call": {
-      const action = isRecord2(payload.action) ? payload.action : undefined;
+      const action = isRecord(payload.action) ? payload.action : undefined;
       return {
         recordType: "response_item",
         itemType: "web_search_call",
         lineNumber,
         timestamp,
         queries: action ? toStringArray(action.queries) : [],
-        ...isNonEmptyString4(payload.status) ? { status: payload.status } : {},
-        ...action && isNonEmptyString4(action.type) ? { actionType: action.type } : {},
-        ...action && isNonEmptyString4(action.query) ? { query: action.query } : {}
+        ...isNonEmptyString3(payload.status) ? { status: payload.status } : {},
+        ...action && isNonEmptyString3(action.type) ? { actionType: action.type } : {},
+        ...action && isNonEmptyString3(action.query) ? { query: action.query } : {}
       };
     }
     default:
@@ -45791,7 +45340,7 @@ function parseResponseItemRecord(payload, timestamp, lineNumber) {
   }
 }
 function parseTurnContextRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload) || !isNonEmptyString4(payload.turn_id) || !isNonEmptyString4(payload.cwd)) {
+  if (!isRecord(payload) || !isNonEmptyString3(payload.turn_id) || !isNonEmptyString3(payload.cwd)) {
     return null;
   }
   const sandboxPolicy = parseSandboxPolicy(payload.sandbox_policy);
@@ -45802,25 +45351,25 @@ function parseTurnContextRecord(payload, timestamp, lineNumber) {
     timestamp,
     turnId: payload.turn_id,
     cwd: payload.cwd,
-    ...isNonEmptyString4(payload.current_date) ? { currentDate: payload.current_date } : {},
-    ...isNonEmptyString4(payload.timezone) ? { timezone: payload.timezone } : {},
-    ...isNonEmptyString4(payload.approval_policy) ? { approvalPolicy: payload.approval_policy } : {},
+    ...isNonEmptyString3(payload.current_date) ? { currentDate: payload.current_date } : {},
+    ...isNonEmptyString3(payload.timezone) ? { timezone: payload.timezone } : {},
+    ...isNonEmptyString3(payload.approval_policy) ? { approvalPolicy: payload.approval_policy } : {},
     ...sandboxPolicy ? { sandboxPolicy } : {},
-    ...isNonEmptyString4(payload.model) ? { model: payload.model } : {},
-    ...isNonEmptyString4(payload.personality) ? { personality: payload.personality } : {},
+    ...isNonEmptyString3(payload.model) ? { model: payload.model } : {},
+    ...isNonEmptyString3(payload.personality) ? { personality: payload.personality } : {},
     ...collaborationMode ? { collaborationMode } : {},
-    ...isNonEmptyString4(payload.effort) ? { effort: payload.effort } : {},
-    ...isNonEmptyString4(payload.summary) ? { summary: payload.summary } : {},
-    ...isRecord2(payload.truncation_policy) ? {
+    ...isNonEmptyString3(payload.effort) ? { effort: payload.effort } : {},
+    ...isNonEmptyString3(payload.summary) ? { summary: payload.summary } : {},
+    ...isRecord(payload.truncation_policy) ? {
       truncationPolicy: {
-        ...isNonEmptyString4(payload.truncation_policy.mode) ? { mode: payload.truncation_policy.mode } : {},
+        ...isNonEmptyString3(payload.truncation_policy.mode) ? { mode: payload.truncation_policy.mode } : {},
         ...isNumber(payload.truncation_policy.limit) ? { limit: payload.truncation_policy.limit } : {}
       }
     } : {}
   };
 }
 function parseCompactedRecord(payload, timestamp, lineNumber) {
-  if (!isRecord2(payload)) {
+  if (!isRecord(payload)) {
     return null;
   }
   return {
@@ -45831,7 +45380,7 @@ function parseCompactedRecord(payload, timestamp, lineNumber) {
   };
 }
 function parseTopLevelRecord(value, lineNumber) {
-  if (!isRecord2(value) || !isNonEmptyString4(value.type) || !isNonEmptyString4(value.timestamp)) {
+  if (!isRecord(value) || !isNonEmptyString3(value.type) || !isNonEmptyString3(value.timestamp)) {
     return null;
   }
   switch (value.type) {
@@ -45873,8 +45422,8 @@ function collectRecord(accumulator, record3) {
   return accumulator;
 }
 async function readTranscript(filePath) {
-  const stream = import_node_fs5.createReadStream(filePath, { encoding: "utf-8" });
-  const lines = import_node_readline2.default.createInterface({
+  const stream = import_node_fs4.createReadStream(filePath, { encoding: "utf-8" });
+  const lines = import_node_readline.default.createInterface({
     crlfDelay: Number.POSITIVE_INFINITY,
     input: stream
   });
@@ -45924,8 +45473,2517 @@ async function readTranscripts(filePaths) {
   return parsed.filter((entry) => entry !== null);
 }
 
-// src/sync/normalize.ts
+// src/codex/discovery.ts
+var import_promises5 = require("node:fs/promises");
+var import_node_path5 = require("node:path");
+
+// src/collector/session-references.ts
+var import_node_fs5 = require("node:fs");
+var import_node_readline2 = __toESM(require("node:readline"));
+function isRecord2(value) {
+  return typeof value === "object" && value !== null;
+}
+function isNonEmptyString4(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+function isFiniteNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+async function readJsonLines(filePath, parseLine) {
+  const stream = import_node_fs5.createReadStream(filePath, { encoding: "utf-8" });
+  const lines = import_node_readline2.default.createInterface({
+    crlfDelay: Number.POSITIVE_INFINITY,
+    input: stream
+  });
+  const entries = [];
+  try {
+    for await (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (line.length === 0) {
+        continue;
+      }
+      let parsed;
+      try {
+        parsed = JSON.parse(line);
+      } catch {
+        continue;
+      }
+      const entry = parseLine(parsed);
+      if (entry !== null) {
+        entries.push(entry);
+      }
+    }
+  } finally {
+    lines.close();
+    stream.destroy();
+  }
+  return entries;
+}
+function parseSessionIndexEntry(value) {
+  if (!isRecord2(value) || !isNonEmptyString4(value.id) || !isNonEmptyString4(value.updated_at)) {
+    return null;
+  }
+  if (value.thread_name !== undefined && !isNonEmptyString4(value.thread_name)) {
+    return null;
+  }
+  return {
+    id: value.id,
+    ...value.thread_name ? { threadName: value.thread_name } : {},
+    updatedAt: value.updated_at
+  };
+}
+function parseHistoryEntry(value) {
+  if (!isRecord2(value)) {
+    return null;
+  }
+  if (!isNonEmptyString4(value.session_id) || !isFiniteNumber(value.ts) || !isNonEmptyString4(value.text)) {
+    return null;
+  }
+  return {
+    sessionId: value.session_id,
+    text: value.text,
+    timestamp: value.ts
+  };
+}
+async function readSessionIndex(filePath) {
+  return readJsonLines(filePath, parseSessionIndexEntry);
+}
+async function readHistory(filePath) {
+  return readJsonLines(filePath, parseHistoryEntry);
+}
+async function buildSessionReferences(input) {
+  const [sessionIndexEntries, historyEntries] = await Promise.all([
+    readSessionIndex(input.sessionIndexPath),
+    readHistory(input.historyPath)
+  ]);
+  const latestHistoryBySessionId = new Map;
+  for (const entry of historyEntries) {
+    const existing = latestHistoryBySessionId.get(entry.sessionId);
+    if (!existing || entry.timestamp >= existing.timestamp) {
+      latestHistoryBySessionId.set(entry.sessionId, {
+        text: entry.text,
+        timestamp: entry.timestamp
+      });
+    }
+  }
+  return sessionIndexEntries.map((entry) => {
+    const latestHistory = latestHistoryBySessionId.get(entry.id);
+    return {
+      ...latestHistory ? {
+        latestPromptAt: new Date(latestHistory.timestamp * 1000).toISOString(),
+        latestPromptText: latestHistory.text
+      } : {},
+      ...entry.threadName ? { title: entry.threadName } : {},
+      sessionId: entry.id,
+      updatedAt: entry.updatedAt
+    };
+  });
+}
+function buildSessionReferenceMap(references) {
+  return new Map(references.map((reference) => [reference.sessionId, reference]));
+}
+
+// src/codex/paths.ts
+var import_node_os3 = require("node:os");
+var import_node_path4 = require("node:path");
+var DEFAULT_CODEX_DIR_NAME = ".codex";
+var ALLOWLISTED_TOP_LEVEL_FILES = new Set([
+  "config.toml",
+  "session_index.jsonl",
+  "history.jsonl"
+]);
+function getCodexRootDir() {
+  return process.env.ZEST_CODEX_ROOT_DIR ?? import_node_path4.join(import_node_os3.homedir(), DEFAULT_CODEX_DIR_NAME);
+}
+function isWithinRoot(rootDir, targetPath) {
+  const rel = import_node_path4.relative(rootDir, targetPath);
+  if (rel.length === 0)
+    return false;
+  return !(rel === ".." || rel.startsWith("../") || import_node_path4.isAbsolute(rel));
+}
+function matchesAllowlist(relativePath) {
+  if (ALLOWLISTED_TOP_LEVEL_FILES.has(relativePath)) {
+    return true;
+  }
+  if (relativePath.startsWith("sessions/") && relativePath.endsWith(".jsonl")) {
+    const inner = relativePath.slice("sessions/".length);
+    return inner.length > ".jsonl".length && !inner.includes("..");
+  }
+  return false;
+}
+function resolveCodexPath(...segments) {
+  const rootDir = getCodexRootDir();
+  const resolvedPath = import_node_path4.resolve(rootDir, ...segments);
+  if (!isWithinRoot(rootDir, resolvedPath)) {
+    throw new Error(`Codex path must stay within ${rootDir}`);
+  }
+  const rel = import_node_path4.relative(rootDir, resolvedPath);
+  if (!matchesAllowlist(rel)) {
+    throw new Error(`Codex path is not allowlisted: ${rel}`);
+  }
+  return resolvedPath;
+}
+function isAllowlistedCodexPath(absolutePath) {
+  const rootDir = getCodexRootDir();
+  if (!isWithinRoot(rootDir, absolutePath)) {
+    return false;
+  }
+  return matchesAllowlist(import_node_path4.relative(rootDir, absolutePath));
+}
+
+// src/codex/discovery.ts
+async function directoryExists(path2) {
+  try {
+    await import_promises5.readdir(path2);
+    return true;
+  } catch {
+    return false;
+  }
+}
+async function pathExists(path2) {
+  try {
+    await import_promises5.access(path2);
+    return true;
+  } catch {
+    return false;
+  }
+}
+function createLocalDayWindow(now = new Date) {
+  const start = new Date(now);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 1);
+  return { start, end };
+}
+function isInsideWindow(timestamp, window2) {
+  if (!timestamp) {
+    return false;
+  }
+  const ms = timestamp instanceof Date ? timestamp.getTime() : new Date(timestamp).getTime();
+  return Number.isFinite(ms) && ms >= window2.start.getTime() && ms < window2.end.getTime();
+}
+function formatDatePath(window2) {
+  const year = String(window2.start.getFullYear());
+  const month = String(window2.start.getMonth() + 1).padStart(2, "0");
+  const day = String(window2.start.getDate()).padStart(2, "0");
+  return import_node_path5.join("sessions", year, month, day);
+}
+function isCurrentDayTranscript(path2, rootDir, window2) {
+  const relativePath = import_node_path5.relative(rootDir, path2);
+  const currentDayPrefix = `${formatDatePath(window2)}/`;
+  return relativePath.startsWith(currentDayPrefix);
+}
+function extractSessionIdFromTranscriptPath(path2) {
+  const transcriptName = import_node_path5.basename(path2).replace(/\.jsonl$/, "");
+  return transcriptName.match(/([0-9A-Z]{26})$/)?.[1];
+}
+async function readActiveSessionIds(sessionIndexPath, window2) {
+  try {
+    const entries = await readSessionIndex(sessionIndexPath);
+    return new Set(entries.filter((entry) => isInsideWindow(entry.updatedAt, window2)).map((entry) => entry.id));
+  } catch {
+    return new Set;
+  }
+}
+async function isCurrentMtime(path2, window2) {
+  try {
+    const fileStat = await import_promises5.stat(path2);
+    return isInsideWindow(fileStat.mtime, window2);
+  } catch {
+    return false;
+  }
+}
+async function collectTranscriptPaths(dirPath, sessionIndexPath) {
+  const entries = await import_promises5.readdir(dirPath, { recursive: true, withFileTypes: true });
+  const transcriptPaths = [];
+  const rootDir = getCodexRootDir();
+  const window2 = createLocalDayWindow();
+  const activeSessionIds = await readActiveSessionIds(sessionIndexPath, window2);
+  for (const entry of entries) {
+    if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
+      continue;
+    }
+    const parentPath = typeof entry.parentPath === "string" ? entry.parentPath : ("path" in entry) && typeof entry.path === "string" ? import_node_path5.join(dirPath, entry.path) : dirPath;
+    const absolutePath = import_node_path5.join(parentPath, entry.name);
+    if (!isAllowlistedCodexPath(absolutePath)) {
+      continue;
+    }
+    const sessionId = extractSessionIdFromTranscriptPath(absolutePath);
+    if (isCurrentDayTranscript(absolutePath, rootDir, window2) || sessionId !== undefined && activeSessionIds.has(sessionId) || await isCurrentMtime(absolutePath, window2)) {
+      transcriptPaths.push(absolutePath);
+    }
+  }
+  return transcriptPaths.sort((left, right) => left.localeCompare(right));
+}
+async function discoverCodexRuntimeFiles() {
+  const rootDir = getCodexRootDir();
+  const transcriptDir = import_node_path5.join(rootDir, "sessions");
+  const sessionIndexPath = resolveCodexPath("session_index.jsonl");
+  const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir, sessionIndexPath) : [];
+  const historyPath = resolveCodexPath("history.jsonl");
+  return {
+    ...await pathExists(historyPath) ? { historyPath } : {},
+    ...await pathExists(sessionIndexPath) ? { sessionIndexPath } : {},
+    transcriptPaths
+  };
+}
+
+// src/codex/current-folder.ts
+function latestTurnContextCwd(transcript) {
+  const turnContexts = transcript.records.filter((record3) => record3.recordType === "turn_context");
+  return turnContexts.at(-1)?.cwd;
+}
+async function resolveActiveFolder(dependencies = {}) {
+  if (dependencies.folderPath?.trim()) {
+    return {
+      path: import_node_path6.resolve(dependencies.folderPath),
+      source: "input"
+    };
+  }
+  const discover = dependencies.discover ?? discoverCodexRuntimeFiles;
+  const read = dependencies.readTranscript ?? readTranscript;
+  const runtime = await discover();
+  const latestTranscriptPath = [...runtime.transcriptPaths].sort().at(-1);
+  if (latestTranscriptPath) {
+    const parsed = await read(latestTranscriptPath);
+    if (parsed?.sessionMeta?.cwd) {
+      return {
+        path: import_node_path6.resolve(parsed.sessionMeta.cwd),
+        source: "session_meta"
+      };
+    }
+    const turnContextCwd = parsed ? latestTurnContextCwd(parsed) : undefined;
+    if (turnContextCwd) {
+      return {
+        path: import_node_path6.resolve(turnContextCwd),
+        source: "turn_context"
+      };
+    }
+  }
+  return {
+    path: import_node_path6.resolve(dependencies.fallbackCwd ?? process.cwd()),
+    source: "process_cwd"
+  };
+}
+
+// src/codex/legacy-alpha-cleanup.ts
+var import_promises6 = require("node:fs/promises");
+var import_node_os4 = require("node:os");
+var import_node_path7 = require("node:path");
+var LEGACY_MARKETPLACE_NAME = "zest-alpha";
+var LEGACY_PLUGIN_NAME = "zest";
+var LEGACY_PLUGIN_CONFIG_PREFIX = `[plugins."${LEGACY_PLUGIN_NAME}@${LEGACY_MARKETPLACE_NAME}"`;
+function getCodexHomeDir(options) {
+  return options.codexHomeDir ?? import_node_path7.join(import_node_os4.homedir(), ".codex");
+}
+function getAgentsHomeDir(options) {
+  return options.agentsHomeDir ?? import_node_path7.join(import_node_os4.homedir(), ".agents");
+}
+function getStateRootDir2(options) {
+  return options.stateRootDir ?? process.env.ZEST_CODEX_STATE_DIR ?? import_node_path7.join(import_node_os4.homedir(), ".codex-zest");
+}
+function createBackupSuffix(now) {
+  return now.toISOString().replace(/\D/g, "").slice(0, 14);
+}
+async function backupFile(filePath, suffix) {
+  const backupPath = `${filePath}.bak.zest-alpha-cleanup.${suffix}`;
+  await import_promises6.copyFile(filePath, backupPath);
+  return backupPath;
+}
+async function removeIfExists(filePath) {
+  try {
+    await import_promises6.stat(filePath);
+  } catch (error51) {
+    if (error51.code === "ENOENT") {
+      return false;
+    }
+    throw error51;
+  }
+  await import_promises6.rm(filePath, { force: true, recursive: true });
+  return true;
+}
+function removeLegacyConfigBlocks(content) {
+  const lines = content.split(/\r?\n/u);
+  const output = [];
+  let removed = false;
+  let skipping = false;
+  for (const line of lines) {
+    if (/^\s*\[/.test(line)) {
+      skipping = line.trim().startsWith(LEGACY_PLUGIN_CONFIG_PREFIX);
+    }
+    if (skipping) {
+      removed = true;
+      continue;
+    }
+    output.push(line);
+  }
+  return {
+    changed: removed,
+    content: output.join(`
+`).replace(/\n{3,}/gu, `
+
+`)
+  };
+}
+function isLegacyMarketplaceOnly(marketplace) {
+  if (marketplace.name !== LEGACY_MARKETPLACE_NAME || !Array.isArray(marketplace.plugins)) {
+    return false;
+  }
+  if (marketplace.plugins.length !== 1) {
+    return false;
+  }
+  const [plugin] = marketplace.plugins;
+  return Boolean(plugin && typeof plugin === "object" && plugin.name === LEGACY_PLUGIN_NAME);
+}
+async function cleanupLegacyConfig(configPath, suffix) {
+  let content;
+  try {
+    content = await import_promises6.readFile(configPath, "utf-8");
+  } catch (error51) {
+    if (error51.code === "ENOENT") {
+      return { removed: false };
+    }
+    throw error51;
+  }
+  const result = removeLegacyConfigBlocks(content);
+  if (!result.changed) {
+    return { removed: false };
+  }
+  const backup = await backupFile(configPath, suffix);
+  await import_promises6.writeFile(configPath, result.content, { encoding: "utf-8", mode: 384 });
+  return { backup, removed: true };
+}
+async function cleanupLegacyMarketplace(marketplacePath, suffix) {
+  let content;
+  try {
+    content = await import_promises6.readFile(marketplacePath, "utf-8");
+  } catch (error51) {
+    if (error51.code === "ENOENT") {
+      return { removed: false, skipped: "missing" };
+    }
+    throw error51;
+  }
+  let marketplace;
+  try {
+    marketplace = JSON.parse(content);
+  } catch {
+    return { removed: false, skipped: "not_zest_alpha" };
+  }
+  if (marketplace.name !== LEGACY_MARKETPLACE_NAME) {
+    return { removed: false, skipped: "not_zest_alpha" };
+  }
+  if (!isLegacyMarketplaceOnly(marketplace)) {
+    return { removed: false, skipped: "contains_other_entries" };
+  }
+  const backup = await backupFile(marketplacePath, suffix);
+  await import_promises6.rm(marketplacePath, { force: true });
+  return { backup, removed: true, skipped: false };
+}
+async function cleanupLegacyAlphaInstall(options = {}) {
+  const codexHomeDir = getCodexHomeDir(options);
+  const agentsHomeDir = getAgentsHomeDir(options);
+  const stateRootDir = getStateRootDir2(options);
+  const suffix = createBackupSuffix(options.now ?? new Date);
+  const backups = [];
+  const legacyCachePath = import_node_path7.join(codexHomeDir, "plugins", "cache", LEGACY_MARKETPLACE_NAME);
+  const removedLegacyCache = await removeIfExists(legacyCachePath);
+  const config2 = await cleanupLegacyConfig(import_node_path7.join(codexHomeDir, "config.toml"), suffix);
+  if (config2.backup) {
+    backups.push(config2.backup);
+  }
+  const marketplacePath = import_node_path7.join(agentsHomeDir, "plugins", "marketplace.json");
+  const marketplace = await cleanupLegacyMarketplace(marketplacePath, suffix);
+  if (marketplace.backup) {
+    backups.push(marketplace.backup);
+  }
+  const removedUpdateMetadataCache = await removeIfExists(import_node_path7.join(stateRootDir, "update", "check.json"));
+  const removed = {
+    legacyCache: removedLegacyCache,
+    legacyConfigBlocks: config2.removed,
+    legacyMarketplace: marketplace.removed,
+    updateMetadataCache: removedUpdateMetadataCache
+  };
+  const changed = Object.values(removed).some(Boolean);
+  return {
+    backups,
+    removed,
+    restartRequired: changed,
+    skipped: {
+      legacyMarketplace: marketplace.skipped
+    },
+    status: changed ? "cleaned" : "nothing_to_clean"
+  };
+}
+
+// src/daemon/manager.ts
+var import_node_child_process6 = require("node:child_process");
+var import_promises9 = require("node:fs/promises");
+var import_node_path9 = require("node:path");
+
+// src/settings/settings.ts
+var import_promises7 = require("node:fs/promises");
+var CODEX_PLUGIN_SETTINGS_VERSION = 1;
+var SETTINGS_LOCK_STALE_MS = 30000;
+var SETTINGS_LOCK_RETRY_DELAY_MS = 25;
+var SETTINGS_LOCK_MAX_ATTEMPTS = 200;
+var CodexPluginSettingsSchema = exports_external.object({
+  backgroundSync: exports_external.object({
+    enabled: exports_external.boolean()
+  }).default({ enabled: true }),
+  ignoredFolders: exports_external.array(exports_external.string()),
+  privacy: PrivacySettingsSchema,
+  remoteSync: exports_external.object({
+    enabled: exports_external.boolean()
+  }),
+  version: exports_external.literal(CODEX_PLUGIN_SETTINGS_VERSION)
+});
+var DEFAULT_CODEX_PLUGIN_SETTINGS = {
+  backgroundSync: { enabled: true },
+  ignoredFolders: [],
+  privacy: { ...DEFAULT_PRIVACY_SETTINGS },
+  remoteSync: { enabled: true },
+  version: CODEX_PLUGIN_SETTINGS_VERSION
+};
+function getSettingsFilePath() {
+  return resolveStatePath("settings.json");
+}
+function getSettingsLockPath() {
+  return `${getSettingsFilePath()}.lock`;
+}
+function sleep2(ms) {
+  return new Promise((resolve4) => setTimeout(resolve4, ms));
+}
+async function cleanupStaleSettingsLock(lockPath) {
+  const lockStat = await import_promises7.stat(lockPath).catch((error51) => {
+    if (error51.code === "ENOENT") {
+      return null;
+    }
+    throw error51;
+  });
+  if (!lockStat || Date.now() - lockStat.mtimeMs < SETTINGS_LOCK_STALE_MS) {
+    return;
+  }
+  await import_promises7.rmdir(lockPath).catch((error51) => {
+    if (error51.code !== "ENOENT") {
+      throw error51;
+    }
+  });
+}
+async function withSettingsLock(callback) {
+  const lockPath = getSettingsLockPath();
+  for (let attempt = 0;attempt < SETTINGS_LOCK_MAX_ATTEMPTS; attempt += 1) {
+    await cleanupStaleSettingsLock(lockPath);
+    try {
+      await import_promises7.mkdir(lockPath, { mode: 448 });
+      try {
+        return await callback();
+      } finally {
+        await import_promises7.rmdir(lockPath).catch((error51) => {
+          if (error51.code !== "ENOENT") {
+            throw error51;
+          }
+        });
+      }
+    } catch (error51) {
+      if (error51.code !== "EEXIST") {
+        throw error51;
+      }
+      await sleep2(SETTINGS_LOCK_RETRY_DELAY_MS);
+    }
+  }
+  throw new Error("Timed out waiting for Codex plugin settings lock.");
+}
+async function loadSettings() {
+  const raw = await readJsonFile(getSettingsFilePath());
+  const parsed = CodexPluginSettingsSchema.safeParse(raw);
+  if (!parsed.success) {
+    return DEFAULT_CODEX_PLUGIN_SETTINGS;
+  }
+  return parsed.data;
+}
+async function saveSettings(settings) {
+  await writeJsonFileAtomic(getSettingsFilePath(), CodexPluginSettingsSchema.parse(settings));
+}
+async function updateSettings(updater) {
+  return withSettingsLock(async () => {
+    const next = CodexPluginSettingsSchema.parse(updater(await loadSettings()));
+    await saveSettings(next);
+    return next;
+  });
+}
+
+// src/sync/lock.ts
+var import_node_crypto = require("node:crypto");
+var import_promises8 = require("node:fs/promises");
 var import_node_path8 = require("node:path");
+
+// src/daemon/state.ts
+function getDaemonPidFilePath() {
+  return resolveStatePath("daemon", "daemon.pid");
+}
+function getDaemonStatusFilePath() {
+  return resolveStatePath("daemon", "status.json");
+}
+function getDaemonRestartLockPath() {
+  return resolveStatePath("daemon", "restart.lock");
+}
+function getDaemonSyncLockPath() {
+  return resolveStatePath("daemon", "sync.lock");
+}
+function isDaemonStatus(value) {
+  if (!value || typeof value !== "object")
+    return false;
+  const candidate = value;
+  return candidate.version === 1 && (typeof candidate.pid === "number" || candidate.pid === null) && typeof candidate.running === "boolean";
+}
+async function loadDaemonStatus() {
+  const status = await readJsonFile(getDaemonStatusFilePath()).catch(() => null);
+  return isDaemonStatus(status) ? status : null;
+}
+
+// src/sync/lock.ts
+var DIRECTORY_MODE2 = 448;
+var FILE_MODE2 = 384;
+var DEFAULT_MAX_ATTEMPTS = 50;
+var DEFAULT_RETRY_DELAY_MS = 100;
+var DEFAULT_STALE_MS = 30000;
+var OWNER_FILE_PREFIX = "owner-";
+function sleep3(ms) {
+  return new Promise((resolve4) => setTimeout(resolve4, ms));
+}
+function resolveNowMs(now) {
+  const value = now();
+  return value instanceof Date ? value.getTime() : value;
+}
+function isStale(mtimeMs, staleMs, now) {
+  return resolveNowMs(now) - mtimeMs >= staleMs;
+}
+function createOwnerToken() {
+  return `${process.pid}-${Date.now()}-${import_node_crypto.randomUUID()}`;
+}
+function getOwnerFilePath(lockPath, token) {
+  return import_node_path8.join(lockPath, `${OWNER_FILE_PREFIX}${token}`);
+}
+function resolveHeartbeatIntervalMs(options) {
+  return options.heartbeatIntervalMs ?? Math.max(1, Math.floor((options.staleMs ?? DEFAULT_STALE_MS) / 2));
+}
+function isSameIdentity(left, right) {
+  return left.dev === right.dev && left.ino === right.ino;
+}
+async function getLockIdentity(lockPath) {
+  const lockStat = await import_promises8.stat(lockPath).catch((error51) => {
+    if (error51.code === "ENOENT") {
+      return null;
+    }
+    throw error51;
+  });
+  return lockStat ? { dev: lockStat.dev, ino: lockStat.ino } : null;
+}
+async function getLockSnapshot(lockPath) {
+  const ownerFiles = await import_promises8.readdir(lockPath).catch((error51) => {
+    if (error51.code === "ENOENT") {
+      return null;
+    }
+    throw error51;
+  });
+  if (!ownerFiles) {
+    return { exists: false };
+  }
+  const owners = (await Promise.all(ownerFiles.filter((fileName) => fileName.startsWith(OWNER_FILE_PREFIX)).map(async (fileName) => {
+    const ownerPath = import_node_path8.join(lockPath, fileName);
+    const [owner, ownerStat] = await Promise.all([
+      import_promises8.readFile(ownerPath, "utf-8").catch((error51) => {
+        if (error51.code === "ENOENT") {
+          return null;
+        }
+        throw error51;
+      }),
+      import_promises8.stat(ownerPath).catch((error51) => {
+        if (error51.code === "ENOENT") {
+          return null;
+        }
+        throw error51;
+      })
+    ]);
+    if (!owner || !ownerStat) {
+      return null;
+    }
+    return {
+      exists: true,
+      mtimeMs: ownerStat.mtimeMs,
+      ownerPath,
+      ownerToken: owner.trim()
+    };
+  }))).filter((owner) => {
+    return owner !== null;
+  });
+  if (owners.length > 0) {
+    return owners.reduce((newest, owner) => owner.mtimeMs > newest.mtimeMs ? owner : newest);
+  }
+  const lockStat = await import_promises8.stat(lockPath).catch((error51) => {
+    if (error51.code === "ENOENT") {
+      return null;
+    }
+    throw error51;
+  });
+  if (!lockStat) {
+    return { exists: false };
+  }
+  return { exists: true, mtimeMs: lockStat.mtimeMs };
+}
+async function removeIfStale(lockPath, staleMs, now, beforeStaleCleanup) {
+  const snapshot = await getLockSnapshot(lockPath);
+  if (!snapshot.exists) {
+    return true;
+  }
+  if (!isStale(snapshot.mtimeMs, staleMs, now)) {
+    return false;
+  }
+  await beforeStaleCleanup();
+  if (snapshot.ownerPath && snapshot.ownerToken) {
+    const [owner, ownerStat] = await Promise.all([
+      import_promises8.readFile(snapshot.ownerPath, "utf-8").catch((error51) => {
+        if (error51.code === "ENOENT") {
+          return null;
+        }
+        throw error51;
+      }),
+      import_promises8.stat(snapshot.ownerPath).catch((error51) => {
+        if (error51.code === "ENOENT") {
+          return null;
+        }
+        throw error51;
+      })
+    ]);
+    if (!owner || !ownerStat || owner.trim() !== snapshot.ownerToken) {
+      return true;
+    }
+    if (ownerStat.mtimeMs !== snapshot.mtimeMs && !isStale(ownerStat.mtimeMs, staleMs, now)) {
+      return false;
+    }
+    await import_promises8.unlink(snapshot.ownerPath).catch((error51) => {
+      if (error51.code !== "ENOENT") {
+        throw error51;
+      }
+    });
+  }
+  await import_promises8.rmdir(lockPath).catch((error51) => {
+    if (error51.code !== "ENOENT" && error51.code !== "ENOTEMPTY") {
+      throw error51;
+    }
+  });
+  return true;
+}
+async function writeOwnerFile(ownerPath, token) {
+  await import_promises8.writeFile(ownerPath, `${token}
+`, { encoding: "utf-8", mode: FILE_MODE2 });
+}
+async function removeOwnOwnerFile(ownerPath) {
+  await import_promises8.unlink(ownerPath).catch((error51) => {
+    if (error51.code !== "ENOENT") {
+      throw error51;
+    }
+  });
+}
+async function cleanupFailedOwnerPublication(lockPath, ownerPath, expectedIdentity) {
+  if (ownerPath) {
+    await removeOwnOwnerFile(ownerPath);
+  }
+  const currentIdentity = await getLockIdentity(lockPath);
+  if (currentIdentity && isSameIdentity(currentIdentity, expectedIdentity)) {
+    await import_promises8.rmdir(lockPath).catch((error51) => {
+      if (error51.code !== "ENOENT" && error51.code !== "ENOTEMPTY") {
+        throw error51;
+      }
+    });
+  }
+}
+async function acquireLock(options) {
+  await import_promises8.mkdir(import_node_path8.dirname(options.lockPath), { mode: DIRECTORY_MODE2, recursive: true });
+  for (let attempt = 1;attempt <= options.maxAttempts; attempt += 1) {
+    try {
+      await import_promises8.mkdir(options.lockPath, { mode: DIRECTORY_MODE2 });
+      const lockIdentity = await getLockIdentity(options.lockPath);
+      if (!lockIdentity) {
+        continue;
+      }
+      const token = createOwnerToken();
+      const ownerPath = getOwnerFilePath(options.lockPath, token);
+      await options.beforeOwnerWrite();
+      await writeOwnerFile(ownerPath, token).catch(async (error51) => {
+        await cleanupFailedOwnerPublication(options.lockPath, ownerPath, lockIdentity).catch(() => {
+          return;
+        });
+        throw error51;
+      });
+      const currentIdentity = await getLockIdentity(options.lockPath);
+      if (!currentIdentity || !isSameIdentity(lockIdentity, currentIdentity)) {
+        await cleanupFailedOwnerPublication(options.lockPath, ownerPath, lockIdentity);
+        continue;
+      }
+      return { lockPath: options.lockPath, ownerPath, token };
+    } catch (error51) {
+      if (error51.code !== "EEXIST") {
+        throw error51;
+      }
+      const removedStaleLock = await removeIfStale(options.lockPath, options.staleMs, options.now, options.beforeStaleCleanup);
+      if (removedStaleLock) {
+        continue;
+      }
+      if (attempt === options.maxAttempts) {
+        break;
+      }
+      await sleep3(options.retryDelayMs);
+    }
+  }
+  throw new Error(`Failed to acquire sync lock at ${options.lockPath} after ${options.maxAttempts} attempt(s)`);
+}
+function startHeartbeat(ownerPath, intervalMs) {
+  let stopped = false;
+  let timeout;
+  const schedule = () => {
+    timeout = setTimeout(() => {
+      beat();
+    }, intervalMs);
+    timeout.unref?.();
+  };
+  const beat = async () => {
+    if (stopped) {
+      return;
+    }
+    const now = new Date;
+    await import_promises8.utimes(ownerPath, now, now).catch(() => {
+      return;
+    });
+    if (!stopped) {
+      schedule();
+    }
+  };
+  schedule();
+  return () => {
+    stopped = true;
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+  };
+}
+async function releaseLock(lock) {
+  const owner = await import_promises8.readFile(lock.ownerPath, "utf-8").catch((error51) => {
+    if (error51.code === "ENOENT") {
+      return null;
+    }
+    throw error51;
+  });
+  if (owner?.trim() !== lock.token) {
+    return;
+  }
+  await import_promises8.unlink(lock.ownerPath).catch((error51) => {
+    if (error51.code !== "ENOENT") {
+      throw error51;
+    }
+  });
+  await import_promises8.rmdir(lock.lockPath).catch((error51) => {
+    if (error51.code !== "ENOENT" && error51.code !== "ENOTEMPTY") {
+      throw error51;
+    }
+  });
+}
+async function withSyncLock(callback, options = {}) {
+  const resolvedOptions = {
+    beforeOwnerWrite: options.beforeOwnerWrite ?? (() => {
+      return;
+    }),
+    beforeStaleCleanup: options.beforeStaleCleanup ?? (() => {
+      return;
+    }),
+    heartbeatIntervalMs: resolveHeartbeatIntervalMs(options),
+    lockPath: options.lockPath ?? getDaemonSyncLockPath(),
+    maxAttempts: options.maxAttempts ?? DEFAULT_MAX_ATTEMPTS,
+    now: options.now ?? Date.now,
+    retryDelayMs: options.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS,
+    staleMs: options.staleMs ?? DEFAULT_STALE_MS
+  };
+  const lock = await acquireLock(resolvedOptions);
+  const stopHeartbeat = startHeartbeat(lock.ownerPath, resolvedOptions.heartbeatIntervalMs);
+  try {
+    return await callback();
+  } finally {
+    stopHeartbeat();
+    await releaseLock(lock);
+  }
+}
+
+// src/daemon/manager.ts
+var __dirname = "/home/runner/work/zest/zest/monorepo/apps/codex-cli-plugin/src/daemon";
+var DEFAULT_PID_STALE_MS = 15 * 60 * 1000;
+var DEFAULT_STARTUP_GRACE_MS = 30 * 1000;
+function isProcessRunning(pid) {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error51) {
+    return error51.code === "EPERM";
+  }
+}
+function resolveNowMs2(now) {
+  const value = now();
+  return value instanceof Date ? value.getTime() : value;
+}
+function parseTimestampMs(timestamp) {
+  if (!timestamp) {
+    return null;
+  }
+  const value = Date.parse(timestamp);
+  return Number.isNaN(value) ? null : value;
+}
+function isFreshDaemonTimestamp(timestamp, now, staleMs) {
+  const timestampMs = parseTimestampMs(timestamp);
+  if (timestampMs === null) {
+    return false;
+  }
+  return resolveNowMs2(now) - timestampMs <= staleMs;
+}
+async function readDaemonPid() {
+  const content = await import_promises9.readFile(getDaemonPidFilePath(), "utf-8");
+  const trimmed = content.trim();
+  if (!/^\d+$/.test(trimmed)) {
+    return null;
+  }
+  const pid = Number.parseInt(trimmed, 10);
+  return Number.isSafeInteger(pid) && pid > 0 ? pid : null;
+}
+async function getDaemonPid(options = {}) {
+  try {
+    const pid = await readDaemonPid();
+    if (!pid || !isProcessRunning(pid)) {
+      return null;
+    }
+    const status = await loadDaemonStatus();
+    const now = options.now ?? Date.now;
+    const staleMs = options.staleMs ?? DEFAULT_PID_STALE_MS;
+    if (!status || status.pid !== pid || !status.running || !isFreshDaemonTimestamp(status.lastHeartbeatAt, now, staleMs)) {
+      return null;
+    }
+    return pid;
+  } catch {
+    return null;
+  }
+}
+function daemonScriptPathFromEntrypoint(entrypointPath) {
+  if (!entrypointPath) {
+    return null;
+  }
+  const normalized = import_node_path9.normalize(entrypointPath);
+  if (!import_node_path9.basename(normalized).endsWith(".js")) {
+    return null;
+  }
+  const parts = normalized.split(/[\\/]+/u);
+  const distIndex = parts.lastIndexOf("dist");
+  const bundleKind = distIndex >= 0 ? parts[distIndex + 1] : undefined;
+  if (bundleKind !== "hooks" && bundleKind !== "mcp") {
+    return null;
+  }
+  const distRoot = import_node_path9.dirname(import_node_path9.dirname(normalized));
+  const daemonScriptPath = import_node_path9.resolve(distRoot, "daemon", "daemon.js");
+  const relativeDaemonPath = import_node_path9.relative(distRoot, daemonScriptPath);
+  if (import_node_path9.isAbsolute(relativeDaemonPath) || relativeDaemonPath.startsWith("..")) {
+    return null;
+  }
+  return daemonScriptPath;
+}
+function defaultDaemonScriptPath() {
+  const bundledDaemonPath = daemonScriptPathFromEntrypoint(process.argv[1]);
+  if (bundledDaemonPath) {
+    return bundledDaemonPath;
+  }
+  return import_node_path9.join(__dirname, "..", "daemon", "daemon.js");
+}
+async function readProcessCommand(pid) {
+  return new Promise((resolve5) => {
+    import_node_child_process6.execFile("ps", ["-p", String(pid), "-o", "command="], (error51, stdout) => {
+      if (error51) {
+        resolve5(null);
+        return;
+      }
+      resolve5(stdout.trim() || null);
+    });
+  });
+}
+async function isDefaultDaemonProcess(pid) {
+  if (process.platform === "win32") {
+    return false;
+  }
+  const command = await readProcessCommand(pid);
+  if (!command) {
+    return false;
+  }
+  const daemonScriptPath = import_node_path9.normalize(defaultDaemonScriptPath());
+  return command.includes(daemonScriptPath);
+}
+async function getDaemonPidForStop(options) {
+  const trustedPid = await getDaemonPid(options);
+  if (trustedPid) {
+    return trustedPid;
+  }
+  try {
+    const pid = await readDaemonPid();
+    if (!pid || !isProcessRunning(pid)) {
+      return null;
+    }
+    const status = await loadDaemonStatus();
+    if (!status || status.pid !== pid || !status.running) {
+      return null;
+    }
+    const isDaemonProcess = options.isDaemonProcess ?? isDefaultDaemonProcess;
+    return await isDaemonProcess(pid) ? pid : null;
+  } catch {
+    return null;
+  }
+}
+async function stopDaemon(options = {}) {
+  await withSyncLock(async () => {
+    const pid = await getDaemonPidForStop(options);
+    const killProcess = options.killProcess ?? process.kill.bind(process);
+    if (pid) {
+      try {
+        killProcess(pid, "SIGTERM");
+      } catch {}
+    }
+    await import_promises9.rm(getDaemonPidFilePath(), { force: true });
+  }, { lockPath: getDaemonRestartLockPath() });
+}
+
+// src/diagnostics/bundle.ts
+var import_promises13 = require("node:fs/promises");
+var import_node_os5 = require("node:os");
+var import_node_path13 = require("node:path");
+
+// ../../packages/plugin-common/src/log-rotation/log-rotation.ts
+var import_promises11 = require("node:fs/promises");
+var import_node_path10 = require("node:path");
+
+// ../../packages/plugin-common/src/utils/fs-utils.ts
+var import_promises10 = require("node:fs/promises");
+async function ensureDirectory(dirPath) {
+  try {
+    await import_promises10.stat(dirPath);
+  } catch {
+    await import_promises10.mkdir(dirPath, { recursive: true, mode: 448 });
+  }
+}
+
+// ../../packages/plugin-common/src/log-rotation/log-rotation.ts
+var CLEANUP_THROTTLE_MS = 60 * 60 * 1000;
+function getDateString() {
+  return new Date().toISOString().split("T")[0];
+}
+function getDatedLogPath(logsDir, logPrefix) {
+  const dateStr = getDateString();
+  return import_node_path10.join(logsDir, `${logPrefix}-${dateStr}.log`);
+}
+function parseDateFromFilename(filename, logPrefix) {
+  const pattern = new RegExp(`^${logPrefix}-(\\d{4}-\\d{2}-\\d{2})\\.log$`);
+  const match = filename.match(pattern);
+  if (!match) {
+    return null;
+  }
+  const date6 = new Date(match[1] + "T00:00:00Z");
+  return Number.isNaN(date6.getTime()) ? null : date6;
+}
+function createLogRotation(config2) {
+  const { logsDir, retentionDays, logger } = config2;
+  const lastCleanupTime = {};
+  async function cleanupStaleLogs(logPrefix) {
+    const now = Date.now();
+    const lastCleanup = lastCleanupTime[logPrefix] || 0;
+    if (now - lastCleanup < CLEANUP_THROTTLE_MS) {
+      return;
+    }
+    lastCleanupTime[logPrefix] = now;
+    try {
+      await ensureDirectory(logsDir);
+      const files = await import_promises11.readdir(logsDir);
+      const cutoffDate = new Date(now - retentionDays * 24 * 60 * 60 * 1000);
+      for (const file2 of files) {
+        const fileDate = parseDateFromFilename(file2, logPrefix);
+        if (fileDate && fileDate < cutoffDate) {
+          const filePath = import_node_path10.join(logsDir, file2);
+          try {
+            await import_promises11.unlink(filePath);
+          } catch (error51) {
+            logger?.error(`Failed to delete old log file ${file2}`, error51);
+          }
+        }
+      }
+    } catch (error51) {
+      logger?.error("Failed to cleanup old logs", error51);
+    }
+  }
+  async function forceCleanupStaleLogs(logPrefix) {
+    lastCleanupTime[logPrefix] = 0;
+    await cleanupStaleLogs(logPrefix);
+  }
+  return { cleanupStaleLogs, forceCleanupStaleLogs };
+}
+
+// src/logging/config.ts
+var LOG_RETENTION_DAYS = 7;
+var LOG_PREFIX = "plugin";
+var LEVELS = ["debug", "info", "warn", "error"];
+function resolveConfigValue2(bundledValue, runtimeValue) {
+  if (typeof runtimeValue === "string" && runtimeValue.length > 0)
+    return runtimeValue;
+  if (typeof bundledValue === "string" && bundledValue.length > 0)
+    return bundledValue;
+  return "";
+}
+function getLogsDir() {
+  return resolveStatePath("logs");
+}
+function isFileLoggingEnabled() {
+  const disabled = resolveConfigValue2("", process.env.ZEST_CODEX_DISABLE_LOGS);
+  return disabled !== "1";
+}
+function getEffectiveLogLevel() {
+  const configured = resolveConfigValue2("", process.env.ZEST_CODEX_LOG_LEVEL);
+  if (LEVELS.includes(configured)) {
+    return configured;
+  }
+  return "info";
+}
+function getCurrentLogFilePath() {
+  return getDatedLogPath(getLogsDir(), LOG_PREFIX);
+}
+
+// src/logging/logger.ts
+var import_promises12 = require("node:fs/promises");
+var import_node_path11 = require("node:path");
+
+// src/logging/redaction.ts
+var UNSAFE_KEY_PATTERN = /(access[\s_-]?token|refresh[\s_-]?token|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code|payload|prompt|content|diff|stdout|stderr|output|arguments)/i;
+var UNSAFE_STRING_ASSIGNMENT_PATTERN = /(["']?\b(?:access[\s_-]?token|refresh[\s_-]?token|accessToken|refreshToken|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code)\b["']?)(\s*[:=]\s*)(["']?)(Bearer\s+)?([^"',\s;}\]]+)(["']?)/gi;
+var UNSAFE_STRING_PHRASE_PATTERN = /\b(authorization|api[\s_-]?key|anon[\s_-]?key|accessToken|refreshToken|access[\s_-]?token|refresh[\s_-]?token|device[\s_-]?code)\b(\s+)(Bearer\s+)?("[^"]*"|'[^']*'|[^\s,;]+)/gi;
+var MAX_STACK_LENGTH = 2000;
+var CIRCULAR_SENTINEL = "[Circular]";
+function redactValue(value, seen) {
+  if (value === null || typeof value === "number" || typeof value === "boolean") {
+    return value;
+  }
+  if (typeof value === "string") {
+    return redactUnsafeString(value);
+  }
+  if (Array.isArray(value)) {
+    if (seen.has(value)) {
+      return CIRCULAR_SENTINEL;
+    }
+    seen.add(value);
+    const redacted = value.map((item) => redactValue(item, seen));
+    seen.delete(value);
+    return redacted;
+  }
+  if (value instanceof Error) {
+    return serializeLogError(value);
+  }
+  if (typeof value === "object") {
+    if (seen.has(value)) {
+      return CIRCULAR_SENTINEL;
+    }
+    return redactObject(value, seen);
+  }
+  return String(value);
+}
+function redactObject(details, seen) {
+  const redacted = {};
+  seen.add(details);
+  for (const [key, value] of Object.entries(details)) {
+    redacted[key] = UNSAFE_KEY_PATTERN.test(key) ? "[REDACTED]" : redactValue(value, seen);
+  }
+  seen.delete(details);
+  return redacted;
+}
+function redactUnsafeString(value) {
+  return value.replace(UNSAFE_STRING_ASSIGNMENT_PATTERN, (_match, key, separator, openingQuote, bearer, _secret, closingQuote) => `${key}${separator}${openingQuote}${bearer ?? ""}[REDACTED]${closingQuote}`).replace(UNSAFE_STRING_PHRASE_PATTERN, (_match, key, separator, bearer) => `${key}${separator}${bearer ?? ""}[REDACTED]`);
+}
+function redactLogDetails(details) {
+  return redactObject(details, new WeakSet);
+}
+function serializeLogError(error51) {
+  if (error51 instanceof Error) {
+    return {
+      name: error51.name,
+      message: redactUnsafeString(error51.message),
+      ...error51.stack ? { stack: redactUnsafeString(error51.stack).slice(0, MAX_STACK_LENGTH) } : {}
+    };
+  }
+  return {
+    name: "UnknownError",
+    message: redactUnsafeString(String(error51))
+  };
+}
+
+// src/logging/logger.ts
+var LEVEL_ORDER = {
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3
+};
+function shouldLog(level) {
+  return LEVEL_ORDER[level] >= LEVEL_ORDER[getEffectiveLogLevel()];
+}
+function createLogger(dependencies = {}) {
+  const append = dependencies.append ?? import_promises12.appendFile;
+  const createRotation = dependencies.createRotation ?? createLogRotation;
+  const ensureDir = dependencies.ensureDir ?? import_promises12.mkdir;
+  const now = dependencies.now ?? (() => new Date);
+  const rotation = createRotation({
+    logsDir: getLogsDir(),
+    retentionDays: LOG_RETENTION_DAYS
+  });
+  async function cleanupLogs() {
+    await rotation.cleanupStaleLogs(LOG_PREFIX);
+  }
+  async function write(level, component, event, options = {}) {
+    if (!isFileLoggingEnabled() || !shouldLog(level))
+      return;
+    const entry = {
+      ts: now().toISOString(),
+      level,
+      component,
+      event,
+      ...options.runId ? { runId: options.runId } : {},
+      ...options.details ? { details: redactLogDetails(options.details) } : {},
+      ...options.error ? { error: serializeLogError(options.error) } : {}
+    };
+    try {
+      const path2 = getCurrentLogFilePath();
+      await ensureDir(import_node_path11.dirname(path2), { recursive: true, mode: 448 });
+      await append(path2, `${JSON.stringify(entry)}
+`, { encoding: "utf-8", mode: 384 });
+      await cleanupLogs();
+    } catch {
+      return;
+    }
+  }
+  return {
+    debug: (component, event, options) => write("debug", component, event, options),
+    info: (component, event, options) => write("info", component, event, options),
+    warn: (component, event, options) => write("warn", component, event, options),
+    error: (component, event, options) => write("error", component, event, options)
+  };
+}
+var logger = createLogger();
+
+// src/sync/message-index.ts
+function isValidMessageIndex(value) {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0;
+}
+
+// src/sync/checkpoints.ts
+function resolveSyncCheckpointsFilePath() {
+  return resolveStatePath("sync", "checkpoints.json");
+}
+function sortSyncCheckpoints(checkpoints) {
+  return [...checkpoints].sort((left, right) => left.sessionId.localeCompare(right.sessionId));
+}
+function isValidSyncCheckpoint(checkpoint) {
+  if (!checkpoint || typeof checkpoint !== "object") {
+    return false;
+  }
+  const { sessionId, lastSyncedMessageIndex, lastSyncedAt } = checkpoint;
+  return typeof sessionId === "string" && sessionId.length > 0 && typeof lastSyncedMessageIndex === "number" && Number.isInteger(lastSyncedMessageIndex) && lastSyncedMessageIndex >= 0 && typeof lastSyncedAt === "string";
+}
+function filterValidSyncCheckpoints(checkpoints) {
+  if (!Array.isArray(checkpoints)) {
+    return [];
+  }
+  return checkpoints.filter(isValidSyncCheckpoint);
+}
+async function loadSyncCheckpoints() {
+  const checkpoints = await readJsonFile(resolveSyncCheckpointsFilePath());
+  return sortSyncCheckpoints(filterValidSyncCheckpoints(checkpoints));
+}
+async function saveSyncCheckpoints(checkpoints) {
+  await writeJsonFileAtomic(resolveSyncCheckpointsFilePath(), sortSyncCheckpoints(filterValidSyncCheckpoints(checkpoints)));
+}
+async function getLastSyncedMessageIndex(sessionId) {
+  const checkpoints = await loadSyncCheckpoints();
+  const checkpoint = checkpoints.find((entry) => entry.sessionId === sessionId);
+  return checkpoint?.lastSyncedMessageIndex ?? null;
+}
+async function filterPayloadToUnsyncedMessages(payload) {
+  const sessionId = payload.payload.session.id;
+  if (!sessionId) {
+    return payload;
+  }
+  const lastSyncedMessageIndex = await getLastSyncedMessageIndex(sessionId);
+  if (lastSyncedMessageIndex === null) {
+    return payload;
+  }
+  const messages = payload.payload.messages.filter((message) => isValidMessageIndex(message.message_index) && message.message_index > lastSyncedMessageIndex);
+  if (messages.length === 0) {
+    return null;
+  }
+  return {
+    ...payload,
+    payload: {
+      ...payload.payload,
+      messages
+    }
+  };
+}
+async function recordUploadedMessageCheckpoints(messages, now = new Date, candidateMessages = messages) {
+  const uploadedIndexesBySessionId = new Map;
+  const candidateIndexesBySessionId = new Map;
+  for (const message of messages) {
+    const sessionId = message.session_id;
+    const messageIndex = message.message_index;
+    if (!sessionId || !isValidMessageIndex(messageIndex)) {
+      continue;
+    }
+    const uploadedIndexes = uploadedIndexesBySessionId.get(sessionId) ?? new Set;
+    uploadedIndexes.add(messageIndex);
+    uploadedIndexesBySessionId.set(sessionId, uploadedIndexes);
+  }
+  for (const message of candidateMessages) {
+    const sessionId = message.session_id;
+    const messageIndex = message.message_index;
+    if (!sessionId || !isValidMessageIndex(messageIndex)) {
+      continue;
+    }
+    const candidateIndexes = candidateIndexesBySessionId.get(sessionId) ?? new Set;
+    candidateIndexes.add(messageIndex);
+    candidateIndexesBySessionId.set(sessionId, candidateIndexes);
+  }
+  if (uploadedIndexesBySessionId.size === 0) {
+    return;
+  }
+  const syncedAt = now.toISOString();
+  const checkpointsBySessionId = new Map((await loadSyncCheckpoints()).map((checkpoint) => [checkpoint.sessionId, checkpoint]));
+  for (const [sessionId, uploadedIndexes] of uploadedIndexesBySessionId) {
+    const existing = checkpointsBySessionId.get(sessionId);
+    let maxUploadedIndex = existing?.lastSyncedMessageIndex ?? -1;
+    const candidateIndexes = [...candidateIndexesBySessionId.get(sessionId) ?? uploadedIndexes].filter((index) => index > maxUploadedIndex).sort((left, right) => left - right);
+    for (const candidateIndex of candidateIndexes) {
+      if (!uploadedIndexes.has(candidateIndex)) {
+        break;
+      }
+      maxUploadedIndex = candidateIndex;
+    }
+    if (maxUploadedIndex <= (existing?.lastSyncedMessageIndex ?? -1)) {
+      continue;
+    }
+    checkpointsBySessionId.set(sessionId, {
+      sessionId,
+      lastSyncedMessageIndex: maxUploadedIndex,
+      lastSyncedAt: syncedAt
+    });
+  }
+  await saveSyncCheckpoints([...checkpointsBySessionId.values()]);
+}
+
+// src/sync/queue.ts
+var MAX_RETRY_ATTEMPTS = 3;
+function getNowIso(now = new Date) {
+  return now.toISOString();
+}
+function resolveQueueFilePath() {
+  return resolveStatePath("queue", "transcripts.json");
+}
+function sortQueueEntries(entries) {
+  return [...entries].sort((left, right) => left.createdAt.localeCompare(right.createdAt) || left.id.localeCompare(right.id));
+}
+function dedupeDroppedPayloads(results) {
+  return results.filter((result) => result.status === "sanitized");
+}
+function getValidMessageIndex(message) {
+  return isValidMessageIndex(message.message_index) ? message.message_index : null;
+}
+function mergeQueuedTranscriptPayload(existingPayload, incomingPayload) {
+  const messagesByIndex = new Map;
+  for (const message of existingPayload.payload.messages) {
+    const messageIndex = getValidMessageIndex(message);
+    if (messageIndex === null) {
+      continue;
+    }
+    messagesByIndex.set(messageIndex, message);
+  }
+  for (const message of incomingPayload.payload.messages) {
+    const messageIndex = getValidMessageIndex(message);
+    if (messageIndex === null || messagesByIndex.has(messageIndex)) {
+      continue;
+    }
+    messagesByIndex.set(messageIndex, message);
+  }
+  return {
+    ...incomingPayload,
+    payload: {
+      ...incomingPayload.payload,
+      messages: [...messagesByIndex.entries()].sort(([leftIndex], [rightIndex]) => leftIndex - rightIndex).map(([, message]) => message)
+    }
+  };
+}
+function mergeQueueEntry(existingEntry, incomingPayload, now) {
+  return {
+    ...existingEntry,
+    status: "pending",
+    lastError: null,
+    updatedAt: getNowIso(now),
+    payload: mergeQueuedTranscriptPayload(existingEntry.payload, incomingPayload)
+  };
+}
+function getReplayKeySuffix(payload, now) {
+  const messageIndexes = payload.payload.messages.map(getValidMessageIndex).filter((messageIndex) => messageIndex !== null).sort((leftIndex, rightIndex) => leftIndex - rightIndex);
+  return messageIndexes.length > 0 ? messageIndexes.join("-") : getNowIso(now);
+}
+function createFailedReplayQueueEntry(payload, now) {
+  const entry = createQueueEntry(payload, now);
+  const replayKey = `${entry.dedupeKey}:failed-replay:${getReplayKeySuffix(payload, now)}`;
+  return {
+    ...entry,
+    id: replayKey,
+    dedupeKey: replayKey
+  };
+}
+function createQueueEntry(payload, now = new Date) {
+  const timestamp = getNowIso(now);
+  const id = payload.payload.session.id;
+  if (!id) {
+    throw new Error("Queue entries require a session id");
+  }
+  return {
+    id,
+    dedupeKey: id,
+    status: "pending",
+    attemptCount: 0,
+    lastAttemptAt: null,
+    lastFailureAt: null,
+    lastError: null,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    payload
+  };
+}
+function buildQueueEntriesFromResults(results, existingEntries = [], now = new Date) {
+  const nextEntries = [...existingEntries];
+  for (const payload of dedupeDroppedPayloads(results)) {
+    const entry = createQueueEntry(payload, now);
+    const existingEntryIndex = nextEntries.findIndex((existingEntry) => existingEntry.dedupeKey === entry.dedupeKey);
+    if (existingEntryIndex !== -1) {
+      const existingEntry = nextEntries[existingEntryIndex];
+      if (existingEntry?.status === "pending" || existingEntry?.status === "retrying") {
+        nextEntries[existingEntryIndex] = mergeQueueEntry(existingEntry, payload, now);
+        continue;
+      }
+      if (existingEntry?.status === "failed") {
+        const replayEntry = createFailedReplayQueueEntry(payload, now);
+        const replayEntryIndex = nextEntries.findIndex((existingReplayEntry2) => existingReplayEntry2.dedupeKey === replayEntry.dedupeKey);
+        if (replayEntryIndex === -1) {
+          nextEntries.push(replayEntry);
+          continue;
+        }
+        const existingReplayEntry = nextEntries[replayEntryIndex];
+        if (existingReplayEntry?.status === "pending" || existingReplayEntry?.status === "retrying") {
+          nextEntries[replayEntryIndex] = mergeQueueEntry(existingReplayEntry, payload, now);
+          continue;
+        }
+      }
+      continue;
+    }
+    nextEntries.push(entry);
+  }
+  return sortQueueEntries(nextEntries);
+}
+async function loadQueueEntries() {
+  const entries = await readJsonFile(resolveQueueFilePath());
+  return sortQueueEntries(entries ?? []);
+}
+async function saveQueueEntries(entries) {
+  await writeJsonFileAtomic(resolveQueueFilePath(), sortQueueEntries(entries));
+}
+async function enqueueSanitizedPayloads(results, now = new Date) {
+  const existingEntries = await loadQueueEntries();
+  const nextEntries = buildQueueEntriesFromResults(results, existingEntries, now);
+  await saveQueueEntries(nextEntries);
+  await logger.info("queue", "enqueue_completed", {
+    details: {
+      incomingResults: results.length,
+      totalEntries: nextEntries.length,
+      pending: nextEntries.filter((entry) => entry.status === "pending").length,
+      retrying: nextEntries.filter((entry) => entry.status === "retrying").length,
+      failed: nextEntries.filter((entry) => entry.status === "failed").length
+    }
+  });
+  return nextEntries;
+}
+async function getReplayableQueueEntries() {
+  const entries = await loadQueueEntries();
+  return entries.filter((entry) => {
+    if (entry.status === "synced" || entry.status === "failed") {
+      return false;
+    }
+    if (entry.status === "retrying") {
+      return entry.attemptCount < MAX_RETRY_ATTEMPTS;
+    }
+    return true;
+  });
+}
+async function markQueueEntriesSynced(ids) {
+  const idSet = new Set(ids);
+  const nextEntries = (await loadQueueEntries()).filter((entry) => !idSet.has(entry.id));
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
+async function recordQueueFailure(ids, error51, now = new Date) {
+  const idSet = new Set(ids);
+  const timestamp = getNowIso(now);
+  const entries = await loadQueueEntries();
+  const nextEntries = entries.map((entry) => {
+    if (!idSet.has(entry.id)) {
+      return entry;
+    }
+    const nextAttemptCount = entry.attemptCount + 1;
+    return {
+      ...entry,
+      status: nextAttemptCount >= MAX_RETRY_ATTEMPTS ? "failed" : "retrying",
+      attemptCount: nextAttemptCount,
+      lastAttemptAt: timestamp,
+      lastFailureAt: timestamp,
+      lastError: error51,
+      updatedAt: timestamp
+    };
+  });
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
+async function getQueueStats() {
+  const entries = await loadQueueEntries();
+  return {
+    total: entries.length,
+    pending: entries.filter((entry) => entry.status === "pending").length,
+    retrying: entries.filter((entry) => entry.status === "retrying").length,
+    failed: entries.filter((entry) => entry.status === "failed").length
+  };
+}
+
+// src/diagnostics/current-chat.ts
+var import_node_crypto2 = require("node:crypto");
+var import_node_path12 = require("node:path");
+function emptyDiagnostics(selection) {
+  return {
+    candidates: [],
+    messages: [],
+    recordsSummary: {
+      recordCountsByType: {},
+      safeSignals: {}
+    },
+    selection,
+    summary: {
+      malformedLineCount: 0,
+      messageCountsByRole: {},
+      recordCountsByType: {},
+      skippedRecordCount: 0,
+      signalCounts: {}
+    }
+  };
+}
+function transcriptTimestamp(transcript) {
+  return transcript.records.at(-1)?.timestamp ?? transcript.sessionMeta?.timestamp ?? "";
+}
+function sortLatestFirst(left, right) {
+  const timestampOrder = transcriptTimestamp(right).localeCompare(transcriptTimestamp(left));
+  return timestampOrder === 0 ? right.filePath.localeCompare(left.filePath) : timestampOrder;
+}
+function candidateForTranscript(transcript, reason = "transcript_candidate") {
+  return {
+    confidence: "low",
+    reason,
+    sessionId: transcript.sessionId,
+    transcriptPath: transcript.filePath
+  };
+}
+function latestTurnContextCwd2(transcript) {
+  const turnContexts = transcript.records.filter((record3) => record3.recordType === "turn_context");
+  return turnContexts.at(-1)?.cwd;
+}
+function pathMatchesActiveFolder(transcriptPath, activePath) {
+  if (!transcriptPath) {
+    return false;
+  }
+  const normalizedTranscriptPath = import_node_path12.resolve(transcriptPath);
+  const normalizedActivePath = import_node_path12.resolve(activePath);
+  return normalizedTranscriptPath === normalizedActivePath || normalizedTranscriptPath.startsWith(`${normalizedActivePath}${import_node_path12.sep}`);
+}
+function recordCountKey(record3) {
+  switch (record3.recordType) {
+    case "event_msg":
+      return `event_msg:${record3.eventType}`;
+    case "response_item":
+      return `response_item:${record3.itemType}`;
+    default:
+      return record3.recordType;
+  }
+}
+function increment(map3, key) {
+  map3[key] = (map3[key] ?? 0) + 1;
+}
+function summarizeRecordCounts(transcript) {
+  const counts = {};
+  for (const record3 of transcript?.records ?? []) {
+    increment(counts, recordCountKey(record3));
+  }
+  return counts;
+}
+function summarizeMessageCounts(transcript) {
+  const counts = {};
+  for (const message of transcript?.messages ?? []) {
+    increment(counts, message.role);
+  }
+  return counts;
+}
+function summarizeSignalCounts(transcript) {
+  const counts = {};
+  for (const [key, value] of Object.entries(transcript?.signals ?? {})) {
+    if (typeof value === "number") {
+      counts[key] = value;
+    } else if (value && typeof value === "object") {
+      counts[key] = Object.keys(value).length;
+    } else {
+      counts[key] = 0;
+    }
+  }
+  return counts;
+}
+function hashMessageText(message) {
+  return import_node_crypto2.createHash("sha256").update(message.textParts.join(`
+`)).digest("hex");
+}
+function messageLength(message) {
+  return message.textParts.join(`
+`).length;
+}
+function summarizeMessages(transcript) {
+  return (transcript?.messages ?? []).map((message, messageIndex) => ({
+    contentHash: hashMessageText(message),
+    contentLength: messageLength(message),
+    imageCount: message.imageCount,
+    lineNumber: message.lineNumber,
+    messageIndex,
+    role: message.role,
+    source: message.source,
+    timestamp: message.timestamp
+  }));
+}
+function summarizeTranscript(transcript) {
+  return {
+    malformedLineCount: transcript?.malformedLineCount ?? 0,
+    messageCountsByRole: summarizeMessageCounts(transcript),
+    recordCountsByType: summarizeRecordCounts(transcript),
+    ...transcript ? { sessionId: transcript.sessionId, transcriptPath: transcript.filePath } : {},
+    skippedRecordCount: transcript?.skippedRecordCount ?? 0,
+    signalCounts: summarizeSignalCounts(transcript)
+  };
+}
+async function selectTranscript(transcripts, options) {
+  if (options.sessionId) {
+    const match = transcripts.find((transcript) => transcript.sessionId === options.sessionId);
+    if (match) {
+      return {
+        selection: {
+          confidence: "high",
+          reason: "explicit_session_id",
+          sessionId: match.sessionId,
+          transcriptPath: match.filePath
+        },
+        transcript: match
+      };
+    }
+    return {
+      selection: {
+        confidence: "low",
+        reason: "explicit_session_id_not_found",
+        sessionId: options.sessionId
+      }
+    };
+  }
+  if (transcripts.length === 0) {
+    return {
+      selection: {
+        confidence: "low",
+        reason: "no_transcript_candidates"
+      }
+    };
+  }
+  const latestTranscripts = [...transcripts].sort(sortLatestFirst);
+  try {
+    const activeFolder = await resolveActiveFolder({ folderPath: options.folderPath });
+    const activeMatch = latestTranscripts.find((transcript) => [transcript.sessionMeta?.cwd, latestTurnContextCwd2(transcript)].some((cwd) => pathMatchesActiveFolder(cwd, activeFolder.path)));
+    if (activeMatch) {
+      return {
+        selection: {
+          confidence: "high",
+          reason: "active_folder_match",
+          sessionId: activeMatch.sessionId,
+          transcriptPath: activeMatch.filePath
+        },
+        transcript: activeMatch
+      };
+    }
+  } catch {}
+  const latest = latestTranscripts[0];
+  return {
+    selection: {
+      confidence: "medium",
+      reason: "latest_active_transcript",
+      sessionId: latest.sessionId,
+      transcriptPath: latest.filePath
+    },
+    transcript: latest
+  };
+}
+async function resolveCurrentChatDiagnostics(options = {}) {
+  const runtimeFiles = await discoverCodexRuntimeFiles();
+  const transcripts = await readTranscripts(runtimeFiles.transcriptPaths);
+  const { selection, transcript } = await selectTranscript(transcripts, options);
+  if (!transcript) {
+    return emptyDiagnostics(selection);
+  }
+  const latestCandidates = [...transcripts].sort(sortLatestFirst).slice(0, 3);
+  const recordCountsByType = summarizeRecordCounts(transcript);
+  const signalCounts = summarizeSignalCounts(transcript);
+  return {
+    candidates: latestCandidates.map((candidate) => candidateForTranscript(candidate)),
+    messages: summarizeMessages(transcript),
+    recordsSummary: {
+      recordCountsByType,
+      safeSignals: signalCounts
+    },
+    selection,
+    summary: {
+      ...summarizeTranscript(transcript),
+      recordCountsByType,
+      signalCounts
+    }
+  };
+}
+
+// src/diagnostics/bundle.ts
+var DIRECTORY_MODE3 = 448;
+var FILE_MODE3 = 384;
+var REDACTION = {
+  rawSecretsIncluded: false,
+  rawTranscriptIncluded: false
+};
+var SAFE_LOG_LEVELS = ["debug", "info", "warn", "error"];
+var UNSAFE_KEY_PATTERN2 = /(access[\s_-]?token|refresh[\s_-]?token|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code|payload|prompt|content|diff|stdout|stderr|output|arguments)/i;
+var SAFE_OBJECT_KEY_PATTERN = /^[A-Za-z][A-Za-z0-9_.-]{0,63}$/;
+var SAFE_LOG_ID_PATTERN = /^[a-z][a-z0-9_-]{0,63}$/;
+var SAFE_RUN_ID_PATTERN = /^(sync|daemon|diagnostics|bundle|upload|collector|queue)_[A-Za-z0-9_-]{1,80}$/;
+var SAFE_ERROR_NAME_PATTERN = /^[A-Z][A-Za-z0-9]*(Error)?$/;
+var CIRCULAR_SENTINEL2 = "[Circular]";
+var REDACTED = "[REDACTED]";
+var REDACTED_KEY = "[REDACTED_KEY]";
+function formatBundleTimestamp(date6) {
+  return date6.toISOString().replace(/\.\d{3}Z$/, "").replace(/:/g, "-");
+}
+function safeError(error51) {
+  if (error51 instanceof Error) {
+    return {
+      error: error51.name,
+      message: error51.message
+    };
+  }
+  return {
+    error: "Error",
+    message: String(error51)
+  };
+}
+async function readLogFileBestEffort(path2) {
+  try {
+    return await import_promises13.readFile(path2, "utf-8");
+  } catch {
+    return "";
+  }
+}
+function isRecord3(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+async function safeLoad(loader) {
+  try {
+    return await loader();
+  } catch (error51) {
+    return safeError(error51);
+  }
+}
+function isSuspiciousText(value) {
+  return UNSAFE_KEY_PATTERN2.test(value) || /\bsk-[A-Za-z0-9_-]+\b/.test(value);
+}
+function sanitizeObjectKey(key) {
+  if (!SAFE_OBJECT_KEY_PATTERN.test(key) || isSuspiciousText(key)) {
+    return REDACTED_KEY;
+  }
+  return key;
+}
+function sanitizeLogId(value, fallback) {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+  return SAFE_LOG_ID_PATTERN.test(value) && !isSuspiciousText(value) ? value : fallback;
+}
+function sanitizeTimestamp(value) {
+  if (typeof value !== "string" || Number.isNaN(Date.parse(value))) {
+    return;
+  }
+  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(value) ? value : undefined;
+}
+function sanitizeRunId(value) {
+  if (typeof value !== "string") {
+    return;
+  }
+  return SAFE_RUN_ID_PATTERN.test(value) && !isSuspiciousText(value) ? value : undefined;
+}
+function sanitizeErrorName(value) {
+  if (typeof value !== "string") {
+    return "Error";
+  }
+  return SAFE_ERROR_NAME_PATTERN.test(value) && !isSuspiciousText(value) ? value : "Error";
+}
+function sanitizeLogLevel(value) {
+  return SAFE_LOG_LEVELS.includes(value) ? value : "info";
+}
+function sanitizeUnknownValue(value, seen) {
+  if (value === null || typeof value === "boolean") {
+    return value;
+  }
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+  if (typeof value === "string") {
+    return REDACTED;
+  }
+  if (Array.isArray(value)) {
+    if (seen.has(value)) {
+      return CIRCULAR_SENTINEL2;
+    }
+    seen.add(value);
+    const sanitized = value.map((item) => sanitizeUnknownValue(item, seen));
+    seen.delete(value);
+    return sanitized;
+  }
+  if (isRecord3(value)) {
+    if (seen.has(value)) {
+      return CIRCULAR_SENTINEL2;
+    }
+    seen.add(value);
+    const sanitized = {};
+    for (const [key, item] of Object.entries(value)) {
+      sanitized[sanitizeObjectKey(key)] = UNSAFE_KEY_PATTERN2.test(key) ? REDACTED : sanitizeUnknownValue(item, seen);
+    }
+    seen.delete(value);
+    return sanitized;
+  }
+  return REDACTED;
+}
+function sanitizeStatus(value) {
+  return sanitizeUnknownValue(value, new WeakSet);
+}
+function sanitizeLogDetails(value) {
+  if (!isRecord3(value)) {
+    return;
+  }
+  return sanitizeUnknownValue(value, new WeakSet);
+}
+function sanitizeLogError(value) {
+  if (!isRecord3(value) && typeof value !== "string") {
+    return;
+  }
+  if (isRecord3(value)) {
+    return {
+      name: sanitizeErrorName(value.name),
+      ...typeof value.message === "string" ? { message: REDACTED } : {},
+      ...typeof value.stack === "string" ? { stack: REDACTED } : {}
+    };
+  }
+  return {
+    name: "UnknownError",
+    message: REDACTED
+  };
+}
+function malformedLogLine(lineNumber) {
+  return {
+    component: "diagnostics",
+    event: "malformed_log_line",
+    level: "warn",
+    lineNumber
+  };
+}
+function sanitizeLogEntry(line, lineNumber) {
+  let parsed;
+  try {
+    parsed = JSON.parse(line);
+  } catch {
+    return malformedLogLine(lineNumber);
+  }
+  if (!isRecord3(parsed)) {
+    return malformedLogLine(lineNumber);
+  }
+  const details = sanitizeLogDetails(parsed.details);
+  const error51 = sanitizeLogError(parsed.error);
+  const timestamp = sanitizeTimestamp(parsed.ts);
+  const runId = sanitizeRunId(parsed.runId);
+  return {
+    ...timestamp ? { ts: timestamp } : {},
+    level: sanitizeLogLevel(parsed.level),
+    component: sanitizeLogId(parsed.component, "unknown"),
+    event: sanitizeLogId(parsed.event, "unknown"),
+    ...runId ? { runId } : {},
+    ...details ? { details } : {},
+    ...error51 ? { error: error51 } : {}
+  };
+}
+function sanitizeLogEntries(logContent) {
+  const entries = [];
+  for (const [index, line] of logContent.split(`
+`).entries()) {
+    if (line.trim().length === 0)
+      continue;
+    entries.push(sanitizeLogEntry(line, index + 1));
+  }
+  return entries;
+}
+function filterLogEntriesByMaxHours(entries, maxLogHours, now) {
+  if (typeof maxLogHours !== "number" || !Number.isFinite(maxLogHours) || maxLogHours <= 0) {
+    return entries;
+  }
+  const cutoff = now.getTime() - maxLogHours * 60 * 60 * 1000;
+  return entries.filter((entry) => {
+    if (!entry.ts) {
+      return false;
+    }
+    const timestamp = Date.parse(entry.ts);
+    return !Number.isNaN(timestamp) && timestamp >= cutoff;
+  });
+}
+function errorLogEntries(entries) {
+  return entries.filter((entry) => entry.level === "warn" || entry.level === "error");
+}
+function toJsonl(records) {
+  if (records.length === 0) {
+    return "";
+  }
+  return `${records.map((record3) => JSON.stringify(record3)).join(`
+`)}
+`;
+}
+function jsonContent(value) {
+  return `${JSON.stringify(value, null, 2)}
+`;
+}
+async function writeBundleFile(bundlePath, fileName, content) {
+  await import_promises13.writeFile(import_node_path13.join(bundlePath, fileName), content, { encoding: "utf-8", mode: FILE_MODE3 });
+}
+async function loadStatus(options) {
+  if (!options.getStatus) {
+    return null;
+  }
+  return sanitizeStatus(await safeLoad(options.getStatus));
+}
+function booleanSetting(value) {
+  return typeof value === "boolean" ? value : undefined;
+}
+function sanitizeSettingsSummary(value) {
+  if (!isRecord3(value)) {
+    return sanitizeStatus(value);
+  }
+  const backgroundSync = isRecord3(value.backgroundSync) ? value.backgroundSync : {};
+  const remoteSync = isRecord3(value.remoteSync) ? value.remoteSync : {};
+  const privacy = isRecord3(value.privacy) ? value.privacy : {};
+  const approach = privacy.approach;
+  const backgroundSyncEnabled = booleanSetting(backgroundSync.enabled);
+  const remoteSyncEnabled = booleanSetting(remoteSync.enabled);
+  const aggressiveMode = booleanSetting(privacy.aggressiveMode);
+  const enableGitignore = booleanSetting(privacy.enableGitignore);
+  const enableZestRules = booleanSetting(privacy.enableZestRules);
+  return {
+    ...typeof value.version === "number" ? { version: value.version } : {},
+    backgroundSync: {
+      ...backgroundSyncEnabled !== undefined ? { enabled: backgroundSyncEnabled } : {}
+    },
+    remoteSync: {
+      ...remoteSyncEnabled !== undefined ? { enabled: remoteSyncEnabled } : {}
+    },
+    ignoredFolderCount: Array.isArray(value.ignoredFolders) ? value.ignoredFolders.length : 0,
+    privacy: {
+      ...approach === "detection" || approach === "encryption" || approach === "hybrid" ? { approach } : {},
+      ...aggressiveMode !== undefined ? { aggressiveMode } : {},
+      ...enableGitignore !== undefined ? { enableGitignore } : {},
+      ...enableZestRules !== undefined ? { enableZestRules } : {},
+      customExclusionPatternCount: Array.isArray(privacy.customExclusionPatterns) ? privacy.customExclusionPatterns.length : 0
+    }
+  };
+}
+async function loadSettingsSummary() {
+  return sanitizeSettingsSummary(await safeLoad(loadSettings));
+}
+async function createDebugBundle(options = {}) {
+  const createdAt = options.now?.() ?? new Date;
+  const bundleName2 = `zest-debug-${formatBundleTimestamp(createdAt)}`;
+  const bundlePath = resolveStatePath("diagnostics", bundleName2);
+  await import_promises13.mkdir(bundlePath, { recursive: true, mode: DIRECTORY_MODE3 });
+  const currentChat = await resolveCurrentChatDiagnostics({
+    folderPath: options.folderPath,
+    sessionId: options.sessionId
+  });
+  const logContent = await readLogFileBestEffort(getCurrentLogFilePath());
+  const logEntries = filterLogEntriesByMaxHours(sanitizeLogEntries(logContent), options.maxLogHours, createdAt);
+  const syncCheckpoints = await safeLoad(loadSyncCheckpoints);
+  const checkpointEntries = Array.isArray(syncCheckpoints) ? syncCheckpoints : [];
+  const files = [
+    "README.txt",
+    "manifest.json",
+    "status.json",
+    "plugin-logs.jsonl",
+    "errors.json",
+    "settings.redacted.json",
+    "queue-summary.json",
+    "daemon-status.json",
+    "sync-checkpoints-summary.json",
+    "current-chat.summary.json",
+    "current-chat.redacted.jsonl",
+    "current-chat.records-summary.json"
+  ];
+  const manifest = {
+    schemaVersion: 1,
+    createdAt: createdAt.toISOString(),
+    plugin: {
+      name: plugin_default.name,
+      version: plugin_default.version
+    },
+    platform: {
+      arch: import_node_os5.arch(),
+      os: import_node_os5.platform()
+    },
+    stateRoot: getStateRootDir(),
+    selectedChat: currentChat.selection,
+    files,
+    redaction: REDACTION
+  };
+  const syncCheckpointSummary = {
+    total: checkpointEntries.length,
+    checkpoints: checkpointEntries.map(({ lastSyncedAt, lastSyncedMessageIndex, sessionId }) => ({
+      sessionId,
+      lastSyncedMessageIndex,
+      lastSyncedAt
+    }))
+  };
+  await writeBundleFile(bundlePath, "README.txt", [
+    "Zest Codex diagnostics bundle",
+    "",
+    "This local bundle is written only to this machine and is not uploaded by the plugin.",
+    "It contains redacted support artifacts for troubleshooting.",
+    "It omits raw chat text, code, diffs, auth tokens, cookies, Supabase keys, full payloads, transcript lines, tool arguments, and tool output.",
+    "",
+    `Created at: ${createdAt.toISOString()}`
+  ].join(`
+`));
+  await writeBundleFile(bundlePath, "manifest.json", jsonContent(manifest));
+  await writeBundleFile(bundlePath, "status.json", jsonContent(await loadStatus(options)));
+  await writeBundleFile(bundlePath, "plugin-logs.jsonl", toJsonl(logEntries));
+  await writeBundleFile(bundlePath, "errors.json", jsonContent(errorLogEntries(logEntries)));
+  await writeBundleFile(bundlePath, "settings.redacted.json", jsonContent(await loadSettingsSummary()));
+  await writeBundleFile(bundlePath, "queue-summary.json", jsonContent(await safeLoad(getQueueStats)));
+  await writeBundleFile(bundlePath, "daemon-status.json", jsonContent(sanitizeStatus(await safeLoad(loadDaemonStatus))));
+  await writeBundleFile(bundlePath, "sync-checkpoints-summary.json", jsonContent(syncCheckpointSummary));
+  await writeBundleFile(bundlePath, "current-chat.summary.json", jsonContent(currentChat.summary));
+  await writeBundleFile(bundlePath, "current-chat.redacted.jsonl", options.includeTranscript === false ? "" : toJsonl(currentChat.messages));
+  await writeBundleFile(bundlePath, "current-chat.records-summary.json", jsonContent(currentChat.recordsSummary));
+  await logger.info("diagnostics", "bundle_created", {
+    details: {
+      bundlePath,
+      confidence: currentChat.selection.confidence,
+      fileCount: files.length
+    }
+  });
+  return {
+    bundlePath,
+    created: true,
+    currentChat: currentChat.selection,
+    files,
+    redaction: REDACTION
+  };
+}
+
+// src/privacy/sanitize.ts
+var import_node_path14 = require("node:path");
+function createPrivacyServiceForSource(sourcePath, settings) {
+  return new PrivacyService({
+    config: settings ? createPrivacyConfig(settings) : undefined,
+    enableCache: true,
+    fs: createNodeFsAdapter(import_node_path14.dirname(sourcePath))
+  });
+}
+function mapFieldSummary(field, result) {
+  return {
+    detectionCount: result.detections.length,
+    field,
+    patterns: [...new Set(result.detections.map((detection) => detection.pattern))].sort(),
+    wasRedacted: result.wasRedacted
+  };
+}
+function sanitizeSessionTitle(session, service, summaries, sourcePath) {
+  if (!session.title) {
+    return session;
+  }
+  const result = service.processContent(session.title, sourcePath);
+  if (result.hasSensitiveData) {
+    summaries.push(mapFieldSummary("session.title", result));
+  }
+  return {
+    ...session,
+    title: result.content
+  };
+}
+function sanitizeMessages(messages, service, summaries, sourcePath) {
+  return messages.map((message) => {
+    const result = service.processContent(message.content, sourcePath);
+    if (result.hasSensitiveData) {
+      summaries.push(mapFieldSummary(`messages.${message.message_index}.content`, result));
+    }
+    return {
+      ...message,
+      content: result.content
+    };
+  });
+}
+function createDroppedResult(input, droppedReason, details = {}) {
+  return {
+    status: "dropped",
+    payload: input.payload,
+    privacy: input.privacy,
+    metadata: {
+      fields: [],
+      droppedReason,
+      ...details
+    }
+  };
+}
+async function sanitizeNormalizedPayload(input, settings) {
+  if (input.privacy.sourceKind !== "transcript") {
+    return createDroppedResult(input, "unsupported_source");
+  }
+  if (!input.privacy.sourcePathAllowlisted) {
+    return createDroppedResult(input, "source_not_allowlisted");
+  }
+  const service = createPrivacyServiceForSource(input.privacy.sourcePath, settings);
+  await service.initialize();
+  const exclusion = service.shouldExcludeFile(input.privacy.sourcePath);
+  if (exclusion.excluded) {
+    return createDroppedResult(input, "source_excluded", {
+      exclusionMatch: exclusion.matchedRule,
+      exclusionReason: exclusion.reason
+    });
+  }
+  const fields = [];
+  return {
+    status: "sanitized",
+    privacy: input.privacy,
+    payload: {
+      ...input.payload,
+      session: sanitizeSessionTitle(input.payload.session, service, fields, input.privacy.sourcePath),
+      messages: sanitizeMessages(input.payload.messages, service, fields, input.privacy.sourcePath)
+    },
+    metadata: {
+      fields
+    }
+  };
+}
+async function sanitizeNormalizedPayloads(inputs, settings) {
+  return Promise.all(inputs.map((input) => sanitizeNormalizedPayload(input, settings)));
+}
+function formatExclusionReason(reason) {
+  return reason;
+}
+
+// src/settings/folders.ts
+var import_node_path15 = require("node:path");
+function getPathApi(platform3) {
+  return platform3 === "win32" ? import_node_path15.win32 : import_node_path15.posix;
+}
+function shouldFoldCase(platform3 = process.platform) {
+  return platform3 === "darwin" || platform3 === "win32";
+}
+function normalizeComparablePath(folderPath, platform3 = process.platform) {
+  const normalized = getPathApi(platform3).resolve(folderPath);
+  return shouldFoldCase(platform3) ? normalized.toLowerCase() : normalized;
+}
+function isPathIgnored(candidatePath, ignoredFolders, platform3 = process.platform) {
+  const candidate = normalizeComparablePath(candidatePath, platform3);
+  return ignoredFolders.some((ignoredFolder) => {
+    const ignored = normalizeComparablePath(ignoredFolder, platform3);
+    if (candidate === ignored) {
+      return true;
+    }
+    const pathApi = getPathApi(platform3);
+    const relativePath = pathApi.relative(ignored, candidate);
+    return relativePath.length > 0 && !relativePath.startsWith("..") && !pathApi.isAbsolute(relativePath);
+  });
+}
+function addIgnoredFolder(ignoredFolders, folderPath, platform3 = process.platform) {
+  const normalized = normalizeComparablePath(folderPath, platform3);
+  const existing = ignoredFolders.map((entry) => normalizeComparablePath(entry, platform3));
+  if (existing.includes(normalized)) {
+    return existing;
+  }
+  return [...existing, normalized].sort();
+}
+function removeIgnoredFolder(ignoredFolders, folderPath, platform3 = process.platform) {
+  const normalized = normalizeComparablePath(folderPath, platform3);
+  return ignoredFolders.map((entry) => normalizeComparablePath(entry, platform3)).filter((entry) => entry !== normalized).sort();
+}
+
+// ../../packages/plugin-common/src/supabase/standup.ts
+async function fetchUserTeamAndProfile(supabase, userId, workspaceId, options) {
+  const { logger: logger2, onError } = options ?? {};
+  try {
+    logger2?.debug("Fetching team and profile for standup", userId, workspaceId);
+    const { data: membershipData, error: membershipError } = await supabase.from("team_memberships").select(`
+        team_id,
+        teams!inner (
+          workspace_id
+        )
+      `).eq("user_id", userId).eq("teams.workspace_id", workspaceId).limit(1).single();
+    if (membershipError || !membershipData) {
+      logger2?.error("Failed to fetch team membership", membershipError);
+      if (membershipError) {
+        onError?.(new Error(membershipError.message), { endpoint: "team_memberships" });
+      }
+      return null;
+    }
+    const { data: profileData, error: profileError } = await supabase.from("profiles").select("slug, timezone").eq("id", userId).single();
+    if (profileError || !profileData) {
+      logger2?.error("Failed to fetch user profile", profileError);
+      if (profileError) {
+        onError?.(new Error(profileError.message), { endpoint: "profiles" });
+      }
+      return null;
+    }
+    return {
+      teamId: membershipData.team_id,
+      userSlug: profileData.slug,
+      timezone: profileData.timezone ?? null
+    };
+  } catch (error51) {
+    logger2?.error("Error fetching team and profile for standup", error51);
+    if (error51 instanceof Error) {
+      onError?.(error51, { endpoint: "team_memberships" });
+    }
+    return null;
+  }
+}
+async function fetchAutoRefreshEligibility(supabase, workspaceId, userId, options) {
+  const { logger: logger2, onError } = options ?? {};
+  try {
+    logger2?.debug("Fetching auto-refresh eligibility", workspaceId, userId);
+    const { data, error: error51 } = await supabase.rpc("check_auto_refresh_eligibility", {
+      p_workspace_id: workspaceId,
+      p_user_id: userId
+    }).maybeSingle();
+    if (error51) {
+      logger2?.error("Failed to fetch auto-refresh eligibility", error51);
+      onError?.(new Error(error51.message), { endpoint: "check_auto_refresh_eligibility" });
+      return null;
+    }
+    return data;
+  } catch (error51) {
+    logger2?.error("Error fetching auto-refresh eligibility", error51);
+    if (error51 instanceof Error) {
+      onError?.(error51, { endpoint: "check_auto_refresh_eligibility" });
+    }
+    return null;
+  }
+}
+async function fetchDefaultStandupPromptId(supabase, workspaceId, options) {
+  const { logger: logger2, onError } = options ?? {};
+  try {
+    logger2?.debug("Fetching default standup prompt", workspaceId);
+    const { data, error: error51 } = await supabase.from("custom_prompts").select("id").eq("type", "standup").eq("is_enabled", true).eq("workspace_id", workspaceId).order("is_default", { ascending: false }).order("display_order", { ascending: true }).order("version", { ascending: false }).limit(1).single();
+    if (error51 || !data) {
+      logger2?.error("Failed to fetch standup prompt", error51);
+      if (error51) {
+        onError?.(new Error(error51.message), { endpoint: "custom_prompts" });
+      }
+      return null;
+    }
+    return data.id;
+  } catch (error51) {
+    logger2?.error("Error fetching standup prompt", error51);
+    if (error51 instanceof Error) {
+      onError?.(error51, { endpoint: "custom_prompts" });
+    }
+    return null;
+  }
+}
+// ../../packages/utils/src/date-range.ts
+var PERIOD_TYPE_LABELS = {
+  ["today" /* Today */]: "Today",
+  ["this_week" /* ThisWeek */]: "This Week",
+  ["this_month" /* ThisMonth */]: "This Month"
+};
+var PERIOD_SUMMARY_LABELS = {
+  ["today" /* Today */]: "Daily Summary",
+  ["this_week" /* ThisWeek */]: "Weekly Summary",
+  ["this_month" /* ThisMonth */]: "Monthly Summary",
+  custom: "Custom Period"
+};
+function getLocalDateStr(timezone, referenceDate = new Date) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  });
+  return formatter.format(referenceDate);
+}
+function getTimezoneOffsetMs(timezone, localDateStr) {
+  const tempDate = new Date(`${localDateStr}T00:00:00Z`);
+  const utcDate = new Date(tempDate.toLocaleString("en-US", { timeZone: "UTC" }));
+  const tzDate = new Date(tempDate.toLocaleString("en-US", { timeZone: timezone }));
+  return utcDate.getTime() - tzDate.getTime();
+}
+function calculateDayDateRange(timezone, localDateStr) {
+  const offsetMs = getTimezoneOffsetMs(timezone, localDateStr);
+  const midnightUTC = new Date(`${localDateStr}T00:00:00Z`);
+  const startOfDayUTC = new Date(midnightUTC.getTime() + offsetMs);
+  const endOfDayUTC = new Date(startOfDayUTC.getTime() + 24 * 60 * 60 * 1000 - 1);
+  return {
+    dateFrom: startOfDayUTC.toISOString(),
+    dateTo: endOfDayUTC.toISOString()
+  };
+}
+function calculateDayDateRangeFromDate(timezone, referenceDate = new Date) {
+  const localDateStr = getLocalDateStr(timezone, referenceDate);
+  return calculateDayDateRange(timezone, localDateStr);
+}
+function resolveTimezone(storedTimezone, fallback = "UTC") {
+  return storedTimezone || fallback;
+}
+// ../../packages/utils/src/error.ts
+function toError(value) {
+  if (value instanceof Error) {
+    return value;
+  }
+  return new Error(String(value));
+}
+// ../../packages/utils/src/frontmatter.ts
+var FRONTMATTER_KEYS = new Set(["name", "description"]);
+// ../../packages/utils/src/mcp-registry.ts
+var CACHE_TTL_MS = 30 * 60 * 1000;
+var CACHE_MAX_SIZE = 100;
+class TtlCache {
+  map = new Map;
+  get(key) {
+    const entry = this.map.get(key);
+    if (!entry)
+      return { hit: false };
+    if (Date.now() > entry.expiry) {
+      this.map.delete(key);
+      return { hit: false };
+    }
+    return { hit: true, value: entry.value };
+  }
+  set(key, value) {
+    if (this.map.size >= CACHE_MAX_SIZE && !this.map.has(key)) {
+      const firstKey = this.map.keys().next().value;
+      if (firstKey !== undefined)
+        this.map.delete(firstKey);
+    }
+    this.map.set(key, { value, expiry: Date.now() + CACHE_TTL_MS });
+  }
+  clear() {
+    this.map.clear();
+  }
+}
+var cache = new TtlCache;
+var toolCache = new TtlCache;
+var serverCache = new TtlCache;
+var GENERIC_SEGMENTS = new Set(["mcp", "com", "org", "io", "dev", "server", "api"]);
+var VERB_PREFIXES = new Set([
+  "get",
+  "list",
+  "create",
+  "delete",
+  "update",
+  "search",
+  "query",
+  "fetch",
+  "run",
+  "execute",
+  "resolve",
+  "find",
+  "read",
+  "write",
+  "set",
+  "send",
+  "check",
+  "add",
+  "remove"
+]);
+// src/standup/standup.ts
+var consoleStandupLog = {
+  error: (event, details) => console.error(`zest-codex standup: ${event}`, details ?? {}),
+  warn: (event, details) => console.warn(`zest-codex standup: ${event}`, details ?? {})
+};
+function readinessFromEligibility(eligibility) {
+  return {
+    canGenerate: eligibility.should_auto_generate || eligibility.reason === "user_generated_today" || eligibility.new_events_count + eligibility.new_messages_count + eligibility.new_sessions_count > 0,
+    newEvents: eligibility.new_events_count,
+    newMessages: eligibility.new_messages_count,
+    newSessions: eligibility.new_sessions_count,
+    reason: eligibility.reason
+  };
+}
+async function createStandupReadiness(dependencies = {}) {
+  const loadSession = dependencies.loadSession ?? loadAuthSession;
+  const loadWorkspace = dependencies.loadWorkspace ?? loadWorkspaceBinding;
+  const createClient2 = dependencies.createClient ?? createOnDemandClient;
+  const fetchEligibility = dependencies.fetchEligibility ?? fetchAutoRefreshEligibility;
+  const [session, workspace] = await Promise.all([loadSession(), loadWorkspace()]);
+  if (!session || !workspace) {
+    return null;
+  }
+  const onDemand = await createClient2();
+  if (!onDemand) {
+    return null;
+  }
+  try {
+    const eligibility = await fetchEligibility(onDemand.client, workspace.active.id, session.userId);
+    return eligibility ? readinessFromEligibility(eligibility) : null;
+  } finally {
+    await onDemand.dispose();
+  }
+}
+function hasNewData(eligibility) {
+  if (!eligibility || eligibility.reason === "user_generated_today") {
+    return true;
+  }
+  return eligibility.new_events_count + eligibility.new_messages_count + eligibility.new_sessions_count > 0;
+}
+function errorMessage(error51) {
+  return error51 instanceof Error ? error51.message : typeof error51 === "object" && error51 !== null && ("message" in error51) && typeof error51.message === "string" ? error51.message : toError(error51).message;
+}
+function standupUrl(webAppUrl, teamAndProfile) {
+  return `${webAppUrl}/users/${teamAndProfile.userSlug}#standup`;
+}
+async function createStandupResponse(dependencies = {}) {
+  const loadSession = dependencies.loadSession ?? loadAuthSession;
+  const loadWorkspace = dependencies.loadWorkspace ?? loadWorkspaceBinding;
+  const createClient2 = dependencies.createClient ?? createOnDemandClient;
+  const fetchTeamAndProfile = dependencies.fetchTeamAndProfile ?? fetchUserTeamAndProfile;
+  const fetchPrompt = dependencies.fetchDefaultStandupPromptId ?? fetchDefaultStandupPromptId;
+  const fetchEligibility = dependencies.fetchEligibility ?? fetchAutoRefreshEligibility;
+  const log = dependencies.log ?? consoleStandupLog;
+  const webAppUrl = dependencies.webAppUrl ?? WEB_APP_URL;
+  const session = await loadSession();
+  if (!session) {
+    log.warn("standup_generation_skipped", { reason: "logged_out" });
+    return { ok: false, status: "logged_out", message: "Zest standup requires login." };
+  }
+  const workspace = await loadWorkspace();
+  if (!workspace) {
+    log.warn("standup_generation_skipped", { reason: "workspace_unbound" });
+    return {
+      ok: false,
+      status: "workspace_unbound",
+      message: "Zest standup requires a workspace."
+    };
+  }
+  const onDemand = await createClient2();
+  if (!onDemand) {
+    log.error("standup_client_unavailable", { userId: session.userId });
+    return { ok: false, status: "connection_failed", message: "Failed to connect to Zest." };
+  }
+  try {
+    const teamAndProfile = await fetchTeamAndProfile(onDemand.client, session.userId, workspace.active.id);
+    if (!teamAndProfile) {
+      log.warn("standup_generation_skipped", {
+        reason: "no_team",
+        workspaceId: workspace.active.id
+      });
+      return { ok: false, status: "no_team", message: "No team found for this workspace." };
+    }
+    const promptId = await fetchPrompt(onDemand.client, workspace.active.id);
+    if (!promptId) {
+      log.warn("standup_generation_skipped", {
+        reason: "no_prompt",
+        workspaceId: workspace.active.id
+      });
+      return { ok: false, status: "no_prompt", message: "No standup prompt is configured." };
+    }
+    const eligibility = await fetchEligibility(onDemand.client, workspace.active.id, session.userId);
+    if (!hasNewData(eligibility)) {
+      return {
+        ok: true,
+        status: "no_data",
+        message: "No new Codex data is ready for standup generation.",
+        url: standupUrl(webAppUrl, teamAndProfile)
+      };
+    }
+    const timezone = resolveTimezone(teamAndProfile.timezone);
+    const { dateFrom, dateTo } = calculateDayDateRangeFromDate(timezone, dependencies.now?.());
+    const { data, error: error51 } = await onDemand.client.functions.invoke("analyze-sessions", {
+      body: {
+        dateFrom,
+        dateTo,
+        isAutoGenerated: false,
+        model: DEFAULT_STANDUP_MODEL,
+        promptId,
+        teamId: teamAndProfile.teamId,
+        userId: session.userId,
+        workspaceId: workspace.active.id
+      },
+      signal: AbortSignal.timeout(130000)
+    });
+    if (error51) {
+      const status = error51.status;
+      if (status === 409 || error51.message?.includes("409")) {
+        log.warn("standup_generation_conflict", { workspaceId: workspace.active.id });
+        return {
+          ok: true,
+          status: "already_generating",
+          message: "A standup is already being generated.",
+          url: standupUrl(webAppUrl, teamAndProfile)
+        };
+      }
+      const message = errorMessage(error51);
+      log.error("standup_generation_failed", {
+        error: message,
+        status,
+        workspaceId: workspace.active.id
+      });
+      return { ok: false, status: "failed", message };
+    }
+    const responseData = data;
+    if (responseData?.backgrounded === true || responseData?.status === "generating") {
+      return {
+        ok: true,
+        status: "generating",
+        message: "Standup generation is still running.",
+        url: standupUrl(webAppUrl, teamAndProfile)
+      };
+    }
+    return {
+      ok: true,
+      status: "generated",
+      message: "Standup generated.",
+      url: standupUrl(webAppUrl, teamAndProfile)
+    };
+  } finally {
+    await onDemand.dispose();
+  }
+}
+
+// src/sync/normalize.ts
+var import_node_path16 = require("node:path");
 function normalizeSignals(signals) {
   return {
     mcp_usage: { ...signals.mcp_usage },
@@ -46094,9 +48152,9 @@ function buildCodexSessionMetadata(transcript) {
     ...fiveHourLimit !== undefined ? { five_hour_limit: fiveHourLimit } : {},
     ...weeklyLimit !== undefined ? { weekly_limit: weeklyLimit } : {},
     ...totalUsage?.totalTokens !== undefined ? { used_tokens: totalUsage.totalTokens } : {},
-    ...totalUsage?.inputTokens !== undefined ? { total_input_tokens: totalUsage.inputTokens } : {},
-    ...totalUsage?.outputTokens !== undefined ? { total_output_tokens: totalUsage.outputTokens } : {},
-    ...totalUsage?.cachedInputTokens !== undefined ? { cached_input_tokens: totalUsage.cachedInputTokens } : {},
+    ...totalUsage?.inputTokens !== undefined ? { input_tokens: totalUsage.inputTokens } : {},
+    ...totalUsage?.outputTokens !== undefined ? { output_tokens: totalUsage.outputTokens } : {},
+    ...totalUsage?.cachedInputTokens !== undefined ? { cache_read_tokens: totalUsage.cachedInputTokens } : {},
     ...totalUsage?.reasoningOutputTokens !== undefined ? { reasoning_tokens: totalUsage.reasoningOutputTokens } : {},
     ...modelContextWindow !== undefined ? { model_context_window: modelContextWindow } : {},
     ...hasTokenInfo ? { token_count_latest: tokenCountLatest } : {},
@@ -46133,7 +48191,7 @@ function normalizeMessageMetadataWithModel(message, modelName) {
 function normalizeTranscriptToZestPayload(input) {
   const { transcript, sessionRef, userId, workspaceId } = input;
   const { createdAt, source: createdAtSource } = resolveCreatedAt(transcript);
-  const { platform: platform2, source: platformSource } = resolvePlatform(transcript.sessionMeta?.originator);
+  const { platform: platform3, source: platformSource } = resolvePlatform(transcript.sessionMeta?.originator);
   const title = sessionRef?.title ?? null;
   const session = {
     id: transcript.sessionId,
@@ -46144,8 +48202,8 @@ function normalizeTranscriptToZestPayload(input) {
     analysis_status: "pending",
     metadata: buildCodexSessionMetadata(transcript),
     project_id: null,
-    project_name: transcript.sessionMeta?.cwd ? import_node_path8.basename(transcript.sessionMeta.cwd) : null,
-    platform: platform2,
+    project_name: transcript.sessionMeta?.cwd ? import_node_path16.basename(transcript.sessionMeta.cwd) : null,
+    platform: platform3,
     source: SOURCE,
     signals: normalizeSignals(transcript.signals)
   };
@@ -46179,106 +48237,6 @@ function normalizeTranscriptsToPreparedPayloads(input) {
     userId,
     workspaceId
   }));
-}
-
-// src/sync/queue.ts
-var MAX_RETRY_ATTEMPTS = 3;
-function getNowIso(now = new Date) {
-  return now.toISOString();
-}
-function resolveQueueFilePath() {
-  return resolveStatePath("queue", "transcripts.json");
-}
-function sortQueueEntries(entries) {
-  return [...entries].sort((left, right) => left.createdAt.localeCompare(right.createdAt) || left.id.localeCompare(right.id));
-}
-function dedupeDroppedPayloads(results) {
-  return results.filter((result) => result.status === "sanitized");
-}
-function createQueueEntry(payload, now = new Date) {
-  const timestamp = getNowIso(now);
-  const id = payload.payload.session.id;
-  if (!id) {
-    throw new Error("Queue entries require a session id");
-  }
-  return {
-    id,
-    dedupeKey: id,
-    status: "pending",
-    attemptCount: 0,
-    lastAttemptAt: null,
-    lastFailureAt: null,
-    lastError: null,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-    payload
-  };
-}
-function buildQueueEntriesFromResults(results, existingEntries = [], now = new Date) {
-  const existingKeys = new Set(existingEntries.map((entry) => entry.dedupeKey));
-  const nextEntries = [...existingEntries];
-  for (const payload of dedupeDroppedPayloads(results)) {
-    const entry = createQueueEntry(payload, now);
-    if (existingKeys.has(entry.dedupeKey)) {
-      continue;
-    }
-    existingKeys.add(entry.dedupeKey);
-    nextEntries.push(entry);
-  }
-  return sortQueueEntries(nextEntries);
-}
-async function loadQueueEntries() {
-  const entries = await readJsonFile(resolveQueueFilePath());
-  return sortQueueEntries(entries ?? []);
-}
-async function saveQueueEntries(entries) {
-  await writeJsonFileAtomic(resolveQueueFilePath(), sortQueueEntries(entries));
-}
-async function enqueueSanitizedPayloads(results, now = new Date) {
-  const existingEntries = await loadQueueEntries();
-  const nextEntries = buildQueueEntriesFromResults(results, existingEntries, now);
-  await saveQueueEntries(nextEntries);
-  return nextEntries;
-}
-async function getReplayableQueueEntries() {
-  const entries = await loadQueueEntries();
-  return entries.filter((entry) => {
-    if (entry.status === "synced" || entry.status === "failed") {
-      return false;
-    }
-    if (entry.status === "retrying") {
-      return entry.attemptCount < MAX_RETRY_ATTEMPTS;
-    }
-    return true;
-  });
-}
-async function markQueueEntriesSynced(ids) {
-  const idSet = new Set(ids);
-  const nextEntries = (await loadQueueEntries()).filter((entry) => !idSet.has(entry.id));
-  await saveQueueEntries(nextEntries);
-  return nextEntries;
-}
-async function recordQueueFailure(ids, error51, now = new Date) {
-  const idSet = new Set(ids);
-  const timestamp = getNowIso(now);
-  const entries = await loadQueueEntries();
-  const nextEntries = entries.map((entry) => {
-    if (!idSet.has(entry.id)) {
-      return entry;
-    }
-    const nextAttemptCount = entry.attemptCount + 1;
-    return {
-      ...entry,
-      status: nextAttemptCount >= MAX_RETRY_ATTEMPTS ? "failed" : "retrying",
-      attemptCount: nextAttemptCount,
-      lastAttemptAt: timestamp,
-      lastFailureAt: timestamp,
-      lastError: error51,
-      updatedAt: timestamp
-    };
-  });
-  await saveQueueEntries(nextEntries);
-  return nextEntries;
 }
 // ../../packages/types/data-controls.ts
 var RETENTION_PERIODS = ["12h", "1d", "7d", "30d", "90d", "1y", "forever"];
@@ -46326,6 +48284,41 @@ function getEffectiveRetention(workspace, user) {
     github_events: workspace.github_events
   };
 }
+// ../../packages/types/github-metrics-schemas.ts
+var metricChangeSchema = exports_external.object({
+  percentage: exports_external.number(),
+  label: exports_external.string()
+});
+var metricSubMetricSchema = exports_external.object({
+  name: exports_external.string(),
+  value: exports_external.number(),
+  unit: exports_external.string(),
+  change: metricChangeSchema.optional()
+});
+var metricDrilldownSchema = exports_external.discriminatedUnion("type", [
+  exports_external.object({
+    type: exports_external.literal("gh_pull_requests"),
+    filters: exports_external.object({ state: exports_external.enum(["merged", "closed", "open"]) }).optional()
+  }),
+  exports_external.object({
+    type: exports_external.literal("gh_issues"),
+    filters: exports_external.object({ state: exports_external.enum(["closed", "open"]) }).optional()
+  })
+]);
+var metricItemSchema = exports_external.object({
+  name: exports_external.string(),
+  description: exports_external.string().optional(),
+  value: exports_external.number(),
+  unit: exports_external.string(),
+  trend_points: exports_external.array(exports_external.number().nullable()),
+  ai_trend_points: exports_external.array(exports_external.number().nullable()).optional(),
+  change: metricChangeSchema.optional(),
+  sub_metrics: exports_external.array(metricSubMetricSchema).optional(),
+  drilldown: metricDrilldownSchema.optional()
+});
+var gitHubMetricsEntryDataSchema = exports_external.object({
+  metrics: exports_external.array(metricItemSchema).min(1)
+});
 // ../../packages/types/prompt-tags.ts
 var PROMPT_TAGS = {
   TOP_5: {
@@ -46361,6 +48354,28 @@ var PROMPT_TAGS = {
 };
 var AVAILABLE_PROMPT_TAGS = Object.values(PROMPT_TAGS);
 var tagIds = AVAILABLE_PROMPT_TAGS.map((tag) => tag.id);
+// ../../packages/types/schemas.ts
+var CustomPromptMetadataSchema = exports_external.object({
+  tags: exports_external.array(exports_external.string()).optional(),
+  cascade_category: exports_external.string().optional(),
+  description: exports_external.string().optional()
+});
+// ../../packages/types/token-usage.ts
+var TOKEN_SOURCES = ["provider_reported", "estimated_heuristic", "mixed"];
+var SessionTokenUsageSchema = exports_external.object({
+  input_tokens: exports_external.number().int().nonnegative(),
+  output_tokens: exports_external.number().int().nonnegative(),
+  total_tokens: exports_external.number().int().nonnegative(),
+  token_source: exports_external.enum(TOKEN_SOURCES),
+  cost_usd: exports_external.number().nonnegative().nullable().optional(),
+  cost_source: exports_external.enum(["provider_reported", "derived_openrouter", "cursor_reported"]).nullable().optional(),
+  cache_read_tokens: exports_external.number().int().nonnegative().optional(),
+  cache_creation_tokens: exports_external.number().int().nonnegative().optional(),
+  cache_creation_5m_tokens: exports_external.number().int().nonnegative().optional(),
+  cache_creation_1h_tokens: exports_external.number().int().nonnegative().optional(),
+  reasoning_tokens: exports_external.number().int().nonnegative().optional(),
+  message_count_with_tokens: exports_external.number().int().nonnegative().optional()
+});
 // ../../packages/types/data-controls-schemas.ts
 var collectionSettingsSchema = exports_external.object({
   user_messages: exports_external.boolean(),
@@ -46439,15 +48454,6 @@ class DataControlsProvider {
 
 // src/sync/upload.ts
 var defaultDataControls = new DataControlsProvider;
-var DEBUG_SYNC_LOG_PATH = resolveDefaultStatePath("logs", "sync-debug.log");
-async function debugSyncLog(message, details) {
-  if (!SYNC_DEBUG_LOGGING_ENABLED) {
-    return;
-  }
-  const line = `${new Date().toISOString()} ${message}${details ? ` ${JSON.stringify(details)}` : ""}
-`;
-  await appendTextFile(DEBUG_SYNC_LOG_PATH, line);
-}
 function isNetworkError(error51) {
   if (!(error51 instanceof Error)) {
     return false;
@@ -46536,6 +48542,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
   }
   const workspace = await loadWorkspace();
   if (!workspace) {
+    await logger.warn("upload", "workspace_binding_missing");
     return {
       success: false,
       uploaded: { messages: 0, sessions: 0 },
@@ -46544,7 +48551,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
     };
   }
   if (!workspace.active?.id) {
-    await debugSyncLog("Upload blocked: no active workspace binding");
+    await logger.warn("upload", "workspace_binding_missing");
     return {
       success: false,
       uploaded: { messages: 0, sessions: 0 },
@@ -46571,19 +48578,21 @@ async function uploadQueuedTranscripts(dependencies = {}) {
   const ids = queuedEntries.map((entry) => entry.id);
   try {
     if (!dataControls.isReady() || dataControls.isStale(now().getTime())) {
-      await debugSyncLog("refreshing data controls", {
-        hasCachedControls: dataControls.isReady(),
-        isStale: dataControls.isStale(now().getTime()),
-        queuedEntries: queuedEntries.length,
-        userId: session.userId,
-        workspaceId: workspace.active.id
+      await logger.info("upload", "data_controls_refreshing", {
+        details: {
+          hasCachedControls: dataControls.isReady(),
+          isStale: dataControls.isStale(now().getTime()),
+          queuedEntries: queuedEntries.length,
+          workspaceId: workspace.active.id
+        }
       });
       const refreshed = await dataControls.refresh(onDemand.client, workspace.active.id, session.userId, now().getTime());
       if (!refreshed || !dataControls.isReady()) {
-        await debugSyncLog("data controls unavailable; blocking upload", {
-          queuedEntries: queuedEntries.length,
-          userId: session.userId,
-          workspaceId: workspace.active.id
+        await logger.warn("upload", "data_controls_unavailable", {
+          details: {
+            queuedEntries: queuedEntries.length,
+            workspaceId: workspace.active.id
+          }
         });
         return {
           success: false,
@@ -46593,23 +48602,31 @@ async function uploadQueuedTranscripts(dependencies = {}) {
         };
       }
     } else {
-      await debugSyncLog("using cached data controls", {
-        queuedEntries: queuedEntries.length,
-        userId: session.userId,
-        workspaceId: workspace.active.id
+      await logger.debug("upload", "data_controls_cached", {
+        details: {
+          queuedEntries: queuedEntries.length,
+          workspaceId: workspace.active.id
+        }
       });
     }
-    const filteredMessages = filterMessagesForUpload(deduplicateMessages(queuedEntries), dataControls);
-    await debugSyncLog("filtered queued payloads for upload", {
-      queuedEntries: queuedEntries.length,
-      filteredMessages: filteredMessages.length,
-      uploadAssistantMessages: dataControls.shouldUploadAssistantMessages(),
-      uploadCodeDiffs: dataControls.shouldUploadCodeDiffs(),
-      uploadUserMessages: dataControls.shouldUploadUserMessages()
+    const candidateMessages = deduplicateMessages(queuedEntries);
+    const filteredMessages = filterMessagesForUpload(candidateMessages, dataControls);
+    await logger.info("upload", "payloads_filtered", {
+      details: {
+        candidateMessages: candidateMessages.length,
+        filteredMessages: filteredMessages.length,
+        queuedEntries: queuedEntries.length,
+        uploadAssistantMessages: dataControls.shouldUploadAssistantMessages(),
+        uploadCodeDiffs: dataControls.shouldUploadCodeDiffs(),
+        uploadUserMessages: dataControls.shouldUploadUserMessages()
+      }
     });
     if (filteredMessages.length === 0) {
-      await debugSyncLog("no messages allowed by data controls; skipping backend writes", {
-        queuedEntries: queuedEntries.length
+      await logger.info("upload", "no_messages_allowed", {
+        details: {
+          queuedEntries: queuedEntries.length,
+          workspaceId: workspace.active.id
+        }
       });
       return {
         success: true,
@@ -46624,17 +48641,24 @@ async function uploadQueuedTranscripts(dependencies = {}) {
       allowedSessionIds.add(message.session_id);
     }
     const sessions = deduplicateSessions(queuedEntries, workspace.active.id, allowedSessionIds);
-    await debugSyncLog("uploading queued payloads", {
-      messages: filteredMessages.length,
-      sessions: sessions.length,
-      workspaceId: workspace.active.id
+    await logger.info("upload", "upload_started", {
+      details: {
+        messages: filteredMessages.length,
+        queuedEntries: queuedEntries.length,
+        sessions: sessions.length,
+        workspaceId: workspace.active.id
+      }
     });
     await upsertSessions(onDemand.client, sessions);
     await upsertMessages(onDemand.client, filteredMessages);
+    await recordUploadedMessageCheckpoints(filteredMessages, now(), candidateMessages);
     await markSynced(ids);
-    await debugSyncLog("upload completed", {
-      messages: filteredMessages.length,
-      sessions: sessions.length
+    await logger.info("upload", "upload_completed", {
+      details: {
+        messages: filteredMessages.length,
+        sessions: sessions.length,
+        workspaceId: workspace.active.id
+      }
     });
     return {
       success: true,
@@ -46646,10 +48670,12 @@ async function uploadQueuedTranscripts(dependencies = {}) {
   } catch (error51) {
     const errorType = isNetworkError(error51) ? "network_error" : "upload_failed";
     const message = error51 instanceof Error ? error51.message : "Upload failed";
-    await debugSyncLog("upload failed", {
-      errorType,
-      message,
-      queuedEntries: queuedEntries.length
+    await logger.error("upload", "upload_failed", {
+      details: {
+        errorType,
+        queuedEntries: queuedEntries.length
+      },
+      error: error51
     });
     await recordFailure(ids, message, now());
     return {
@@ -46668,6 +48694,7 @@ function createCollectionSummary(overrides = {}) {
   return {
     discoveredTranscripts: 0,
     dropped: 0,
+    ignored: 0,
     parsedTranscripts: 0,
     queued: 0,
     ...overrides
@@ -46680,6 +48707,9 @@ function formatSyncMessage(result) {
   }
   if (result.phase === "queued_only" && result.errorType) {
     return `${base} Upload deferred: ${result.errorType}.`;
+  }
+  if (result.phase === "queued_only" && result.deferredReason) {
+    return `${base} Upload deferred: ${result.deferredReason}.`;
   }
   return base;
 }
@@ -46711,8 +48741,28 @@ function resolveSyncMessage(input) {
   }
   return uploadResult.error ?? "Sync failed.";
 }
+function resolveTranscriptCwd(transcript) {
+  const turnContext = [...transcript.records].reverse().find((record3) => record3.recordType === "turn_context");
+  return transcript.sessionMeta?.cwd ?? (turnContext?.recordType === "turn_context" ? turnContext.cwd : undefined);
+}
+var CONVERSATIONAL_ROLES2 = new Set(["user", "assistant"]);
+function isActiveTranscriptForLocalDay(transcript, window2) {
+  return transcript.messages.some((message) => CONVERSATIONAL_ROLES2.has(message.role) && isInsideWindow(message.timestamp, window2));
+}
+async function filterPreparedPayloadToUnsyncedMessages(prepared) {
+  const filtered = await filterPayloadToUnsyncedMessages(prepared);
+  if (!filtered) {
+    return null;
+  }
+  return {
+    payload: filtered.payload,
+    privacy: filtered.privacy
+  };
+}
 async function runSync(dependencies = {}) {
+  const runId = `sync_${Date.now()}`;
   const discover = dependencies.discover ?? discoverCodexRuntimeFiles;
+  const loadPluginSettings = dependencies.loadSettings ?? loadSettings;
   const loadSession = dependencies.loadSession ?? loadAuthSession;
   const loadWorkspace = dependencies.loadWorkspace ?? loadWorkspaceBinding;
   const readSessionReferences = dependencies.readSessionReferences ?? buildSessionReferences;
@@ -46720,6 +48770,8 @@ async function runSync(dependencies = {}) {
   const sanitize = dependencies.sanitize ?? sanitizeNormalizedPayloads;
   const enqueue = dependencies.enqueue ?? enqueueSanitizedPayloads;
   const upload = dependencies.upload ?? (() => uploadQueuedTranscripts());
+  await logger.info("sync", "sync_started", { runId });
+  const settings = await loadPluginSettings();
   const runtime = await discover();
   const collection = createCollectionSummary({
     discoveredTranscripts: runtime.transcriptPaths.length
@@ -46735,11 +48787,16 @@ async function runSync(dependencies = {}) {
       },
       message: "Sync completed: no transcripts found."
     };
+    await logger.info("sync", "collection_completed", { runId, details: collection });
+    await logger.info("sync", "sync_completed", {
+      runId,
+      details: { phase: response2.phase, uploaded: response2.uploaded, success: response2.success }
+    });
     return response2;
   }
   const session = await loadSession();
   if (!session) {
-    return {
+    const response2 = {
       success: false,
       collection,
       uploaded: {
@@ -46749,6 +48806,12 @@ async function runSync(dependencies = {}) {
       errorType: "not_authenticated",
       message: "Sync failed before collection: not authenticated."
     };
+    await logger.info("sync", "collection_completed", { runId, details: collection });
+    await logger.info("sync", "sync_completed", {
+      runId,
+      details: { phase: response2.phase, uploaded: response2.uploaded, success: response2.success }
+    });
+    return response2;
   }
   const workspace = await loadWorkspace();
   const sessionRefs = runtime.sessionIndexPath && runtime.historyPath ? await readSessionReferences({
@@ -46756,17 +48819,55 @@ async function runSync(dependencies = {}) {
     sessionIndexPath: runtime.sessionIndexPath
   }) : [];
   const transcripts = await readAllTranscripts(runtime.transcriptPaths);
-  collection.parsedTranscripts = transcripts.length;
+  const transcriptsForSync = transcripts.filter((transcript) => {
+    const cwd = resolveTranscriptCwd(transcript);
+    if (!cwd) {
+      return true;
+    }
+    return !isPathIgnored(cwd, settings.ignoredFolders);
+  });
+  collection.ignored = transcripts.length - transcriptsForSync.length;
+  const localDayWindow = createLocalDayWindow();
+  const activeTranscripts = transcriptsForSync.filter((transcript) => isActiveTranscriptForLocalDay(transcript, localDayWindow));
+  collection.parsedTranscripts = activeTranscripts.length;
   const prepared = normalizeTranscriptsToPreparedPayloads({
-    transcripts,
+    transcripts: activeTranscripts,
     sessionRefsById: buildSessionReferenceMap(sessionRefs),
     userId: session.userId,
     workspaceId: workspace?.active.id ?? null
   });
-  const sanitized = await sanitize(prepared);
+  const unsyncedPrepared = (await Promise.all(prepared.map((payload) => filterPreparedPayloadToUnsyncedMessages(payload)))).filter((payload) => payload !== null);
+  const sanitized = await sanitize(unsyncedPrepared, settings.privacy);
   collection.dropped = sanitized.filter((result) => result.status === "dropped").length;
   collection.queued = sanitized.filter((result) => result.status === "sanitized").length;
   await enqueue(sanitized);
+  await logger.info("sync", "collection_completed", { runId, details: collection });
+  if (!settings.remoteSync.enabled) {
+    const response2 = {
+      success: true,
+      phase: "queued_only",
+      collection,
+      deferredReason: "remote_sync_disabled",
+      uploaded: {
+        messages: 0,
+        sessions: 0
+      },
+      message: formatSyncMessage({
+        collection,
+        deferredReason: "remote_sync_disabled",
+        phase: "queued_only",
+        uploaded: {
+          messages: 0,
+          sessions: 0
+        }
+      })
+    };
+    await logger.info("sync", "sync_completed", {
+      runId,
+      details: { phase: response2.phase, uploaded: response2.uploaded, success: response2.success }
+    });
+    return response2;
+  }
   const uploadResult = await upload();
   const phase = resolveSyncPhase(uploadResult, collection);
   const response = {
@@ -46781,6 +48882,16 @@ async function runSync(dependencies = {}) {
       uploadResult
     })
   };
+  if (uploadResult.success && dependencies.getStandupReadiness) {
+    const readiness = await dependencies.getStandupReadiness();
+    if (readiness) {
+      response.standupReadiness = readiness;
+    }
+  }
+  await logger.info("sync", "sync_completed", {
+    runId,
+    details: { phase: response.phase, uploaded: response.uploaded, success: response.success }
+  });
   return response;
 }
 
@@ -47028,6 +49139,23 @@ var ZEST_CODEX_PLUGIN_VERSION = plugin_default.version;
 var workspaceInputSchema = {
   workspaceId: exports_external.string().trim().min(1).optional()
 };
+var folderControlInputSchema = exports_external.object({
+  folderPath: exports_external.string().trim().min(1).optional()
+}).default({});
+var privacyInputSchema = exports_external.object({
+  addCustomExclusionPattern: exports_external.string().trim().min(1).optional(),
+  aggressiveMode: exports_external.boolean().optional(),
+  approach: exports_external.enum(["detection", "encryption", "hybrid"]).optional(),
+  enableGitignore: exports_external.boolean().optional(),
+  enableZestRules: exports_external.boolean().optional(),
+  removeCustomExclusionPattern: exports_external.string().trim().min(1).optional()
+}).default({});
+var debugInputSchema = exports_external.object({
+  folderPath: exports_external.string().trim().min(1).optional(),
+  includeTranscript: exports_external.boolean().optional(),
+  maxLogHours: exports_external.number().int().positive().max(168).optional(),
+  sessionId: exports_external.string().trim().min(1).optional()
+}).default({});
 function createToolResult(result) {
   return {
     content: [
@@ -47052,10 +49180,64 @@ async function attachUpdateMetadata(result, updateCheck) {
     update
   };
 }
-async function createStatusResponse() {
+async function createStatusBase() {
+  const [settings, queue, pid, daemonStatus] = await Promise.all([
+    loadSettings(),
+    getQueueStats(),
+    getDaemonPid(),
+    loadDaemonStatus()
+  ]);
+  let activeFolder;
+  try {
+    activeFolder = await resolveActiveFolder();
+  } catch {
+    activeFolder = undefined;
+  }
+  return {
+    folderTracking: {
+      ...activeFolder ? { activeFolder } : {},
+      ignored: activeFolder ? isPathIgnored(activeFolder.path, settings.ignoredFolders) : false,
+      ignoredFolders: settings.ignoredFolders
+    },
+    daemon: createDaemonStatusResponse(settings.backgroundSync.enabled, pid, daemonStatus),
+    logging: createLoggingStatusResponse(),
+    privacy: {
+      settings: settings.privacy
+    },
+    queue,
+    remoteSync: settings.remoteSync
+  };
+}
+function createLoggingStatusResponse() {
+  const enabled = isFileLoggingEnabled();
+  return {
+    enabled,
+    level: getEffectiveLogLevel(),
+    retentionDays: LOG_RETENTION_DAYS,
+    ...enabled ? { currentLogPath: getCurrentLogFilePath() } : {}
+  };
+}
+function createDaemonStatusResponse(enabled, pid, status) {
+  return {
+    enabled,
+    running: pid !== null,
+    ...pid !== null ? { pid } : {},
+    ...status?.lastHeartbeatAt ? { lastHeartbeatAt: status.lastHeartbeatAt } : {},
+    ...status?.lastCycleStartedAt ? { lastCycleStartedAt: status.lastCycleStartedAt } : {},
+    ...status?.lastCycleFinishedAt ? { lastCycleFinishedAt: status.lastCycleFinishedAt } : {},
+    ...status?.lastSuccessAt ? { lastSuccessAt: status.lastSuccessAt } : {},
+    ...status?.lastErrorAt ? { lastErrorAt: status.lastErrorAt } : {},
+    ...status?.lastErrorType ? { lastErrorType: status.lastErrorType } : {},
+    ...status?.lastExitReason ? { lastExitReason: status.lastExitReason } : {},
+    ...status?.memory ? { memory: status.memory } : {}
+  };
+}
+async function createStatusResponse(options = {}) {
+  const base = await createStatusBase();
   const authSession = await loadAuthSession();
   if (!authSession) {
     return {
+      ...base,
       authenticated: false,
       version: ZEST_CODEX_PLUGIN_VERSION,
       sync: {
@@ -47067,6 +49249,7 @@ async function createStatusResponse() {
   const workspaceBinding = await loadWorkspaceBinding();
   if (!workspaceBinding) {
     return {
+      ...base,
       authenticated: true,
       version: ZEST_CODEX_PLUGIN_VERSION,
       sync: {
@@ -47079,7 +49262,9 @@ async function createStatusResponse() {
       }
     };
   }
+  const standupReadiness = options.standupReadiness ? await options.standupReadiness().catch(() => null) : null;
   return {
+    ...base,
     authenticated: true,
     version: ZEST_CODEX_PLUGIN_VERSION,
     sync: {
@@ -47092,10 +49277,41 @@ async function createStatusResponse() {
     workspace: {
       id: workspaceBinding.active.id,
       ...workspaceBinding.active.name ? { name: workspaceBinding.active.name } : {}
-    }
+    },
+    ...standupReadiness ? { standup: standupReadiness } : {}
   };
 }
-async function createPrivacyResponse() {
+function hasPrivacyInput(input) {
+  return Object.values(input ?? {}).some((value) => value !== undefined);
+}
+async function createPrivacyResponse(input) {
+  const settings = hasPrivacyInput(input) ? await updateSettings((current) => {
+    const privacy = { ...current.privacy };
+    if (input.approach !== undefined) {
+      privacy.approach = input.approach;
+    }
+    if (input.aggressiveMode !== undefined) {
+      privacy.aggressiveMode = input.aggressiveMode;
+    }
+    if (input.enableGitignore !== undefined) {
+      privacy.enableGitignore = input.enableGitignore;
+    }
+    if (input.enableZestRules !== undefined) {
+      privacy.enableZestRules = input.enableZestRules;
+    }
+    if (input.addCustomExclusionPattern) {
+      privacy.customExclusionPatterns = [
+        ...new Set([...privacy.customExclusionPatterns, input.addCustomExclusionPattern])
+      ].sort();
+    }
+    if (input.removeCustomExclusionPattern) {
+      privacy.customExclusionPatterns = privacy.customExclusionPatterns.filter((pattern) => pattern !== input.removeCustomExclusionPattern);
+    }
+    return {
+      ...current,
+      privacy: PrivacySettingsSchema.parse(privacy)
+    };
+  }) : await loadSettings();
   return {
     mode: "local_redaction",
     redaction: {
@@ -47112,11 +49328,60 @@ async function createPrivacyResponse() {
         "~/.codex/sessions/**/*.jsonl"
       ]
     },
+    settings: settings.privacy,
     summary: {
       exclusionReasonFormatting: formatExclusionReason(undefined),
-      runtimeConfigurable: false,
+      runtimeConfigurable: true,
       secretsExposed: false
     }
+  };
+}
+async function createIgnoreResponse(input) {
+  const folder = await resolveActiveFolder({ folderPath: input?.folderPath });
+  const settings = await updateSettings((current) => ({
+    ...current,
+    ignoredFolders: addIgnoredFolder(current.ignoredFolders, folder.path)
+  }));
+  return {
+    folder,
+    ignored: true,
+    ignoredFolders: settings.ignoredFolders
+  };
+}
+async function createUnignoreResponse(input) {
+  const folder = await resolveActiveFolder({ folderPath: input?.folderPath });
+  const settings = await updateSettings((current) => ({
+    ...current,
+    ignoredFolders: removeIgnoredFolder(current.ignoredFolders, folder.path)
+  }));
+  return {
+    folder,
+    ignored: false,
+    ignoredFolders: settings.ignoredFolders
+  };
+}
+async function createRemoteSyncResponse(enabled) {
+  const settings = await updateSettings((current) => ({
+    ...current,
+    remoteSync: { enabled }
+  }));
+  return {
+    remoteSync: settings.remoteSync
+  };
+}
+async function createBackgroundSyncResponse(enabled, dependencies = {}) {
+  const settings = await updateSettings((current) => ({
+    ...current,
+    backgroundSync: { enabled }
+  }));
+  if (!enabled) {
+    const stop = dependencies.stopDaemon ?? stopDaemon;
+    await stop().catch(() => {
+      return;
+    });
+  }
+  return {
+    backgroundSync: settings.backgroundSync
   };
 }
 async function verifyWorkspaceMembership(workspaceId) {
@@ -47172,9 +49437,14 @@ async function createWorkspaceResponse(input) {
     }
   };
 }
-async function createLogoutResponse() {
+async function createLogoutResponse(dependencies = {}) {
+  const clearSession = dependencies.clearSession ?? clearAuthSession;
+  const stop = dependencies.stopDaemon ?? stopDaemon;
   const workspaceBinding = await loadWorkspaceBinding();
-  await clearAuthSession();
+  await stop().catch(() => {
+    return;
+  });
+  await clearSession();
   return {
     clearedAuth: true,
     preservedQueueState: true,
@@ -47196,16 +49466,57 @@ function createHealthResponse(options = {}) {
     version: assertRequiredOption("version", options.version ?? ZEST_CODEX_PLUGIN_VERSION)
   };
 }
+function withToolLogging(toolName, handler) {
+  return async (...args) => {
+    const startedAt = Date.now();
+    await logger.info("mcp", "tool_started", {
+      details: {
+        toolName
+      }
+    });
+    try {
+      const result = await handler(...args);
+      await logger.info("mcp", "tool_succeeded", {
+        details: {
+          durationMs: Date.now() - startedAt,
+          toolName
+        }
+      });
+      return result;
+    } catch (error51) {
+      await logger.error("mcp", "tool_failed", {
+        details: {
+          durationMs: Date.now() - startedAt,
+          toolName
+        },
+        error: error51
+      });
+      throw error51;
+    }
+  };
+}
 function createServer(options = {}) {
   const name = assertRequiredOption("name", options.name ?? ZEST_CODEX_SERVER_NAME);
   const healthResponse = createHealthResponse(options);
   const resolveWorkspaceNameWithFallback = options.resolveWorkspaceName ?? resolveWorkspaceName;
   const login = options.login ?? (() => loginWithDeviceFlow({ resolveWorkspaceName: resolveWorkspaceNameWithFallback }));
   const cleanupLegacyAlpha = options.cleanupLegacyAlpha ?? (() => cleanupLegacyAlphaInstall());
+  const debug = options.debug ?? ((input) => createDebugBundle({
+    ...input,
+    getStatus: () => status()
+  }));
+  const disableBackgroundSync = options.disableBackgroundSync ?? (() => createBackgroundSyncResponse(false));
+  const disableRemoteSync = options.disableRemoteSync ?? (() => createRemoteSyncResponse(false));
+  const enableBackgroundSync = options.enableBackgroundSync ?? (() => createBackgroundSyncResponse(true));
+  const enableRemoteSync = options.enableRemoteSync ?? (() => createRemoteSyncResponse(true));
+  const ignore = options.ignore ?? ((input) => createIgnoreResponse(input));
   const logout = options.logout ?? (() => createLogoutResponse());
-  const privacy = options.privacy ?? (() => createPrivacyResponse());
-  const status = options.status ?? (() => createStatusResponse());
-  const sync = options.sync ?? (() => runSync());
+  const privacy = options.privacy ?? ((input) => createPrivacyResponse(input));
+  const standup = options.standup ?? (() => createStandupResponse());
+  const standupReadiness = options.standupReadiness ?? (() => createStandupReadiness());
+  const status = options.status ?? (() => createStatusResponse({ standupReadiness }));
+  const sync = options.sync ?? (() => withSyncLock(() => runSync({ getStandupReadiness: standupReadiness })));
+  const unignore = options.unignore ?? ((input) => createUnignoreResponse(input));
   const updateCheck = options.updateCheck ?? (() => getBestEffortUpdateMetadata({ currentVersion: healthResponse.version }));
   const workspace = options.workspace ?? ((input) => createWorkspaceResponse({
     ...input,
@@ -47218,52 +49529,102 @@ function createServer(options = {}) {
   server.registerTool("health", {
     description: "Report basic MCP server availability for the Zest Codex plugin.",
     title: "Zest Health"
-  }, async () => createToolResult(await attachUpdateMetadata(healthResponse, updateCheck)));
+  }, withToolLogging("health", async () => createToolResult(await attachUpdateMetadata(healthResponse, updateCheck))));
   server.registerTool("cleanup_legacy_alpha", {
     description: "Remove old Zest Alpha marketplace, cache, and plugin config after migrating to the Zest marketplace.",
     title: "Zest Cleanup Legacy Alpha"
-  }, async () => {
+  }, withToolLogging("cleanup_legacy_alpha", async () => {
     return createToolResult(await attachUpdateMetadata(await cleanupLegacyAlpha(), updateCheck));
-  });
+  }));
+  server.registerTool("debug", {
+    description: "Create a local redacted Zest diagnostics bundle for support.",
+    inputSchema: debugInputSchema,
+    title: "Zest Debug Bundle"
+  }, withToolLogging("debug", async (input) => createToolResult(await attachUpdateMetadata(await debug(input), updateCheck))));
   server.registerTool("login", {
     description: "Authenticate the Codex plugin with Zest using the browser-based device flow.",
     title: "Zest Login"
-  }, async () => {
+  }, withToolLogging("login", async () => {
     const result = await login();
     return createToolResult(await attachUpdateMetadata(result, updateCheck));
-  });
+  }));
+  server.registerTool("ignore", {
+    description: "Exclude the active or provided folder from Zest Codex transcript collection.",
+    inputSchema: folderControlInputSchema,
+    title: "Zest Ignore Folder"
+  }, withToolLogging("ignore", async (input) => {
+    return createToolResult(await attachUpdateMetadata(await ignore(input), updateCheck));
+  }));
+  server.registerTool("unignore", {
+    description: "Remove the active or provided folder from the Zest Codex ignored folder list.",
+    inputSchema: folderControlInputSchema,
+    title: "Zest Unignore Folder"
+  }, withToolLogging("unignore", async (input) => {
+    return createToolResult(await attachUpdateMetadata(await unignore(input), updateCheck));
+  }));
+  server.registerTool("disable_remote_sync", {
+    description: "Keep local Codex collection and queueing enabled while skipping remote upload.",
+    title: "Zest Disable Remote Sync"
+  }, withToolLogging("disable_remote_sync", async () => {
+    return createToolResult(await attachUpdateMetadata(await disableRemoteSync(), updateCheck));
+  }));
+  server.registerTool("disable_background_sync", {
+    description: "Disable automatic background sync for the Zest Codex plugin.",
+    title: "Zest Disable Background Sync"
+  }, withToolLogging("disable_background_sync", async () => {
+    return createToolResult(await attachUpdateMetadata(await disableBackgroundSync(), updateCheck));
+  }));
+  server.registerTool("enable_remote_sync", {
+    description: "Re-enable remote upload for queued Zest Codex transcript payloads.",
+    title: "Zest Enable Remote Sync"
+  }, withToolLogging("enable_remote_sync", async () => {
+    return createToolResult(await attachUpdateMetadata(await enableRemoteSync(), updateCheck));
+  }));
+  server.registerTool("enable_background_sync", {
+    description: "Enable automatic background sync for the Zest Codex plugin.",
+    title: "Zest Enable Background Sync"
+  }, withToolLogging("enable_background_sync", async () => {
+    return createToolResult(await attachUpdateMetadata(await enableBackgroundSync(), updateCheck));
+  }));
   server.registerTool("status", {
     description: "Report authentication, workspace binding, and basic sync readiness for the Zest Codex plugin.",
     title: "Zest Status"
-  }, async () => {
+  }, withToolLogging("status", async () => {
     return createToolResult(await attachUpdateMetadata(await status(), updateCheck));
-  });
+  }));
   server.registerTool("sync", {
     description: "Collect allowlisted Codex transcripts, apply privacy filtering, queue sanitized payloads, and upload when possible.",
     title: "Zest Sync"
-  }, async () => {
+  }, withToolLogging("sync", async () => {
     const result = await sync();
     return createToolResult(result);
-  });
+  }));
+  server.registerTool("standup", {
+    description: "Generate a Zest standup on demand from the synced Codex data currently available.",
+    title: "Zest Standup"
+  }, withToolLogging("standup", async () => {
+    return createToolResult(await attachUpdateMetadata(await standup(), updateCheck));
+  }));
   server.registerTool("privacy", {
     description: "Inspect the active local privacy filtering and exclusion behavior for the Zest Codex plugin.",
+    inputSchema: privacyInputSchema,
     title: "Zest Privacy"
-  }, async () => {
-    return createToolResult(await attachUpdateMetadata(await privacy(), updateCheck));
-  });
+  }, withToolLogging("privacy", async (input) => {
+    return createToolResult(await attachUpdateMetadata(await privacy(input), updateCheck));
+  }));
   server.registerTool("workspace", {
     description: "Show the current Zest workspace binding or set a new active workspaceId for future syncs.",
     inputSchema: workspaceInputSchema,
     title: "Zest Workspace"
-  }, async (input) => {
+  }, withToolLogging("workspace", async (input) => {
     return createToolResult(await attachUpdateMetadata(await workspace(input), updateCheck));
-  });
+  }));
   server.registerTool("logout", {
     description: "Clear the local Zest authentication session while preserving workspace binding and queued payload state.",
     title: "Zest Logout"
-  }, async () => {
+  }, withToolLogging("logout", async () => {
     return createToolResult(await attachUpdateMetadata(await logout(), updateCheck));
-  });
+  }));
   return server;
 }
 async function startServer(options = {}) {
@@ -47283,4 +49644,4 @@ main().catch((error51) => {
   process.exit(1);
 });
 
-//# debugId=C042080F9388A00664756E2164756E21
+//# debugId=6B3F5B82E4A0746D64756E2164756E21

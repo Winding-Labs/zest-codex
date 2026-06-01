@@ -7,4 +7,19 @@ metadata:
 
 Run the `login` MCP tool.
 
+Respond in this dashboard format:
+
+```md
+**Zestdev: Login**
+
+Status: Authenticated | Pending | Blocked
+
+- Auth: ...
+- User: ...
+- Workspace: ...
+- Sync: ...
+- Reason: ...        # Include only when blocked or pending.
+- Next step: ...     # Include when browser/device flow or workspace binding is needed.
+```
+
 After the tool returns, briefly tell the user whether authentication succeeded and mention any next step the result implies.

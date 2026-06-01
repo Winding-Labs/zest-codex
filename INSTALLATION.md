@@ -29,6 +29,12 @@ After the marketplace is added, Codex should show the `Zest` marketplace and the
 
 Open the `Zest` marketplace in Codex, then install `Zest` by clicking the `+` button. Adding the marketplace only makes the plugin available; it does not install the plugin automatically.
 
+Or install it directly from your terminal:
+
+```bash
+codex plugin add zest@zest
+```
+
 ### 4. Enable Plugin Hooks
 
 Enable Codex plugin hooks so Zest can refresh auth and run automatic update checks when a new Codex session starts:
@@ -45,11 +51,11 @@ Completely quit Codex, then open it again.
 
 This refreshes plugin skills, the local MCP server registration, and activates plugin hooks.
 
-### 6. Make sure the local Zest MCP is enabled
+### 6. Verify the plugin
 
-Use `/mcp` and confirm that Zest appears as enabled. If it does not appear, restart Codex once more.
+Use `/plugins` and confirm `Zest` is installed or enabled from the `Zest` marketplace.
 
-## First-Time Setup In Codex
+### 7. Authenticate with Zest
 
 After the plugin is visible:
 
@@ -60,8 +66,12 @@ After the plugin is visible:
 Example prompt:
 
 ```text
-Log me into Zest
+$zest:login
 ```
+
+### 8. Make sure the local Zest MCP is enabled
+
+Use `/mcp` and confirm that Zest appears as enabled. If it does not appear, restart Codex once more.
 
 ## Using The Bundled Skills
 
