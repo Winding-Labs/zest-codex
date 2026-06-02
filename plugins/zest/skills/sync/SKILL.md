@@ -10,7 +10,7 @@ Run the `sync` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Sync**
+**Zest: Sync**
 
 Status: Synced | Queued | Blocked | Warning
 

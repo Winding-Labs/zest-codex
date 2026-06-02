@@ -17,7 +17,7 @@ If the user asks to change privacy settings, pass the requested fields:
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Privacy**
+**Zest: Privacy**
 
 Status: Active | Updated | Warning
 

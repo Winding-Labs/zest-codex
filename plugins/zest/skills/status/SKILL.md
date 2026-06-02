@@ -10,10 +10,11 @@ Run the `status` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Status**
+**Zest: Status**
 
 Status: Ready | Blocked | Warning
 
+- Version: ...
 - Auth: ...
 - Workspace: ...
 - Sync: ...
@@ -27,7 +28,7 @@ Status: Ready | Blocked | Warning
 - Next step: ...     # Include only when there is an action to take.
 ```
 
-Summarize whether the user is authenticated, whether a workspace is bound, and whether sync is ready. When a workspace is present, mention `workspace.name` first and fall back to `workspace.id` only if the name is unavailable.
+Summarize the current plugin version from the `version` field, whether the user is authenticated, whether a workspace is bound, and whether sync is ready. When a workspace is present, mention `workspace.name` first and fall back to `workspace.id` only if the name is unavailable.
 
 Also mention remote sync state, queued payload counts, ignored folder count, and any standup readiness summary when present. If readiness is blocked, name the blocking reason.
 

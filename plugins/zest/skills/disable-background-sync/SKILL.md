@@ -10,14 +10,14 @@ Run the `disable_background_sync` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Disable Background Sync**
+**Zest: Disable Background Sync**
 
 Status: Disabled | Warning
 
 - Background sync: Disabled
 - Daemon: ...
 - Manual sync: Available
-- Next step: Run `zestdev:enable-background-sync` when automatic sync should resume.
+- Next step: Run `zest:enable-background-sync` when automatic sync should resume.
 ```
 
 Summarize that automatic background sync is disabled until the user enables it again.

@@ -12,7 +12,7 @@ If the user gave a workspace id, pass it as `workspaceId`.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Workspace**
+**Zest: Workspace**
 
 Status: Bound | Not bound | Updated | Blocked
 

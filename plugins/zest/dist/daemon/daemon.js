@@ -10764,6 +10764,7 @@ var exports_daemon = {};
 __export(exports_daemon, {
   shouldRunDaemonEntrypoint: () => shouldRunDaemonEntrypoint,
   shouldExitForMemory: () => shouldExitForMemory,
+  runDaemonEntrypoint: () => runDaemonEntrypoint,
   runDaemonCycle: () => runDaemonCycle,
   runDaemon: () => runDaemon,
   createDefaultRunDaemonCycleDependencies: () => createDefaultRunDaemonCycleDependencies,
@@ -10852,7 +10853,7 @@ var import_node_path2 = require("node:path");
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.1.0",
+  version: "0.1.2",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -13836,12 +13837,14 @@ function getCurrentLogFilePath() {
   return getDatedLogPath(getLogsDir(), LOG_PREFIX);
 }
 
-// src/logging/redaction.ts
+// src/privacy/safe-json.ts
 var UNSAFE_KEY_PATTERN = /(access[\s_-]?token|refresh[\s_-]?token|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code|payload|prompt|content|diff|stdout|stderr|output|arguments)/i;
+var CIRCULAR_SENTINEL = "[Circular]";
+
+// src/logging/redaction.ts
 var UNSAFE_STRING_ASSIGNMENT_PATTERN = /(["']?\b(?:access[\s_-]?token|refresh[\s_-]?token|accessToken|refreshToken|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code)\b["']?)(\s*[:=]\s*)(["']?)(Bearer\s+)?([^"',\s;}\]]+)(["']?)/gi;
 var UNSAFE_STRING_PHRASE_PATTERN = /\b(authorization|api[\s_-]?key|anon[\s_-]?key|accessToken|refreshToken|access[\s_-]?token|refresh[\s_-]?token|device[\s_-]?code)\b(\s+)(Bearer\s+)?("[^"]*"|'[^']*'|[^\s,;]+)/gi;
 var MAX_STACK_LENGTH = 2000;
-var CIRCULAR_SENTINEL = "[Circular]";
 function redactValue(value, seen) {
   if (value === null || typeof value === "number" || typeof value === "boolean") {
     return value;
@@ -30017,11 +30020,10 @@ async function isCurrentMtime(path, window2) {
     return false;
   }
 }
-async function collectTranscriptPaths(dirPath, sessionIndexPath) {
+async function collectTranscriptPaths(dirPath, sessionIndexPath, window2) {
   const entries = await import_promises8.readdir(dirPath, { recursive: true, withFileTypes: true });
   const transcriptPaths = [];
   const rootDir = getCodexRootDir();
-  const window2 = createLocalDayWindow();
   const activeSessionIds = await readActiveSessionIds(sessionIndexPath, window2);
   for (const entry of entries) {
     if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
@@ -30039,11 +30041,12 @@ async function collectTranscriptPaths(dirPath, sessionIndexPath) {
   }
   return transcriptPaths.sort((left, right) => left.localeCompare(right));
 }
-async function discoverCodexRuntimeFiles() {
+async function discoverCodexRuntimeFiles(options = {}) {
   const rootDir = getCodexRootDir();
   const transcriptDir = import_node_path8.join(rootDir, "sessions");
   const sessionIndexPath = resolveCodexPath("session_index.jsonl");
-  const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir, sessionIndexPath) : [];
+  const localDayWindow = options.localDayWindow ?? createLocalDayWindow();
+  const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir, sessionIndexPath, localDayWindow) : [];
   const historyPath = resolveCodexPath("history.jsonl");
   return {
     ...await pathExists(historyPath) ? { historyPath } : {},
@@ -30236,16 +30239,18 @@ function parseRateLimitWindow(value) {
   if (!isRecord2(value)) {
     return;
   }
-  const usedPercent = isNumber(value.used_percent) ? value.used_percent : undefined;
-  const windowMinutes = isNumber(value.window_minutes) ? value.window_minutes : undefined;
-  const resetsAt = isNumber(value.resets_at) ? value.resets_at : undefined;
-  if (usedPercent === undefined && windowMinutes === undefined && resetsAt === undefined) {
+  const { used_percent, window_minutes, resets_at, ...rest } = value;
+  const usedPercent = isNumber(used_percent) ? used_percent : undefined;
+  const windowMinutes = isNumber(window_minutes) ? window_minutes : undefined;
+  const resetsAt = isNumber(resets_at) ? resets_at : undefined;
+  if (usedPercent === undefined && windowMinutes === undefined && resetsAt === undefined && Object.keys(rest).length === 0) {
     return;
   }
   return {
     ...usedPercent !== undefined ? { usedPercent } : {},
     ...windowMinutes !== undefined ? { windowMinutes } : {},
-    ...resetsAt !== undefined ? { resetsAt } : {}
+    ...resetsAt !== undefined ? { resetsAt } : {},
+    ...rest
   };
 }
 function parseGitContext(value) {
@@ -30930,12 +30935,15 @@ async function getLastSyncedMessageIndex(sessionId) {
   const checkpoint = checkpoints.find((entry) => entry.sessionId === sessionId);
   return checkpoint?.lastSyncedMessageIndex ?? null;
 }
-async function filterPayloadToUnsyncedMessages(payload) {
+function buildSyncCheckpointMap(checkpoints) {
+  return new Map(checkpoints.map((checkpoint) => [checkpoint.sessionId, checkpoint]));
+}
+async function filterPayloadToUnsyncedMessages(payload, checkpointsBySessionId) {
   const sessionId = payload.payload.session.id;
   if (!sessionId) {
     return payload;
   }
-  const lastSyncedMessageIndex = await getLastSyncedMessageIndex(sessionId);
+  const lastSyncedMessageIndex = checkpointsBySessionId ? checkpointsBySessionId.get(sessionId)?.lastSyncedMessageIndex ?? null : await getLastSyncedMessageIndex(sessionId);
   if (lastSyncedMessageIndex === null) {
     return payload;
   }
@@ -30951,9 +30959,10 @@ async function filterPayloadToUnsyncedMessages(payload) {
     }
   };
 }
-async function recordUploadedMessageCheckpoints(messages, now = new Date, candidateMessages = messages) {
+async function recordUploadedMessageCheckpoints(messages, now = new Date, candidateMessages = messages, accountedMessages = []) {
   const uploadedIndexesBySessionId = new Map;
   const candidateIndexesBySessionId = new Map;
+  const accountedIndexesBySessionId = new Map;
   for (const message of messages) {
     const sessionId = message.session_id;
     const messageIndex = message.message_index;
@@ -30974,17 +30983,33 @@ async function recordUploadedMessageCheckpoints(messages, now = new Date, candid
     candidateIndexes.add(messageIndex);
     candidateIndexesBySessionId.set(sessionId, candidateIndexes);
   }
-  if (uploadedIndexesBySessionId.size === 0) {
+  for (const message of accountedMessages) {
+    const sessionId = message.session_id;
+    const messageIndex = message.message_index;
+    if (!sessionId || !isValidMessageIndex(messageIndex)) {
+      continue;
+    }
+    const accountedIndexes = accountedIndexesBySessionId.get(sessionId) ?? new Set;
+    accountedIndexes.add(messageIndex);
+    accountedIndexesBySessionId.set(sessionId, accountedIndexes);
+  }
+  if (uploadedIndexesBySessionId.size === 0 && accountedIndexesBySessionId.size === 0) {
     return;
   }
   const syncedAt = now.toISOString();
   const checkpointsBySessionId = new Map((await loadSyncCheckpoints()).map((checkpoint) => [checkpoint.sessionId, checkpoint]));
-  for (const [sessionId, uploadedIndexes] of uploadedIndexesBySessionId) {
+  const sessionIds = new Set([
+    ...uploadedIndexesBySessionId.keys(),
+    ...accountedIndexesBySessionId.keys()
+  ]);
+  for (const sessionId of sessionIds) {
+    const uploadedIndexes = uploadedIndexesBySessionId.get(sessionId) ?? new Set;
+    const accountedIndexes = accountedIndexesBySessionId.get(sessionId) ?? new Set;
     const existing = checkpointsBySessionId.get(sessionId);
     let maxUploadedIndex = existing?.lastSyncedMessageIndex ?? -1;
     const candidateIndexes = [...candidateIndexesBySessionId.get(sessionId) ?? uploadedIndexes].filter((index) => index > maxUploadedIndex).sort((left, right) => left - right);
     for (const candidateIndex of candidateIndexes) {
-      if (!uploadedIndexes.has(candidateIndex)) {
+      if (!uploadedIndexes.has(candidateIndex) && !accountedIndexes.has(candidateIndex)) {
         break;
       }
       maxUploadedIndex = candidateIndex;
@@ -31123,10 +31148,12 @@ function normalizeRateLimitWindow(window2) {
   if (!window2) {
     return;
   }
+  const { usedPercent, windowMinutes, resetsAt, ...rest } = window2;
   const normalized = {
-    ...window2.usedPercent !== undefined ? { used_percent: window2.usedPercent } : {},
-    ...window2.windowMinutes !== undefined ? { window_minutes: window2.windowMinutes } : {},
-    ...window2.resetsAt !== undefined ? { resets_at: window2.resetsAt } : {}
+    ...usedPercent !== undefined ? { used_percent: usedPercent } : {},
+    ...windowMinutes !== undefined ? { window_minutes: windowMinutes } : {},
+    ...resetsAt !== undefined ? { resets_at: resetsAt } : {},
+    ...rest
   };
   return Object.keys(normalized).length > 0 ? normalized : undefined;
 }
@@ -31260,6 +31287,7 @@ function normalizeTranscriptsToPreparedPayloads(input) {
 
 // src/sync/queue.ts
 var MAX_RETRY_ATTEMPTS = 3;
+var FAILED_QUEUE_ENTRY_RETENTION_MS = 7 * 24 * 60 * 60 * 1000;
 function getNowIso(now = new Date) {
   return now.toISOString();
 }
@@ -31268,6 +31296,26 @@ function resolveQueueFilePath() {
 }
 function sortQueueEntries(entries) {
   return [...entries].sort((left, right) => left.createdAt.localeCompare(right.createdAt) || left.id.localeCompare(right.id));
+}
+function parseTimestampMs(timestamp) {
+  if (!timestamp) {
+    return null;
+  }
+  const value = Date.parse(timestamp);
+  return Number.isFinite(value) ? value : null;
+}
+function pruneFailedEntries(entries, now = new Date, retentionMs = FAILED_QUEUE_ENTRY_RETENTION_MS) {
+  const nowMs = now.getTime();
+  return entries.filter((entry) => {
+    if (entry.status !== "failed") {
+      return true;
+    }
+    const failedAtMs = parseTimestampMs(entry.lastFailureAt) ?? parseTimestampMs(entry.updatedAt) ?? parseTimestampMs(entry.createdAt);
+    if (failedAtMs === null) {
+      return true;
+    }
+    return nowMs - failedAtMs <= retentionMs;
+  });
 }
 function dedupeDroppedPayloads(results) {
   return results.filter((result) => result.status === "sanitized");
@@ -31303,6 +31351,7 @@ function mergeQueueEntry(existingEntry, incomingPayload, now) {
   return {
     ...existingEntry,
     status: "pending",
+    attemptCount: 0,
     lastError: null,
     updatedAt: getNowIso(now),
     payload: mergeQueuedTranscriptPayload(existingEntry.payload, incomingPayload)
@@ -31341,7 +31390,7 @@ function createQueueEntry(payload, now = new Date) {
   };
 }
 function buildQueueEntriesFromResults(results, existingEntries = [], now = new Date) {
-  const nextEntries = [...existingEntries];
+  const nextEntries = pruneFailedEntries(existingEntries, now);
   for (const payload of dedupeDroppedPayloads(results)) {
     const entry = createQueueEntry(payload, now);
     const existingEntryIndex = nextEntries.findIndex((existingEntry) => existingEntry.dedupeKey === entry.dedupeKey);
@@ -31392,6 +31441,12 @@ async function enqueueSanitizedPayloads(results, now = new Date) {
   });
   return nextEntries;
 }
+async function pruneExpiredFailedQueueEntries(now = new Date, retentionMs = FAILED_QUEUE_ENTRY_RETENTION_MS) {
+  const entries = await loadQueueEntries();
+  const nextEntries = pruneFailedEntries(entries, now, retentionMs);
+  await saveQueueEntries(nextEntries);
+  return nextEntries;
+}
 async function getReplayableQueueEntries() {
   const entries = await loadQueueEntries();
   return entries.filter((entry) => {
@@ -31406,7 +31461,8 @@ async function getReplayableQueueEntries() {
 }
 async function markQueueEntriesSynced(ids) {
   const idSet = new Set(ids);
-  const nextEntries = (await loadQueueEntries()).filter((entry) => !idSet.has(entry.id));
+  const entries = await pruneExpiredFailedQueueEntries();
+  const nextEntries = entries.filter((entry) => !idSet.has(entry.id));
   await saveQueueEntries(nextEntries);
   return nextEntries;
 }
@@ -31555,20 +31611,39 @@ var CustomPromptMetadataSchema = exports_external.object({
   description: exports_external.string().optional()
 });
 // ../../packages/types/token-usage.ts
-var TOKEN_SOURCES = ["provider_reported", "estimated_heuristic", "mixed"];
+var TOKEN_SOURCES = ["provider_reported"];
+var COST_SOURCES = [
+  "provider_reported",
+  "derived_openrouter",
+  "cursor_dashboard_api"
+];
 var SessionTokenUsageSchema = exports_external.object({
   input_tokens: exports_external.number().int().nonnegative(),
   output_tokens: exports_external.number().int().nonnegative(),
   total_tokens: exports_external.number().int().nonnegative(),
   token_source: exports_external.enum(TOKEN_SOURCES),
   cost_usd: exports_external.number().nonnegative().nullable().optional(),
-  cost_source: exports_external.enum(["provider_reported", "derived_openrouter", "cursor_reported"]).nullable().optional(),
+  cost_source: exports_external.enum(COST_SOURCES).nullable().optional(),
   cache_read_tokens: exports_external.number().int().nonnegative().optional(),
   cache_creation_tokens: exports_external.number().int().nonnegative().optional(),
   cache_creation_5m_tokens: exports_external.number().int().nonnegative().optional(),
   cache_creation_1h_tokens: exports_external.number().int().nonnegative().optional(),
   reasoning_tokens: exports_external.number().int().nonnegative().optional(),
-  message_count_with_tokens: exports_external.number().int().nonnegative().optional()
+  server_tool_use_input_tokens: exports_external.number().int().nonnegative().optional(),
+  server_tool_use_output_tokens: exports_external.number().int().nonnegative().optional(),
+  message_count_with_tokens: exports_external.number().int().nonnegative().optional(),
+  model_usage: exports_external.record(exports_external.string(), exports_external.object({
+    input_tokens: exports_external.number().nonnegative(),
+    output_tokens: exports_external.number().nonnegative(),
+    cache_read_input_tokens: exports_external.number().nonnegative().optional(),
+    cache_creation_input_tokens: exports_external.number().nonnegative().optional(),
+    cost_usd: exports_external.number().nonnegative().optional()
+  })).optional(),
+  context_used_percent: exports_external.number().nonnegative().max(100).optional(),
+  context_window_size: exports_external.number().int().nonnegative().optional(),
+  rate_limit_percent: exports_external.number().nonnegative().optional(),
+  rate_limit_type: exports_external.string().optional(),
+  rate_limit_is_overage: exports_external.boolean().optional()
 });
 // ../../packages/types/data-controls-schemas.ts
 var collectionSettingsSchema = exports_external.object({
@@ -31592,6 +31667,8 @@ class DataControlsProvider {
   effectiveRetention = null;
   lastFetchedAt = null;
   ready = false;
+  userId = null;
+  workspaceId = null;
   async refresh(client, workspaceId, userId, fetchedAt = Date.now()) {
     try {
       const [workspaceResult, userResult] = await Promise.all([
@@ -31609,6 +31686,8 @@ class DataControlsProvider {
       this.effectiveRetention = getEffectiveRetention(workspaceRetention.success ? workspaceRetention.data : WORKSPACE_RETENTION_DEFAULTS, userRetention.success ? userRetention.data : null);
       this.lastFetchedAt = fetchedAt;
       this.ready = true;
+      this.userId = userId;
+      this.workspaceId = workspaceId;
       return true;
     } catch {
       return false;
@@ -31623,11 +31702,16 @@ class DataControlsProvider {
     }
     return now - this.lastFetchedAt > DATA_CONTROLS_CACHE_TTL_MS;
   }
+  isForContext(workspaceId, userId) {
+    return this.workspaceId === workspaceId && this.userId === userId;
+  }
   invalidate() {
     this.effectiveCollection = null;
     this.effectiveRetention = null;
     this.lastFetchedAt = null;
     this.ready = false;
+    this.userId = null;
+    this.workspaceId = null;
   }
   shouldUploadUserMessages() {
     return this.effectiveCollection?.user_messages ?? false;
@@ -31683,6 +31767,9 @@ function deduplicateMessages(entries) {
     }
   }
   return Array.from(messagesByKey.values());
+}
+function createMessageSyncKey(message) {
+  return `${message.session_id}:${message.message_index}`;
 }
 function filterMessagesForUpload(messages, dataControls) {
   const shouldUploadUserMessages = dataControls.shouldUploadUserMessages();
@@ -31771,6 +31858,9 @@ async function uploadQueuedTranscripts(dependencies = {}) {
   }
   const ids = queuedEntries.map((entry) => entry.id);
   try {
+    if (!dataControls.isForContext(workspace.active.id, session.userId)) {
+      dataControls.invalidate();
+    }
     if (!dataControls.isReady() || dataControls.isStale(now().getTime())) {
       await logger.info("upload", "data_controls_refreshing", {
         details: {
@@ -31805,6 +31895,8 @@ async function uploadQueuedTranscripts(dependencies = {}) {
     }
     const candidateMessages = deduplicateMessages(queuedEntries);
     const filteredMessages = filterMessagesForUpload(candidateMessages, dataControls);
+    const filteredMessageKeys = new Set(filteredMessages.map(createMessageSyncKey));
+    const accountedMessages = candidateMessages.filter((message) => !filteredMessageKeys.has(createMessageSyncKey(message)));
     await logger.info("upload", "payloads_filtered", {
       details: {
         candidateMessages: candidateMessages.length,
@@ -31822,6 +31914,8 @@ async function uploadQueuedTranscripts(dependencies = {}) {
           workspaceId: workspace.active.id
         }
       });
+      await recordUploadedMessageCheckpoints([], now(), candidateMessages, accountedMessages);
+      await markSynced(ids);
       return {
         success: true,
         uploaded: {
@@ -31845,7 +31939,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
     });
     await upsertSessions(onDemand.client, sessions);
     await upsertMessages(onDemand.client, filteredMessages);
-    await recordUploadedMessageCheckpoints(filteredMessages, now(), candidateMessages);
+    await recordUploadedMessageCheckpoints(filteredMessages, now(), candidateMessages, accountedMessages);
     await markSynced(ids);
     await logger.info("upload", "upload_completed", {
       details: {
@@ -31943,8 +32037,8 @@ var CONVERSATIONAL_ROLES2 = new Set(["user", "assistant"]);
 function isActiveTranscriptForLocalDay(transcript, window2) {
   return transcript.messages.some((message) => CONVERSATIONAL_ROLES2.has(message.role) && isInsideWindow(message.timestamp, window2));
 }
-async function filterPreparedPayloadToUnsyncedMessages(prepared) {
-  const filtered = await filterPayloadToUnsyncedMessages(prepared);
+async function filterPreparedPayloadToUnsyncedMessages(prepared, checkpointsBySessionId) {
+  const filtered = await filterPayloadToUnsyncedMessages(prepared, checkpointsBySessionId);
   if (!filtered) {
     return null;
   }
@@ -31957,6 +32051,7 @@ async function runSync(dependencies = {}) {
   const runId = `sync_${Date.now()}`;
   const discover = dependencies.discover ?? discoverCodexRuntimeFiles;
   const loadPluginSettings = dependencies.loadSettings ?? loadSettings;
+  const loadCheckpoints = dependencies.loadCheckpoints ?? loadSyncCheckpoints;
   const loadSession = dependencies.loadSession ?? loadAuthSession;
   const loadWorkspace = dependencies.loadWorkspace ?? loadWorkspaceBinding;
   const readSessionReferences = dependencies.readSessionReferences ?? buildSessionReferences;
@@ -31966,7 +32061,8 @@ async function runSync(dependencies = {}) {
   const upload = dependencies.upload ?? (() => uploadQueuedTranscripts());
   await logger.info("sync", "sync_started", { runId });
   const settings = await loadPluginSettings();
-  const runtime = await discover();
+  const localDayWindow = createLocalDayWindow();
+  const runtime = await discover({ localDayWindow });
   const collection = createCollectionSummary({
     discoveredTranscripts: runtime.transcriptPaths.length
   });
@@ -32021,7 +32117,6 @@ async function runSync(dependencies = {}) {
     return !isPathIgnored(cwd, settings.ignoredFolders);
   });
   collection.ignored = transcripts.length - transcriptsForSync.length;
-  const localDayWindow = createLocalDayWindow();
   const activeTranscripts = transcriptsForSync.filter((transcript) => isActiveTranscriptForLocalDay(transcript, localDayWindow));
   collection.parsedTranscripts = activeTranscripts.length;
   const prepared = normalizeTranscriptsToPreparedPayloads({
@@ -32030,7 +32125,8 @@ async function runSync(dependencies = {}) {
     userId: session.userId,
     workspaceId: workspace?.active.id ?? null
   });
-  const unsyncedPrepared = (await Promise.all(prepared.map((payload) => filterPreparedPayloadToUnsyncedMessages(payload)))).filter((payload) => payload !== null);
+  const checkpointsBySessionId = buildSyncCheckpointMap(await loadCheckpoints());
+  const unsyncedPrepared = (await Promise.all(prepared.map((payload) => filterPreparedPayloadToUnsyncedMessages(payload, checkpointsBySessionId)))).filter((payload) => payload !== null);
   const sanitized = await sanitize(unsyncedPrepared, settings.privacy);
   collection.dropped = sanitized.filter((result) => result.status === "dropped").length;
   collection.queued = sanitized.filter((result) => result.status === "sanitized").length;
@@ -32163,27 +32259,35 @@ async function runDaemonCycle(dependencies = {}) {
     const finishedAt = now().toISOString();
     const memory = getMemoryUsage();
     const exitForMemory = shouldExitForMemory(memory, maxRssBytes);
-    await writeStatus({
-      version: 1,
-      pid: process.pid,
-      running: !exitForMemory,
-      lastCycleStartedAt: cycleStartedAt,
-      lastCycleFinishedAt: finishedAt,
-      lastHeartbeatAt: finishedAt,
-      lastErrorAt: finishedAt,
-      lastErrorType: "daemon_cycle_failed",
-      lastErrorMessage: error51 instanceof Error ? error51.message : "Daemon cycle failed",
-      ...exitForMemory ? { lastExitReason: "memory_limit_exceeded" } : {},
-      memory: {
-        rssBytes: memory.rss,
-        heapUsedBytes: memory.heapUsed
-      }
-    }).catch(() => {
-      return;
-    });
+    try {
+      await writeStatus({
+        version: 1,
+        pid: process.pid,
+        running: !exitForMemory,
+        lastCycleStartedAt: cycleStartedAt,
+        lastCycleFinishedAt: finishedAt,
+        lastHeartbeatAt: finishedAt,
+        lastErrorAt: finishedAt,
+        lastErrorType: "daemon_cycle_failed",
+        lastErrorMessage: error51 instanceof Error ? error51.message : "Daemon cycle failed",
+        ...exitForMemory ? { lastExitReason: "memory_limit_exceeded" } : {},
+        memory: {
+          rssBytes: memory.rss,
+          heapUsedBytes: memory.heapUsed
+        }
+      });
+    } catch {
+      return { shouldExit: true };
+    }
     await logger.error("daemon", "cycle_failed", { runId, error: error51 });
     return { shouldExit: exitForMemory };
   }
+}
+function runDaemonEntrypoint() {
+  runDaemon().catch((error51) => {
+    console.error("daemon fatal:", error51);
+    process.exitCode = 1;
+  });
 }
 async function sleep4(ms, waitUntilShutdown) {
   let timeout;
@@ -32281,7 +32385,7 @@ async function runDaemon(dependencies = {}) {
   await writeIdleStatus();
 }
 if (shouldRunDaemonEntrypoint()) {
-  runDaemon();
+  runDaemonEntrypoint();
 }
 
-//# debugId=774FF4423D6DC94964756E2164756E21
+//# debugId=695A4E122A514AA264756E2164756E21

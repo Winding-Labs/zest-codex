@@ -10,7 +10,7 @@ Run the `enable_background_sync` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Enable Background Sync**
+**Zest: Enable Background Sync**
 
 Status: Enabled | Warning
 

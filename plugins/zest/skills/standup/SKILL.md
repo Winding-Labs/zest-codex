@@ -10,7 +10,7 @@ Run the `standup` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Standup**
+**Zest: Standup**
 
 Status: Generated | Running | No new data | Blocked
 

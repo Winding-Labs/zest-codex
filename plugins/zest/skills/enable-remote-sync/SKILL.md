@@ -10,14 +10,14 @@ Run the `enable_remote_sync` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Enable Remote Sync**
+**Zest: Enable Remote Sync**
 
 Status: Enabled | Warning
 
 - Remote sync: Enabled
 - Queue: ...
 - Uploads: Ready for the next manual or background sync
-- Next step: Run `zestdev:sync` to upload queued activity now.
+- Next step: Run `zest:sync` to upload queued activity now.
 ```
 
 Summarize that remote upload is enabled again and queued Codex activity can be uploaded by the next manual sync.

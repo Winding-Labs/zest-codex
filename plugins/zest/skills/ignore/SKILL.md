@@ -12,7 +12,7 @@ If the user gave a folder path, pass it as `folderPath`. Otherwise let the tool 
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Ignore**
+**Zest: Ignore**
 
 Status: Ignored | Already ignored | Blocked
 

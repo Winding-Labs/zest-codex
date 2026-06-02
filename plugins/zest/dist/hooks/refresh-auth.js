@@ -10768,7 +10768,7 @@ module.exports = __toCommonJS(exports_refresh_auth);
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.1.0",
+  version: "0.1.2",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -13713,6 +13713,7 @@ async function ensureAuthSessionFresh(options) {
 
 // src/daemon/manager.ts
 var import_node_child_process = require("node:child_process");
+var import_node_fs = require("node:fs");
 var import_promises4 = require("node:fs/promises");
 var import_node_path5 = require("node:path");
 
@@ -28726,6 +28727,10 @@ function isFreshDaemonTimestamp(timestamp, now, staleMs) {
   }
   return resolveNowMs2(now) - timestampMs <= staleMs;
 }
+function isPathWithinDirectory(path, directory) {
+  const relativePath = import_node_path5.relative(directory, path);
+  return relativePath.length > 0 && !import_node_path5.isAbsolute(relativePath) && !relativePath.startsWith("..");
+}
 async function readDaemonPid() {
   const content = await import_promises4.readFile(getDaemonPidFilePath(), "utf-8");
   const trimmed = content.trim();
@@ -28789,8 +28794,24 @@ function daemonScriptPathFromEntrypoint(entrypointPath) {
   }
   const distRoot = import_node_path5.dirname(import_node_path5.dirname(normalized));
   const daemonScriptPath = import_node_path5.resolve(distRoot, "daemon", "daemon.js");
-  const relativeDaemonPath = import_node_path5.relative(distRoot, daemonScriptPath);
-  if (import_node_path5.isAbsolute(relativeDaemonPath) || relativeDaemonPath.startsWith("..")) {
+  if (!isPathWithinDirectory(daemonScriptPath, distRoot)) {
+    return null;
+  }
+  if (import_node_fs.existsSync(normalized) && import_node_fs.existsSync(distRoot)) {
+    const realEntrypoint = import_node_fs.realpathSync.native(normalized);
+    const realDistRoot = import_node_fs.realpathSync.native(distRoot);
+    if (!isPathWithinDirectory(realEntrypoint, realDistRoot)) {
+      return null;
+    }
+  }
+  if (import_node_fs.existsSync(daemonScriptPath) && import_node_fs.existsSync(distRoot)) {
+    const realDaemonScriptPath = import_node_fs.realpathSync.native(daemonScriptPath);
+    const realDistRoot = import_node_fs.realpathSync.native(distRoot);
+    if (!isPathWithinDirectory(realDaemonScriptPath, realDistRoot)) {
+      return null;
+    }
+  }
+  if (import_node_path5.dirname(daemonScriptPath) !== import_node_path5.resolve(distRoot, "daemon")) {
     return null;
   }
   return daemonScriptPath;
@@ -28852,7 +28873,7 @@ async function ensureDaemonRunning(options = {}) {
     }
     const pid = await (options.spawnDaemon ?? startDaemon)();
     if (!pid) {
-      return { started: false, reason: "start_failed" };
+      return { started: false, reason: "spawn_failed" };
     }
     await writeDaemonPid(pid);
     const existingStatus = await loadDaemonStatus();
@@ -28969,12 +28990,14 @@ function getCurrentLogFilePath() {
   return getDatedLogPath(getLogsDir(), LOG_PREFIX);
 }
 
-// src/logging/redaction.ts
+// src/privacy/safe-json.ts
 var UNSAFE_KEY_PATTERN = /(access[\s_-]?token|refresh[\s_-]?token|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code|payload|prompt|content|diff|stdout|stderr|output|arguments)/i;
+var CIRCULAR_SENTINEL = "[Circular]";
+
+// src/logging/redaction.ts
 var UNSAFE_STRING_ASSIGNMENT_PATTERN = /(["']?\b(?:access[\s_-]?token|refresh[\s_-]?token|accessToken|refreshToken|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code)\b["']?)(\s*[:=]\s*)(["']?)(Bearer\s+)?([^"',\s;}\]]+)(["']?)/gi;
 var UNSAFE_STRING_PHRASE_PATTERN = /\b(authorization|api[\s_-]?key|anon[\s_-]?key|accessToken|refreshToken|access[\s_-]?token|refresh[\s_-]?token|device[\s_-]?code)\b(\s+)(Bearer\s+)?("[^"]*"|'[^']*'|[^\s,;]+)/gi;
 var MAX_STACK_LENGTH = 2000;
-var CIRCULAR_SENTINEL = "[Circular]";
 function redactValue(value, seen) {
   if (value === null || typeof value === "number" || typeof value === "boolean") {
     return value;
@@ -29502,6 +29525,14 @@ function parseTrigger(value) {
       return null;
   }
 }
+async function loggedStep(eventPrefix, action, successDetails, failureDetails) {
+  await action().then((result) => logger.info("hook", `${eventPrefix}_completed`, {
+    details: successDetails(result)
+  })).catch((error51) => logger.error("hook", `${eventPrefix}_failed`, {
+    details: failureDetails(),
+    error: error51
+  }));
+}
 async function runRefreshAuthHook(eventName, dependencies = {}) {
   const trigger = parseTrigger(eventName);
   if (!trigger) {
@@ -29514,53 +29545,33 @@ async function runRefreshAuthHook(eventName, dependencies = {}) {
   await logger.info("hook", "trigger_received", {
     details: { trigger }
   });
-  await ensureAuthFresh({ trigger }).then((result) => logger.info("hook", "auth_refresh_completed", {
-    details: {
-      refreshed: result.refreshed,
-      status: result.status,
-      trigger
-    }
-  })).catch((error51) => logger.error("hook", "auth_refresh_failed", {
-    details: { trigger },
-    error: error51
-  }));
+  await loggedStep("auth_refresh", () => ensureAuthFresh({ trigger }), (result) => ({
+    refreshed: result.refreshed,
+    status: result.status,
+    trigger
+  }), () => ({ trigger }));
   if (trigger === "session_start" && plugin_default.name === "zest") {
-    await maybeAutoUpdate({ currentVersion: plugin_default.version }).then((result) => logger.info("hook", "update_check_completed", {
-      details: {
-        attempted: result.attempted,
-        currentVersion: plugin_default.version,
-        status: result.status
-      }
-    })).catch((error51) => logger.error("hook", "update_check_failed", {
-      details: {
-        currentVersion: plugin_default.version,
-        trigger
-      },
-      error: error51
+    await loggedStep("update_check", () => maybeAutoUpdate({ currentVersion: plugin_default.version }), (result) => ({
+      attempted: result.attempted,
+      currentVersion: plugin_default.version,
+      status: result.status
+    }), () => ({
+      currentVersion: plugin_default.version,
+      trigger
     }));
   }
-  await touchActivity(trigger).then((result) => logger.info("hook", "activity_touch_completed", {
-    details: {
-      lastActivityAt: result.lastActivityAt,
-      lastTrigger: result.lastTrigger,
-      trigger
-    }
-  })).catch((error51) => logger.error("hook", "activity_touch_failed", {
-    details: { trigger },
-    error: error51
-  }));
-  await ensureDaemon().then((result) => logger.info("hook", "daemon_ensure_completed", {
-    details: {
-      pid: result.pid,
-      reason: result.started ? undefined : result.reason,
-      started: result.started,
-      trigger
-    }
-  })).catch((error51) => logger.error("hook", "daemon_ensure_failed", {
-    details: { trigger },
-    error: error51
-  }));
+  await loggedStep("activity_touch", () => touchActivity(trigger), (result) => ({
+    lastActivityAt: result.lastActivityAt,
+    lastTrigger: result.lastTrigger,
+    trigger
+  }), () => ({ trigger }));
+  await loggedStep("daemon_ensure", () => ensureDaemon(), (result) => ({
+    pid: result.pid,
+    reason: result.started ? undefined : result.reason,
+    started: result.started,
+    trigger
+  }), () => ({ trigger }));
 }
 runRefreshAuthHook(process.argv[2]);
 
-//# debugId=420D08A394C5927564756E2164756E21
+//# debugId=3272C42C7302602364756E2164756E21

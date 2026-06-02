@@ -10,7 +10,7 @@ Run the `health` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Health**
+**Zest: Health**
 
 Status: Healthy | Blocked | Warning
 

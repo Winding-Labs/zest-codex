@@ -10,7 +10,7 @@ Run the `debug` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Debug**
+**Zest: Debug**
 
 Status: Bundle created | Blocked | Warning
 

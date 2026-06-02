@@ -10,7 +10,7 @@ Run the `disable_remote_sync` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Disable Remote Sync**
+**Zest: Disable Remote Sync**
 
 Status: Disabled | Warning
 
@@ -18,7 +18,7 @@ Status: Disabled | Warning
 - Collection: Enabled
 - Queueing: Enabled
 - Queue: ...
-- Next step: Run `zestdev:enable-remote-sync` when uploads should resume.
+- Next step: Run `zest:enable-remote-sync` when uploads should resume.
 ```
 
 Summarize that local collection and queueing remain enabled, but remote upload is disabled until the user enables it again.

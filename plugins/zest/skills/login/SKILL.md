@@ -10,7 +10,7 @@ Run the `login` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Login**
+**Zest: Login**
 
 Status: Authenticated | Pending | Blocked
 

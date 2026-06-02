@@ -10,7 +10,7 @@ Run the `logout` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Logout**
+**Zest: Logout**
 
 Status: Signed out | Warning
 

@@ -10,7 +10,7 @@ Run the `cleanup_legacy_alpha` MCP tool.
 Respond in this dashboard format:
 
 ```md
-**Zestdev: Cleanup Legacy Alpha**
+**Zest: Cleanup Legacy Alpha**
 
 Status: Cleaned | Already clean | Blocked | Warning
 
