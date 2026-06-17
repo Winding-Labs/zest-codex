@@ -41183,7 +41183,7 @@ var DEFAULT_PRIVACY_SETTINGS = {
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.1.2",
+  version: "0.1.3",
   description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
   author: {
     name: "Zest",
@@ -44791,12 +44791,228 @@ async function loginWithDeviceFlow(dependencies = {}) {
 }
 
 // src/codex/current-folder.ts
-var import_node_path6 = require("node:path");
+var import_node_path7 = require("node:path");
 
 // src/collector/transcript-parser.ts
 var import_node_fs4 = require("node:fs");
 var import_node_readline = __toESM(require("node:readline"));
 
+// src/collector/session-signals.ts
+var import_node_path4 = require("node:path");
+
+// ../../packages/utils/src/signal-helpers.ts
+function extractSlashCommand(text) {
+  const trimmed = text.trim();
+  if (!trimmed.startsWith("/"))
+    return;
+  let end = 1;
+  while (end < trimmed.length) {
+    const ch = trimmed.charCodeAt(end);
+    if (ch >= 97 && ch <= 122 || ch >= 65 && ch <= 90 || ch >= 48 && ch <= 57 || ch === 95 || ch === 45 || ch === 58) {
+      end++;
+    } else {
+      break;
+    }
+  }
+  const name = trimmed.slice(1, end);
+  return name.length > 0 ? name : undefined;
+}
+
+// ../../packages/utils/src/command-xml.ts
+var CLAUDE_BUILTIN_COMMANDS = new Set([
+  "add-dir",
+  "agents",
+  "allowed-tools",
+  "android",
+  "app",
+  "autofix-pr",
+  "bashes",
+  "branch",
+  "btw",
+  "bug",
+  "checkpoint",
+  "chrome",
+  "clear",
+  "color",
+  "compact",
+  "config",
+  "context",
+  "continue",
+  "copy",
+  "cost",
+  "desktop",
+  "diff",
+  "doctor",
+  "effort",
+  "exit",
+  "export",
+  "extra-usage",
+  "fast",
+  "feedback",
+  "fork",
+  "help",
+  "hooks",
+  "ide",
+  "init",
+  "insights",
+  "install-github-app",
+  "install-slack-app",
+  "ios",
+  "keybindings",
+  "login",
+  "logout",
+  "mcp",
+  "memory",
+  "mobile",
+  "model",
+  "new",
+  "output-style",
+  "passes",
+  "permissions",
+  "plan",
+  "plugin",
+  "powerup",
+  "pr-comments",
+  "privacy-settings",
+  "quit",
+  "rc",
+  "release-notes",
+  "reload-plugins",
+  "remote-control",
+  "remote-env",
+  "rename",
+  "reset",
+  "resume",
+  "review",
+  "rewind",
+  "sandbox",
+  "schedule",
+  "security-review",
+  "settings",
+  "setup-bedrock",
+  "skills",
+  "stats",
+  "status",
+  "statusline",
+  "stickers",
+  "tasks",
+  "teleport",
+  "terminal-setup",
+  "theme",
+  "todos",
+  "tp",
+  "ultraplan",
+  "upgrade",
+  "usage",
+  "vim",
+  "voice",
+  "web-setup"
+]);
+// ../../packages/utils/src/date-range.ts
+var PERIOD_TYPE_LABELS = {
+  ["today" /* Today */]: "Today",
+  ["this_week" /* ThisWeek */]: "This Week",
+  ["this_month" /* ThisMonth */]: "This Month"
+};
+var PERIOD_SUMMARY_LABELS = {
+  ["today" /* Today */]: "Daily Summary",
+  ["this_week" /* ThisWeek */]: "Weekly Summary",
+  ["this_month" /* ThisMonth */]: "Monthly Summary",
+  custom: "Custom Period"
+};
+function getLocalDateStr(timezone, referenceDate = new Date) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  });
+  return formatter.format(referenceDate);
+}
+function getTimezoneOffsetMs(timezone, localDateStr) {
+  const tempDate = new Date(`${localDateStr}T00:00:00Z`);
+  const utcDate = new Date(tempDate.toLocaleString("en-US", { timeZone: "UTC" }));
+  const tzDate = new Date(tempDate.toLocaleString("en-US", { timeZone: timezone }));
+  return utcDate.getTime() - tzDate.getTime();
+}
+function calculateDayDateRange(timezone, localDateStr) {
+  const offsetMs = getTimezoneOffsetMs(timezone, localDateStr);
+  const midnightUTC = new Date(`${localDateStr}T00:00:00Z`);
+  const startOfDayUTC = new Date(midnightUTC.getTime() + offsetMs);
+  const endOfDayUTC = new Date(startOfDayUTC.getTime() + 24 * 60 * 60 * 1000 - 1);
+  return {
+    dateFrom: startOfDayUTC.toISOString(),
+    dateTo: endOfDayUTC.toISOString()
+  };
+}
+function calculateDayDateRangeFromDate(timezone, referenceDate = new Date) {
+  const localDateStr = getLocalDateStr(timezone, referenceDate);
+  return calculateDayDateRange(timezone, localDateStr);
+}
+function resolveTimezone(storedTimezone, fallback = "UTC") {
+  return storedTimezone || fallback;
+}
+// ../../packages/utils/src/error.ts
+function toError(value) {
+  if (value instanceof Error) {
+    return value;
+  }
+  return new Error(String(value));
+}
+// ../../packages/utils/src/frontmatter.ts
+var FRONTMATTER_KEYS = new Set(["name", "description"]);
+// ../../packages/utils/src/mcp-registry.ts
+var CACHE_TTL_MS = 30 * 60 * 1000;
+var CACHE_MAX_SIZE = 100;
+class TtlCache {
+  map = new Map;
+  get(key) {
+    const entry = this.map.get(key);
+    if (!entry)
+      return { hit: false };
+    if (Date.now() > entry.expiry) {
+      this.map.delete(key);
+      return { hit: false };
+    }
+    return { hit: true, value: entry.value };
+  }
+  set(key, value) {
+    if (this.map.size >= CACHE_MAX_SIZE && !this.map.has(key)) {
+      const firstKey = this.map.keys().next().value;
+      if (firstKey !== undefined)
+        this.map.delete(firstKey);
+    }
+    this.map.set(key, { value, expiry: Date.now() + CACHE_TTL_MS });
+  }
+  clear() {
+    this.map.clear();
+  }
+}
+var cache = new TtlCache;
+var toolCache = new TtlCache;
+var serverCache = new TtlCache;
+var GENERIC_SEGMENTS = new Set(["mcp", "com", "org", "io", "dev", "server", "api"]);
+var VERB_PREFIXES = new Set([
+  "get",
+  "list",
+  "create",
+  "delete",
+  "update",
+  "search",
+  "query",
+  "fetch",
+  "run",
+  "execute",
+  "resolve",
+  "find",
+  "read",
+  "write",
+  "set",
+  "send",
+  "check",
+  "add",
+  "remove"
+]);
 // src/collector/session-signals.ts
 var BUILTIN_FUNCTION_CALL_NAMES = new Set([
   "Bash",
@@ -44815,24 +45031,193 @@ var BUILTIN_FUNCTION_CALL_NAMES = new Set([
 var AGENT_FUNCTION_CALL_NAMES = new Set(["Task", "Agent"]);
 var MCP_TOOL_NAME_PATTERN = /^mcp__[^_]+(?:_[^_]+)*__[^_]+(?:_[^_]+)*$/;
 var MCP_NAMESPACE_PATTERN = /^mcp__[^_]+(?:_[^_]+)*__$/;
-function incrementMap(map3, key) {
+var SKILL_PATH_PATTERN = /(?:^|[\s"'`])((?:(?:\/|\.{1,2}\/)?[^\s"'`]+\/)*skills\/[^\s"'`]+(?:\/[^\s"'`]+)*\/SKILL\.md)\b/g;
+var USER_DOLLAR_SKILL_PATTERN = /(?:^|\s)\$([A-Za-z][A-Za-z0-9:_-]*)\b/g;
+function incrementMap2(map3, key) {
   map3[key] = (map3[key] ?? 0) + 1;
 }
-function recordFunctionCallSignal(record3, signals) {
+function normalizeSkillPath(filePath, cwd) {
+  const cleaned = filePath.replace(/[),.;:]+$/g, "");
+  return cleaned.startsWith("/") ? import_node_path4.resolve(cleaned) : import_node_path4.resolve(cwd ?? "/", cleaned);
+}
+function skillNameFromPath(filePath) {
+  const parts = filePath.split("/").filter(Boolean);
+  const skillsIndex = parts.lastIndexOf("skills");
+  if (skillsIndex === -1 || parts.at(-1) !== "SKILL.md") {
+    return null;
+  }
+  const leaf = parts.at(-2);
+  if (!leaf || leaf === ".system") {
+    return null;
+  }
+  const cacheIndex = parts.lastIndexOf("cache");
+  const pluginName = cacheIndex >= 0 && cacheIndex + 2 < skillsIndex ? parts.at(cacheIndex + 2) : undefined;
+  if (pluginName && pluginName !== "skills" && pluginName !== ".system") {
+    return `${pluginName}:${leaf}`;
+  }
+  return leaf;
+}
+function addInventorySkill(inventory, name, filePath, description, cwd) {
+  const lowerName = name.toLowerCase();
+  const existing = inventory.entriesByLowerName.get(lowerName);
+  const entry = {
+    name: existing?.name ?? name,
+    description: existing?.description ?? description
+  };
+  inventory.entriesByLowerName.set(lowerName, entry);
+  inventory.entriesByPath.set(normalizeSkillPath(filePath, cwd), entry);
+}
+function cleanYamlScalar(value) {
+  let cleaned = value.trim();
+  const quote = cleaned[0];
+  if ((quote === "'" || quote === '"') && cleaned.at(-1) === quote) {
+    cleaned = cleaned.slice(1, -1);
+  }
+  return cleaned.length > 0 ? cleaned : undefined;
+}
+function parseSkillPayloadDescription(block) {
+  const frontmatterMatch = block.match(/---\s*\n([\s\S]*?)\n---/);
+  if (!frontmatterMatch) {
+    return;
+  }
+  const descriptionMatch = frontmatterMatch[1].match(/^description:\s*(.+)$/m);
+  return descriptionMatch ? cleanYamlScalar(descriptionMatch[1]) : undefined;
+}
+function parseExplicitSkillPayloads(text, inventory) {
+  for (const skillMatch of text.matchAll(/<skill>\s*([\s\S]*?)<\/skill>/g)) {
+    const block = skillMatch[1];
+    const name = block.match(/<name>([^<]+)<\/name>/)?.[1]?.trim();
+    const filePath = block.match(/<path>([^<]+)<\/path>/)?.[1]?.trim();
+    if (!name || !filePath) {
+      continue;
+    }
+    addInventorySkill(inventory, name, filePath, parseSkillPayloadDescription(block));
+  }
+}
+function parseSkillInventory(records) {
+  const inventory = {
+    entriesByLowerName: new Map,
+    entriesByPath: new Map
+  };
+  for (const record3 of records) {
+    if (record3.recordType !== "response_item" || record3.itemType !== "message") {
+      continue;
+    }
+    const text = record3.content.flatMap((block) => block.text ? [block.text] : []).join(`
+`);
+    if (record3.role === "user" && text.includes("<skill>")) {
+      parseExplicitSkillPayloads(text, inventory);
+    }
+    if (record3.role !== "developer" || !text.includes("### Available skills")) {
+      continue;
+    }
+    const roots = new Map;
+    for (const match of text.matchAll(/-\s+`?(r\d+)`?\s+=\s+`([^`]+)`/g)) {
+      roots.set(match[1], match[2]);
+    }
+    for (const match of text.matchAll(/^- (.+?):\s+(.*?)\s+\(file:\s+([^)]+)\)/gm)) {
+      const name = match[1].trim();
+      const description = match[2].trim();
+      const rawPath = match[3].trim();
+      const [rootKey, ...relativeParts] = rawPath.split("/");
+      const root = roots.get(rootKey);
+      const resolvedPath = root ? `${root}/${relativeParts.join("/")}` : rawPath;
+      addInventorySkill(inventory, name, resolvedPath, description);
+    }
+  }
+  return inventory;
+}
+function resolveSkillFromToken(inventory, token) {
+  return inventory.entriesByLowerName.get(token.toLowerCase()) ?? null;
+}
+function resolveSkillFromPath(inventory, rawPath, cwd) {
+  const normalizedPath = normalizeSkillPath(rawPath, cwd);
+  const inventoryEntry = inventory.entriesByPath.get(normalizedPath);
+  if (inventoryEntry) {
+    return inventoryEntry;
+  }
+  const name = skillNameFromPath(normalizedPath);
+  return name ? { name } : null;
+}
+function recordSkillSignal(signals, skill, source) {
+  const skillName = skill.name;
+  const current = signals.skill_usage[skillName];
+  const entry = typeof current === "number" ? { count: current, confidence: "high", sources: [] } : {
+    count: current?.count ?? 0,
+    confidence: current?.confidence ?? "high",
+    sources: [...current?.sources ?? []]
+  };
+  entry.count += 1;
+  if (!entry.sources.includes(source)) {
+    entry.sources.push(source);
+  }
+  signals.skill_usage[skillName] = entry;
+  if (skill.description !== undefined && !signals.tool_metadata?.[skillName]?.description) {
+    signals.tool_metadata ??= {};
+    signals.tool_metadata[skillName] = {
+      category: "skill",
+      description: skill.description
+    };
+  }
+}
+function recordUserExplicitSkillSignals(record3, inventory, signals) {
+  if (record3.recordType !== "event_msg" || record3.eventType !== "user_message") {
+    return;
+  }
+  const text = [record3.message, ...record3.textElements].join(`
+`);
+  for (const match of text.matchAll(USER_DOLLAR_SKILL_PATTERN)) {
+    const skill = resolveSkillFromToken(inventory, match[1]);
+    if (skill) {
+      recordSkillSignal(signals, skill, "user_explicit");
+    }
+  }
+  for (const line of text.split(/\r?\n/)) {
+    const slashCommand = extractSlashCommand(line);
+    if (!slashCommand) {
+      continue;
+    }
+    const skill = resolveSkillFromToken(inventory, slashCommand);
+    if (skill) {
+      recordSkillSignal(signals, skill, "user_explicit");
+    }
+  }
+}
+function functionCallWorkdir(record3) {
+  try {
+    const args = JSON.parse(record3.arguments);
+    if (args && typeof args === "object" && "workdir" in args) {
+      const workdir = args.workdir;
+      return typeof workdir === "string" && workdir.trim().length > 0 ? workdir : undefined;
+    }
+  } catch {
+    return;
+  }
+}
+function recordSkillFileReadSignals(record3, inventory, signals) {
+  for (const match of record3.arguments.matchAll(SKILL_PATH_PATTERN)) {
+    const skill = resolveSkillFromPath(inventory, match[1], functionCallWorkdir(record3));
+    if (skill) {
+      recordSkillSignal(signals, skill, "skill_file_read");
+    }
+  }
+}
+function recordFunctionCallSignal(record3, inventory, signals) {
+  recordSkillFileReadSignals(record3, inventory, signals);
   const normalizedMcpToolName = normalizeMcpToolName(record3);
   if (normalizedMcpToolName) {
-    incrementMap(signals.mcp_usage, normalizedMcpToolName);
+    incrementMap2(signals.mcp_usage, normalizedMcpToolName);
     return;
   }
   if (BUILTIN_FUNCTION_CALL_NAMES.has(record3.name)) {
-    incrementMap(signals.builtin_usage, record3.name);
+    incrementMap2(signals.builtin_usage, record3.name);
     return;
   }
   if (AGENT_FUNCTION_CALL_NAMES.has(record3.name)) {
-    incrementMap(signals.agent_usage, record3.name);
+    incrementMap2(signals.agent_usage, record3.name);
     return;
   }
-  incrementMap(signals.unknown_usage, record3.name);
+  incrementMap2(signals.unknown_usage, record3.name);
 }
 function normalizeMcpToolName(record3) {
   if (MCP_TOOL_NAME_PATTERN.test(record3.name)) {
@@ -44844,10 +45229,10 @@ function normalizeMcpToolName(record3) {
   return null;
 }
 function recordCustomToolSignal(record3, signals) {
-  incrementMap(signals.builtin_usage, record3.name);
+  incrementMap2(signals.builtin_usage, record3.name);
 }
 function recordWebSearchSignal(_record2, signals) {
-  incrementMap(signals.builtin_usage, "web_search");
+  incrementMap2(signals.builtin_usage, "web_search");
 }
 function recordMessageSignal(record3, signals) {
   for (const block of record3.content) {
@@ -44857,6 +45242,7 @@ function recordMessageSignal(record3, signals) {
   }
 }
 function extractSessionSignals(records) {
+  const skillInventory = parseSkillInventory(records);
   const signals = {
     mcp_usage: {},
     skill_usage: {},
@@ -44866,12 +45252,13 @@ function extractSessionSignals(records) {
     image_count: 0
   };
   for (const record3 of records) {
+    recordUserExplicitSkillSignals(record3, skillInventory, signals);
     if (record3.recordType !== "response_item") {
       continue;
     }
     switch (record3.itemType) {
       case "function_call":
-        recordFunctionCallSignal(record3, signals);
+        recordFunctionCallSignal(record3, skillInventory, signals);
         break;
       case "custom_tool_call":
         recordCustomToolSignal(record3, signals);
@@ -45477,7 +45864,7 @@ async function readTranscripts(filePaths) {
 
 // src/codex/discovery.ts
 var import_promises5 = require("node:fs/promises");
-var import_node_path5 = require("node:path");
+var import_node_path6 = require("node:path");
 
 // src/collector/session-references.ts
 var import_node_fs5 = require("node:fs");
@@ -45587,7 +45974,7 @@ function buildSessionReferenceMap(references) {
 
 // src/codex/paths.ts
 var import_node_os3 = require("node:os");
-var import_node_path4 = require("node:path");
+var import_node_path5 = require("node:path");
 var DEFAULT_CODEX_DIR_NAME = ".codex";
 var ALLOWLISTED_TOP_LEVEL_FILES = new Set([
   "config.toml",
@@ -45595,13 +45982,13 @@ var ALLOWLISTED_TOP_LEVEL_FILES = new Set([
   "history.jsonl"
 ]);
 function getCodexRootDir() {
-  return process.env.ZEST_CODEX_ROOT_DIR ?? import_node_path4.join(import_node_os3.homedir(), DEFAULT_CODEX_DIR_NAME);
+  return process.env.ZEST_CODEX_ROOT_DIR ?? import_node_path5.join(import_node_os3.homedir(), DEFAULT_CODEX_DIR_NAME);
 }
 function isWithinRoot(rootDir, targetPath) {
-  const rel = import_node_path4.relative(rootDir, targetPath);
+  const rel = import_node_path5.relative(rootDir, targetPath);
   if (rel.length === 0)
     return false;
-  return !(rel === ".." || rel.startsWith("../") || import_node_path4.isAbsolute(rel));
+  return !(rel === ".." || rel.startsWith("../") || import_node_path5.isAbsolute(rel));
 }
 function matchesAllowlist(relativePath) {
   if (ALLOWLISTED_TOP_LEVEL_FILES.has(relativePath)) {
@@ -45615,11 +46002,11 @@ function matchesAllowlist(relativePath) {
 }
 function resolveCodexPath(...segments) {
   const rootDir = getCodexRootDir();
-  const resolvedPath = import_node_path4.resolve(rootDir, ...segments);
+  const resolvedPath = import_node_path5.resolve(rootDir, ...segments);
   if (!isWithinRoot(rootDir, resolvedPath)) {
     throw new Error(`Codex path must stay within ${rootDir}`);
   }
-  const rel = import_node_path4.relative(rootDir, resolvedPath);
+  const rel = import_node_path5.relative(rootDir, resolvedPath);
   if (!matchesAllowlist(rel)) {
     throw new Error(`Codex path is not allowlisted: ${rel}`);
   }
@@ -45630,7 +46017,7 @@ function isAllowlistedCodexPath(absolutePath) {
   if (!isWithinRoot(rootDir, absolutePath)) {
     return false;
   }
-  return matchesAllowlist(import_node_path4.relative(rootDir, absolutePath));
+  return matchesAllowlist(import_node_path5.relative(rootDir, absolutePath));
 }
 
 // src/codex/discovery.ts
@@ -45668,15 +46055,15 @@ function formatDatePath(window2) {
   const year = String(window2.start.getFullYear());
   const month = String(window2.start.getMonth() + 1).padStart(2, "0");
   const day = String(window2.start.getDate()).padStart(2, "0");
-  return import_node_path5.join("sessions", year, month, day);
+  return import_node_path6.join("sessions", year, month, day);
 }
 function isCurrentDayTranscript(path2, rootDir, window2) {
-  const relativePath = import_node_path5.relative(rootDir, path2);
+  const relativePath = import_node_path6.relative(rootDir, path2);
   const currentDayPrefix = `${formatDatePath(window2)}/`;
   return relativePath.startsWith(currentDayPrefix);
 }
 function extractSessionIdFromTranscriptPath(path2) {
-  const transcriptName = import_node_path5.basename(path2).replace(/\.jsonl$/, "");
+  const transcriptName = import_node_path6.basename(path2).replace(/\.jsonl$/, "");
   return transcriptName.match(/([0-9A-Z]{26})$/)?.[1];
 }
 async function readActiveSessionIds(sessionIndexPath, window2) {
@@ -45704,8 +46091,8 @@ async function collectTranscriptPaths(dirPath, sessionIndexPath, window2) {
     if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
       continue;
     }
-    const parentPath = typeof entry.parentPath === "string" ? entry.parentPath : ("path" in entry) && typeof entry.path === "string" ? import_node_path5.join(dirPath, entry.path) : dirPath;
-    const absolutePath = import_node_path5.join(parentPath, entry.name);
+    const parentPath = typeof entry.parentPath === "string" ? entry.parentPath : ("path" in entry) && typeof entry.path === "string" ? import_node_path6.join(dirPath, entry.path) : dirPath;
+    const absolutePath = import_node_path6.join(parentPath, entry.name);
     if (!isAllowlistedCodexPath(absolutePath)) {
       continue;
     }
@@ -45718,7 +46105,7 @@ async function collectTranscriptPaths(dirPath, sessionIndexPath, window2) {
 }
 async function discoverCodexRuntimeFiles(options = {}) {
   const rootDir = getCodexRootDir();
-  const transcriptDir = import_node_path5.join(rootDir, "sessions");
+  const transcriptDir = import_node_path6.join(rootDir, "sessions");
   const sessionIndexPath = resolveCodexPath("session_index.jsonl");
   const localDayWindow = options.localDayWindow ?? createLocalDayWindow();
   const transcriptPaths = await directoryExists(transcriptDir) ? await collectTranscriptPaths(transcriptDir, sessionIndexPath, localDayWindow) : [];
@@ -45738,7 +46125,7 @@ function latestTurnContextCwd(transcript) {
 async function resolveActiveFolder(dependencies = {}) {
   if (dependencies.folderPath?.trim()) {
     return {
-      path: import_node_path6.resolve(dependencies.folderPath),
+      path: import_node_path7.resolve(dependencies.folderPath),
       source: "input"
     };
   }
@@ -45750,20 +46137,20 @@ async function resolveActiveFolder(dependencies = {}) {
     const parsed = await read(latestTranscriptPath);
     if (parsed?.sessionMeta?.cwd) {
       return {
-        path: import_node_path6.resolve(parsed.sessionMeta.cwd),
+        path: import_node_path7.resolve(parsed.sessionMeta.cwd),
         source: "session_meta"
       };
     }
     const turnContextCwd = parsed ? latestTurnContextCwd(parsed) : undefined;
     if (turnContextCwd) {
       return {
-        path: import_node_path6.resolve(turnContextCwd),
+        path: import_node_path7.resolve(turnContextCwd),
         source: "turn_context"
       };
     }
   }
   return {
-    path: import_node_path6.resolve(dependencies.fallbackCwd ?? process.cwd()),
+    path: import_node_path7.resolve(dependencies.fallbackCwd ?? process.cwd()),
     source: "process_cwd"
   };
 }
@@ -45771,18 +46158,18 @@ async function resolveActiveFolder(dependencies = {}) {
 // src/codex/legacy-alpha-cleanup.ts
 var import_promises6 = require("node:fs/promises");
 var import_node_os4 = require("node:os");
-var import_node_path7 = require("node:path");
+var import_node_path8 = require("node:path");
 var LEGACY_MARKETPLACE_NAME = "zest-alpha";
 var LEGACY_PLUGIN_NAME = "zest";
 var LEGACY_PLUGIN_CONFIG_PREFIX = `[plugins."${LEGACY_PLUGIN_NAME}@${LEGACY_MARKETPLACE_NAME}"`;
 function getCodexHomeDir(options) {
-  return options.codexHomeDir ?? import_node_path7.join(import_node_os4.homedir(), ".codex");
+  return options.codexHomeDir ?? import_node_path8.join(import_node_os4.homedir(), ".codex");
 }
 function getAgentsHomeDir(options) {
-  return options.agentsHomeDir ?? import_node_path7.join(import_node_os4.homedir(), ".agents");
+  return options.agentsHomeDir ?? import_node_path8.join(import_node_os4.homedir(), ".agents");
 }
 function getStateRootDir2(options) {
-  return options.stateRootDir ?? process.env.ZEST_CODEX_STATE_DIR ?? import_node_path7.join(import_node_os4.homedir(), ".codex-zest");
+  return options.stateRootDir ?? process.env.ZEST_CODEX_STATE_DIR ?? import_node_path8.join(import_node_os4.homedir(), ".codex-zest");
 }
 function createBackupSuffix(now) {
   return now.toISOString().replace(/\D/g, "").slice(0, 14);
@@ -45887,18 +46274,18 @@ async function cleanupLegacyAlphaInstall(options = {}) {
   const stateRootDir = getStateRootDir2(options);
   const suffix = createBackupSuffix(options.now ?? new Date);
   const backups = [];
-  const legacyCachePath = import_node_path7.join(codexHomeDir, "plugins", "cache", LEGACY_MARKETPLACE_NAME);
+  const legacyCachePath = import_node_path8.join(codexHomeDir, "plugins", "cache", LEGACY_MARKETPLACE_NAME);
   const removedLegacyCache = await removeIfExists(legacyCachePath);
-  const config2 = await cleanupLegacyConfig(import_node_path7.join(codexHomeDir, "config.toml"), suffix);
+  const config2 = await cleanupLegacyConfig(import_node_path8.join(codexHomeDir, "config.toml"), suffix);
   if (config2.backup) {
     backups.push(config2.backup);
   }
-  const marketplacePath = import_node_path7.join(agentsHomeDir, "plugins", "marketplace.json");
+  const marketplacePath = import_node_path8.join(agentsHomeDir, "plugins", "marketplace.json");
   const marketplace = await cleanupLegacyMarketplace(marketplacePath, suffix);
   if (marketplace.backup) {
     backups.push(marketplace.backup);
   }
-  const removedUpdateMetadataCache = await removeIfExists(import_node_path7.join(stateRootDir, "update", "check.json"));
+  const removedUpdateMetadataCache = await removeIfExists(import_node_path8.join(stateRootDir, "update", "check.json"));
   const removed = {
     legacyCache: removedLegacyCache,
     legacyConfigBlocks: config2.removed,
@@ -45921,7 +46308,7 @@ async function cleanupLegacyAlphaInstall(options = {}) {
 var import_node_child_process6 = require("node:child_process");
 var import_node_fs6 = require("node:fs");
 var import_promises9 = require("node:fs/promises");
-var import_node_path9 = require("node:path");
+var import_node_path10 = require("node:path");
 
 // src/settings/settings.ts
 var import_promises7 = require("node:fs/promises");
@@ -46018,7 +46405,7 @@ async function updateSettings(updater) {
 // src/sync/lock.ts
 var import_node_crypto = require("node:crypto");
 var import_promises8 = require("node:fs/promises");
-var import_node_path8 = require("node:path");
+var import_node_path9 = require("node:path");
 
 // src/daemon/state.ts
 function getDaemonPidFilePath() {
@@ -46065,7 +46452,7 @@ function createOwnerToken() {
   return `${process.pid}-${Date.now()}-${import_node_crypto.randomUUID()}`;
 }
 function getOwnerFilePath(lockPath, token) {
-  return import_node_path8.join(lockPath, `${OWNER_FILE_PREFIX}${token}`);
+  return import_node_path9.join(lockPath, `${OWNER_FILE_PREFIX}${token}`);
 }
 function resolveHeartbeatIntervalMs(options) {
   return options.heartbeatIntervalMs ?? Math.max(1, Math.floor((options.staleMs ?? DEFAULT_STALE_MS) / 2));
@@ -46093,7 +46480,7 @@ async function getLockSnapshot(lockPath) {
     return { exists: false };
   }
   const owners = (await Promise.all(ownerFiles.filter((fileName) => fileName.startsWith(OWNER_FILE_PREFIX)).map(async (fileName) => {
-    const ownerPath = import_node_path8.join(lockPath, fileName);
+    const ownerPath = import_node_path9.join(lockPath, fileName);
     const [owner, ownerStat] = await Promise.all([
       import_promises8.readFile(ownerPath, "utf-8").catch((error51) => {
         if (error51.code === "ENOENT") {
@@ -46202,7 +46589,7 @@ async function cleanupFailedOwnerPublication(lockPath, ownerPath, expectedIdenti
   }
 }
 async function acquireLock(options) {
-  await import_promises8.mkdir(import_node_path8.dirname(options.lockPath), { mode: DIRECTORY_MODE2, recursive: true });
+  await import_promises8.mkdir(import_node_path9.dirname(options.lockPath), { mode: DIRECTORY_MODE2, recursive: true });
   for (let attempt = 1;attempt <= options.maxAttempts; attempt += 1) {
     try {
       await import_promises8.mkdir(options.lockPath, { mode: DIRECTORY_MODE2 });
@@ -46347,8 +46734,8 @@ function isFreshDaemonTimestamp(timestamp, now, staleMs) {
   return resolveNowMs2(now) - timestampMs <= staleMs;
 }
 function isPathWithinDirectory(path2, directory) {
-  const relativePath = import_node_path9.relative(directory, path2);
-  return relativePath.length > 0 && !import_node_path9.isAbsolute(relativePath) && !relativePath.startsWith("..");
+  const relativePath = import_node_path10.relative(directory, path2);
+  return relativePath.length > 0 && !import_node_path10.isAbsolute(relativePath) && !relativePath.startsWith("..");
 }
 async function readDaemonPid() {
   const content = await import_promises9.readFile(getDaemonPidFilePath(), "utf-8");
@@ -46380,8 +46767,8 @@ function daemonScriptPathFromEntrypoint(entrypointPath) {
   if (!entrypointPath) {
     return null;
   }
-  const normalized = import_node_path9.normalize(entrypointPath);
-  if (!import_node_path9.basename(normalized).endsWith(".js")) {
+  const normalized = import_node_path10.normalize(entrypointPath);
+  if (!import_node_path10.basename(normalized).endsWith(".js")) {
     return null;
   }
   const parts = normalized.split(/[\\/]+/u);
@@ -46390,8 +46777,8 @@ function daemonScriptPathFromEntrypoint(entrypointPath) {
   if (bundleKind !== "hooks" && bundleKind !== "mcp") {
     return null;
   }
-  const distRoot = import_node_path9.dirname(import_node_path9.dirname(normalized));
-  const daemonScriptPath = import_node_path9.resolve(distRoot, "daemon", "daemon.js");
+  const distRoot = import_node_path10.dirname(import_node_path10.dirname(normalized));
+  const daemonScriptPath = import_node_path10.resolve(distRoot, "daemon", "daemon.js");
   if (!isPathWithinDirectory(daemonScriptPath, distRoot)) {
     return null;
   }
@@ -46409,7 +46796,7 @@ function daemonScriptPathFromEntrypoint(entrypointPath) {
       return null;
     }
   }
-  if (import_node_path9.dirname(daemonScriptPath) !== import_node_path9.resolve(distRoot, "daemon")) {
+  if (import_node_path10.dirname(daemonScriptPath) !== import_node_path10.resolve(distRoot, "daemon")) {
     return null;
   }
   return daemonScriptPath;
@@ -46419,7 +46806,7 @@ function defaultDaemonScriptPath() {
   if (bundledDaemonPath) {
     return bundledDaemonPath;
   }
-  return import_node_path9.join(__dirname, "..", "daemon", "daemon.js");
+  return import_node_path10.join(__dirname, "..", "daemon", "daemon.js");
 }
 async function readProcessCommand(pid) {
   return new Promise((resolve5) => {
@@ -46440,7 +46827,7 @@ async function isDefaultDaemonProcess(pid) {
   if (!command) {
     return false;
   }
-  const daemonScriptPath = import_node_path9.normalize(defaultDaemonScriptPath());
+  const daemonScriptPath = import_node_path10.normalize(defaultDaemonScriptPath());
   return command.includes(daemonScriptPath);
 }
 async function getDaemonPidForStop(options) {
@@ -46479,11 +46866,11 @@ async function stopDaemon(options = {}) {
 // src/diagnostics/bundle.ts
 var import_promises13 = require("node:fs/promises");
 var import_node_os5 = require("node:os");
-var import_node_path13 = require("node:path");
+var import_node_path14 = require("node:path");
 
 // ../../packages/plugin-common/src/log-rotation/log-rotation.ts
 var import_promises11 = require("node:fs/promises");
-var import_node_path10 = require("node:path");
+var import_node_path11 = require("node:path");
 
 // ../../packages/plugin-common/src/utils/fs-utils.ts
 var import_promises10 = require("node:fs/promises");
@@ -46502,7 +46889,7 @@ function getDateString() {
 }
 function getDatedLogPath(logsDir, logPrefix) {
   const dateStr = getDateString();
-  return import_node_path10.join(logsDir, `${logPrefix}-${dateStr}.log`);
+  return import_node_path11.join(logsDir, `${logPrefix}-${dateStr}.log`);
 }
 function parseDateFromFilename(filename, logPrefix) {
   const pattern = new RegExp(`^${logPrefix}-(\\d{4}-\\d{2}-\\d{2})\\.log$`);
@@ -46530,7 +46917,7 @@ function createLogRotation(config2) {
       for (const file2 of files) {
         const fileDate = parseDateFromFilename(file2, logPrefix);
         if (fileDate && fileDate < cutoffDate) {
-          const filePath = import_node_path10.join(logsDir, file2);
+          const filePath = import_node_path11.join(logsDir, file2);
           try {
             await import_promises11.unlink(filePath);
           } catch (error51) {
@@ -46580,7 +46967,7 @@ function getCurrentLogFilePath() {
 
 // src/logging/logger.ts
 var import_promises12 = require("node:fs/promises");
-var import_node_path11 = require("node:path");
+var import_node_path12 = require("node:path");
 
 // src/privacy/safe-json.ts
 var UNSAFE_KEY_PATTERN = /(access[\s_-]?token|refresh[\s_-]?token|token|secret|authorization|cookie|api[\s_-]?key|anon[\s_-]?key|refresh|password|device[\s_-]?code|payload|prompt|content|diff|stdout|stderr|output|arguments)/i;
@@ -46682,7 +47069,7 @@ function createLogger(dependencies = {}) {
     };
     try {
       const path2 = getCurrentLogFilePath();
-      await ensureDir(import_node_path11.dirname(path2), { recursive: true, mode: 448 });
+      await ensureDir(import_node_path12.dirname(path2), { recursive: true, mode: 448 });
       await append(path2, `${JSON.stringify(entry)}
 `, { encoding: "utf-8", mode: 384 });
       await cleanupLogs();
@@ -47042,7 +47429,7 @@ async function getQueueStats() {
 
 // src/diagnostics/current-chat.ts
 var import_node_crypto2 = require("node:crypto");
-var import_node_path12 = require("node:path");
+var import_node_path13 = require("node:path");
 function emptyDiagnostics(selection) {
   return {
     candidates: [],
@@ -47084,9 +47471,9 @@ function pathMatchesActiveFolder(transcriptPath, activePath) {
   if (!transcriptPath) {
     return false;
   }
-  const normalizedTranscriptPath = import_node_path12.resolve(transcriptPath);
-  const normalizedActivePath = import_node_path12.resolve(activePath);
-  return normalizedTranscriptPath === normalizedActivePath || normalizedTranscriptPath.startsWith(`${normalizedActivePath}${import_node_path12.sep}`);
+  const normalizedTranscriptPath = import_node_path13.resolve(transcriptPath);
+  const normalizedActivePath = import_node_path13.resolve(activePath);
+  return normalizedTranscriptPath === normalizedActivePath || normalizedTranscriptPath.startsWith(`${normalizedActivePath}${import_node_path13.sep}`);
 }
 function recordCountKey(record3) {
   switch (record3.recordType) {
@@ -47488,7 +47875,7 @@ function jsonContent(value) {
 `;
 }
 async function writeBundleFile(bundlePath, fileName, content) {
-  await import_promises13.writeFile(import_node_path13.join(bundlePath, fileName), content, { encoding: "utf-8", mode: FILE_MODE3 });
+  await import_promises13.writeFile(import_node_path14.join(bundlePath, fileName), content, { encoding: "utf-8", mode: FILE_MODE3 });
 }
 async function loadStatus(options) {
   if (!options.getStatus) {
@@ -47588,12 +47975,12 @@ async function createDebugBundle(options = {}) {
 }
 
 // src/privacy/sanitize.ts
-var import_node_path14 = require("node:path");
+var import_node_path15 = require("node:path");
 function createPrivacyServiceForSource(sourcePath, settings) {
   return new PrivacyService({
     config: settings ? createPrivacyConfig(settings) : undefined,
     enableCache: true,
-    fs: createNodeFsAdapter(import_node_path14.dirname(sourcePath))
+    fs: createNodeFsAdapter(import_node_path15.dirname(sourcePath))
   });
 }
 function mapFieldSummary(field, result) {
@@ -47679,9 +48066,9 @@ function formatExclusionReason(reason) {
 }
 
 // src/settings/folders.ts
-var import_node_path15 = require("node:path");
+var import_node_path16 = require("node:path");
 function getPathApi(platform3) {
-  return platform3 === "win32" ? import_node_path15.win32 : import_node_path15.posix;
+  return platform3 === "win32" ? import_node_path16.win32 : import_node_path16.posix;
 }
 function shouldFoldCase(platform3 = process.platform) {
   return platform3 === "darwin" || platform3 === "win32";
@@ -47797,111 +48184,7 @@ async function fetchDefaultStandupPromptId(supabase, workspaceId, options) {
     return null;
   }
 }
-// ../../packages/utils/src/date-range.ts
-var PERIOD_TYPE_LABELS = {
-  ["today" /* Today */]: "Today",
-  ["this_week" /* ThisWeek */]: "This Week",
-  ["this_month" /* ThisMonth */]: "This Month"
-};
-var PERIOD_SUMMARY_LABELS = {
-  ["today" /* Today */]: "Daily Summary",
-  ["this_week" /* ThisWeek */]: "Weekly Summary",
-  ["this_month" /* ThisMonth */]: "Monthly Summary",
-  custom: "Custom Period"
-};
-function getLocalDateStr(timezone, referenceDate = new Date) {
-  const formatter = new Intl.DateTimeFormat("en-CA", {
-    timeZone: timezone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  });
-  return formatter.format(referenceDate);
-}
-function getTimezoneOffsetMs(timezone, localDateStr) {
-  const tempDate = new Date(`${localDateStr}T00:00:00Z`);
-  const utcDate = new Date(tempDate.toLocaleString("en-US", { timeZone: "UTC" }));
-  const tzDate = new Date(tempDate.toLocaleString("en-US", { timeZone: timezone }));
-  return utcDate.getTime() - tzDate.getTime();
-}
-function calculateDayDateRange(timezone, localDateStr) {
-  const offsetMs = getTimezoneOffsetMs(timezone, localDateStr);
-  const midnightUTC = new Date(`${localDateStr}T00:00:00Z`);
-  const startOfDayUTC = new Date(midnightUTC.getTime() + offsetMs);
-  const endOfDayUTC = new Date(startOfDayUTC.getTime() + 24 * 60 * 60 * 1000 - 1);
-  return {
-    dateFrom: startOfDayUTC.toISOString(),
-    dateTo: endOfDayUTC.toISOString()
-  };
-}
-function calculateDayDateRangeFromDate(timezone, referenceDate = new Date) {
-  const localDateStr = getLocalDateStr(timezone, referenceDate);
-  return calculateDayDateRange(timezone, localDateStr);
-}
-function resolveTimezone(storedTimezone, fallback = "UTC") {
-  return storedTimezone || fallback;
-}
-// ../../packages/utils/src/error.ts
-function toError(value) {
-  if (value instanceof Error) {
-    return value;
-  }
-  return new Error(String(value));
-}
-// ../../packages/utils/src/frontmatter.ts
-var FRONTMATTER_KEYS = new Set(["name", "description"]);
-// ../../packages/utils/src/mcp-registry.ts
-var CACHE_TTL_MS = 30 * 60 * 1000;
-var CACHE_MAX_SIZE = 100;
-class TtlCache {
-  map = new Map;
-  get(key) {
-    const entry = this.map.get(key);
-    if (!entry)
-      return { hit: false };
-    if (Date.now() > entry.expiry) {
-      this.map.delete(key);
-      return { hit: false };
-    }
-    return { hit: true, value: entry.value };
-  }
-  set(key, value) {
-    if (this.map.size >= CACHE_MAX_SIZE && !this.map.has(key)) {
-      const firstKey = this.map.keys().next().value;
-      if (firstKey !== undefined)
-        this.map.delete(firstKey);
-    }
-    this.map.set(key, { value, expiry: Date.now() + CACHE_TTL_MS });
-  }
-  clear() {
-    this.map.clear();
-  }
-}
-var cache = new TtlCache;
-var toolCache = new TtlCache;
-var serverCache = new TtlCache;
-var GENERIC_SEGMENTS = new Set(["mcp", "com", "org", "io", "dev", "server", "api"]);
-var VERB_PREFIXES = new Set([
-  "get",
-  "list",
-  "create",
-  "delete",
-  "update",
-  "search",
-  "query",
-  "fetch",
-  "run",
-  "execute",
-  "resolve",
-  "find",
-  "read",
-  "write",
-  "set",
-  "send",
-  "check",
-  "add",
-  "remove"
-]);
+
 // src/standup/standup.ts
 var consoleStandupLog = {
   error: (event, details) => console.error(`zest-codex standup: ${event}`, details ?? {}),
@@ -48056,17 +48339,259 @@ async function createStandupResponse(dependencies = {}) {
   }
 }
 
-// src/sync/normalize.ts
-var import_node_path16 = require("node:path");
-function normalizeSignals(signals) {
+// src/codex/account-metadata.ts
+var import_promises14 = require("node:fs/promises");
+var import_node_path17 = require("node:path");
+var OPENAI_AUTH_CLAIM = "https://api.openai.com/auth";
+function decodeJwtPayload(token) {
+  if (typeof token !== "string") {
+    return null;
+  }
+  const parts = token.split(".");
+  if (parts.length !== 3 || !parts[1]) {
+    return null;
+  }
+  try {
+    const decoded = Buffer.from(parts[1], "base64url").toString("utf-8");
+    const payload = JSON.parse(decoded);
+    return payload && typeof payload === "object" ? payload : null;
+  } catch {
+    return null;
+  }
+}
+function extractPlanType(payload) {
+  const authClaim = payload?.[OPENAI_AUTH_CLAIM];
+  const rawPlan = authClaim && typeof authClaim === "object" ? authClaim.chatgpt_plan_type : undefined;
+  return typeof rawPlan === "string" && rawPlan.trim().length > 0 ? rawPlan.trim().toLowerCase() : undefined;
+}
+function extractCodexAccountMetadataFromAuth(auth) {
+  if (!auth || typeof auth !== "object") {
+    return null;
+  }
+  const tokens = auth.tokens;
+  if (!tokens || typeof tokens !== "object") {
+    return null;
+  }
+  const tokenRecord = tokens;
+  const planType = extractPlanType(decodeJwtPayload(tokenRecord.id_token)) ?? extractPlanType(decodeJwtPayload(tokenRecord.access_token));
+  if (!planType) {
+    return null;
+  }
   return {
+    plan: `openai:${planType}`,
+    billing_mode: planType === "free" ? "unknown" : "subscription"
+  };
+}
+async function readCodexAccountMetadata() {
+  try {
+    const auth = JSON.parse(await import_promises14.readFile(import_node_path17.join(getCodexRootDir(), "auth.json"), "utf-8"));
+    return extractCodexAccountMetadataFromAuth(auth);
+  } catch {
+    return null;
+  }
+}
+
+// src/sync/normalize.ts
+var import_node_path18 = require("node:path");
+
+// ../../packages/utils/src/git-utils.ts
+var import_node_child_process7 = require("node:child_process");
+var path2 = __toESM(require("node:path"));
+var import_node_util6 = require("node:util");
+// ../../node_modules/uuid/dist-node/sha1.js
+var import_node_crypto3 = require("node:crypto");
+function sha1(bytes) {
+  if (Array.isArray(bytes)) {
+    bytes = Buffer.from(bytes);
+  } else if (typeof bytes === "string") {
+    bytes = Buffer.from(bytes, "utf8");
+  }
+  return import_node_crypto3.createHash("sha1").update(bytes).digest();
+}
+var sha1_default = sha1;
+
+// ../../node_modules/uuid/dist-node/regex.js
+var regex_default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/i;
+
+// ../../node_modules/uuid/dist-node/validate.js
+function validate(uuid3) {
+  return typeof uuid3 === "string" && regex_default.test(uuid3);
+}
+var validate_default = validate;
+
+// ../../node_modules/uuid/dist-node/parse.js
+function parse6(uuid3) {
+  if (!validate_default(uuid3)) {
+    throw TypeError("Invalid UUID");
+  }
+  let v;
+  return Uint8Array.of((v = parseInt(uuid3.slice(0, 8), 16)) >>> 24, v >>> 16 & 255, v >>> 8 & 255, v & 255, (v = parseInt(uuid3.slice(9, 13), 16)) >>> 8, v & 255, (v = parseInt(uuid3.slice(14, 18), 16)) >>> 8, v & 255, (v = parseInt(uuid3.slice(19, 23), 16)) >>> 8, v & 255, (v = parseInt(uuid3.slice(24, 36), 16)) / 1099511627776 & 255, v / 4294967296 & 255, v >>> 24 & 255, v >>> 16 & 255, v >>> 8 & 255, v & 255);
+}
+var parse_default = parse6;
+
+// ../../node_modules/uuid/dist-node/stringify.js
+var byteToHex = [];
+for (let i = 0;i < 256; ++i) {
+  byteToHex.push((i + 256).toString(16).slice(1));
+}
+function unsafeStringify(arr, offset = 0) {
+  return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
+}
+
+// ../../node_modules/uuid/dist-node/v35.js
+function stringToBytes(str) {
+  str = unescape(encodeURIComponent(str));
+  const bytes = new Uint8Array(str.length);
+  for (let i = 0;i < str.length; ++i) {
+    bytes[i] = str.charCodeAt(i);
+  }
+  return bytes;
+}
+var DNS = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
+var URL2 = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
+function v35(version4, hash2, value, namespace, buf, offset) {
+  const valueBytes = typeof value === "string" ? stringToBytes(value) : value;
+  const namespaceBytes = typeof namespace === "string" ? parse_default(namespace) : namespace;
+  if (typeof namespace === "string") {
+    namespace = parse_default(namespace);
+  }
+  if (namespace?.length !== 16) {
+    throw TypeError("Namespace must be array-like (16 iterable integer values, 0-255)");
+  }
+  let bytes = new Uint8Array(16 + valueBytes.length);
+  bytes.set(namespaceBytes);
+  bytes.set(valueBytes, namespaceBytes.length);
+  bytes = hash2(bytes);
+  bytes[6] = bytes[6] & 15 | version4;
+  bytes[8] = bytes[8] & 63 | 128;
+  if (buf) {
+    offset = offset || 0;
+    if (offset < 0 || offset + 16 > buf.length) {
+      throw new RangeError(`UUID byte range ${offset}:${offset + 15} is out of buffer bounds`);
+    }
+    for (let i = 0;i < 16; ++i) {
+      buf[offset + i] = bytes[i];
+    }
+    return buf;
+  }
+  return unsafeStringify(bytes);
+}
+
+// ../../node_modules/uuid/dist-node/v5.js
+function v5(value, namespace, buf, offset) {
+  return v35(80, sha1_default, value, namespace, buf, offset);
+}
+v5.DNS = DNS;
+v5.URL = URL2;
+var v5_default = v5;
+// ../../packages/utils/src/git-utils.ts
+var execAsync = import_node_util6.promisify(import_node_child_process7.exec);
+var UNKNOWN_PROJECT = {
+  projectId: "unknown",
+  projectName: "unknown"
+};
+var PROJECT_ID_NAMESPACE = "e1f3b3c4-0b7a-4c1e-8a7b-9f3c0e1d2a3b";
+function generateProjectId(input) {
+  return v5_default(input, PROJECT_ID_NAMESPACE);
+}
+function extractNameFromRemoteUrl(remoteUrl) {
+  const orgRepoMatch = remoteUrl.match(/[/:]([^/:.]+\/[^/]+?)(\.git)?$/);
+  if (orgRepoMatch?.[1]) {
+    return orgRepoMatch[1];
+  }
+  const repoMatch = remoteUrl.match(/\/([^/]+?)(\.git)?$/);
+  if (repoMatch?.[1]) {
+    return repoMatch[1];
+  }
+  return null;
+}
+function extractProjectName(workingDirectory) {
+  try {
+    try {
+      const remoteUrl = import_node_child_process7.execSync("git config --get remote.origin.url", {
+        cwd: workingDirectory,
+        encoding: "utf-8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 5000
+      }).trim();
+      if (remoteUrl) {
+        const name = extractNameFromRemoteUrl(remoteUrl);
+        if (name) {
+          return name;
+        }
+      }
+    } catch {}
+    try {
+      const gitCommonDir = import_node_child_process7.execSync("git rev-parse --git-common-dir", {
+        cwd: workingDirectory,
+        encoding: "utf-8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 5000
+      }).trim();
+      if (path2.isAbsolute(gitCommonDir) && path2.basename(gitCommonDir) === ".git") {
+        return path2.basename(path2.dirname(gitCommonDir));
+      }
+      const repoRoot = import_node_child_process7.execSync("git rev-parse --show-toplevel", {
+        cwd: workingDirectory,
+        encoding: "utf-8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 5000
+      }).trim();
+      if (repoRoot) {
+        return path2.basename(repoRoot);
+      }
+    } catch {}
+    return path2.basename(workingDirectory);
+  } catch {
+    return null;
+  }
+}
+function isGitRepository(workingDirectory) {
+  try {
+    import_node_child_process7.execSync("git rev-parse --is-inside-work-tree", {
+      cwd: workingDirectory,
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"],
+      timeout: 5000
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+function getProjectInfoSync(workingDirectory) {
+  try {
+    if (!isGitRepository(workingDirectory)) {
+      return UNKNOWN_PROJECT;
+    }
+    const projectName = extractProjectName(workingDirectory);
+    if (!projectName) {
+      return UNKNOWN_PROJECT;
+    }
+    const absolutePath = path2.resolve(workingDirectory);
+    const projectId = generateProjectId(absolutePath);
+    return {
+      projectId,
+      projectName
+    };
+  } catch {
+    return UNKNOWN_PROJECT;
+  }
+}
+// src/sync/normalize.ts
+function normalizeSignals(signals) {
+  const normalized = {
     mcp_usage: { ...signals.mcp_usage },
-    skill_usage: {},
+    skill_usage: { ...signals.skill_usage },
     agent_usage: { ...signals.agent_usage },
     builtin_usage: { ...signals.builtin_usage },
     unknown_usage: { ...signals.unknown_usage },
     image_count: signals.image_count
   };
+  if (signals.tool_metadata) {
+    normalized.tool_metadata = Object.fromEntries(Object.entries(signals.tool_metadata).map(([name, metadata]) => [name, { ...metadata }]));
+  }
+  return normalized;
 }
 function resolveCreatedAt(transcript) {
   if (transcript.sessionMeta?.timestamp) {
@@ -48146,20 +48671,30 @@ function resolveModelWithReasoning(transcript) {
     return reasoning ? `${model}:${reasoning}` : model;
   }
 }
-function findLatestTokenCountRecord(transcript) {
+function scanTokenCountRecords(transcript) {
   let latest;
+  let peakPrimary;
+  let peakSecondary;
   for (const record3 of transcript.records) {
     if (record3.recordType === "event_msg" && record3.eventType === "token_count") {
       latest = record3;
+      const pri = record3.rateLimits?.primary?.usedPercent;
+      if (pri !== undefined && (peakPrimary === undefined || pri > peakPrimary)) {
+        peakPrimary = pri;
+      }
+      const sec = record3.rateLimits?.secondary?.usedPercent;
+      if (sec !== undefined && (peakSecondary === undefined || sec > peakSecondary)) {
+        peakSecondary = sec;
+      }
     }
   }
-  return latest;
+  return latest ? { latest, peakPrimaryPercent: peakPrimary, peakSecondaryPercent: peakSecondary } : undefined;
 }
 function roundPercent(value) {
   return Math.round(value * 100) / 100;
 }
-function remainingLimit(usedPercent) {
-  return usedPercent === undefined ? undefined : roundPercent(Math.max(0, 100 - usedPercent));
+function clampUsedPercent(usedPercent) {
+  return usedPercent === undefined ? undefined : roundPercent(Math.max(0, usedPercent));
 }
 function normalizeTokenUsage(usage) {
   if (!usage) {
@@ -48187,19 +48722,23 @@ function normalizeRateLimitWindow(window2) {
   };
   return Object.keys(normalized).length > 0 ? normalized : undefined;
 }
-function buildCodexSessionMetadata(transcript) {
-  const latest = findLatestTokenCountRecord(transcript);
-  if (!latest) {
-    return null;
+function hasAccountMetadata(metadata) {
+  return metadata != null && Object.keys(metadata).length > 0;
+}
+function buildCodexSessionMetadata(transcript, accountMetadata) {
+  const scan = scanTokenCountRecords(transcript);
+  if (!scan) {
+    return hasAccountMetadata(accountMetadata) ? accountMetadata : null;
   }
+  const { latest } = scan;
   const totalUsage = latest.info?.totalTokenUsage;
   const lastUsage = latest.info?.lastTokenUsage;
   const modelContextWindow = latest.info?.modelContextWindow;
   const totalUsageSnapshot = normalizeTokenUsage(totalUsage);
   const lastUsageSnapshot = normalizeTokenUsage(lastUsage);
   const modelWithReasoning = resolveModelWithReasoning(transcript);
-  const fiveHourLimit = remainingLimit(latest.rateLimits?.primary?.usedPercent);
-  const weeklyLimit = remainingLimit(latest.rateLimits?.secondary?.usedPercent);
+  const fiveHourLimit = clampUsedPercent(scan.peakPrimaryPercent);
+  const weeklyLimit = clampUsedPercent(scan.peakSecondaryPercent);
   const tokenCountLatest = {
     timestamp: latest.timestamp,
     ...totalUsageSnapshot ? { total_token_usage: totalUsageSnapshot } : {},
@@ -48216,12 +48755,13 @@ function buildCodexSessionMetadata(transcript) {
   } : undefined;
   const hasTokenInfo = Object.keys(tokenCountLatest).some((key) => key !== "timestamp");
   const hasRateLimitInfo = rateLimitsLatest && Object.keys(rateLimitsLatest).length > 0;
-  if (!hasTokenInfo && !hasRateLimitInfo) {
+  if (!hasTokenInfo && !hasRateLimitInfo && !hasAccountMetadata(accountMetadata)) {
     return null;
   }
   const contextTokenUsage = lastUsage?.totalTokens ?? totalUsage?.totalTokens;
   const contextUsed = contextTokenUsage !== undefined && modelContextWindow && modelContextWindow > 0 ? roundPercent(contextTokenUsage / modelContextWindow * 100) : undefined;
   return {
+    ...accountMetadata ?? {},
     ...modelWithReasoning ? { model_with_reasoning: modelWithReasoning } : {},
     ...contextUsed !== undefined ? { context_used: contextUsed } : {},
     ...contextUsed !== undefined ? { context_remaining: roundPercent(Math.max(0, 100 - contextUsed)) } : {},
@@ -48230,6 +48770,7 @@ function buildCodexSessionMetadata(transcript) {
     ...totalUsage?.totalTokens !== undefined ? { used_tokens: totalUsage.totalTokens } : {},
     ...totalUsage?.inputTokens !== undefined ? { input_tokens: totalUsage.inputTokens } : {},
     ...totalUsage?.outputTokens !== undefined ? { output_tokens: totalUsage.outputTokens } : {},
+    ...totalUsage?.inputTokens !== undefined || totalUsage?.outputTokens !== undefined ? { token_source: "provider_reported" } : {},
     ...totalUsage?.cachedInputTokens !== undefined ? { cache_read_tokens: totalUsage.cachedInputTokens } : {},
     ...totalUsage?.reasoningOutputTokens !== undefined ? { reasoning_tokens: totalUsage.reasoningOutputTokens } : {},
     ...modelContextWindow !== undefined ? { model_context_window: modelContextWindow } : {},
@@ -48265,10 +48806,12 @@ function normalizeMessageMetadataWithModel(message, modelName) {
   };
 }
 function normalizeTranscriptToZestPayload(input) {
-  const { transcript, sessionRef, userId, workspaceId } = input;
+  const { accountMetadata, transcript, sessionRef, userId, workspaceId } = input;
   const { createdAt, source: createdAtSource } = resolveCreatedAt(transcript);
   const { platform: platform3, source: platformSource } = resolvePlatform(transcript.sessionMeta?.originator);
   const title = sessionRef?.title ?? null;
+  const cwd = transcript.sessionMeta?.cwd;
+  const projectInfo = cwd ? getProjectInfoSync(cwd) : null;
   const session = {
     id: transcript.sessionId,
     title,
@@ -48276,9 +48819,9 @@ function normalizeTranscriptToZestPayload(input) {
     user_id: userId,
     workspace_id: workspaceId ?? null,
     analysis_status: "pending",
-    metadata: buildCodexSessionMetadata(transcript),
+    metadata: buildCodexSessionMetadata(transcript, accountMetadata),
     project_id: null,
-    project_name: transcript.sessionMeta?.cwd ? import_node_path16.basename(transcript.sessionMeta.cwd) : null,
+    project_name: projectInfo && projectInfo.projectName !== "unknown" ? projectInfo.projectName : cwd ? import_node_path18.basename(cwd) : null,
     platform: platform3,
     source: SOURCE,
     signals: normalizeSignals(transcript.signals)
@@ -48306,14 +48849,209 @@ function normalizeTranscriptToPreparedPayload(input) {
   };
 }
 function normalizeTranscriptsToPreparedPayloads(input) {
-  const { transcripts, sessionRefsById, userId, workspaceId } = input;
+  const { accountMetadata, transcripts, sessionRefsById, userId, workspaceId } = input;
   return transcripts.map((transcript) => normalizeTranscriptToPreparedPayload({
+    accountMetadata,
     transcript,
     sessionRef: sessionRefsById?.get(transcript.sessionId),
     userId,
     workspaceId
   }));
 }
+// ../../packages/types/behavioral-profile.ts
+var BASIC_AI_PRACTICES = [
+  {
+    name: "Context Frontloading",
+    description: "Providing comprehensive background, project details, tech stack, and constraints upfront before asking for help"
+  },
+  {
+    name: "Iterative Refinement",
+    description: "Breaking down complex problems into smaller steps and refining solutions through multiple exchanges"
+  },
+  {
+    name: "Explicit Constraint Setting",
+    description: "Clearly stating limitations, requirements, performance needs, or style preferences"
+  },
+  {
+    name: "Error Context Sharing",
+    description: "Providing full error messages, stack traces, and relevant code when debugging"
+  },
+  {
+    name: "Code Review Requests",
+    description: "Asking AI to review, critique, or suggest improvements to existing code"
+  },
+  {
+    name: "Rubber Duck Debugging",
+    description: "Explaining the problem step-by-step to the AI to clarify thinking"
+  },
+  {
+    name: "Alternative Approach Seeking",
+    description: "Asking for multiple solutions or different ways to solve the same problem"
+  },
+  {
+    name: "Trade-off Analysis",
+    description: "Requesting comparison of different approaches with pros/cons"
+  },
+  {
+    name: "Edge Case Exploration",
+    description: "Asking AI to identify potential edge cases or failure scenarios"
+  },
+  {
+    name: "Performance Optimization",
+    description: "Seeking advice on making code faster, more efficient, or scalable"
+  },
+  {
+    name: "Concept Explanation Requests",
+    description: "Asking AI to explain programming concepts, patterns, or best practices"
+  },
+  {
+    name: "Code Annotation",
+    description: "Requesting detailed comments or explanations of how code works"
+  },
+  {
+    name: "Learning Path Guidance",
+    description: "Seeking recommendations for what to learn next or how to improve skills"
+  },
+  {
+    name: "Best Practice Inquiry",
+    description: "Asking about industry standards, conventions, or recommended approaches"
+  },
+  {
+    name: "Template Generation",
+    description: "Asking AI to create boilerplate code, project structures, or configuration files"
+  },
+  {
+    name: "Documentation Assistance",
+    description: "Getting help with README files, API docs, or code comments"
+  },
+  {
+    name: "Testing Strategy",
+    description: "Requesting help with unit tests, test cases, or testing approaches"
+  },
+  {
+    name: "Refactoring Guidance",
+    description: "Asking for help restructuring or cleaning up existing code"
+  },
+  {
+    name: "Integration Help",
+    description: "Seeking assistance with connecting different systems, APIs, or libraries"
+  },
+  {
+    name: "Prompt Engineering",
+    description: "Crafting specific, detailed requests to get better AI responses"
+  },
+  {
+    name: "Role Assignment",
+    description: "Asking AI to take on specific roles (senior developer, code reviewer, architect)"
+  },
+  {
+    name: "Socratic Method",
+    description: "Asking AI to guide discovery through questions rather than direct answers"
+  },
+  {
+    name: "Pair Programming Simulation",
+    description: "Engaging in back-and-forth collaborative coding sessions"
+  },
+  {
+    name: "Architecture Discussion",
+    description: "High-level system design conversations and decision-making"
+  }
+];
+var INTENT_LABELS = [
+  "planning",
+  "implementation",
+  "review",
+  "debugging",
+  "refactoring",
+  "testing",
+  "documentation",
+  "configuration",
+  "exploration",
+  "deployment"
+];
+var ANTI_PATTERNS = [
+  "vibe_coding_unchecked",
+  "context_starvation",
+  "kitchen_sink_context",
+  "premature_acceptance",
+  "error_message_chasing",
+  "model_thrashing",
+  "abandon_the_plan",
+  "over_specification",
+  "spray_and_pray",
+  "automation_bias",
+  "pattern_match_no_understanding",
+  "context_pollution"
+];
+var RECOVERY_STRATEGIES = [
+  "retry",
+  "reframe",
+  "decompose",
+  "step_back",
+  "escalate_model",
+  "escalate_human",
+  "abandon",
+  "none"
+];
+var INTERACTION_STYLES = [
+  "oneshot",
+  "iterative_refinement",
+  "pair_programming",
+  "tight_loop"
+];
+var PLANNING_SEEDS = ["ticket", "spec", "freeform", "none"];
+var PROMPT_TECHNIQUE_NAMES = BASIC_AI_PRACTICES.map((p) => p.name);
+var behavioralProfileZodSchema = object2({
+  intent_journey: array(object2({
+    intent: _enum2(INTENT_LABELS),
+    message_range: object2({
+      from: number2(),
+      to: number2()
+    }),
+    models_used: array(string2()),
+    notes: string2().optional()
+  })).max(50),
+  planning_mode: object2({
+    used: boolean2(),
+    seed: _enum2(PLANNING_SEEDS),
+    planning_message_count: number2(),
+    plan_then_execute: boolean2(),
+    plan_revisions: number2()
+  }),
+  context_provisioning: object2({
+    frontloaded: boolean2(),
+    attached_files_referenced: number2(),
+    referenced_tickets: boolean2(),
+    referenced_docs: boolean2(),
+    iterative_context: boolean2()
+  }),
+  model_strategy: object2({
+    switched_mid_session: boolean2(),
+    switch_reasons: array(object2({
+      from: string2(),
+      to: string2(),
+      reason: string2()
+    }))
+  }),
+  prompt_techniques: array(_enum2(PROMPT_TECHNIQUE_NAMES)).max(BASIC_AI_PRACTICES.length),
+  custom_techniques: array(object2({
+    name: string2(),
+    description: string2()
+  })).max(50),
+  interaction_style: _enum2(INTERACTION_STYLES),
+  failure_recovery: object2({
+    encountered_errors: boolean2(),
+    recovery_strategy: _enum2(RECOVERY_STRATEGIES)
+  }),
+  anti_patterns: array(_enum2(ANTI_PATTERNS)).max(8)
+});
+var behavioralProfileSchema = {
+  _type: undefined,
+  jsonSchema: toJSONSchema(behavioralProfileZodSchema),
+  validate: undefined,
+  [Symbol.for("vercel.ai.schema")]: true,
+  [Symbol.for("vercel.ai.validator")]: true
+};
 // ../../packages/types/data-controls.ts
 var RETENTION_PERIODS = ["12h", "1d", "7d", "30d", "90d", "1y", "forever"];
 var RETENTION_PERIOD_ORDER = {
@@ -48395,6 +49133,8 @@ var metricItemSchema = exports_external.object({
 var gitHubMetricsEntryDataSchema = exports_external.object({
   metrics: exports_external.array(metricItemSchema).min(1)
 });
+// ../../packages/types/profile.ts
+var ACTOR_TYPES = new Set(["human", "agent"]);
 // ../../packages/types/prompt-tags.ts
 var PROMPT_TAGS = {
   TOP_5: {
@@ -48431,18 +49171,22 @@ var PROMPT_TAGS = {
 var AVAILABLE_PROMPT_TAGS = Object.values(PROMPT_TAGS);
 var tagIds = AVAILABLE_PROMPT_TAGS.map((tag) => tag.id);
 // ../../packages/types/schemas.ts
+var SkillOutputFormatSchema = exports_external.enum(["skill_report_markdown", "markdown", "json"]);
 var CustomPromptMetadataSchema = exports_external.object({
   tags: exports_external.array(exports_external.string()).optional(),
   cascade_category: exports_external.string().optional(),
-  description: exports_external.string().optional()
+  description: exports_external.string().optional(),
+  output_format: SkillOutputFormatSchema.optional(),
+  example_output: exports_external.unknown().optional()
 });
 // ../../packages/types/token-usage.ts
-var TOKEN_SOURCES = ["provider_reported"];
+var TOKEN_SOURCES = ["provider_reported", "estimated_heuristic"];
 var COST_SOURCES = [
   "provider_reported",
   "derived_openrouter",
   "cursor_dashboard_api"
 ];
+var BILLING_MODES = ["api", "subscription", "unknown"];
 var SessionTokenUsageSchema = exports_external.object({
   input_tokens: exports_external.number().int().nonnegative(),
   output_tokens: exports_external.number().int().nonnegative(),
@@ -48450,6 +49194,8 @@ var SessionTokenUsageSchema = exports_external.object({
   token_source: exports_external.enum(TOKEN_SOURCES),
   cost_usd: exports_external.number().nonnegative().nullable().optional(),
   cost_source: exports_external.enum(COST_SOURCES).nullable().optional(),
+  api_equivalent_cost_usd: exports_external.number().nonnegative().nullable().optional(),
+  api_equivalent_cost_source: exports_external.enum(["derived_openrouter", "derived_openrouter_stale"]).nullable().optional(),
   cache_read_tokens: exports_external.number().int().nonnegative().optional(),
   cache_creation_tokens: exports_external.number().int().nonnegative().optional(),
   cache_creation_5m_tokens: exports_external.number().int().nonnegative().optional(),
@@ -48463,13 +49209,32 @@ var SessionTokenUsageSchema = exports_external.object({
     output_tokens: exports_external.number().nonnegative(),
     cache_read_input_tokens: exports_external.number().nonnegative().optional(),
     cache_creation_input_tokens: exports_external.number().nonnegative().optional(),
+    cache_creation_5m_input_tokens: exports_external.number().nonnegative().optional(),
+    cache_creation_1h_input_tokens: exports_external.number().nonnegative().optional(),
+    reasoning_tokens: exports_external.number().nonnegative().optional(),
     cost_usd: exports_external.number().nonnegative().optional()
   })).optional(),
   context_used_percent: exports_external.number().nonnegative().max(100).optional(),
   context_window_size: exports_external.number().int().nonnegative().optional(),
+  context_tokens_used: exports_external.number().int().nonnegative().optional(),
+  context_token_breakdown: exports_external.record(exports_external.string(), exports_external.number().int().nonnegative()).optional(),
+  copilot_credits: exports_external.number().nonnegative().optional(),
+  copilot_sku: exports_external.string().min(1).optional(),
   rate_limit_percent: exports_external.number().nonnegative().optional(),
   rate_limit_type: exports_external.string().optional(),
-  rate_limit_is_overage: exports_external.boolean().optional()
+  rate_limit_is_overage: exports_external.boolean().optional(),
+  plan: exports_external.string().min(1).optional(),
+  billing_mode: exports_external.enum(BILLING_MODES).optional(),
+  overage: exports_external.boolean().optional(),
+  rate_limits: exports_external.array(exports_external.object({
+    window: exports_external.enum(["5h", "weekly", "monthly"]),
+    used_percent: exports_external.number().nonnegative(),
+    resets_at: exports_external.string().optional(),
+    credits: exports_external.number().nonnegative().optional(),
+    individual_limit: exports_external.number().nonnegative().optional(),
+    limit_name: exports_external.string().optional(),
+    rate_limit_reached_type: exports_external.string().optional()
+  })).optional()
 });
 // ../../packages/types/data-controls-schemas.ts
 var collectionSettingsSchema = exports_external.object({
@@ -48879,6 +49644,7 @@ async function runSync(dependencies = {}) {
   const loadPluginSettings = dependencies.loadSettings ?? loadSettings;
   const loadCheckpoints = dependencies.loadCheckpoints ?? loadSyncCheckpoints;
   const loadSession = dependencies.loadSession ?? loadAuthSession;
+  const loadAccountMetadata = dependencies.loadAccountMetadata ?? readCodexAccountMetadata;
   const loadWorkspace = dependencies.loadWorkspace ?? loadWorkspaceBinding;
   const readSessionReferences = dependencies.readSessionReferences ?? buildSessionReferences;
   const readAllTranscripts = dependencies.readTranscripts ?? readTranscripts;
@@ -48930,6 +49696,7 @@ async function runSync(dependencies = {}) {
     return response2;
   }
   const workspace = await loadWorkspace();
+  const accountMetadata = await loadAccountMetadata();
   const sessionRefs = runtime.sessionIndexPath && runtime.historyPath ? await readSessionReferences({
     historyPath: runtime.historyPath,
     sessionIndexPath: runtime.sessionIndexPath
@@ -48946,6 +49713,7 @@ async function runSync(dependencies = {}) {
   const activeTranscripts = transcriptsForSync.filter((transcript) => isActiveTranscriptForLocalDay(transcript, localDayWindow));
   collection.parsedTranscripts = activeTranscripts.length;
   const prepared = normalizeTranscriptsToPreparedPayloads({
+    accountMetadata,
     transcripts: activeTranscripts,
     sessionRefsById: buildSessionReferenceMap(sessionRefs),
     userId: session.userId,
@@ -49760,4 +50528,4 @@ main().catch((error51) => {
   process.exit(1);
 });
 
-//# debugId=8C110321FE39BB8164756E2164756E21
+//# debugId=4AC8F5A26DA6AC4164756E2164756E21
