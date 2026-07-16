@@ -10768,8 +10768,8 @@ module.exports = __toCommonJS(exports_refresh_auth);
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.1.3",
-  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
+  version: "0.1.4",
+  description: "Sync your own Codex coding sessions to your Zest account for standups and personal workflow insights, with local privacy redaction before upload.",
   author: {
     name: "Zest",
     email: "support@meetzest.com",
@@ -10778,21 +10778,21 @@ var plugin_default = {
   homepage: "https://meetzest.com",
   repository: "https://github.com/Winding-Labs/zest",
   license: "MIT",
-  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
+  keywords: ["zest", "codex", "productivity", "developer-tools", "standup", "session-sync"],
   skills: "./skills/",
   hooks: "./hooks/hooks.json",
   mcpServers: "./.mcp.json",
   interface: {
     displayName: "Zest",
-    shortDescription: "AI workflow telemetry and standups for Codex.",
-    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
+    shortDescription: "Sync your Codex sessions to your Zest account for standups.",
+    longDescription: "Zest collects your own Codex session data locally, applies privacy redaction, and syncs it to your personal Zest workspace so you can generate standups and review your own workflow insights. Remote upload is user-controlled.",
     developerName: "Zest",
     category: "Productivity",
     capabilities: ["Interactive", "Read", "Write"],
     websiteURL: "https://meetzest.com",
     privacyPolicyURL: "https://meetzest.com/privacy",
     termsOfServiceURL: "https://meetzest.com/terms",
-    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
+    defaultPrompt: "Log me into Zest so this Codex workspace is ready to sync my sessions.",
     brandColor: "#D4FF3D",
     composerIcon: "./assets/zest-icon.svg",
     logo: "./assets/zest.png",
@@ -28189,7 +28189,24 @@ var SENSITIVE_DATA_PATTERNS = [
     highlySensitive: true,
     priority: 95
   }),
-  createPattern("private_ip", "Private IP addresses", /\b(?:10\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|172\.(?:1[6-9]|2[0-9]|3[01])\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|192\.168\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\b/g, "network", { redactionStrategy: "partial", priority: 50, aggressiveOnly: true })
+  createPattern("private_ip", "Private IP addresses", /\b(?:10\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|172\.(?:1[6-9]|2[0-9]|3[01])\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|192\.168\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\b/g, "network", { redactionStrategy: "partial", priority: 50, aggressiveOnly: true }),
+  createPattern("session_pem_private_key", "Session analysis: PEM private key blocks", /-----BEGIN[A-Z0-9 ]*PRIVATE KEY-----[\s\S]*?-----END[A-Z0-9 ]*PRIVATE KEY-----/g, "cryptographic", { redactionStrategy: "full", highlySensitive: true, priority: 100, aggressiveOnly: true }),
+  createPattern("session_url_credentials", "Session analysis: credential-bearing URLs (scheme://user:pass@host)", /\b[a-z][a-z0-9+.-]*:\/\/[^\s/:@]+:[^\s/@]+@[^\s]+/gi, "generic", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_jwt", "Session analysis: JSON Web Tokens", /\beyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 70, aggressiveOnly: true }),
+  createPattern("session_github_token", "Session analysis: GitHub tokens (personal, OAuth, app, refresh, server)", /\bgh[pousr]_[A-Za-z0-9_]{20,255}\b/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_slack_token", "Session analysis: Slack API tokens", /\bxox[abprs]-[A-Za-z0-9-]{10,}\b/g, "communication", { redactionStrategy: "full", highlySensitive: true, priority: 80, aggressiveOnly: true }),
+  createPattern("session_google_api_key", "Session analysis: Google API keys", /\bAIza[0-9A-Za-z_-]{35}\b/g, "cloud_services", { redactionStrategy: "full", highlySensitive: true, priority: 80, aggressiveOnly: true }),
+  createPattern("session_sk_key", "Session analysis: OpenAI/Anthropic-style sk- secret keys", /\bsk-[A-Za-z0-9_-]{20,}\b/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 90, aggressiveOnly: true }),
+  createPattern("session_github_pat", "Session analysis: GitHub fine-grained personal access tokens", /\bgithub_pat_[A-Za-z0-9_]+\b/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_gitlab_token", "Session analysis: GitLab personal/project access tokens", /\bglpat-[A-Za-z0-9_-]+/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_npm_token", "Session analysis: npm automation/access tokens", /\bnpm_[A-Za-z0-9]+\b/g, "api_keys", { redactionStrategy: "full", priority: 80, aggressiveOnly: true }),
+  createPattern("session_stripe_key", "Session analysis: Stripe secret/restricted keys (live and test)", /\b[sr]k_(?:live|test)_[A-Za-z0-9]+\b/g, "payment", { redactionStrategy: "full", highlySensitive: true, priority: 95, aggressiveOnly: true }),
+  createPattern("session_aws_access_key", "Session analysis: AWS access key IDs", /\bAKIA[0-9A-Z]{16}\b/g, "cloud_services", { redactionStrategy: "full", highlySensitive: true, priority: 90, aggressiveOnly: true }),
+  createPattern("session_aws_temp_key", "Session analysis: AWS temporary (STS) access key IDs", /\bASIA[A-Z0-9]{12,}\b/g, "cloud_services", { redactionStrategy: "full", highlySensitive: true, priority: 90, aggressiveOnly: true }),
+  createPattern("session_bearer_token", "Session analysis: Authorization Bearer headers", /\bBearer\s+[A-Za-z0-9._~+/-]{10,}=*/gi, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 80, aggressiveOnly: true }),
+  createPattern("session_secret_assignment", "Session analysis: explicit secret assignments (api_key=..., password: ...)", /\b(?:api[_-]?key|secret[_-]?key|access[_-]?key|client[_-]?secret|private[_-]?key|secret|password|passwd|pwd|token)\b\s*[:=]\s*["']?[^\s"']{6,}["']?/gi, "generic", { redactionStrategy: "full", highlySensitive: true, priority: 45, aggressiveOnly: true }),
+  createPattern("session_ipv4", "Session analysis: IPv4 addresses (all four-octet addresses)", /\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "network", { redactionStrategy: "full", priority: 50, aggressiveOnly: true }),
+  createPattern("session_email", "Session analysis: e-mail addresses", /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, "pii", { redactionStrategy: "full", priority: 60, aggressiveOnly: true })
 ];
 // ../../packages/privacy-redaction/src/exclusion/built-in-rules.ts
 var SENSITIVE_FILE_RULES = [
@@ -29574,4 +29591,4 @@ async function runRefreshAuthHook(eventName, dependencies = {}) {
 }
 runRefreshAuthHook(process.argv[2]);
 
-//# debugId=0FE3E72C6C7D276864756E2164756E21
+//# debugId=00CE3769B1CE929D64756E2164756E21

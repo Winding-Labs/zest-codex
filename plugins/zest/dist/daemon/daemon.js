@@ -10767,6 +10767,7 @@ __export(exports_daemon, {
   runDaemonEntrypoint: () => runDaemonEntrypoint,
   runDaemonCycle: () => runDaemonCycle,
   runDaemon: () => runDaemon,
+  resetProfileMetadataFlag: () => resetProfileMetadataFlag,
   createDefaultRunDaemonCycleDependencies: () => createDefaultRunDaemonCycleDependencies,
   DEFAULT_DAEMON_MAX_RSS_BYTES: () => DEFAULT_DAEMON_MAX_RSS_BYTES,
   DEFAULT_DAEMON_INTERVAL_MS: () => DEFAULT_DAEMON_INTERVAL_MS,
@@ -10774,6 +10775,81 @@ __export(exports_daemon, {
 });
 module.exports = __toCommonJS(exports_daemon);
 var import_node_path14 = require("node:path");
+
+// ../../packages/plugin-common/src/supabase/profile-updater.ts
+async function updateExtensionMetadata(supabase, userId, extensionKey, version, options) {
+  const { logger, onError } = options ?? {};
+  try {
+    logger?.info("Updating extension metadata", extensionKey, version);
+    let wasAlreadyInstalled = true;
+    try {
+      const { data: existingProfile } = await supabase.from("profiles").select("metadata").eq("id", userId).single();
+      const existingMetadata = existingProfile?.metadata || {};
+      wasAlreadyInstalled = existingMetadata?.extensions?.[extensionKey]?.installed === true;
+    } catch (error) {
+      logger?.debug?.("Could not read existing metadata for first-install tracking; skipping analytics event");
+      if (error instanceof Error) {
+        onError?.(error, { endpoint: "profiles" });
+      }
+    }
+    const { error: rpcError } = await supabase.rpc("merge_profile_metadata", {
+      p_user_id: userId,
+      p_metadata: {
+        extensions: {
+          [extensionKey]: {
+            installed: true,
+            version,
+            lastSeen: new Date().toISOString()
+          }
+        }
+      }
+    });
+    if (rpcError) {
+      throw new Error(`Failed to merge profile metadata: ${rpcError.message}`);
+    }
+    logger?.info("Extension metadata updated successfully", extensionKey);
+    return { wasAlreadyInstalled };
+  } catch (error) {
+    if (error instanceof Error) {
+      onError?.(error, { endpoint: "profiles" });
+    }
+    throw error;
+  }
+}
+// .codex-plugin/plugin.json
+var plugin_default = {
+  name: "zest",
+  version: "0.1.4",
+  description: "Sync your own Codex coding sessions to your Zest account for standups and personal workflow insights, with local privacy redaction before upload.",
+  author: {
+    name: "Zest",
+    email: "support@meetzest.com",
+    url: "https://meetzest.com"
+  },
+  homepage: "https://meetzest.com",
+  repository: "https://github.com/Winding-Labs/zest",
+  license: "MIT",
+  keywords: ["zest", "codex", "productivity", "developer-tools", "standup", "session-sync"],
+  skills: "./skills/",
+  hooks: "./hooks/hooks.json",
+  mcpServers: "./.mcp.json",
+  interface: {
+    displayName: "Zest",
+    shortDescription: "Sync your Codex sessions to your Zest account for standups.",
+    longDescription: "Zest collects your own Codex session data locally, applies privacy redaction, and syncs it to your personal Zest workspace so you can generate standups and review your own workflow insights. Remote upload is user-controlled.",
+    developerName: "Zest",
+    category: "Productivity",
+    capabilities: ["Interactive", "Read", "Write"],
+    websiteURL: "https://meetzest.com",
+    privacyPolicyURL: "https://meetzest.com/privacy",
+    termsOfServiceURL: "https://meetzest.com/terms",
+    defaultPrompt: "Log me into Zest so this Codex workspace is ready to sync my sessions.",
+    brandColor: "#D4FF3D",
+    composerIcon: "./assets/zest-icon.svg",
+    logo: "./assets/zest.png",
+    screenshots: []
+  }
+};
 
 // src/auth/refresh.ts
 var import_promises2 = require("node:fs/promises");
@@ -10850,42 +10926,6 @@ async function removeStateFile(filePath) {
 // src/state/paths.ts
 var import_node_os = require("node:os");
 var import_node_path2 = require("node:path");
-// .codex-plugin/plugin.json
-var plugin_default = {
-  name: "zest",
-  version: "0.1.3",
-  description: "Connect Codex to Zest for AI workflow telemetry, session collection, and standup generation.",
-  author: {
-    name: "Zest",
-    email: "support@meetzest.com",
-    url: "https://meetzest.com"
-  },
-  homepage: "https://meetzest.com",
-  repository: "https://github.com/Winding-Labs/zest",
-  license: "MIT",
-  keywords: ["zest", "codex", "productivity", "developer-tools", "telemetry", "standup"],
-  skills: "./skills/",
-  hooks: "./hooks/hooks.json",
-  mcpServers: "./.mcp.json",
-  interface: {
-    displayName: "Zest",
-    shortDescription: "AI workflow telemetry and standups for Codex.",
-    longDescription: "Zest collects Codex session data locally, applies privacy filtering, and syncs to your Zest workspace for standup generation and AI workflow analytics.",
-    developerName: "Zest",
-    category: "Productivity",
-    capabilities: ["Interactive", "Read", "Write"],
-    websiteURL: "https://meetzest.com",
-    privacyPolicyURL: "https://meetzest.com/privacy",
-    termsOfServiceURL: "https://meetzest.com/terms",
-    defaultPrompt: "Log me into Zest so this Codex workspace is ready for AI workflow tracking.",
-    brandColor: "#D4FF3D",
-    composerIcon: "./assets/zest-icon.svg",
-    logo: "./assets/zest.png",
-    screenshots: []
-  }
-};
-
-// src/state/paths.ts
 var DEFAULT_STATE_DIR_NAME = `.codex-${plugin_default.name}`;
 function getDefaultStateRootDir() {
   return import_node_path2.join(import_node_os.homedir(), DEFAULT_STATE_DIR_NAME);
@@ -28463,7 +28503,24 @@ var SENSITIVE_DATA_PATTERNS = [
     highlySensitive: true,
     priority: 95
   }),
-  createPattern("private_ip", "Private IP addresses", /\b(?:10\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|172\.(?:1[6-9]|2[0-9]|3[01])\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|192\.168\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\b/g, "network", { redactionStrategy: "partial", priority: 50, aggressiveOnly: true })
+  createPattern("private_ip", "Private IP addresses", /\b(?:10\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|172\.(?:1[6-9]|2[0-9]|3[01])\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|192\.168\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\b/g, "network", { redactionStrategy: "partial", priority: 50, aggressiveOnly: true }),
+  createPattern("session_pem_private_key", "Session analysis: PEM private key blocks", /-----BEGIN[A-Z0-9 ]*PRIVATE KEY-----[\s\S]*?-----END[A-Z0-9 ]*PRIVATE KEY-----/g, "cryptographic", { redactionStrategy: "full", highlySensitive: true, priority: 100, aggressiveOnly: true }),
+  createPattern("session_url_credentials", "Session analysis: credential-bearing URLs (scheme://user:pass@host)", /\b[a-z][a-z0-9+.-]*:\/\/[^\s/:@]+:[^\s/@]+@[^\s]+/gi, "generic", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_jwt", "Session analysis: JSON Web Tokens", /\beyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 70, aggressiveOnly: true }),
+  createPattern("session_github_token", "Session analysis: GitHub tokens (personal, OAuth, app, refresh, server)", /\bgh[pousr]_[A-Za-z0-9_]{20,255}\b/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_slack_token", "Session analysis: Slack API tokens", /\bxox[abprs]-[A-Za-z0-9-]{10,}\b/g, "communication", { redactionStrategy: "full", highlySensitive: true, priority: 80, aggressiveOnly: true }),
+  createPattern("session_google_api_key", "Session analysis: Google API keys", /\bAIza[0-9A-Za-z_-]{35}\b/g, "cloud_services", { redactionStrategy: "full", highlySensitive: true, priority: 80, aggressiveOnly: true }),
+  createPattern("session_sk_key", "Session analysis: OpenAI/Anthropic-style sk- secret keys", /\bsk-[A-Za-z0-9_-]{20,}\b/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 90, aggressiveOnly: true }),
+  createPattern("session_github_pat", "Session analysis: GitHub fine-grained personal access tokens", /\bgithub_pat_[A-Za-z0-9_]+\b/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_gitlab_token", "Session analysis: GitLab personal/project access tokens", /\bglpat-[A-Za-z0-9_-]+/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 85, aggressiveOnly: true }),
+  createPattern("session_npm_token", "Session analysis: npm automation/access tokens", /\bnpm_[A-Za-z0-9]+\b/g, "api_keys", { redactionStrategy: "full", priority: 80, aggressiveOnly: true }),
+  createPattern("session_stripe_key", "Session analysis: Stripe secret/restricted keys (live and test)", /\b[sr]k_(?:live|test)_[A-Za-z0-9]+\b/g, "payment", { redactionStrategy: "full", highlySensitive: true, priority: 95, aggressiveOnly: true }),
+  createPattern("session_aws_access_key", "Session analysis: AWS access key IDs", /\bAKIA[0-9A-Z]{16}\b/g, "cloud_services", { redactionStrategy: "full", highlySensitive: true, priority: 90, aggressiveOnly: true }),
+  createPattern("session_aws_temp_key", "Session analysis: AWS temporary (STS) access key IDs", /\bASIA[A-Z0-9]{12,}\b/g, "cloud_services", { redactionStrategy: "full", highlySensitive: true, priority: 90, aggressiveOnly: true }),
+  createPattern("session_bearer_token", "Session analysis: Authorization Bearer headers", /\bBearer\s+[A-Za-z0-9._~+/-]{10,}=*/gi, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 80, aggressiveOnly: true }),
+  createPattern("session_secret_assignment", "Session analysis: explicit secret assignments (api_key=..., password: ...)", /\b(?:api[_-]?key|secret[_-]?key|access[_-]?key|client[_-]?secret|private[_-]?key|secret|password|passwd|pwd|token)\b\s*[:=]\s*["']?[^\s"']{6,}["']?/gi, "generic", { redactionStrategy: "full", highlySensitive: true, priority: 45, aggressiveOnly: true }),
+  createPattern("session_ipv4", "Session analysis: IPv4 addresses (all four-octet addresses)", /\b(?:\d{1,3}\.){3}\d{1,3}\b/g, "network", { redactionStrategy: "full", priority: 50, aggressiveOnly: true }),
+  createPattern("session_email", "Session analysis: e-mail addresses", /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, "pii", { redactionStrategy: "full", priority: 60, aggressiveOnly: true })
 ];
 var HIGHLY_SENSITIVE_PATTERN_NAMES = [
   "private_key",
@@ -32653,8 +32710,8 @@ async function uploadQueuedTranscripts(dependencies = {}) {
       errorType: "not_authenticated"
     };
   }
-  const workspace = await loadWorkspace();
-  if (!workspace) {
+  const workspace2 = await loadWorkspace();
+  if (!workspace2) {
     await logger.warn("upload", "workspace_binding_missing");
     return {
       success: false,
@@ -32663,7 +32720,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
       errorType: "workspace_unbound"
     };
   }
-  if (!workspace.active?.id) {
+  if (!workspace2.active?.id) {
     await logger.warn("upload", "workspace_binding_missing");
     return {
       success: false,
@@ -32690,7 +32747,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
   }
   const ids = queuedEntries.map((entry) => entry.id);
   try {
-    if (!dataControls.isForContext(workspace.active.id, session.userId)) {
+    if (!dataControls.isForContext(workspace2.active.id, session.userId)) {
       dataControls.invalidate();
     }
     if (!dataControls.isReady() || dataControls.isStale(now().getTime())) {
@@ -32699,15 +32756,15 @@ async function uploadQueuedTranscripts(dependencies = {}) {
           hasCachedControls: dataControls.isReady(),
           isStale: dataControls.isStale(now().getTime()),
           queuedEntries: queuedEntries.length,
-          workspaceId: workspace.active.id
+          workspaceId: workspace2.active.id
         }
       });
-      const refreshed = await dataControls.refresh(onDemand.client, workspace.active.id, session.userId, now().getTime());
+      const refreshed = await dataControls.refresh(onDemand.client, workspace2.active.id, session.userId, now().getTime());
       if (!refreshed || !dataControls.isReady()) {
         await logger.warn("upload", "data_controls_unavailable", {
           details: {
             queuedEntries: queuedEntries.length,
-            workspaceId: workspace.active.id
+            workspaceId: workspace2.active.id
           }
         });
         return {
@@ -32721,7 +32778,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
       await logger.debug("upload", "data_controls_cached", {
         details: {
           queuedEntries: queuedEntries.length,
-          workspaceId: workspace.active.id
+          workspaceId: workspace2.active.id
         }
       });
     }
@@ -32743,7 +32800,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
       await logger.info("upload", "no_messages_allowed", {
         details: {
           queuedEntries: queuedEntries.length,
-          workspaceId: workspace.active.id
+          workspaceId: workspace2.active.id
         }
       });
       await recordUploadedMessageCheckpoints([], now(), candidateMessages, accountedMessages);
@@ -32760,13 +32817,13 @@ async function uploadQueuedTranscripts(dependencies = {}) {
     for (const message of filteredMessages) {
       allowedSessionIds.add(message.session_id);
     }
-    const sessions = deduplicateSessions(queuedEntries, workspace.active.id, allowedSessionIds);
+    const sessions = deduplicateSessions(queuedEntries, workspace2.active.id, allowedSessionIds);
     await logger.info("upload", "upload_started", {
       details: {
         messages: filteredMessages.length,
         queuedEntries: queuedEntries.length,
         sessions: sessions.length,
-        workspaceId: workspace.active.id
+        workspaceId: workspace2.active.id
       }
     });
     await upsertSessions(onDemand.client, sessions);
@@ -32777,7 +32834,7 @@ async function uploadQueuedTranscripts(dependencies = {}) {
       details: {
         messages: filteredMessages.length,
         sessions: sessions.length,
-        workspaceId: workspace.active.id
+        workspaceId: workspace2.active.id
       }
     });
     return {
@@ -32936,7 +32993,7 @@ async function runSync(dependencies = {}) {
     });
     return response2;
   }
-  const workspace = await loadWorkspace();
+  const workspace2 = await loadWorkspace();
   const accountMetadata = await loadAccountMetadata();
   const sessionRefs = runtime.sessionIndexPath && runtime.historyPath ? await readSessionReferences({
     historyPath: runtime.historyPath,
@@ -32958,7 +33015,7 @@ async function runSync(dependencies = {}) {
     transcripts: activeTranscripts,
     sessionRefsById: buildSessionReferenceMap(sessionRefs),
     userId: session.userId,
-    workspaceId: workspace?.active.id ?? null
+    workspaceId: workspace2?.active.id ?? null
   });
   const checkpointsBySessionId = buildSyncCheckpointMap(await loadCheckpoints());
   const unsyncedPrepared = (await Promise.all(prepared.map((payload) => filterPreparedPayloadToUnsyncedMessages(payload, checkpointsBySessionId)))).filter((payload) => payload !== null);
@@ -33021,6 +33078,10 @@ async function runSync(dependencies = {}) {
 }
 
 // src/daemon/daemon.ts
+var profileMetadataUpdated = false;
+function resetProfileMetadataFlag() {
+  profileMetadataUpdated = false;
+}
 var DEFAULT_DAEMON_INTERVAL_MS = 60000;
 var DEFAULT_DAEMON_IDLE_MS = 10 * 60000;
 var DEFAULT_DAEMON_MAX_RSS_BYTES = 512 * 1024 * 1024;
@@ -33040,6 +33101,21 @@ function createDefaultRunDaemonCycleDependencies(overrides = {}) {
     runSyncOnce: () => lockSync(() => sync())
   };
 }
+async function defaultUpdateProfileMetadata() {
+  const onDemand = await createOnDemandClient().catch(() => null);
+  if (!onDemand)
+    return;
+  try {
+    const {
+      data: { user }
+    } = await onDemand.client.auth.getUser();
+    if (user) {
+      await updateExtensionMetadata(onDemand.client, user.id, "codex", plugin_default.version);
+    }
+  } finally {
+    await onDemand.dispose();
+  }
+}
 async function runDaemonCycle(dependencies = {}) {
   const defaultDependencies = createDefaultRunDaemonCycleDependencies();
   const now = dependencies.now ?? (() => new Date);
@@ -33047,6 +33123,7 @@ async function runDaemonCycle(dependencies = {}) {
   const maxRssBytes = dependencies.maxRssBytes ?? DEFAULT_DAEMON_MAX_RSS_BYTES;
   const ensureAuthFresh = dependencies.ensureAuthFresh ?? defaultDependencies.ensureAuthFresh;
   const runSyncOnce = dependencies.runSyncOnce ?? defaultDependencies.runSyncOnce;
+  const updateMetadata = dependencies.updateProfileMetadata ?? defaultUpdateProfileMetadata;
   const writeStatus = dependencies.writeStatus ?? writeDaemonStatus;
   const cycleStartedAt = now().toISOString();
   const runId = `daemon_${Date.now()}`;
@@ -33057,6 +33134,14 @@ async function runDaemonCycle(dependencies = {}) {
   try {
     await ensureAuthFresh();
     const result = await runSyncOnce();
+    if (result.success && !profileMetadataUpdated) {
+      try {
+        await updateMetadata();
+        profileMetadataUpdated = true;
+      } catch (profileError) {
+        await logger.error("daemon", "profile_metadata_update_failed", { error: profileError });
+      }
+    }
     const memory = getMemoryUsage();
     const exitForMemory = shouldExitForMemory(memory, maxRssBytes);
     const finishedAt = now().toISOString();
@@ -33223,4 +33308,4 @@ if (shouldRunDaemonEntrypoint()) {
   runDaemonEntrypoint();
 }
 
-//# debugId=BCB9F89E5008D63664756E2164756E21
+//# debugId=DCFA15830EAD252664756E2164756E21
