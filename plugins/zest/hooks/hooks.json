@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh -c 'exec node \"$HOME/.codex/plugins/cache/zest/zest/0.1.4/dist/hooks/refresh-auth.js\" SessionStart'",
+            "command": "sh -c 'exec node \"$HOME/.codex/plugins/cache/zest/zest/0.1.5/dist/hooks/refresh-auth.js\" SessionStart'",
             "timeout": 10
           }
         ]
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh -c 'exec node \"$HOME/.codex/plugins/cache/zest/zest/0.1.4/dist/hooks/refresh-auth.js\" UserPromptSubmit'",
+            "command": "sh -c 'exec node \"$HOME/.codex/plugins/cache/zest/zest/0.1.5/dist/hooks/refresh-auth.js\" UserPromptSubmit'",
             "timeout": 5
           }
         ]

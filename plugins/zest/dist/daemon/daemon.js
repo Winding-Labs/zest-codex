@@ -2789,7 +2789,8 @@ var require_FunctionsClient = __commonJS((exports2) => {
             url.searchParams.set("forceFunctionRegion", region);
           }
           let body;
-          if (functionArgs && (headers && !Object.prototype.hasOwnProperty.call(headers, "Content-Type") || !headers)) {
+          const hasContentTypeHeader = !!headers && Object.keys(headers).some((key) => key.toLowerCase() === "content-type");
+          if (functionArgs && !hasContentTypeHeader) {
             if (typeof Blob !== "undefined" && functionArgs instanceof Blob || functionArgs instanceof ArrayBuffer) {
               _headers["Content-Type"] = "application/octet-stream";
               body = functionArgs;
@@ -2930,24 +2931,10 @@ var require_websocket_factory = __commonJS((exports2) => {
       if (_process) {
         const processVersions = _process["versions"];
         if (processVersions && processVersions["node"]) {
-          const versionString = processVersions["node"];
-          const nodeVersion = parseInt(versionString.replace(/^v/, "").split(".")[0]);
-          if (nodeVersion >= 22) {
-            if (typeof globalThis.WebSocket !== "undefined") {
-              return { type: "native", wsConstructor: globalThis.WebSocket };
-            }
-            return {
-              type: "unsupported",
-              error: `Node.js ${nodeVersion} detected but native WebSocket not found.`,
-              workaround: "Provide a WebSocket implementation via the transport option."
-            };
-          }
           return {
             type: "unsupported",
-            error: `Node.js ${nodeVersion} detected without native WebSocket support.`,
-            workaround: `For Node.js < 22, install "ws" package and provide it via the transport option:
-` + `import ws from "ws"
-` + "new RealtimeClient(url, { transport: ws })"
+            error: "Node.js detected but native WebSocket not found.",
+            workaround: "Ensure you are running Node.js 22+ or provide a WebSocket implementation via the transport option."
           };
         }
       }
@@ -2973,7 +2960,7 @@ Suggested solution: ${env.workaround}`;
     static isWebSocketSupported() {
       try {
         const env = this.detectEnvironment();
-        return env.type === "native" || env.type === "ws";
+        return env.type === "native";
       } catch (_a) {
         return false;
       }
@@ -2987,7 +2974,7 @@ Suggested solution: ${env.workaround}`;
 var require_version = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.version = undefined;
-  exports2.version = "2.105.4";
+  exports2.version = "2.110.7";
 });
 
 // ../../node_modules/@supabase/realtime-js/dist/main/lib/constants.js
@@ -3079,12 +3066,13 @@ var require_serializer = __commonJS((exports2) => {
     }
     _encodeUserBroadcastPush(message, encodingType, encodedPayload) {
       var _a, _b;
-      const topic = message.topic;
-      const ref = (_a = message.ref) !== null && _a !== undefined ? _a : "";
-      const joinRef = (_b = message.join_ref) !== null && _b !== undefined ? _b : "";
-      const userEvent = message.payload.event;
+      const encoder = new TextEncoder;
+      const topic = encoder.encode(message.topic);
+      const ref = encoder.encode((_a = message.ref) !== null && _a !== undefined ? _a : "");
+      const joinRef = encoder.encode((_b = message.join_ref) !== null && _b !== undefined ? _b : "");
+      const userEvent = encoder.encode(message.payload.event);
       const rest = this.allowedMetadataKeys ? this._pick(message.payload, this.allowedMetadataKeys) : {};
-      const metadata = Object.keys(rest).length === 0 ? "" : JSON.stringify(rest);
+      const metadata = encoder.encode(Object.keys(rest).length === 0 ? "" : JSON.stringify(rest));
       if (joinRef.length > 255) {
         throw new Error(`joinRef length ${joinRef.length} exceeds maximum of 255`);
       }
@@ -3102,7 +3090,8 @@ var require_serializer = __commonJS((exports2) => {
       }
       const metaLength = this.USER_BROADCAST_PUSH_META_LENGTH + joinRef.length + ref.length + topic.length + userEvent.length + metadata.length;
       const header = new ArrayBuffer(this.HEADER_LENGTH + metaLength);
-      let view = new DataView(header);
+      const view = new DataView(header);
+      const bytes = new Uint8Array(header);
       let offset = 0;
       view.setUint8(offset++, this.KINDS.userBroadcastPush);
       view.setUint8(offset++, joinRef.length);
@@ -3111,11 +3100,16 @@ var require_serializer = __commonJS((exports2) => {
       view.setUint8(offset++, userEvent.length);
       view.setUint8(offset++, metadata.length);
       view.setUint8(offset++, encodingType);
-      Array.from(joinRef, (char) => view.setUint8(offset++, char.charCodeAt(0)));
-      Array.from(ref, (char) => view.setUint8(offset++, char.charCodeAt(0)));
-      Array.from(topic, (char) => view.setUint8(offset++, char.charCodeAt(0)));
-      Array.from(userEvent, (char) => view.setUint8(offset++, char.charCodeAt(0)));
-      Array.from(metadata, (char) => view.setUint8(offset++, char.charCodeAt(0)));
+      bytes.set(joinRef, offset);
+      offset += joinRef.length;
+      bytes.set(ref, offset);
+      offset += ref.length;
+      bytes.set(topic, offset);
+      offset += topic.length;
+      bytes.set(userEvent, offset);
+      offset += userEvent.length;
+      bytes.set(metadata, offset);
+      offset += metadata.length;
       var combined = new Uint8Array(header.byteLength + encodedPayload.byteLength);
       combined.set(new Uint8Array(header), 0);
       combined.set(new Uint8Array(encodedPayload), header.byteLength);
@@ -3395,6 +3389,7 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
   var DEFAULT_VSN = "2.0.0";
   var DEFAULT_TIMEOUT = 1e4;
   var WS_CLOSE_NORMAL = 1000;
+  var MAX_LONGPOLL_BATCH_SIZE = 100;
   var SOCKET_STATES = { connecting: 0, open: 1, closing: 2, closed: 3 };
   var CHANNEL_STATES = {
     closed: "closed",
@@ -3937,17 +3932,23 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
         }, 0);
       }
     }
-    batchSend(messages) {
+    batchSend(messages, offset = 0) {
       this.awaitingBatchAck = true;
-      this.ajax("POST", { "Content-Type": "application/x-ndjson" }, messages.join(`
+      const next = offset + MAX_LONGPOLL_BATCH_SIZE;
+      const batch = messages.slice(offset, next);
+      this.ajax("POST", { "Content-Type": "application/x-ndjson" }, batch.join(`
 `), () => this.onerror("timeout"), (resp) => {
-        this.awaitingBatchAck = false;
         if (!resp || resp.status !== 200) {
+          this.awaitingBatchAck = false;
           this.onerror(resp && resp.status);
           this.closeAndRetry(1011, "internal server error", false);
+        } else if (next < messages.length) {
+          this.batchSend(messages, next);
         } else if (this.batchBuffer.length > 0) {
           this.batchSend(this.batchBuffer);
           this.batchBuffer = [];
+        } else {
+          this.awaitingBatchAck = false;
         }
       });
     }
@@ -3984,7 +3985,7 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
   var Presence = class _Presence {
     constructor(channel, opts = {}) {
       let events = opts.events || { state: "presence_state", diff: "presence_diff" };
-      this.state = {};
+      this.state = /* @__PURE__ */ Object.create(null);
       this.pendingDiffs = [];
       this.channel = channel;
       this.joinRef = null;
@@ -4029,9 +4030,10 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
       return !this.joinRef || this.joinRef !== this.channel.joinRef();
     }
     static syncState(currentState, newState, onJoin, onLeave) {
-      let state = this.clone(currentState);
-      let joins = {};
-      let leaves = {};
+      let state = this.toNullProtoObj(this.clone(currentState));
+      newState = this.toNullProtoObj(newState);
+      let joins = /* @__PURE__ */ Object.create(null);
+      let leaves = /* @__PURE__ */ Object.create(null);
       this.map(state, (key, presence) => {
         if (!newState[key]) {
           leaves[key] = presence;
@@ -4059,6 +4061,7 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
       return this.syncDiff(state, { joins, leaves }, onJoin, onLeave);
     }
     static syncDiff(state, diff, onJoin, onLeave) {
+      state = this.toNullProtoObj(state);
       let { joins, leaves } = this.clone(diff);
       if (!onJoin) {
         onJoin = function() {};
@@ -4105,6 +4108,16 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
     static map(obj, func) {
       return Object.getOwnPropertyNames(obj).map((key) => func(key, obj[key]));
     }
+    static toNullProtoObj(obj) {
+      if (Object.getPrototypeOf(obj) === null) {
+        return obj;
+      }
+      let cleaned = /* @__PURE__ */ Object.create(null);
+      Object.getOwnPropertyNames(obj).forEach((key) => {
+        cleaned[key] = obj[key];
+      });
+      return cleaned;
+    }
     static clone(obj) {
       return JSON.parse(JSON.stringify(obj));
     }
@@ -4131,23 +4144,42 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
     },
     binaryEncode(message) {
       let { join_ref, ref, event, topic, payload } = message;
-      let metaLength = this.META_LENGTH + join_ref.length + ref.length + topic.length + event.length;
+      let encoder = new TextEncoder;
+      let joinRefBytes = encoder.encode(join_ref);
+      let refBytes = encoder.encode(ref);
+      let topicBytes = encoder.encode(topic);
+      let eventBytes = encoder.encode(event);
+      this.assertFieldSize(joinRefBytes.byteLength, "join_ref");
+      this.assertFieldSize(refBytes.byteLength, "ref");
+      this.assertFieldSize(topicBytes.byteLength, "topic");
+      this.assertFieldSize(eventBytes.byteLength, "event");
+      let metaLength = this.META_LENGTH + joinRefBytes.byteLength + refBytes.byteLength + topicBytes.byteLength + eventBytes.byteLength;
       let header = new ArrayBuffer(this.HEADER_LENGTH + metaLength);
+      let headerBytes = new Uint8Array(header);
       let view = new DataView(header);
       let offset = 0;
       view.setUint8(offset++, this.KINDS.push);
-      view.setUint8(offset++, join_ref.length);
-      view.setUint8(offset++, ref.length);
-      view.setUint8(offset++, topic.length);
-      view.setUint8(offset++, event.length);
-      Array.from(join_ref, (char) => view.setUint8(offset++, char.charCodeAt(0)));
-      Array.from(ref, (char) => view.setUint8(offset++, char.charCodeAt(0)));
-      Array.from(topic, (char) => view.setUint8(offset++, char.charCodeAt(0)));
-      Array.from(event, (char) => view.setUint8(offset++, char.charCodeAt(0)));
+      view.setUint8(offset++, joinRefBytes.byteLength);
+      view.setUint8(offset++, refBytes.byteLength);
+      view.setUint8(offset++, topicBytes.byteLength);
+      view.setUint8(offset++, eventBytes.byteLength);
+      headerBytes.set(joinRefBytes, offset);
+      offset += joinRefBytes.byteLength;
+      headerBytes.set(refBytes, offset);
+      offset += refBytes.byteLength;
+      headerBytes.set(topicBytes, offset);
+      offset += topicBytes.byteLength;
+      headerBytes.set(eventBytes, offset);
+      offset += eventBytes.byteLength;
       var combined = new Uint8Array(header.byteLength + payload.byteLength);
-      combined.set(new Uint8Array(header), 0);
+      combined.set(headerBytes, 0);
       combined.set(new Uint8Array(payload), header.byteLength);
       return combined.buffer;
+    },
+    assertFieldSize(size, name) {
+      if (size > 255) {
+        throw new Error(`unable to convert ${name} to binary: must be less than or equal to 255 bytes, but is ${size} bytes`);
+      }
     },
     binaryDecode(buffer) {
       let view = new DataView(buffer);
@@ -4309,7 +4341,7 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
           this.connect();
         });
       }, this.reconnectAfterMs);
-      this.authToken = opts.authToken;
+      this.authToken = opts.authToken && closure(opts.authToken);
     }
     getLongPollTransport() {
       return LongPoll;
@@ -4420,7 +4452,7 @@ var require_phoenix_cjs = __commonJS((exports2, module2) => {
       this.closeWasClean = false;
       let protocols = undefined;
       if (this.authToken) {
-        protocols = ["phoenix", `${AUTH_TOKEN_PREFIX}${btoa(this.authToken).replace(/=/g, "")}`];
+        protocols = ["phoenix", `${AUTH_TOKEN_PREFIX}${btoa(this.authToken()).replace(/=/g, "")}`];
       }
       this.conn = new this.transport(this.endPointURL(), protocols);
       this.conn.binaryType = this.binaryType;
@@ -4950,10 +4982,100 @@ var require_channelAdapter = __commonJS((exports2) => {
   }
 });
 
+// ../../node_modules/@supabase/realtime-js/dist/main/RealtimePostgresFilterBuilder.js
+var require_RealtimePostgresFilterBuilder = __commonJS((exports2) => {
+  Object.defineProperty(exports2, "__esModule", { value: true });
+  exports2.postgresChangesFilter = exports2.RealtimePostgresFilterBuilder = undefined;
+  var PostgrestReservedCharsRegexp2 = /[,()"\\]/;
+  var needsQuoting = (value) => PostgrestReservedCharsRegexp2.test(value) || value !== value.trim();
+  var quote = (value) => `"${value.replace(/\\/g, "\\\\").replace(/"/g, "\\\"")}"`;
+  var serializeScalar = (value) => {
+    const serialized = value === null ? "null" : String(value);
+    return needsQuoting(serialized) ? quote(serialized) : serialized;
+  };
+  var serializeIsValue = (value) => value === null ? "null" : String(value);
+  var serialize = (operator, value) => {
+    if (operator === "in") {
+      const values = Array.isArray(value) ? value : [value];
+      if (values.length === 0) {
+        throw new Error("Realtime `in` filter requires at least one value.");
+      }
+      const items = Array.from(new Set(values)).map((v) => serializeScalar(v)).join(",");
+      return `in.(${items})`;
+    }
+    if (operator === "is") {
+      return `is.${serializeIsValue(value)}`;
+    }
+    return `${operator}.${serializeScalar(value)}`;
+  };
+
+  class RealtimePostgresFilterBuilder {
+    constructor() {
+      this.filters = [];
+    }
+    add(column, operator, value, negate = false) {
+      const prefix = negate ? "not." : "";
+      this.filters.push(`${column}=${prefix}${serialize(operator, value)}`);
+      return this;
+    }
+    eq(column, value) {
+      return this.add(column, "eq", value);
+    }
+    neq(column, value) {
+      return this.add(column, "neq", value);
+    }
+    gt(column, value) {
+      return this.add(column, "gt", value);
+    }
+    gte(column, value) {
+      return this.add(column, "gte", value);
+    }
+    lt(column, value) {
+      return this.add(column, "lt", value);
+    }
+    lte(column, value) {
+      return this.add(column, "lte", value);
+    }
+    in(column, values) {
+      return this.add(column, "in", values);
+    }
+    like(column, pattern) {
+      return this.add(column, "like", pattern);
+    }
+    ilike(column, pattern) {
+      return this.add(column, "ilike", pattern);
+    }
+    match(column, pattern) {
+      return this.add(column, "match", pattern);
+    }
+    imatch(column, pattern) {
+      return this.add(column, "imatch", pattern);
+    }
+    is(column, value) {
+      return this.add(column, "is", value);
+    }
+    isDistinct(column, value) {
+      return this.add(column, "isdistinct", value);
+    }
+    not(column, operator, value) {
+      return this.add(column, operator, value, true);
+    }
+    build() {
+      return this.filters.join(",");
+    }
+    toString() {
+      return this.build();
+    }
+  }
+  exports2.RealtimePostgresFilterBuilder = RealtimePostgresFilterBuilder;
+  var postgresChangesFilter = () => new RealtimePostgresFilterBuilder;
+  exports2.postgresChangesFilter = postgresChangesFilter;
+});
+
 // ../../node_modules/@supabase/realtime-js/dist/main/RealtimeChannel.js
 var require_RealtimeChannel = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
-  exports2.REALTIME_CHANNEL_STATES = exports2.REALTIME_SUBSCRIBE_STATES = exports2.REALTIME_LISTEN_TYPES = exports2.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = undefined;
+  exports2.REALTIME_CHANNEL_STATES = exports2.REALTIME_SUBSCRIBE_STATES = exports2.REALTIME_LISTEN_TYPES = exports2.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports2.postgresChangesFilter = exports2.RealtimePostgresFilterBuilder = undefined;
   var tslib_1 = require_tslib();
   var constants_1 = require_constants();
   var RealtimePresence_1 = tslib_1.__importDefault(require_RealtimePresence());
@@ -4961,6 +5083,14 @@ var require_RealtimeChannel = __commonJS((exports2) => {
   var transformers_1 = require_transformers();
   var normalizeChannelError_1 = require_normalizeChannelError();
   var channelAdapter_1 = tslib_1.__importDefault(require_channelAdapter());
+  var RealtimePostgresFilterBuilder_1 = require_RealtimePostgresFilterBuilder();
+  var RealtimePostgresFilterBuilder_2 = require_RealtimePostgresFilterBuilder();
+  Object.defineProperty(exports2, "RealtimePostgresFilterBuilder", { enumerable: true, get: function() {
+    return RealtimePostgresFilterBuilder_2.RealtimePostgresFilterBuilder;
+  } });
+  Object.defineProperty(exports2, "postgresChangesFilter", { enumerable: true, get: function() {
+    return RealtimePostgresFilterBuilder_2.postgresChangesFilter;
+  } });
   var REALTIME_POSTGRES_CHANGES_LISTEN_EVENT;
   (function(REALTIME_POSTGRES_CHANGES_LISTEN_EVENT2) {
     REALTIME_POSTGRES_CHANGES_LISTEN_EVENT2["ALL"] = "*";
@@ -5102,7 +5232,7 @@ var require_RealtimeChannel = __commonJS((exports2) => {
         type: "presence",
         event: "track",
         payload
-      }, opts.timeout || this.timeout);
+      }, opts);
     }
     async untrack(opts = {}) {
       return await this.send({
@@ -5124,30 +5254,30 @@ var require_RealtimeChannel = __commonJS((exports2) => {
       if (payload === undefined || payload === null) {
         return Promise.reject(new Error("Payload is required for httpSend()"));
       }
+      const isBinary = payload instanceof ArrayBuffer || ArrayBuffer.isView(payload);
       const headers = {
         apikey: this.socket.apiKey ? this.socket.apiKey : "",
-        "Content-Type": "application/json"
+        "Content-Type": isBinary ? "application/octet-stream" : "application/json"
       };
       if (this.socket.accessTokenValue) {
         headers["Authorization"] = `Bearer ${this.socket.accessTokenValue}`;
       }
+      const url = new URL(this.broadcastEndpointURL);
+      url.pathname += `/${encodeURIComponent(this.subTopic)}/events/${encodeURIComponent(event)}`;
+      if (this.private) {
+        url.searchParams.set("private", "true");
+      }
       const options = {
         method: "POST",
         headers,
-        body: JSON.stringify({
-          messages: [
-            {
-              topic: this.subTopic,
-              event,
-              payload,
-              private: this.private
-            }
-          ]
-        })
+        body: isBinary ? payload : JSON.stringify(payload)
       };
-      const response = await this._fetchWithTimeout(this.broadcastEndpointURL, options, (_a = opts.timeout) !== null && _a !== undefined ? _a : this.timeout);
+      const response = await this._fetchWithTimeout(url.toString(), options, (_a = opts.timeout) !== null && _a !== undefined ? _a : this.timeout);
       if (response.status === 202) {
         return { success: true };
+      }
+      if (response.status === 404) {
+        return Promise.reject(new Error("httpSend() requires Realtime server v2.97.0 or newer; the endpoint returned 404. " + "Update your Supabase CLI to a recent version, or upgrade the Realtime server in your self-hosted setup. " + "See https://github.com/supabase/supabase-js/blob/master/packages/core/realtime-js/migrations/httpsend-server-version.md"));
       }
       let errorMessage = response.statusText;
       try {
@@ -5226,6 +5356,10 @@ var require_RealtimeChannel = __commonJS((exports2) => {
     }
     _on(type, filter, callback) {
       const typeLower = type.toLocaleLowerCase();
+      const filterValue = filter === null || filter === undefined ? undefined : filter.filter;
+      if (filterValue instanceof RealtimePostgresFilterBuilder_1.RealtimePostgresFilterBuilder || typeof filterValue === "object" && filterValue !== null && typeof filterValue.build === "function") {
+        filter = Object.assign(Object.assign({}, filter), { filter: filterValue.build() });
+      }
       const ref = this.channelAdapter.on(type, callback);
       const binding = {
         type: typeLower,
@@ -5590,22 +5724,6 @@ var require_RealtimeClient = __commonJS((exports2) => {
         this.socketAdapter.connect();
       } catch (error) {
         const errorMessage = error.message;
-        if (errorMessage.includes("Node.js")) {
-          throw new Error(`${errorMessage}
-
-` + `To use Realtime in Node.js, you need to provide a WebSocket implementation:
-
-` + `Option 1: Use Node.js 22+ which has native WebSocket support
-` + `Option 2: Install and provide the "ws" package:
-
-` + `  npm install ws
-
-` + `  import ws from "ws"
-` + `  const client = new RealtimeClient(url, {
-` + `    ...options,
-` + `    transport: ws
-` + "  })");
-        }
         throw new Error(`WebSocket not available: ${errorMessage}`);
       }
       this._handleNodeJsRaceCondition();
@@ -5800,6 +5918,8 @@ var require_RealtimeClient = __commonJS((exports2) => {
     }
     _wrapHeartbeatCallback(heartbeatCallback) {
       return (status, latency) => {
+        if (status === "disconnected")
+          return;
         if (status == "sent")
           this._setAuthSafely();
         if (heartbeatCallback)
@@ -5911,12 +6031,18 @@ var require_RealtimeClient = __commonJS((exports2) => {
 // ../../node_modules/@supabase/realtime-js/dist/main/index.js
 var require_main2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
-  exports2.WebSocketFactory = exports2.REALTIME_CHANNEL_STATES = exports2.REALTIME_SUBSCRIBE_STATES = exports2.REALTIME_PRESENCE_LISTEN_EVENTS = exports2.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports2.REALTIME_LISTEN_TYPES = exports2.RealtimeClient = exports2.RealtimeChannel = exports2.RealtimePresence = undefined;
+  exports2.WebSocketFactory = exports2.REALTIME_CHANNEL_STATES = exports2.REALTIME_SUBSCRIBE_STATES = exports2.REALTIME_PRESENCE_LISTEN_EVENTS = exports2.REALTIME_POSTGRES_CHANGES_LISTEN_EVENT = exports2.REALTIME_LISTEN_TYPES = exports2.postgresChangesFilter = exports2.RealtimePostgresFilterBuilder = exports2.RealtimeClient = exports2.RealtimeChannel = exports2.RealtimePresence = undefined;
   var tslib_1 = require_tslib();
   var RealtimeClient_1 = tslib_1.__importDefault(require_RealtimeClient());
   exports2.RealtimeClient = RealtimeClient_1.default;
   var RealtimeChannel_1 = tslib_1.__importStar(require_RealtimeChannel());
   exports2.RealtimeChannel = RealtimeChannel_1.default;
+  Object.defineProperty(exports2, "RealtimePostgresFilterBuilder", { enumerable: true, get: function() {
+    return RealtimeChannel_1.RealtimePostgresFilterBuilder;
+  } });
+  Object.defineProperty(exports2, "postgresChangesFilter", { enumerable: true, get: function() {
+    return RealtimeChannel_1.postgresChangesFilter;
+  } });
   Object.defineProperty(exports2, "REALTIME_LISTEN_TYPES", { enumerable: true, get: function() {
     return RealtimeChannel_1.REALTIME_LISTEN_TYPES;
   } });
@@ -5942,17 +6068,18 @@ var require_main2 = __commonJS((exports2) => {
 var require_version2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
   exports2.version = undefined;
-  exports2.version = "2.105.4";
+  exports2.version = "2.110.7";
 });
 
 // ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/constants.js
 var require_constants2 = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
-  exports2.JWKS_TTL = exports2.BASE64URL_REGEX = exports2.API_VERSIONS = exports2.API_VERSION_HEADER_NAME = exports2.NETWORK_FAILURE = exports2.DEFAULT_HEADERS = exports2.AUDIENCE = exports2.STORAGE_KEY = exports2.GOTRUE_URL = exports2.EXPIRY_MARGIN_MS = exports2.AUTO_REFRESH_TICK_THRESHOLD = exports2.AUTO_REFRESH_TICK_DURATION_MS = undefined;
+  exports2.JWKS_TTL = exports2.BASE64URL_REGEX = exports2.API_VERSIONS = exports2.API_VERSION_HEADER_NAME = exports2.NETWORK_FAILURE = exports2.DEFAULT_HEADERS = exports2.AUDIENCE = exports2.STORAGE_KEY = exports2.GOTRUE_URL = exports2.REFRESH_FAILURE_COOLDOWN_MS = exports2.EXPIRY_MARGIN_MS = exports2.AUTO_REFRESH_TICK_THRESHOLD = exports2.AUTO_REFRESH_TICK_DURATION_MS = undefined;
   var version_1 = require_version2();
   exports2.AUTO_REFRESH_TICK_DURATION_MS = 30 * 1000;
   exports2.AUTO_REFRESH_TICK_THRESHOLD = 3;
   exports2.EXPIRY_MARGIN_MS = exports2.AUTO_REFRESH_TICK_THRESHOLD * exports2.AUTO_REFRESH_TICK_DURATION_MS;
+  exports2.REFRESH_FAILURE_COOLDOWN_MS = 2 * exports2.AUTO_REFRESH_TICK_DURATION_MS;
   exports2.GOTRUE_URL = "http://localhost:9999";
   exports2.STORAGE_KEY = "supabase.auth.token";
   exports2.AUDIENCE = "";
@@ -5975,13 +6102,14 @@ var require_constants2 = __commonJS((exports2) => {
 // ../../node_modules/@supabase/supabase-js/node_modules/@supabase/auth-js/dist/main/lib/errors.js
 var require_errors = __commonJS((exports2) => {
   Object.defineProperty(exports2, "__esModule", { value: true });
-  exports2.AuthInvalidJwtError = exports2.AuthWeakPasswordError = exports2.AuthRetryableFetchError = exports2.AuthPKCECodeVerifierMissingError = exports2.AuthPKCEGrantCodeExchangeError = exports2.AuthImplicitGrantRedirectError = exports2.AuthInvalidCredentialsError = exports2.AuthInvalidTokenResponseError = exports2.AuthSessionMissingError = exports2.CustomAuthError = exports2.AuthUnknownError = exports2.AuthApiError = exports2.AuthError = undefined;
+  exports2.AuthInvalidJwtError = exports2.AuthWeakPasswordError = exports2.AuthRefreshDiscardedError = exports2.AuthRetryableFetchError = exports2.AuthPKCECodeVerifierMissingError = exports2.AuthPKCEGrantCodeExchangeError = exports2.AuthImplicitGrantRedirectError = exports2.AuthInvalidCredentialsError = exports2.AuthInvalidTokenResponseError = exports2.AuthSessionMissingError = exports2.CustomAuthError = exports2.AuthUnknownError = exports2.AuthApiError = exports2.AuthError = undefined;
   exports2.isAuthError = isAuthError;
   exports2.isAuthApiError = isAuthApiError;
   exports2.isAuthSessionMissingError = isAuthSessionMissingError;
   exports2.isAuthImplicitGrantRedirectError = isAuthImplicitGrantRedirectError;
   exports2.isAuthPKCECodeVerifierMissingError = isAuthPKCECodeVerifierMissingError;
   exports2.isAuthRetryableFetchError = isAuthRetryableFetchError;
+  exports2.isAuthRefreshDiscardedError = isAuthRefreshDiscardedError;
   exports2.isAuthWeakPasswordError = isAuthWeakPasswordError;
 
   class AuthError extends Error {
@@ -6106,6 +6234,16 @@ var require_errors = __commonJS((exports2) => {
   exports2.AuthRetryableFetchError = AuthRetryableFetchError;
   function isAuthRetryableFetchError(error) {
     return isAuthError(error) && error.name === "AuthRetryableFetchError";
+  }
+
+  class AuthRefreshDiscardedError extends CustomAuthError {
+    constructor(message = "Refresh result discarded: session state changed mid-flight (e.g., concurrent signOut)") {
+      super(message, "AuthRefreshDiscardedError", 409, undefined);
+    }
+  }
+  exports2.AuthRefreshDiscardedError = AuthRefreshDiscardedError;
+  function isAuthRefreshDiscardedError(error) {
+    return isAuthError(error) && error.name === "AuthRefreshDiscardedError";
   }
 
   class AuthWeakPasswordError extends CustomAuthError {
@@ -6662,7 +6800,24 @@ var require_fetch = __commonJS((exports2) => {
     }
     return JSON.stringify(err);
   };
-  var NETWORK_ERROR_CODES = [502, 503, 504, 520, 521, 522, 523, 524, 530];
+  var NETWORK_ERROR_CODES = [
+    500,
+    501,
+    502,
+    503,
+    504,
+    520,
+    521,
+    522,
+    523,
+    524,
+    525,
+    526,
+    527,
+    528,
+    529,
+    530
+  ];
   async function handleError2(error) {
     var _a;
     if (!(0, helpers_1.looksLikeFetchResponse)(error)) {
@@ -6754,7 +6909,7 @@ var require_fetch = __commonJS((exports2) => {
         session.expires_at = (0, helpers_1.expiresAt)(data.expires_in);
       }
     }
-    const user = (_a = data.user) !== null && _a !== undefined ? _a : data;
+    const user = (_a = data.user) !== null && _a !== undefined ? _a : typeof (data === null || data === undefined ? undefined : data.id) === "string" ? data : null;
     return { data: { session, user }, error: null };
   }
   function _sessionResponsePassword(data) {
@@ -8219,9 +8374,6 @@ var require_GoTrueClient = __commonJS((exports2) => {
     skipAutoInitialize: false,
     experimental: {}
   };
-  async function lockNoOp(name, acquireTimeout, fn) {
-    return await fn();
-  }
   var GLOBAL_JWKS = {};
 
   class GoTrueClient {
@@ -8240,7 +8392,7 @@ var require_GoTrueClient = __commonJS((exports2) => {
       GLOBAL_JWKS[this.storageKey] = Object.assign(Object.assign({}, GLOBAL_JWKS[this.storageKey]), { cachedAt: value });
     }
     constructor(options) {
-      var _a, _b, _c, _d;
+      var _a, _b, _c;
       this.userStorage = null;
       this.memoryStorage = null;
       this.stateChangeEmitters = new Map;
@@ -8248,10 +8400,14 @@ var require_GoTrueClient = __commonJS((exports2) => {
       this.autoRefreshTickTimeout = null;
       this.visibilityChangedCallback = null;
       this.refreshingDeferred = null;
+      this.lastRefreshFailure = null;
+      this._sessionRemovalEpoch = 0;
       this.initializePromise = null;
+      this._pendingInitNotifications = null;
       this.detectSessionInUrl = true;
       this.hasCustomAuthorizationHeader = false;
       this.suppressGetSessionWarning = false;
+      this.lock = null;
       this.lockAcquired = false;
       this.pendingInLock = [];
       this.broadcastChannel = null;
@@ -8283,18 +8439,13 @@ var require_GoTrueClient = __commonJS((exports2) => {
       this.url = settings.url;
       this.headers = settings.headers;
       this.fetch = (0, helpers_1.resolveFetch)(settings.fetch);
-      this.lock = settings.lock || lockNoOp;
       this.detectSessionInUrl = settings.detectSessionInUrl;
       this.flowType = settings.flowType;
       this.hasCustomAuthorizationHeader = settings.hasCustomAuthorizationHeader;
       this.throwOnError = settings.throwOnError;
       this.lockAcquireTimeout = settings.lockAcquireTimeout;
-      if (settings.lock) {
+      if (settings.lock != null) {
         this.lock = settings.lock;
-      } else if (this.persistSession && (0, helpers_1.isBrowser)() && ((_c = globalThis === null || globalThis === undefined ? undefined : globalThis.navigator) === null || _c === undefined ? undefined : _c.locks)) {
-        this.lock = locks_1.navigatorLock;
-      } else {
-        this.lock = lockNoOp;
       }
       if (!this.jwks) {
         this.jwks = { keys: [] };
@@ -8350,8 +8501,11 @@ var require_GoTrueClient = __commonJS((exports2) => {
         } catch (e) {
           console.error("Failed to create a new BroadcastChannel, multi-tab state changes will not be available", e);
         }
-        (_d = this.broadcastChannel) === null || _d === undefined || _d.addEventListener("message", async (event) => {
+        (_c = this.broadcastChannel) === null || _c === undefined || _c.addEventListener("message", async (event) => {
           this._debug("received broadcast notification from other tab or client", event);
+          if (event.data.event === "TOKEN_REFRESHED" || event.data.event === "SIGNED_IN") {
+            this.lastRefreshFailure = null;
+          }
           try {
             await this._notifyAllSubscribers(event.data.event, event.data.session, false);
           } catch (error) {
@@ -8384,15 +8538,26 @@ var require_GoTrueClient = __commonJS((exports2) => {
       return this;
     }
     async initialize() {
+      var _a;
       if (this.initializePromise) {
         return await this.initializePromise;
       }
+      this._pendingInitNotifications = [];
       this.initializePromise = (async () => {
-        return await this._acquireLock(this.lockAcquireTimeout, async () => {
-          return await this._initialize();
-        });
+        if (this.lock != null) {
+          return await this._acquireLock(this.lockAcquireTimeout, async () => {
+            return await this._initialize();
+          });
+        }
+        return await this._initialize();
       })();
-      return await this.initializePromise;
+      const result = await this.initializePromise;
+      const queue = (_a = this._pendingInitNotifications) !== null && _a !== undefined ? _a : [];
+      this._pendingInitNotifications = null;
+      for (const n of queue) {
+        await this._notifyAllSubscribers(n.event, n.session, n.broadcast);
+      }
+      return result;
     }
     async _initialize() {
       var _a;
@@ -8595,9 +8760,12 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async exchangeCodeForSession(authCode) {
       await this.initializePromise;
-      return this._acquireLock(this.lockAcquireTimeout, async () => {
-        return this._exchangeCodeForSession(authCode);
-      });
+      if (this.lock != null) {
+        return this._acquireLock(this.lockAcquireTimeout, async () => {
+          return this._exchangeCodeForSession(authCode);
+        });
+      }
+      return this._exchangeCodeForSession(authCode);
     }
     async signInWithWeb3(credentials) {
       const { chain } = credentials;
@@ -8989,9 +9157,12 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async reauthenticate() {
       await this.initializePromise;
-      return await this._acquireLock(this.lockAcquireTimeout, async () => {
-        return await this._reauthenticate();
-      });
+      if (this.lock != null) {
+        return await this._acquireLock(this.lockAcquireTimeout, async () => {
+          return await this._reauthenticate();
+        });
+      }
+      return await this._reauthenticate();
     }
     async _reauthenticate() {
       try {
@@ -9019,15 +9190,25 @@ var require_GoTrueClient = __commonJS((exports2) => {
         const endpoint = `${this.url}/resend`;
         if ("email" in credentials) {
           const { email, type, options } = credentials;
+          let codeChallenge = null;
+          let codeChallengeMethod = null;
+          if (this.flowType === "pkce") {
+            [codeChallenge, codeChallengeMethod] = await (0, helpers_1.getCodeChallengeAndMethod)(this.storage, this.storageKey);
+          }
           const { error } = await (0, fetch_1._request)(this.fetch, "POST", endpoint, {
             headers: this.headers,
             body: {
               email,
               type,
-              gotrue_meta_security: { captcha_token: options === null || options === undefined ? undefined : options.captchaToken }
+              gotrue_meta_security: { captcha_token: options === null || options === undefined ? undefined : options.captchaToken },
+              code_challenge: codeChallenge,
+              code_challenge_method: codeChallengeMethod
             },
             redirectTo: options === null || options === undefined ? undefined : options.emailRedirectTo
           });
+          if (error) {
+            await (0, helpers_1.removeItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
+          }
           return this._returnResult({ data: { user: null, session: null }, error });
         } else if ("phone" in credentials) {
           const { phone, type, options } = credentials;
@@ -9046,6 +9227,7 @@ var require_GoTrueClient = __commonJS((exports2) => {
         }
         throw new errors_1.AuthInvalidCredentialsError("You must provide either an email or phone number and a type");
       } catch (error) {
+        await (0, helpers_1.removeItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
         if ((0, errors_1.isAuthError)(error)) {
           return this._returnResult({ data: { user: null, session: null }, error });
         }
@@ -9054,12 +9236,16 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async getSession() {
       await this.initializePromise;
-      const result = await this._acquireLock(this.lockAcquireTimeout, async () => {
-        return this._useSession(async (result2) => {
-          return result2;
+      if (this.lock != null) {
+        return await this._acquireLock(this.lockAcquireTimeout, async () => {
+          return this._useSession(async (result) => {
+            return result;
+          });
         });
+      }
+      return await this._useSession(async (result) => {
+        return result;
       });
-      return result;
     }
     async _acquireLock(acquireTimeout, fn) {
       this._debug("#_acquireLock", "begin", acquireTimeout);
@@ -9114,7 +9300,7 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async __loadSession() {
       this._debug("#__loadSession()", "begin");
-      if (!this.lockAcquired) {
+      if (this.lock != null && !this.lockAcquired) {
         this._debug("#__loadSession()", "used outside of an acquired lock!", new Error().stack);
       }
       try {
@@ -9154,6 +9340,13 @@ var require_GoTrueClient = __commonJS((exports2) => {
         }
         const { data: session, error } = await this._callRefreshToken(currentSession.refresh_token);
         if (error) {
+          const accessTokenStillValid = !!(currentSession.expires_at && currentSession.expires_at * 1000 > Date.now());
+          if (accessTokenStillValid) {
+            const stillStored = await (0, helpers_1.getItemAsync)(this.storage, this.storageKey);
+            if (stillStored && stillStored.refresh_token === currentSession.refresh_token) {
+              return this._returnResult({ data: { session: currentSession }, error: null });
+            }
+          }
           return this._returnResult({ data: { session: null }, error });
         }
         return this._returnResult({ data: { session }, error: null });
@@ -9166,9 +9359,14 @@ var require_GoTrueClient = __commonJS((exports2) => {
         return await this._getUser(jwt);
       }
       await this.initializePromise;
-      const result = await this._acquireLock(this.lockAcquireTimeout, async () => {
-        return await this._getUser();
-      });
+      let result;
+      if (this.lock != null) {
+        result = await this._acquireLock(this.lockAcquireTimeout, async () => {
+          return await this._getUser();
+        });
+      } else {
+        result = await this._getUser();
+      }
       if (result.data.user) {
         this.suppressGetSessionWarning = true;
       }
@@ -9211,9 +9409,12 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async updateUser(attributes, options = {}) {
       await this.initializePromise;
-      return await this._acquireLock(this.lockAcquireTimeout, async () => {
-        return await this._updateUser(attributes, options);
-      });
+      if (this.lock != null) {
+        return await this._acquireLock(this.lockAcquireTimeout, async () => {
+          return await this._updateUser(attributes, options);
+        });
+      }
+      return await this._updateUser(attributes, options);
     }
     async _updateUser(attributes, options = {}) {
       try {
@@ -9256,9 +9457,12 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async setSession(currentSession) {
       await this.initializePromise;
-      return await this._acquireLock(this.lockAcquireTimeout, async () => {
-        return await this._setSession(currentSession);
-      });
+      if (this.lock != null) {
+        return await this._acquireLock(this.lockAcquireTimeout, async () => {
+          return await this._setSession(currentSession);
+        });
+      }
+      return await this._setSession(currentSession);
     }
     async _setSession(currentSession) {
       try {
@@ -9309,9 +9513,12 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async refreshSession(currentSession) {
       await this.initializePromise;
-      return await this._acquireLock(this.lockAcquireTimeout, async () => {
-        return await this._refreshSession(currentSession);
-      });
+      if (this.lock != null) {
+        return await this._acquireLock(this.lockAcquireTimeout, async () => {
+          return await this._refreshSession(currentSession);
+        });
+      }
+      return await this._refreshSession(currentSession);
     }
     async _refreshSession(currentSession) {
       try {
@@ -9429,7 +9636,7 @@ var require_GoTrueClient = __commonJS((exports2) => {
       if (typeof this.detectSessionInUrl === "function") {
         return this.detectSessionInUrl(new URL(window.location.href), params);
       }
-      return Boolean(params.access_token || params.error_description);
+      return Boolean(params.access_token || params.error || params.error_description || params.error_code);
     }
     async _isPKCECallback(params) {
       const currentStorageContent = await (0, helpers_1.getItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
@@ -9437,13 +9644,20 @@ var require_GoTrueClient = __commonJS((exports2) => {
     }
     async signOut(options = { scope: "global" }) {
       await this.initializePromise;
-      return await this._acquireLock(this.lockAcquireTimeout, async () => {
-        return await this._signOut(options);
-      });
+      if (this.lock != null) {
+        return await this._acquireLock(this.lockAcquireTimeout, async () => {
+          return await this._signOut(options);
+        });
+      }
+      return await this._signOut(options);
     }
     async _signOut({ scope } = { scope: "global" }) {
       return await this._useSession(async (result) => {
         var _a;
+        const removeCurrentSession = async () => {
+          await this._removeSession();
+          await (0, helpers_1.removeItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
+        };
         const { data, error: sessionError } = result;
         if (sessionError && !(0, errors_1.isAuthSessionMissingError)(sessionError)) {
           return this._returnResult({ error: sessionError });
@@ -9453,13 +9667,15 @@ var require_GoTrueClient = __commonJS((exports2) => {
           const { error } = await this.admin.signOut(accessToken, scope);
           if (error) {
             if (!((0, errors_1.isAuthApiError)(error) && (error.status === 404 || error.status === 401 || error.status === 403) || (0, errors_1.isAuthSessionMissingError)(error))) {
+              if (scope !== "others") {
+                await removeCurrentSession();
+              }
               return this._returnResult({ error });
             }
           }
         }
         if (scope !== "others") {
-          await this._removeSession();
-          await (0, helpers_1.removeItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
+          await removeCurrentSession();
         }
         return this._returnResult({ error: null });
       });
@@ -9478,9 +9694,13 @@ var require_GoTrueClient = __commonJS((exports2) => {
       this.stateChangeEmitters.set(id, subscription);
       (async () => {
         await this.initializePromise;
-        await this._acquireLock(this.lockAcquireTimeout, async () => {
-          this._emitInitialSession(id);
-        });
+        if (this.lock != null) {
+          await this._acquireLock(this.lockAcquireTimeout, async () => {
+            this._emitInitialSession(id);
+          });
+        } else {
+          await this._emitInitialSession(id);
+        }
       })();
       return { data: { subscription } };
     }
@@ -9649,7 +9869,7 @@ var require_GoTrueClient = __commonJS((exports2) => {
       }
     }
     async _refreshAccessToken(refreshToken) {
-      const debugName = `#_refreshAccessToken(${refreshToken.substring(0, 5)}...)`;
+      const debugName = `#_refreshAccessToken()`;
       this._debug(debugName, "begin");
       try {
         const startedAt = Date.now();
@@ -9732,10 +9952,10 @@ var require_GoTrueClient = __commonJS((exports2) => {
           if (this.autoRefreshToken && currentSession.refresh_token) {
             const { error } = await this._callRefreshToken(currentSession.refresh_token);
             if (error) {
-              console.error(error);
-              if (!(0, errors_1.isAuthRetryableFetchError)(error)) {
-                this._debug(debugName, "refresh failed with a non-retryable error, removing the session", error);
-                await this._removeSession();
+              if ((0, errors_1.isAuthRefreshDiscardedError)(error)) {
+                this._debug(debugName, "refresh discarded by commit guard", error);
+              } else {
+                this._debug(debugName, "refresh failed", error);
               }
             }
           }
@@ -9772,18 +9992,52 @@ var require_GoTrueClient = __commonJS((exports2) => {
       if (this.refreshingDeferred) {
         return this.refreshingDeferred.promise;
       }
-      const debugName = `#_callRefreshToken(${refreshToken.substring(0, 5)}...)`;
+      if (this.lastRefreshFailure && this.lastRefreshFailure.refreshToken === refreshToken && Date.now() < this.lastRefreshFailure.expiresAt) {
+        this._debug("#_callRefreshToken()", "returning cached failure (cooldown active)");
+        return this.lastRefreshFailure.result;
+      }
+      const debugName = `#_callRefreshToken()`;
       this._debug(debugName, "begin");
       try {
         this.refreshingDeferred = new helpers_1.Deferred;
+        const storedAtStart = await (0, helpers_1.getItemAsync)(this.storage, this.storageKey);
         const { data, error } = await this._refreshAccessToken(refreshToken);
         if (error)
           throw error;
         if (!data.session)
           throw new errors_1.AuthSessionMissingError;
+        const storedAfter = await (0, helpers_1.getItemAsync)(this.storage, this.storageKey);
+        const storageChangedUnderUs = storedAtStart !== null && (storedAfter === null || storedAfter.refresh_token !== storedAtStart.refresh_token);
+        if (storageChangedUnderUs) {
+          this._debug(debugName, "commit guard: storage changed since refresh started, discarding rotated tokens", {
+            startedWith: "present",
+            nowHolds: storedAfter ? "replaced" : "cleared"
+          });
+          const discarded = {
+            data: null,
+            error: new errors_1.AuthRefreshDiscardedError
+          };
+          this.refreshingDeferred.resolve(discarded);
+          return discarded;
+        }
+        const epochBeforeSave = this._sessionRemovalEpoch;
         await this._saveSession(data.session);
+        if (this._sessionRemovalEpoch !== epochBeforeSave) {
+          this._debug(debugName, "commit guard (post-save): _removeSession ran during _saveSession, undoing write");
+          await (0, helpers_1.removeItemAsync)(this.storage, this.storageKey);
+          if (this.userStorage) {
+            await (0, helpers_1.removeItemAsync)(this.userStorage, this.storageKey + "-user");
+          }
+          const discarded = {
+            data: null,
+            error: new errors_1.AuthRefreshDiscardedError
+          };
+          this.refreshingDeferred.resolve(discarded);
+          return discarded;
+        }
         await this._notifyAllSubscribers("TOKEN_REFRESHED", data.session);
         const result = { data: data.session, error: null };
+        this.lastRefreshFailure = null;
         this.refreshingDeferred.resolve(result);
         return result;
       } catch (error) {
@@ -9791,8 +10045,19 @@ var require_GoTrueClient = __commonJS((exports2) => {
         if ((0, errors_1.isAuthError)(error)) {
           const result = { data: null, error };
           if (!(0, errors_1.isAuthRetryableFetchError)(error)) {
-            await this._removeSession();
+            const storedNow = await (0, helpers_1.getItemAsync)(this.storage, this.storageKey);
+            const accessTokenStillValid = !!((storedNow === null || storedNow === undefined ? undefined : storedNow.expires_at) && storedNow.expires_at * 1000 > Date.now());
+            if (accessTokenStillValid) {
+              this._debug(debugName, "proactive refresh failed, access token still valid — preserving session");
+            } else {
+              await this._removeSession();
+            }
           }
+          this.lastRefreshFailure = {
+            refreshToken,
+            result,
+            expiresAt: Date.now() + constants_1.REFRESH_FAILURE_COOLDOWN_MS
+          };
           (_a = this.refreshingDeferred) === null || _a === undefined || _a.resolve(result);
           return result;
         }
@@ -9804,6 +10069,10 @@ var require_GoTrueClient = __commonJS((exports2) => {
       }
     }
     async _notifyAllSubscribers(event, session, broadcast = true) {
+      if (this._pendingInitNotifications !== null && broadcast) {
+        this._pendingInitNotifications.push({ event, session, broadcast });
+        return;
+      }
       const debugName = `#_notifyAllSubscribers(${event})`;
       this._debug(debugName, "begin", session, `broadcast = ${broadcast}`);
       try {
@@ -9832,7 +10101,6 @@ var require_GoTrueClient = __commonJS((exports2) => {
     async _saveSession(session) {
       this._debug("#_saveSession()", session);
       this.suppressGetSessionWarning = true;
-      await (0, helpers_1.removeItemAsync)(this.storage, `${this.storageKey}-code-verifier`);
       const sessionToProcess = Object.assign({}, session);
       const userIsProxy = sessionToProcess.user && sessionToProcess.user.__isUserNotAvailableProxy === true;
       if (this.userStorage) {
@@ -9851,7 +10119,9 @@ var require_GoTrueClient = __commonJS((exports2) => {
       }
     }
     async _removeSession() {
+      this._sessionRemovalEpoch += 1;
       this._debug("#_removeSession()");
+      this.lastRefreshFailure = null;
       this.suppressGetSessionWarning = false;
       await (0, helpers_1.removeItemAsync)(this.storage, this.storageKey);
       await (0, helpers_1.removeItemAsync)(this.storage, this.storageKey + "-code-verifier");
@@ -9915,38 +10185,74 @@ var require_GoTrueClient = __commonJS((exports2) => {
       this._removeVisibilityChangedCallback();
       await this._stopAutoRefresh();
     }
+    async dispose() {
+      var _a;
+      this._removeVisibilityChangedCallback();
+      await this._stopAutoRefresh();
+      (_a = this.broadcastChannel) === null || _a === undefined || _a.close();
+      this.broadcastChannel = null;
+      this.stateChangeEmitters.clear();
+    }
     async _autoRefreshTokenTick() {
       this._debug("#_autoRefreshTokenTick()", "begin");
-      try {
-        await this._acquireLock(0, async () => {
-          try {
-            const now = Date.now();
+      if (this.lock != null) {
+        try {
+          await this._acquireLock(0, async () => {
             try {
-              return await this._useSession(async (result) => {
-                const { data: { session } } = result;
-                if (!session || !session.refresh_token || !session.expires_at) {
-                  this._debug("#_autoRefreshTokenTick()", "no session");
-                  return;
-                }
-                const expiresInTicks = Math.floor((session.expires_at * 1000 - now) / constants_1.AUTO_REFRESH_TICK_DURATION_MS);
-                this._debug("#_autoRefreshTokenTick()", `access token expires in ${expiresInTicks} ticks, a tick lasts ${constants_1.AUTO_REFRESH_TICK_DURATION_MS}ms, refresh threshold is ${constants_1.AUTO_REFRESH_TICK_THRESHOLD} ticks`);
-                if (expiresInTicks <= constants_1.AUTO_REFRESH_TICK_THRESHOLD) {
-                  await this._callRefreshToken(session.refresh_token);
-                }
-              });
-            } catch (e) {
-              console.error("Auto refresh tick failed with error. This is likely a transient error.", e);
+              const now = Date.now();
+              try {
+                return await this._useSession(async (result) => {
+                  const { data: { session } } = result;
+                  if (!session || !session.refresh_token || !session.expires_at) {
+                    this._debug("#_autoRefreshTokenTick()", "no session");
+                    return;
+                  }
+                  const expiresInTicks = Math.floor((session.expires_at * 1000 - now) / constants_1.AUTO_REFRESH_TICK_DURATION_MS);
+                  this._debug("#_autoRefreshTokenTick()", `access token expires in ${expiresInTicks} ticks, a tick lasts ${constants_1.AUTO_REFRESH_TICK_DURATION_MS}ms, refresh threshold is ${constants_1.AUTO_REFRESH_TICK_THRESHOLD} ticks`);
+                  if (expiresInTicks <= constants_1.AUTO_REFRESH_TICK_THRESHOLD) {
+                    await this._callRefreshToken(session.refresh_token);
+                  }
+                });
+              } catch (e) {
+                console.error("Auto refresh tick failed with error. This is likely a transient error.", e);
+              }
+            } finally {
+              this._debug("#_autoRefreshTokenTick()", "end");
             }
-          } finally {
-            this._debug("#_autoRefreshTokenTick()", "end");
+          });
+        } catch (e) {
+          if (e instanceof locks_1.LockAcquireTimeoutError) {
+            this._debug("auto refresh token tick lock not available");
+          } else {
+            throw e;
           }
-        });
-      } catch (e) {
-        if (e instanceof locks_1.LockAcquireTimeoutError) {
-          this._debug("auto refresh token tick lock not available");
-        } else {
-          throw e;
         }
+        return;
+      }
+      if (this.refreshingDeferred !== null) {
+        this._debug("#_autoRefreshTokenTick()", "refresh already in flight, skipping");
+        return;
+      }
+      try {
+        const now = Date.now();
+        try {
+          await this._useSession(async (result) => {
+            const { data: { session } } = result;
+            if (!session || !session.refresh_token || !session.expires_at) {
+              this._debug("#_autoRefreshTokenTick()", "no session");
+              return;
+            }
+            const expiresInTicks = Math.floor((session.expires_at * 1000 - now) / constants_1.AUTO_REFRESH_TICK_DURATION_MS);
+            this._debug("#_autoRefreshTokenTick()", `access token expires in ${expiresInTicks} ticks, a tick lasts ${constants_1.AUTO_REFRESH_TICK_DURATION_MS}ms, refresh threshold is ${constants_1.AUTO_REFRESH_TICK_THRESHOLD} ticks`);
+            if (expiresInTicks <= constants_1.AUTO_REFRESH_TICK_THRESHOLD) {
+              await this._callRefreshToken(session.refresh_token);
+            }
+          });
+        } catch (e) {
+          console.error("Auto refresh tick failed with error. This is likely a transient error.", e);
+        }
+      } finally {
+        this._debug("#_autoRefreshTokenTick()", "end");
       }
     }
     async _handleVisibilityChange() {
@@ -9980,13 +10286,21 @@ var require_GoTrueClient = __commonJS((exports2) => {
         }
         if (!calledFromInitialize) {
           await this.initializePromise;
-          await this._acquireLock(this.lockAcquireTimeout, async () => {
+          if (this.lock != null) {
+            await this._acquireLock(this.lockAcquireTimeout, async () => {
+              if (document.visibilityState !== "visible") {
+                this._debug(methodName, "acquired the lock to recover the session, but the browser visibilityState is no longer visible, aborting");
+                return;
+              }
+              await this._recoverAndRefresh();
+            });
+          } else {
             if (document.visibilityState !== "visible") {
-              this._debug(methodName, "acquired the lock to recover the session, but the browser visibilityState is no longer visible, aborting");
+              this._debug(methodName, "visibilityState is no longer visible, skipping recovery");
               return;
             }
             await this._recoverAndRefresh();
-          });
+          }
         }
       } else if (document.visibilityState === "hidden") {
         if (this.autoRefreshToken) {
@@ -10069,7 +10383,7 @@ var require_GoTrueClient = __commonJS((exports2) => {
       }
     }
     async _verify(params) {
-      return this._acquireLock(this.lockAcquireTimeout, async () => {
+      const run = async () => {
         try {
           return await this._useSession(async (result) => {
             var _a;
@@ -10098,10 +10412,14 @@ var require_GoTrueClient = __commonJS((exports2) => {
           }
           throw error;
         }
-      });
+      };
+      if (this.lock != null) {
+        return this._acquireLock(this.lockAcquireTimeout, run);
+      }
+      return run();
     }
     async _challenge(params) {
-      return this._acquireLock(this.lockAcquireTimeout, async () => {
+      const run = async () => {
         try {
           return await this._useSession(async (result) => {
             var _a;
@@ -10140,7 +10458,11 @@ var require_GoTrueClient = __commonJS((exports2) => {
           }
           throw error;
         }
-      });
+      };
+      if (this.lock != null) {
+        return this._acquireLock(this.lockAcquireTimeout, run);
+      }
+      return run();
     }
     async _challengeAndVerify(params) {
       const { data: challengeData, error: challengeError } = await this._challenge({
@@ -10398,7 +10720,11 @@ var require_GoTrueClient = __commonJS((exports2) => {
         }
         const { header, payload, signature, raw: { header: rawHeader, payload: rawPayload } } = (0, helpers_1.decodeJWT)(token);
         if (!(options === null || options === undefined ? undefined : options.allowExpired)) {
-          (0, helpers_1.validateExp)(payload.exp);
+          try {
+            (0, helpers_1.validateExp)(payload.exp);
+          } catch (e) {
+            throw new errors_1.AuthInvalidJwtError(e instanceof Error ? e.message : "JWT validation failed");
+          }
         }
         const signingKey = !header.alg || header.alg.startsWith("HS") || !header.kid || !(("crypto" in globalThis) && ("subtle" in globalThis.crypto)) ? null : await this.fetchJwk(header.kid, (options === null || options === undefined ? undefined : options.keys) ? { keys: options.keys } : options === null || options === undefined ? undefined : options.jwks);
         if (!signingKey) {
@@ -10819,7 +11145,7 @@ async function updateExtensionMetadata(supabase, userId, extensionKey, version, 
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.1.4",
+  version: "0.1.5",
   description: "Sync your own Codex coding sessions to your Zest account for standups and personal workflow insights, with local privacy redaction before upload.",
   author: {
     name: "Zest",
@@ -11083,14 +11409,17 @@ var PostgrestBuilder = class {
     const executeWithRetry = async () => {
       let attemptCount = 0;
       while (true) {
-        const requestHeaders = new Headers(_this.headers);
+        const headers = {};
+        _this.headers.forEach((value, key) => {
+          headers[key] = value;
+        });
         if (attemptCount > 0)
-          requestHeaders.set("X-Retry-Count", String(attemptCount));
+          headers["X-Retry-Count"] = String(attemptCount);
         let res$1;
         try {
           res$1 = await _fetch(_this.url.toString(), {
             method: _this.method,
-            headers: requestHeaders,
+            headers,
             body: JSON.stringify(_this.body, (_, value) => typeof value === "bigint" ? value.toString() : value),
             signal: _this.signal
           });
@@ -11189,7 +11518,19 @@ ${cause.stack}`;
         else if (_this2.headers.get("Accept") && ((_this$headers$get = _this2.headers.get("Accept")) === null || _this$headers$get === undefined ? undefined : _this$headers$get.includes("application/vnd.pgrst.plan+text")))
           data = body;
         else
-          data = JSON.parse(body);
+          try {
+            data = JSON.parse(body);
+          } catch (_unused) {
+            error = { message: body };
+            data = null;
+            if (_this2.shouldThrowOnError)
+              throw new PostgrestError({
+                message: body,
+                details: "",
+                hint: "",
+                code: ""
+              });
+          }
       }
       const countHeader = (_this$headers$get2 = _this2.headers.get("Prefer")) === null || _this$headers$get2 === undefined ? undefined : _this$headers$get2.match(/count=(exact|planned|estimated)/);
       const contentRange = (_res$headers$get2 = res.headers.get("content-range")) === null || _res$headers$get2 === undefined ? undefined : _res$headers$get2.split("/");
@@ -11221,7 +11562,7 @@ ${cause.stack}`;
           status = 200;
           statusText = "OK";
         }
-      } catch (_unused) {
+      } catch (_unused2) {
         if (res.status === 404 && body === "") {
           status = 204;
           statusText = "No Content";
@@ -11248,6 +11589,9 @@ ${cause.stack}`;
   }
 };
 var PostgrestTransformBuilder = class extends PostgrestBuilder {
+  throwOnError() {
+    return super.throwOnError();
+  }
   select(columns) {
     let quoted = false;
     const cleanedColumns = (columns !== null && columns !== undefined ? columns : "*").split("").map((c) => {
@@ -11267,9 +11611,9 @@ var PostgrestTransformBuilder = class extends PostgrestBuilder {
     this.url.searchParams.set(key, `${existingOrder ? `${existingOrder},` : ""}${column}.${ascending ? "asc" : "desc"}${nullsFirst === undefined ? "" : nullsFirst ? ".nullsfirst" : ".nullslast"}`);
     return this;
   }
-  limit(count, { foreignTable, referencedTable = foreignTable } = {}) {
+  limit(rows, { foreignTable, referencedTable = foreignTable } = {}) {
     const key = typeof referencedTable === "undefined" ? "limit" : `${referencedTable}.limit`;
-    this.url.searchParams.set(key, `${count}`);
+    this.url.searchParams.set(key, `${rows}`);
     return this;
   }
   range(from, to, { foreignTable, referencedTable = foreignTable } = {}) {
@@ -11322,14 +11666,17 @@ var PostgrestTransformBuilder = class extends PostgrestBuilder {
   returns() {
     return this;
   }
-  maxAffected(value) {
+  maxAffected(rows) {
     this.headers.append("Prefer", "handling=strict");
-    this.headers.append("Prefer", `max-affected=${value}`);
+    this.headers.append("Prefer", `max-affected=${rows}`);
     return this;
   }
 };
 var PostgrestReservedCharsRegexp = /* @__PURE__ */ new RegExp("[,()]");
 var PostgrestFilterBuilder = class extends PostgrestTransformBuilder {
+  throwOnError() {
+    return super.throwOnError();
+  }
   eq(column, value) {
     this.url.searchParams.append(column, `eq.${value}`);
     return this;
@@ -12397,13 +12744,28 @@ var BaseApiClient = class {
     }
   }
 };
+var _Symbol$toStringTag$1;
+_Symbol$toStringTag$1 = Symbol.toStringTag;
 var StreamDownloadBuilder = class {
   constructor(downloadFn, shouldThrowOnError) {
     this.downloadFn = downloadFn;
     this.shouldThrowOnError = shouldThrowOnError;
+    this[_Symbol$toStringTag$1] = "StreamDownloadBuilder";
+    this.promise = null;
   }
   then(onfulfilled, onrejected) {
-    return this.execute().then(onfulfilled, onrejected);
+    return this.getPromise().then(onfulfilled, onrejected);
+  }
+  catch(onrejected) {
+    return this.getPromise().catch(onrejected);
+  }
+  finally(onfinally) {
+    return this.getPromise().finally(onfinally);
+  }
+  getPromise() {
+    if (!this.promise)
+      this.promise = this.execute();
+    return this.promise;
   }
   async execute() {
     var _this = this;
@@ -12712,18 +13074,33 @@ var StorageFileApi = class extends BaseApiClient {
       return await remove(_this12.fetch, `${_this12.url}/object/${_this12.bucketId}`, { prefixes: paths }, { headers: _this12.headers });
     });
   }
-  async list(path, options, parameters) {
+  async purgeCache(path, options, parameters) {
     var _this13 = this;
     return _this13.handleOperation(async () => {
-      const body = _objectSpread22(_objectSpread22(_objectSpread22({}, DEFAULT_SEARCH_OPTIONS), options), {}, { prefix: path || "" });
-      return await post(_this13.fetch, `${_this13.url}/object/list/${_this13.bucketId}`, body, { headers: _this13.headers }, parameters);
+      const _path = _this13._getFinalPath(path);
+      const query = new URLSearchParams;
+      if (options === null || options === undefined ? undefined : options.transformations)
+        query.set("transformations", "true");
+      const queryString = query.toString();
+      return await remove(_this13.fetch, `${_this13.url}/cdn/${_path}${queryString ? `?${queryString}` : ""}`, {}, { headers: _this13.headers }, parameters);
+    });
+  }
+  async list(path, options, parameters) {
+    var _this14 = this;
+    return _this14.handleOperation(async () => {
+      const sortBy = (options === null || options === undefined ? undefined : options.sortBy) ? _objectSpread22(_objectSpread22({}, DEFAULT_SEARCH_OPTIONS.sortBy), options.sortBy) : DEFAULT_SEARCH_OPTIONS.sortBy;
+      const body = _objectSpread22(_objectSpread22(_objectSpread22({}, DEFAULT_SEARCH_OPTIONS), options), {}, {
+        sortBy,
+        prefix: path || ""
+      });
+      return await post(_this14.fetch, `${_this14.url}/object/list/${_this14.bucketId}`, body, { headers: _this14.headers }, parameters);
     });
   }
   async listV2(options, parameters) {
-    var _this14 = this;
-    return _this14.handleOperation(async () => {
+    var _this15 = this;
+    return _this15.handleOperation(async () => {
       const body = _objectSpread22({}, options);
-      return await post(_this14.fetch, `${_this14.url}/object/list-v2/${_this14.bucketId}`, body, { headers: _this14.headers }, parameters);
+      return await post(_this15.fetch, `${_this15.url}/object/list-v2/${_this15.bucketId}`, body, { headers: _this15.headers }, parameters);
     });
   }
   encodeMetadata(metadata) {
@@ -12754,7 +13131,7 @@ var StorageFileApi = class extends BaseApiClient {
     return query;
   }
 };
-var version = "2.105.4";
+var version = "2.110.7";
 var DEFAULT_HEADERS = { "X-Client-Info": `storage-js/${version}` };
 var StorageBucketApi = class extends BaseApiClient {
   constructor(url, headers = {}, fetch$1, opts) {
@@ -12815,6 +13192,16 @@ var StorageBucketApi = class extends BaseApiClient {
     var _this6 = this;
     return _this6.handleOperation(async () => {
       return await remove(_this6.fetch, `${_this6.url}/bucket/${id}`, {}, { headers: _this6.headers });
+    });
+  }
+  async purgeBucketCache(id, options, parameters) {
+    var _this7 = this;
+    return _this7.handleOperation(async () => {
+      const query = new URLSearchParams;
+      if (options === null || options === undefined ? undefined : options.transformations)
+        query.set("transformations", "true");
+      const queryString = query.toString();
+      return await remove(_this7.fetch, `${_this7.url}/cdn/${id}${queryString ? `?${queryString}` : ""}`, {}, { headers: _this7.headers }, parameters);
     });
   }
   listBucketOptionsToQueryString(options) {
@@ -13137,17 +13524,27 @@ var StorageClient = class extends StorageBucketApi {
 var import_auth_js = __toESM(require_main3(), 1);
 __reExport(exports_dist3, __toESM(require_main2(), 1), module.exports);
 __reExport(exports_dist3, __toESM(require_main3(), 1), module.exports);
-var version2 = "2.105.4";
+var version2 = "2.110.7";
 var JS_ENV = "";
-if (typeof Deno !== "undefined")
+var JS_RUNTIME_VERSION;
+if (typeof Deno !== "undefined") {
   JS_ENV = "deno";
-else if (typeof document !== "undefined")
+  JS_RUNTIME_VERSION = (_Deno$version = Deno.version) === null || _Deno$version === undefined ? undefined : _Deno$version.deno;
+} else if (typeof document !== "undefined")
   JS_ENV = "web";
 else if (typeof navigator !== "undefined" && navigator.product === "ReactNative")
   JS_ENV = "react-native";
-else
+else {
   JS_ENV = "node";
-var DEFAULT_HEADERS2 = { "X-Client-Info": `supabase-js-${JS_ENV}/${version2}` };
+  const _process = globalThis["process"];
+  JS_RUNTIME_VERSION = _process === null || _process === undefined || (_process$version = _process["version"]) === null || _process$version === undefined ? undefined : _process$version.replace(/^v/, "");
+}
+var _Deno$version;
+var _process$version;
+var _runtimeMeta = [`runtime=${JS_ENV}`];
+if (JS_RUNTIME_VERSION)
+  _runtimeMeta.push(`runtime-version=${JS_RUNTIME_VERSION}`);
+var DEFAULT_HEADERS2 = { "X-Client-Info": `supabase-js/${version2}; ${_runtimeMeta.join("; ")}` };
 var DEFAULT_GLOBAL_OPTIONS = { headers: DEFAULT_HEADERS2 };
 var DEFAULT_DB_OPTIONS = { schema: "public" };
 var DEFAULT_AUTH_OPTIONS = {
@@ -13157,6 +13554,138 @@ var DEFAULT_AUTH_OPTIONS = {
   flowType: "implicit"
 };
 var DEFAULT_REALTIME_OPTIONS = {};
+var DEFAULT_TRACE_PROPAGATION_OPTIONS = {
+  enabled: false,
+  respectSamplingDecision: true
+};
+function __awaiter(thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function(resolve2) {
+      resolve2(value);
+    });
+  }
+  return new (P || (P = Promise))(function(resolve2, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function step(result) {
+      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+}
+var otelModulePromise = null;
+var OTEL_PKG = "@opentelemetry/api";
+function loadOtel() {
+  if (otelModulePromise === null)
+    otelModulePromise = import(OTEL_PKG).catch(() => null);
+  return otelModulePromise;
+}
+function extractTraceContext() {
+  return __awaiter(this, undefined, undefined, function* () {
+    try {
+      const otel = yield loadOtel();
+      if (!otel || !otel.propagation || !otel.context)
+        return null;
+      const carrier = {};
+      otel.propagation.inject(otel.context.active(), carrier);
+      const traceparent = carrier["traceparent"];
+      if (!traceparent)
+        return null;
+      return {
+        traceparent,
+        tracestate: carrier["tracestate"],
+        baggage: carrier["baggage"]
+      };
+    } catch (_a) {
+      return null;
+    }
+  });
+}
+function parseTraceParent(traceparent) {
+  if (!traceparent || typeof traceparent !== "string")
+    return null;
+  const parts = traceparent.split("-");
+  if (parts.length !== 4)
+    return null;
+  const [version$1, traceId, parentId, traceFlags] = parts;
+  if (version$1.length !== 2 || traceId.length !== 32 || parentId.length !== 16 || traceFlags.length !== 2)
+    return null;
+  const hexRegex = /^[0-9a-f]+$/i;
+  if (!hexRegex.test(version$1) || !hexRegex.test(traceId) || !hexRegex.test(parentId) || !hexRegex.test(traceFlags))
+    return null;
+  if (traceId === "00000000000000000000000000000000" || parentId === "0000000000000000")
+    return null;
+  return {
+    version: version$1,
+    traceId,
+    parentId,
+    traceFlags,
+    isSampled: (parseInt(traceFlags, 16) & 1) === 1
+  };
+}
+function shouldPropagateToTarget(targetUrl, targets) {
+  if (!targetUrl || !targets || targets.length === 0)
+    return false;
+  let url;
+  if (targetUrl instanceof URL)
+    url = targetUrl;
+  else
+    try {
+      url = new URL(targetUrl);
+    } catch (error) {
+      return false;
+    }
+  for (const target of targets)
+    try {
+      if (typeof target === "string") {
+        if (matchStringTarget(url.hostname, target))
+          return true;
+      } else if (target instanceof RegExp) {
+        if (target.test(url.hostname))
+          return true;
+      } else if (typeof target === "function") {
+        if (target(url))
+          return true;
+      }
+    } catch (error) {
+      continue;
+    }
+  return false;
+}
+function matchStringTarget(hostname, target) {
+  if (target === hostname)
+    return true;
+  if (target.startsWith("*.")) {
+    const domain = target.slice(2);
+    if (hostname.endsWith(domain)) {
+      if (hostname === domain || hostname.endsWith("." + domain))
+        return true;
+    }
+  }
+  return false;
+}
+function getDefaultPropagationTargets(supabaseUrl) {
+  const targets = [];
+  try {
+    const url = new URL(supabaseUrl);
+    targets.push(url.hostname);
+  } catch (error) {}
+  targets.push("*.supabase.co", "*.supabase.in");
+  targets.push("localhost", "127.0.0.1", "[::1]");
+  return targets;
+}
 function _typeof3(o) {
   "@babel/helpers - typeof";
   return _typeof3 = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(o$1) {
@@ -13218,33 +13747,85 @@ var resolveFetch2 = (customFetch) => {
 var resolveHeadersConstructor = () => {
   return Headers;
 };
-var fetchWithAuth = (supabaseKey, getAccessToken, customFetch) => {
+var isNewApiKey = (key) => key.startsWith("sb_publishable_") || key.startsWith("sb_secret_");
+var TEMP_KEY_PREFIX = "sb_temp_";
+var warnedKeySubtypes = /* @__PURE__ */ new Set;
+var checkApiKeyFormat = (key) => {
+  var _key$match$, _key$match;
+  if (!key.startsWith("sb_") || isNewApiKey(key) || key.startsWith(TEMP_KEY_PREFIX))
+    return;
+  const subtype = (_key$match$ = (_key$match = key.match(/^sb_[a-zA-Z0-9]+_/)) === null || _key$match === undefined ? undefined : _key$match[0]) !== null && _key$match$ !== undefined ? _key$match$ : "unknown";
+  if (warnedKeySubtypes.has(subtype))
+    return;
+  warnedKeySubtypes.add(subtype);
+  console.warn("@supabase/supabase-js: Unrecognized Supabase API key format. The client will proceed and send this key as-is; if you see authentication errors you may need to upgrade @supabase/supabase-js to a version that recognizes this key type.");
+};
+var fetchWithAuth = (supabaseKey, supabaseUrl, getAccessToken, customFetch, tracePropagationOptions, options) => {
   const fetch$1 = resolveFetch2(customFetch);
   const HeadersConstructor = resolveHeadersConstructor();
+  const traceEnabled = (tracePropagationOptions === null || tracePropagationOptions === undefined ? undefined : tracePropagationOptions.enabled) === true;
+  const respectSampling = (tracePropagationOptions === null || tracePropagationOptions === undefined ? undefined : tracePropagationOptions.respectSamplingDecision) !== false;
+  const traceTargets = traceEnabled ? getDefaultPropagationTargets(supabaseUrl) : null;
+  const allowKeyAsBearer = !((options === null || options === undefined ? undefined : options.omitApiKeyAsBearer) && isNewApiKey(supabaseKey));
   return async (input, init) => {
-    var _await$getAccessToken;
-    const accessToken = (_await$getAccessToken = await getAccessToken()) !== null && _await$getAccessToken !== undefined ? _await$getAccessToken : supabaseKey;
+    const realToken = await getAccessToken();
     let headers = new HeadersConstructor(init === null || init === undefined ? undefined : init.headers);
     if (!headers.has("apikey"))
       headers.set("apikey", supabaseKey);
-    if (!headers.has("Authorization"))
-      headers.set("Authorization", `Bearer ${accessToken}`);
+    if (!headers.has("Authorization")) {
+      const bearer = realToken !== null && realToken !== undefined ? realToken : allowKeyAsBearer ? supabaseKey : null;
+      if (bearer)
+        headers.set("Authorization", `Bearer ${bearer}`);
+    }
+    if (traceTargets) {
+      const traceHeaders = await getTraceHeaders(input, traceTargets, respectSampling);
+      if (traceHeaders) {
+        if (traceHeaders.traceparent && !headers.has("traceparent"))
+          headers.set("traceparent", traceHeaders.traceparent);
+        if (traceHeaders.tracestate && !headers.has("tracestate"))
+          headers.set("tracestate", traceHeaders.tracestate);
+        if (traceHeaders.baggage && !headers.has("baggage"))
+          headers.set("baggage", traceHeaders.baggage);
+      }
+    }
     return fetch$1(input, _objectSpread23(_objectSpread23({}, init), {}, { headers }));
   };
 };
+async function getTraceHeaders(input, targets, respectSampling) {
+  if (!shouldPropagateToTarget(typeof input === "string" ? input : input instanceof URL ? input : input.url, targets))
+    return null;
+  const traceContext = await extractTraceContext();
+  if (!traceContext || !traceContext.traceparent)
+    return null;
+  if (respectSampling) {
+    const parsed = parseTraceParent(traceContext.traceparent);
+    if (parsed && !parsed.isSampled)
+      return null;
+  }
+  return traceContext;
+}
+function normalizeTracePropagation(value) {
+  return typeof value === "boolean" ? { enabled: value } : value;
+}
 function ensureTrailingSlash(url) {
   return url.endsWith("/") ? url : url + "/";
 }
 function applySettingDefaults(options, defaults) {
-  var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header;
+  var _DEFAULT_GLOBAL_OPTIO, _globalOptions$header, _ref, _tracePropagationOpti, _ref2, _tracePropagationOpti2;
   const { db: dbOptions, auth: authOptions, realtime: realtimeOptions, global: globalOptions } = options;
   const { db: DEFAULT_DB_OPTIONS$1, auth: DEFAULT_AUTH_OPTIONS$1, realtime: DEFAULT_REALTIME_OPTIONS$1, global: DEFAULT_GLOBAL_OPTIONS$1 } = defaults;
+  const tracePropagationOptions = normalizeTracePropagation(options.tracePropagation);
+  const DEFAULT_TRACE_PROPAGATION_OPTIONS$1 = normalizeTracePropagation(defaults.tracePropagation);
   const result = {
     db: _objectSpread23(_objectSpread23({}, DEFAULT_DB_OPTIONS$1), dbOptions),
     auth: _objectSpread23(_objectSpread23({}, DEFAULT_AUTH_OPTIONS$1), authOptions),
     realtime: _objectSpread23(_objectSpread23({}, DEFAULT_REALTIME_OPTIONS$1), realtimeOptions),
     storage: {},
     global: _objectSpread23(_objectSpread23(_objectSpread23({}, DEFAULT_GLOBAL_OPTIONS$1), globalOptions), {}, { headers: _objectSpread23(_objectSpread23({}, (_DEFAULT_GLOBAL_OPTIO = DEFAULT_GLOBAL_OPTIONS$1 === null || DEFAULT_GLOBAL_OPTIONS$1 === undefined ? undefined : DEFAULT_GLOBAL_OPTIONS$1.headers) !== null && _DEFAULT_GLOBAL_OPTIO !== undefined ? _DEFAULT_GLOBAL_OPTIO : {}), (_globalOptions$header = globalOptions === null || globalOptions === undefined ? undefined : globalOptions.headers) !== null && _globalOptions$header !== undefined ? _globalOptions$header : {}) }),
+    tracePropagation: {
+      enabled: (_ref = (_tracePropagationOpti = tracePropagationOptions === null || tracePropagationOptions === undefined ? undefined : tracePropagationOptions.enabled) !== null && _tracePropagationOpti !== undefined ? _tracePropagationOpti : DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === null || DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === undefined ? undefined : DEFAULT_TRACE_PROPAGATION_OPTIONS$1.enabled) !== null && _ref !== undefined ? _ref : false,
+      respectSamplingDecision: (_ref2 = (_tracePropagationOpti2 = tracePropagationOptions === null || tracePropagationOptions === undefined ? undefined : tracePropagationOptions.respectSamplingDecision) !== null && _tracePropagationOpti2 !== undefined ? _tracePropagationOpti2 : DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === null || DEFAULT_TRACE_PROPAGATION_OPTIONS$1 === undefined ? undefined : DEFAULT_TRACE_PROPAGATION_OPTIONS$1.respectSamplingDecision) !== null && _ref2 !== undefined ? _ref2 : true
+    },
     accessToken: async () => ""
   };
   if (options.accessToken)
@@ -13278,6 +13859,7 @@ var SupabaseClient = class {
     const baseUrl = validateSupabaseUrl(supabaseUrl);
     if (!supabaseKey)
       throw new Error("supabaseKey is required.");
+    checkApiKeyFormat(supabaseKey);
     this.realtimeUrl = new URL("realtime/v1", baseUrl);
     this.realtimeUrl.protocol = this.realtimeUrl.protocol.replace("http", "ws");
     this.authUrl = new URL("auth/v1", baseUrl);
@@ -13288,9 +13870,11 @@ var SupabaseClient = class {
       db: DEFAULT_DB_OPTIONS,
       realtime: DEFAULT_REALTIME_OPTIONS,
       auth: _objectSpread23(_objectSpread23({}, DEFAULT_AUTH_OPTIONS), {}, { storageKey: defaultStorageKey }),
-      global: DEFAULT_GLOBAL_OPTIONS
+      global: DEFAULT_GLOBAL_OPTIONS,
+      tracePropagation: DEFAULT_TRACE_PROPAGATION_OPTIONS
     };
     const settings = applySettingDefaults(options !== null && options !== undefined ? options : {}, DEFAULTS);
+    this.settings = settings;
     this.storageKey = (_settings$auth$storag = settings.auth.storageKey) !== null && _settings$auth$storag !== undefined ? _settings$auth$storag : "";
     this.headers = (_settings$global$head = settings.global.headers) !== null && _settings$global$head !== undefined ? _settings$global$head : {};
     if (!settings.accessToken) {
@@ -13302,7 +13886,8 @@ var SupabaseClient = class {
         throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(prop)} is not possible`);
       } });
     }
-    this.fetch = fetchWithAuth(supabaseKey, this._getAccessToken.bind(this), settings.global.fetch);
+    this.fetch = fetchWithAuth(supabaseKey, supabaseUrl, this._getSessionToken.bind(this), settings.global.fetch, settings.tracePropagation);
+    this.functionsFetch = fetchWithAuth(supabaseKey, supabaseUrl, this._getSessionToken.bind(this), settings.global.fetch, settings.tracePropagation, { omitApiKeyAsBearer: true });
     this.realtime = this._initRealtimeClient(_objectSpread23({
       headers: this.headers,
       accessToken: this._getAccessToken.bind(this),
@@ -13324,7 +13909,7 @@ var SupabaseClient = class {
   get functions() {
     return new import_functions_js.FunctionsClient(this.functionsUrl.href, {
       headers: this.headers,
-      customFetch: this.fetch
+      customFetch: this.functionsFetch
     });
   }
   from(relation) {
@@ -13352,13 +13937,18 @@ var SupabaseClient = class {
   removeAllChannels() {
     return this.realtime.removeAllChannels();
   }
-  async _getAccessToken() {
+  async _getSessionToken() {
     var _this = this;
     var _data$session$access_, _data$session;
     if (_this.accessToken)
       return await _this.accessToken();
     const { data } = await _this.auth.getSession();
-    return (_data$session$access_ = (_data$session = data.session) === null || _data$session === undefined ? undefined : _data$session.access_token) !== null && _data$session$access_ !== undefined ? _data$session$access_ : _this.supabaseKey;
+    return (_data$session$access_ = (_data$session = data.session) === null || _data$session === undefined ? undefined : _data$session.access_token) !== null && _data$session$access_ !== undefined ? _data$session$access_ : null;
+  }
+  async _getAccessToken() {
+    var _this2 = this;
+    var _await$this$_getSessi;
+    return (_await$this$_getSessi = await _this2._getSessionToken()) !== null && _await$this$_getSessi !== undefined ? _await$this$_getSessi : _this2.supabaseKey;
   }
   _initSupabaseAuthClient({ autoRefreshToken, persistSession, detectSessionInUrl, storage, userStorage, storageKey, flowType, lock, debug, throwOnError, experimental, lockAcquireTimeout, skipAutoInitialize }, headers, fetch$1) {
     const authHeaders = {
@@ -13394,7 +13984,7 @@ var SupabaseClient = class {
     });
   }
   _handleTokenChanged(event, source, token) {
-    if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN") && this.changedAccessToken !== token) {
+    if ((event === "TOKEN_REFRESHED" || event === "SIGNED_IN" || event === "INITIAL_SESSION") && this.changedAccessToken !== token) {
       this.changedAccessToken = token;
       this.realtime.setAuth(token);
     } else if (event === "SIGNED_OUT") {
@@ -13420,11 +14010,233 @@ function shouldShowDeprecationWarning() {
   const versionMatch = processVersion.match(/^v(\d+)\./);
   if (!versionMatch)
     return false;
-  return parseInt(versionMatch[1], 10) <= 18;
+  return parseInt(versionMatch[1], 10) <= 20;
 }
 if (shouldShowDeprecationWarning())
-  console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");
+  console.warn("⚠️  Node.js 20 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 22 or later. For more information, visit: https://github.com/orgs/supabase/discussions/45715");
+// ../../packages/utils/src/signal-helpers.ts
+function extractSlashCommand(text) {
+  const trimmed = text.trim();
+  if (!trimmed.startsWith("/"))
+    return;
+  let end = 1;
+  while (end < trimmed.length) {
+    const ch = trimmed.charCodeAt(end);
+    if (ch >= 97 && ch <= 122 || ch >= 65 && ch <= 90 || ch >= 48 && ch <= 57 || ch === 95 || ch === 45 || ch === 58) {
+      end++;
+    } else {
+      break;
+    }
+  }
+  const name = trimmed.slice(1, end);
+  return name.length > 0 ? name : undefined;
+}
 
+// ../../packages/utils/src/command-xml.ts
+var CLAUDE_BUILTIN_COMMANDS = new Set([
+  "add-dir",
+  "agents",
+  "allowed-tools",
+  "android",
+  "app",
+  "autofix-pr",
+  "bashes",
+  "branch",
+  "btw",
+  "bug",
+  "checkpoint",
+  "chrome",
+  "clear",
+  "color",
+  "compact",
+  "config",
+  "context",
+  "continue",
+  "copy",
+  "cost",
+  "desktop",
+  "diff",
+  "doctor",
+  "effort",
+  "exit",
+  "export",
+  "extra-usage",
+  "fast",
+  "feedback",
+  "fork",
+  "help",
+  "hooks",
+  "ide",
+  "init",
+  "insights",
+  "install-github-app",
+  "install-slack-app",
+  "ios",
+  "keybindings",
+  "login",
+  "logout",
+  "mcp",
+  "memory",
+  "mobile",
+  "model",
+  "new",
+  "output-style",
+  "passes",
+  "permissions",
+  "plan",
+  "plugin",
+  "powerup",
+  "pr-comments",
+  "privacy-settings",
+  "quit",
+  "rc",
+  "release-notes",
+  "reload-plugins",
+  "remote-control",
+  "remote-env",
+  "rename",
+  "reset",
+  "resume",
+  "review",
+  "rewind",
+  "sandbox",
+  "schedule",
+  "security-review",
+  "settings",
+  "setup-bedrock",
+  "skills",
+  "stats",
+  "status",
+  "statusline",
+  "stickers",
+  "tasks",
+  "teleport",
+  "terminal-setup",
+  "theme",
+  "todos",
+  "tp",
+  "ultraplan",
+  "upgrade",
+  "usage",
+  "vim",
+  "voice",
+  "web-setup"
+]);
+// ../../packages/utils/src/date-range.ts
+var PERIOD_TYPE_LABELS = {
+  ["today" /* Today */]: "Today",
+  ["this_week" /* ThisWeek */]: "This Week",
+  ["this_month" /* ThisMonth */]: "This Month"
+};
+var PERIOD_SUMMARY_LABELS = {
+  ["today" /* Today */]: "Daily Summary",
+  ["this_week" /* ThisWeek */]: "Weekly Summary",
+  ["this_month" /* ThisMonth */]: "Monthly Summary",
+  custom: "Custom Period"
+};
+// ../../packages/utils/src/frontmatter.ts
+var FRONTMATTER_KEYS = new Set(["name", "description"]);
+// ../../packages/utils/src/mcp-registry.ts
+var CACHE_TTL_MS = 30 * 60 * 1000;
+var CACHE_MAX_SIZE = 100;
+class TtlCache {
+  map = new Map;
+  get(key) {
+    const entry = this.map.get(key);
+    if (!entry)
+      return { hit: false };
+    if (Date.now() > entry.expiry) {
+      this.map.delete(key);
+      return { hit: false };
+    }
+    return { hit: true, value: entry.value };
+  }
+  set(key, value) {
+    if (this.map.size >= CACHE_MAX_SIZE && !this.map.has(key)) {
+      const firstKey = this.map.keys().next().value;
+      if (firstKey !== undefined)
+        this.map.delete(firstKey);
+    }
+    this.map.set(key, { value, expiry: Date.now() + CACHE_TTL_MS });
+  }
+  clear() {
+    this.map.clear();
+  }
+}
+var cache = new TtlCache;
+var toolCache = new TtlCache;
+var serverCache = new TtlCache;
+var GENERIC_SEGMENTS = new Set(["mcp", "com", "org", "io", "dev", "server", "api"]);
+var VERB_PREFIXES = new Set([
+  "get",
+  "list",
+  "create",
+  "delete",
+  "update",
+  "search",
+  "query",
+  "fetch",
+  "run",
+  "execute",
+  "resolve",
+  "find",
+  "read",
+  "write",
+  "set",
+  "send",
+  "check",
+  "add",
+  "remove"
+]);
+// ../../packages/utils/src/to-well-formed.ts
+function toWellFormed(str) {
+  return str.toWellFormed?.() ?? str;
+}
+
+// ../../packages/utils/src/sanitize-null-bytes.ts
+function sanitizeNullBytes(value) {
+  if (typeof value === "string") {
+    return toWellFormed(value).replace(/\u0000/g, "");
+  }
+  if (Array.isArray(value)) {
+    let changed = false;
+    const result = value.map((item) => {
+      const sanitized = sanitizeNullBytes(item);
+      if (sanitized !== item)
+        changed = true;
+      return sanitized;
+    });
+    return changed ? result : value;
+  }
+  if (value !== null && typeof value === "object") {
+    let changed = false;
+    const entries = Object.entries(value).map(([k, v]) => {
+      const sanitized = sanitizeNullBytes(v);
+      if (sanitized !== v)
+        changed = true;
+      return [k, sanitized];
+    });
+    return changed ? Object.fromEntries(entries) : value;
+  }
+  return value;
+}
+// ../../packages/utils/src/sanitizing-fetch.ts
+function createSanitizingFetch(baseFetch) {
+  const wrapper = (input, requestInit) => {
+    let finalInit = requestInit;
+    if (requestInit?.body && typeof requestInit.body === "string") {
+      try {
+        const parsed = JSON.parse(requestInit.body);
+        const sanitized = sanitizeNullBytes(parsed);
+        if (sanitized !== parsed) {
+          finalInit = { ...requestInit, body: JSON.stringify(sanitized) };
+        }
+      } catch {}
+    }
+    return baseFetch(input, finalInit);
+  };
+  return Object.assign(wrapper, baseFetch);
+}
 // src/auth/session.ts
 var AUTH_SESSION_VERSION = 1;
 function getAuthSessionFilePath() {
@@ -13604,6 +14416,7 @@ function createSessionStorageAdapter(isRemovalAllowed = () => true) {
 // src/supabase/client.ts
 function createSupabaseClientInstance(createClientImpl, supabaseUrl, supabaseAnonKey, storage) {
   return createClientImpl(supabaseUrl, supabaseAnonKey, {
+    global: { fetch: createSanitizingFetch(fetch) },
     auth: {
       autoRefreshToken: false,
       detectSessionInUrl: false,
@@ -30172,182 +30985,6 @@ var import_node_readline2 = __toESM(require("node:readline"));
 
 // src/collector/session-signals.ts
 var import_node_path10 = require("node:path");
-
-// ../../packages/utils/src/signal-helpers.ts
-function extractSlashCommand(text) {
-  const trimmed = text.trim();
-  if (!trimmed.startsWith("/"))
-    return;
-  let end = 1;
-  while (end < trimmed.length) {
-    const ch = trimmed.charCodeAt(end);
-    if (ch >= 97 && ch <= 122 || ch >= 65 && ch <= 90 || ch >= 48 && ch <= 57 || ch === 95 || ch === 45 || ch === 58) {
-      end++;
-    } else {
-      break;
-    }
-  }
-  const name = trimmed.slice(1, end);
-  return name.length > 0 ? name : undefined;
-}
-
-// ../../packages/utils/src/command-xml.ts
-var CLAUDE_BUILTIN_COMMANDS = new Set([
-  "add-dir",
-  "agents",
-  "allowed-tools",
-  "android",
-  "app",
-  "autofix-pr",
-  "bashes",
-  "branch",
-  "btw",
-  "bug",
-  "checkpoint",
-  "chrome",
-  "clear",
-  "color",
-  "compact",
-  "config",
-  "context",
-  "continue",
-  "copy",
-  "cost",
-  "desktop",
-  "diff",
-  "doctor",
-  "effort",
-  "exit",
-  "export",
-  "extra-usage",
-  "fast",
-  "feedback",
-  "fork",
-  "help",
-  "hooks",
-  "ide",
-  "init",
-  "insights",
-  "install-github-app",
-  "install-slack-app",
-  "ios",
-  "keybindings",
-  "login",
-  "logout",
-  "mcp",
-  "memory",
-  "mobile",
-  "model",
-  "new",
-  "output-style",
-  "passes",
-  "permissions",
-  "plan",
-  "plugin",
-  "powerup",
-  "pr-comments",
-  "privacy-settings",
-  "quit",
-  "rc",
-  "release-notes",
-  "reload-plugins",
-  "remote-control",
-  "remote-env",
-  "rename",
-  "reset",
-  "resume",
-  "review",
-  "rewind",
-  "sandbox",
-  "schedule",
-  "security-review",
-  "settings",
-  "setup-bedrock",
-  "skills",
-  "stats",
-  "status",
-  "statusline",
-  "stickers",
-  "tasks",
-  "teleport",
-  "terminal-setup",
-  "theme",
-  "todos",
-  "tp",
-  "ultraplan",
-  "upgrade",
-  "usage",
-  "vim",
-  "voice",
-  "web-setup"
-]);
-// ../../packages/utils/src/date-range.ts
-var PERIOD_TYPE_LABELS = {
-  ["today" /* Today */]: "Today",
-  ["this_week" /* ThisWeek */]: "This Week",
-  ["this_month" /* ThisMonth */]: "This Month"
-};
-var PERIOD_SUMMARY_LABELS = {
-  ["today" /* Today */]: "Daily Summary",
-  ["this_week" /* ThisWeek */]: "Weekly Summary",
-  ["this_month" /* ThisMonth */]: "Monthly Summary",
-  custom: "Custom Period"
-};
-// ../../packages/utils/src/frontmatter.ts
-var FRONTMATTER_KEYS = new Set(["name", "description"]);
-// ../../packages/utils/src/mcp-registry.ts
-var CACHE_TTL_MS = 30 * 60 * 1000;
-var CACHE_MAX_SIZE = 100;
-class TtlCache {
-  map = new Map;
-  get(key) {
-    const entry = this.map.get(key);
-    if (!entry)
-      return { hit: false };
-    if (Date.now() > entry.expiry) {
-      this.map.delete(key);
-      return { hit: false };
-    }
-    return { hit: true, value: entry.value };
-  }
-  set(key, value) {
-    if (this.map.size >= CACHE_MAX_SIZE && !this.map.has(key)) {
-      const firstKey = this.map.keys().next().value;
-      if (firstKey !== undefined)
-        this.map.delete(firstKey);
-    }
-    this.map.set(key, { value, expiry: Date.now() + CACHE_TTL_MS });
-  }
-  clear() {
-    this.map.clear();
-  }
-}
-var cache = new TtlCache;
-var toolCache = new TtlCache;
-var serverCache = new TtlCache;
-var GENERIC_SEGMENTS = new Set(["mcp", "com", "org", "io", "dev", "server", "api"]);
-var VERB_PREFIXES = new Set([
-  "get",
-  "list",
-  "create",
-  "delete",
-  "update",
-  "search",
-  "query",
-  "fetch",
-  "run",
-  "execute",
-  "resolve",
-  "find",
-  "read",
-  "write",
-  "set",
-  "send",
-  "check",
-  "add",
-  "remove"
-]);
-// src/collector/session-signals.ts
 var BUILTIN_FUNCTION_CALL_NAMES = new Set([
   "Bash",
   "Read",
@@ -31733,26 +32370,15 @@ function normalizeMessageMetadata(message) {
   return Object.keys(metadata).length > 0 ? metadata : null;
 }
 var CONVERSATIONAL_ROLES = new Set(["user", "assistant"]);
-function resolveTranscriptModels(transcript) {
-  const models = new Set;
-  for (const record2 of transcript.records) {
-    if (record2.recordType !== "turn_context") {
-      continue;
-    }
-    const model = resolveTurnContextModel(record2);
-    if (model) {
-      models.add(model);
-    }
-  }
-  return Array.from(models);
-}
 function resolveTurnContextModel(record2) {
   if (record2.model) {
     return record2.model;
   }
   return record2.collaborationMode?.model ?? null;
 }
-function resolveModelWithReasoning(transcript) {
+function scanTurnContextModels(transcript, messages) {
+  const turns = [];
+  const turnCounts = new Map;
   for (const record2 of transcript.records) {
     if (record2.recordType !== "turn_context") {
       continue;
@@ -31762,8 +32388,53 @@ function resolveModelWithReasoning(transcript) {
       continue;
     }
     const reasoning = record2.effort ?? record2.collaborationMode?.reasoningEffort;
-    return reasoning ? `${model}:${reasoning}` : model;
+    const combo = reasoning ? `${model}:${reasoning}` : model;
+    turns.push({ lineNumber: record2.lineNumber, model, combo });
+    turnCounts.set(combo, (turnCounts.get(combo) ?? 0) + 1);
   }
+  const combos = Array.from(turnCounts.keys());
+  const messageCounts = new Map;
+  for (const turn of resolveMessageTurnsByLine(messages, turns).values()) {
+    messageCounts.set(turn.combo, (messageCounts.get(turn.combo) ?? 0) + 1);
+  }
+  const primaryCombo = pickMode(messageCounts, combos) ?? pickMode(turnCounts, combos);
+  return {
+    turns,
+    combos,
+    ...primaryCombo ? { primaryCombo } : {}
+  };
+}
+function pickMode(counts, order) {
+  let best;
+  let bestCount = 0;
+  for (const combo of order) {
+    const count = counts.get(combo) ?? 0;
+    if (count > bestCount) {
+      best = combo;
+      bestCount = count;
+    }
+  }
+  return best;
+}
+function resolveMessageTurnsByLine(messages, turns) {
+  const turnByLine = new Map;
+  const firstTurn = turns[0];
+  if (!firstTurn) {
+    return turnByLine;
+  }
+  const ordered = [...messages].sort((a, b) => a.lineNumber - b.lineNumber);
+  let turnIndex = 0;
+  let currentTurn = firstTurn;
+  for (const message of ordered) {
+    let nextTurn = turns[turnIndex];
+    while (nextTurn && nextTurn.lineNumber <= message.lineNumber) {
+      currentTurn = nextTurn;
+      turnIndex += 1;
+      nextTurn = turns[turnIndex];
+    }
+    turnByLine.set(message.lineNumber, currentTurn);
+  }
+  return turnByLine;
 }
 function scanTokenCountRecords(transcript) {
   let latest;
@@ -31819,7 +32490,7 @@ function normalizeRateLimitWindow(window2) {
 function hasAccountMetadata(metadata) {
   return metadata != null && Object.keys(metadata).length > 0;
 }
-function buildCodexSessionMetadata(transcript, accountMetadata) {
+function buildCodexSessionMetadata(transcript, modelScan, accountMetadata) {
   const scan = scanTokenCountRecords(transcript);
   if (!scan) {
     return hasAccountMetadata(accountMetadata) ? accountMetadata : null;
@@ -31830,7 +32501,7 @@ function buildCodexSessionMetadata(transcript, accountMetadata) {
   const modelContextWindow = latest.info?.modelContextWindow;
   const totalUsageSnapshot = normalizeTokenUsage(totalUsage);
   const lastUsageSnapshot = normalizeTokenUsage(lastUsage);
-  const modelWithReasoning = resolveModelWithReasoning(transcript);
+  const modelWithReasoning = modelScan.primaryCombo;
   const fiveHourLimit = clampUsedPercent(scan.peakPrimaryPercent);
   const weeklyLimit = clampUsedPercent(scan.peakSecondaryPercent);
   const tokenCountLatest = {
@@ -31857,6 +32528,7 @@ function buildCodexSessionMetadata(transcript, accountMetadata) {
   return {
     ...accountMetadata ?? {},
     ...modelWithReasoning ? { model_with_reasoning: modelWithReasoning } : {},
+    ...modelScan.combos.length > 0 ? { models_with_reasoning: modelScan.combos } : {},
     ...contextUsed !== undefined ? { context_used: contextUsed } : {},
     ...contextUsed !== undefined ? { context_remaining: roundPercent(Math.max(0, 100 - contextUsed)) } : {},
     ...fiveHourLimit !== undefined ? { five_hour_limit: fiveHourLimit } : {},
@@ -31872,20 +32544,19 @@ function buildCodexSessionMetadata(transcript, accountMetadata) {
     ...hasRateLimitInfo ? { rate_limits_latest: rateLimitsLatest } : {}
   };
 }
-function normalizeMessages(transcript, userId) {
-  const transcriptModels = resolveTranscriptModels(transcript);
-  const primaryModel = transcriptModels[0];
-  return transcript.messages.filter((message) => CONVERSATIONAL_ROLES.has(message.role)).map((message) => ({
+function selectUploadedMessages(transcript) {
+  return transcript.messages.filter((message) => CONVERSATIONAL_ROLES.has(message.role) && (normalizeMessageContent(message).length > 0 || message.imageCount > 0));
+}
+function normalizeMessages(messages, transcript, userId, modelScan) {
+  const turnByLine = resolveMessageTurnsByLine(messages, modelScan.turns);
+  return messages.map((message, index) => ({
     role: message.role,
     content: normalizeMessageContent(message),
     created_at: message.timestamp,
     session_id: transcript.sessionId,
     user_id: userId,
     code_diffs: null,
-    metadata: normalizeMessageMetadataWithModel(message, primaryModel),
-    imageCount: message.imageCount
-  })).filter((message) => message.content.length > 0 || message.imageCount > 0).map(({ imageCount: _imageCount, ...message }, index) => ({
-    ...message,
+    metadata: normalizeMessageMetadataWithModel(message, turnByLine.get(message.lineNumber)?.model),
     message_index: index
   }));
 }
@@ -31906,6 +32577,8 @@ function normalizeTranscriptToZestPayload(input) {
   const title = sessionRef?.title ?? null;
   const cwd = transcript.sessionMeta?.cwd;
   const projectInfo = cwd ? getProjectInfoSync(cwd) : null;
+  const uploadedMessages = selectUploadedMessages(transcript);
+  const modelScan = scanTurnContextModels(transcript, uploadedMessages);
   const session = {
     id: transcript.sessionId,
     title,
@@ -31913,7 +32586,7 @@ function normalizeTranscriptToZestPayload(input) {
     user_id: userId,
     workspace_id: workspaceId ?? null,
     analysis_status: "pending",
-    metadata: buildCodexSessionMetadata(transcript, accountMetadata),
+    metadata: buildCodexSessionMetadata(transcript, modelScan, accountMetadata),
     project_id: null,
     project_name: projectInfo && projectInfo.projectName !== "unknown" ? projectInfo.projectName : cwd ? import_node_path13.basename(cwd) : null,
     platform,
@@ -31922,7 +32595,7 @@ function normalizeTranscriptToZestPayload(input) {
   };
   return {
     session,
-    messages: normalizeMessages(transcript, userId),
+    messages: normalizeMessages(uploadedMessages, transcript, userId, modelScan),
     decisions: {
       titleSource: sessionRef?.title ? "session_index" : "missing",
       createdAtSource,
@@ -32351,15 +33024,19 @@ var behavioralProfileSchema = {
   [Symbol.for("vercel.ai.validator")]: true
 };
 // ../../packages/types/data-controls.ts
-var RETENTION_PERIODS = ["12h", "1d", "7d", "30d", "90d", "1y", "forever"];
+var RETENTION_PERIODS = ["12h", "1d", "7d", "30d", "90d"];
+var DATA_CATEGORIES = [
+  "user_messages",
+  "assistant_messages",
+  "code_diffs",
+  "github_events"
+];
 var RETENTION_PERIOD_ORDER = {
   "12h": 0,
   "1d": 1,
   "7d": 2,
   "30d": 3,
-  "90d": 4,
-  "1y": 5,
-  forever: 6
+  "90d": 4
 };
 var WORKSPACE_COLLECTION_DEFAULTS = {
   user_messages: true,
@@ -32373,6 +33050,27 @@ var WORKSPACE_RETENTION_DEFAULTS = {
   code_diffs: "7d",
   github_events: "90d"
 };
+var MAX_RETENTION_PERIOD = "90d";
+function coerceRetentionPeriod(value) {
+  return typeof value === "string" && RETENTION_PERIODS.includes(value) ? value : MAX_RETENTION_PERIOD;
+}
+function coerceRetentionOverrides(raw) {
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw))
+    return null;
+  const stored = raw;
+  const result = {};
+  for (const category of DATA_CATEGORIES) {
+    const value = stored[category];
+    if (value === undefined || value === null)
+      continue;
+    result[category] = coerceRetentionPeriod(value);
+  }
+  return result;
+}
+function coerceRetentionSettings(raw, defaults) {
+  const overrides = coerceRetentionOverrides(raw);
+  return overrides === null ? null : { ...defaults, ...overrides };
+}
 function shorterRetentionPeriod(a, b) {
   return RETENTION_PERIOD_ORDER[a] <= RETENTION_PERIOD_ORDER[b] ? a : b;
 }
@@ -32390,9 +33088,9 @@ function getEffectiveRetention(workspace, user) {
   if (!user)
     return workspace;
   return {
-    user_messages: shorterRetentionPeriod(workspace.user_messages, user.user_messages),
-    assistant_messages: shorterRetentionPeriod(workspace.assistant_messages, user.assistant_messages),
-    code_diffs: shorterRetentionPeriod(workspace.code_diffs, user.code_diffs),
+    user_messages: user.user_messages ? shorterRetentionPeriod(workspace.user_messages, user.user_messages) : workspace.user_messages,
+    assistant_messages: user.assistant_messages ? shorterRetentionPeriod(workspace.assistant_messages, user.assistant_messages) : workspace.assistant_messages,
+    code_diffs: user.code_diffs ? shorterRetentionPeriod(workspace.code_diffs, user.code_diffs) : workspace.code_diffs,
     github_events: workspace.github_events
   };
 }
@@ -32469,7 +33167,15 @@ var PROMPT_TAGS = {
 var AVAILABLE_PROMPT_TAGS = Object.values(PROMPT_TAGS);
 var tagIds = AVAILABLE_PROMPT_TAGS.map((tag) => tag.id);
 // ../../packages/types/schemas.ts
-var SkillOutputFormatSchema = exports_external.enum(["skill_report_markdown", "markdown", "json"]);
+var SKILL_OUTPUT_FORMATS = [
+  "skill_report_markdown",
+  "markdown",
+  "quick_answer_markdown",
+  "report_email_markdown",
+  "concise_markdown",
+  "json"
+];
+var SkillOutputFormatSchema = exports_external.enum(SKILL_OUTPUT_FORMATS);
 var CustomPromptMetadataSchema = exports_external.object({
   tags: exports_external.array(exports_external.string()).optional(),
   cascade_category: exports_external.string().optional(),
@@ -32548,7 +33254,7 @@ var retentionSettingsSchema = exports_external.object({
   github_events: exports_external.enum(RETENTION_PERIODS).default("90d")
 });
 
-// src/supabase/data-controls-provider.ts
+// ../../packages/plugin-common/src/supabase/data-controls-provider.ts
 var DATA_CONTROLS_CACHE_TTL_MS = 5 * 60 * 1000;
 
 class DataControlsProvider {
@@ -32558,27 +33264,43 @@ class DataControlsProvider {
   ready = false;
   userId = null;
   workspaceId = null;
-  async refresh(client, workspaceId, userId, fetchedAt = Date.now()) {
+  logger;
+  constructor(options) {
+    this.logger = options?.logger;
+  }
+  async refresh(supabase, workspaceId, userId, fetchedAt = Date.now()) {
     try {
       const [workspaceResult, userResult] = await Promise.all([
-        client.from("workspace_data_controls").select("collection, retention").eq("workspace_id", workspaceId).maybeSingle(),
-        client.from("user_data_controls").select("collection, retention").eq("user_id", userId).maybeSingle()
+        supabase.from("workspace_data_controls").select("collection, retention").eq("workspace_id", workspaceId).maybeSingle(),
+        supabase.from("user_data_controls").select("collection, retention").eq("user_id", userId).maybeSingle()
       ]);
-      if (workspaceResult.error || userResult.error) {
+      if (workspaceResult.error) {
+        this.logger?.error("DataControlsProvider: failed to fetch workspace data controls", new Error(workspaceResult.error.message));
         return false;
       }
-      const workspaceCollection = collectionSettingsSchema.safeParse(workspaceResult.data?.collection);
-      const workspaceRetention = retentionSettingsSchema.safeParse(workspaceResult.data?.retention);
-      const userCollection = collectionSettingsSchema.safeParse(userResult.data?.collection);
-      const userRetention = retentionSettingsSchema.safeParse(userResult.data?.retention);
-      this.effectiveCollection = getEffectiveCollection(workspaceCollection.success ? workspaceCollection.data : WORKSPACE_COLLECTION_DEFAULTS, userCollection.success ? userCollection.data : null);
-      this.effectiveRetention = getEffectiveRetention(workspaceRetention.success ? workspaceRetention.data : WORKSPACE_RETENTION_DEFAULTS, userRetention.success ? userRetention.data : null);
+      if (userResult.error) {
+        this.logger?.error("DataControlsProvider: failed to fetch user data controls", new Error(userResult.error.message));
+        return false;
+      }
+      const wsCollectionParse = collectionSettingsSchema.safeParse(workspaceResult.data?.collection);
+      const wsCollection = wsCollectionParse.success ? wsCollectionParse.data : WORKSPACE_COLLECTION_DEFAULTS;
+      const wsRetention = coerceRetentionSettings(workspaceResult.data?.retention, WORKSPACE_RETENTION_DEFAULTS) ?? WORKSPACE_RETENTION_DEFAULTS;
+      const userCollectionParse = collectionSettingsSchema.safeParse(userResult.data?.collection);
+      const userCollection = userCollectionParse.success ? userCollectionParse.data : null;
+      const userRetention = coerceRetentionOverrides(userResult.data?.retention);
+      this.effectiveCollection = getEffectiveCollection(wsCollection, userCollection);
+      this.effectiveRetention = getEffectiveRetention(wsRetention, userRetention);
       this.lastFetchedAt = fetchedAt;
       this.ready = true;
       this.userId = userId;
       this.workspaceId = workspaceId;
+      this.logger?.debug("DataControlsProvider: refreshed", {
+        effectiveCollection: this.effectiveCollection,
+        effectiveRetention: this.effectiveRetention
+      });
       return true;
-    } catch {
+    } catch (error51) {
+      this.logger?.error("DataControlsProvider: unexpected error during refresh", error51 instanceof Error ? error51 : new Error(String(error51)));
       return false;
     }
   }
@@ -32603,13 +33325,22 @@ class DataControlsProvider {
     this.workspaceId = null;
   }
   shouldUploadUserMessages() {
-    return this.effectiveCollection?.user_messages ?? false;
+    if (!this.effectiveCollection) {
+      return false;
+    }
+    return this.effectiveCollection.user_messages;
   }
   shouldUploadAssistantMessages() {
-    return this.effectiveCollection?.assistant_messages ?? false;
+    if (!this.effectiveCollection) {
+      return false;
+    }
+    return this.effectiveCollection.assistant_messages;
   }
   shouldUploadCodeDiffs() {
-    return this.effectiveCollection?.code_diffs ?? false;
+    if (!this.effectiveCollection) {
+      return false;
+    }
+    return this.effectiveCollection.code_diffs;
   }
   getCollection() {
     return this.effectiveCollection;
@@ -33308,4 +34039,4 @@ if (shouldRunDaemonEntrypoint()) {
   runDaemonEntrypoint();
 }
 
-//# debugId=DCFA15830EAD252664756E2164756E21
+//# debugId=6586DACF3F6D919064756E2164756E21

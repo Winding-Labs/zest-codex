@@ -1,6 +1,6 @@
 {
   "name": "zest",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Sync your own Codex coding sessions to your Zest account for standups and personal workflow insights, with local privacy redaction before upload.",
   "author": {
     "name": "Zest",
