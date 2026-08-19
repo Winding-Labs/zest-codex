@@ -1,7 +1,7 @@
 {
   "name": "zest",
-  "version": "0.1.5",
-  "description": "Sync your own Codex coding sessions to your Zest account for standups and personal workflow insights, with local privacy redaction before upload.",
+  "version": "0.1.6",
+  "description": "Zest for Codex — track sessions for standups and workflow insights",
   "author": {
     "name": "Zest",
     "email": "support@meetzest.com",
@@ -16,7 +16,7 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Zest",
-    "shortDescription": "Sync your Codex sessions to your Zest account for standups.",
+    "shortDescription": "Zest for Codex — track sessions for standups and workflow insights",
     "longDescription": "Zest collects your own Codex session data locally, applies privacy redaction, and syncs it to your personal Zest workspace so you can generate standups and review your own workflow insights. Remote upload is user-controlled.",
     "developerName": "Zest",
     "category": "Productivity",

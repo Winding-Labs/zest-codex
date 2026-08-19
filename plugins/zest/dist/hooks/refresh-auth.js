@@ -11094,8 +11094,8 @@ module.exports = __toCommonJS(exports_refresh_auth);
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.1.5",
-  description: "Sync your own Codex coding sessions to your Zest account for standups and personal workflow insights, with local privacy redaction before upload.",
+  version: "0.1.6",
+  description: "Zest for Codex — track sessions for standups and workflow insights",
   author: {
     name: "Zest",
     email: "support@meetzest.com",
@@ -11110,7 +11110,7 @@ var plugin_default = {
   mcpServers: "./.mcp.json",
   interface: {
     displayName: "Zest",
-    shortDescription: "Sync your Codex sessions to your Zest account for standups.",
+    shortDescription: "Zest for Codex — track sessions for standups and workflow insights",
     longDescription: "Zest collects your own Codex session data locally, applies privacy redaction, and syncs it to your personal Zest workspace so you can generate standups and review your own workflow insights. Remote upload is user-controlled.",
     developerName: "Zest",
     category: "Productivity",
@@ -28963,6 +28963,7 @@ var SENSITIVE_DATA_PATTERNS = [
     highlySensitive: true,
     priority: 90
   }),
+  createPattern("anthropic_key_truncated", "Truncated Anthropic API keys", /sk-ant-[A-Za-z0-9\-_]{20,79}/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 80 }),
   createPattern("auth0_secret", "Auth0 client secrets (generic pattern)", /[A-Za-z0-9\-_]{64}/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 25, aggressiveOnly: true }),
   createPattern("okta_token", "Okta API tokens", /00[A-Za-z0-9]{38}/g, "api_keys", {
     redactionStrategy: "full",
@@ -30386,4 +30387,4 @@ async function runRefreshAuthHook(eventName, dependencies = {}) {
 }
 runRefreshAuthHook(process.argv[2]);
 
-//# debugId=90D1E4DF29FD2AF964756E2164756E21
+//# debugId=F071C6C4B75C24DB64756E2164756E21

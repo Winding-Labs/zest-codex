@@ -11145,8 +11145,8 @@ async function updateExtensionMetadata(supabase, userId, extensionKey, version, 
 // .codex-plugin/plugin.json
 var plugin_default = {
   name: "zest",
-  version: "0.1.5",
-  description: "Sync your own Codex coding sessions to your Zest account for standups and personal workflow insights, with local privacy redaction before upload.",
+  version: "0.1.6",
+  description: "Zest for Codex — track sessions for standups and workflow insights",
   author: {
     name: "Zest",
     email: "support@meetzest.com",
@@ -11161,7 +11161,7 @@ var plugin_default = {
   mcpServers: "./.mcp.json",
   interface: {
     displayName: "Zest",
-    shortDescription: "Sync your Codex sessions to your Zest account for standups.",
+    shortDescription: "Zest for Codex — track sessions for standups and workflow insights",
     longDescription: "Zest collects your own Codex session data locally, applies privacy redaction, and syncs it to your personal Zest workspace so you can generate standups and review your own workflow insights. Remote upload is user-controlled.",
     developerName: "Zest",
     category: "Productivity",
@@ -29295,6 +29295,7 @@ var SENSITIVE_DATA_PATTERNS = [
     highlySensitive: true,
     priority: 90
   }),
+  createPattern("anthropic_key_truncated", "Truncated Anthropic API keys", /sk-ant-[A-Za-z0-9\-_]{20,79}/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 80 }),
   createPattern("auth0_secret", "Auth0 client secrets (generic pattern)", /[A-Za-z0-9\-_]{64}/g, "api_keys", { redactionStrategy: "full", highlySensitive: true, priority: 25, aggressiveOnly: true }),
   createPattern("okta_token", "Okta API tokens", /00[A-Za-z0-9]{38}/g, "api_keys", {
     redactionStrategy: "full",
@@ -29355,6 +29356,7 @@ var HIGHLY_SENSITIVE_PATTERN_NAMES = [
   "openai_key",
   "openai_project_key",
   "anthropic_key",
+  "anthropic_key_truncated",
   "auth0_secret",
   "okta_token",
   "generic_secret",
@@ -32829,6 +32831,9 @@ async function recordQueueFailure(ids, error51, now = new Date) {
   await saveQueueEntries(nextEntries);
   return nextEntries;
 }
+// ../../packages/types/ask-zest-runner.ts
+var ASK_ZEST_RUNNERS = ["claude-code", "ai-sdk"];
+var AskZestRunnerSchema = exports_external.enum(ASK_ZEST_RUNNERS);
 // ../../packages/types/behavioral-profile.ts
 var BASIC_AI_PRACTICES = [
   {
@@ -33184,7 +33189,11 @@ var CustomPromptMetadataSchema = exports_external.object({
   example_output: exports_external.unknown().optional()
 });
 // ../../packages/types/token-usage.ts
-var TOKEN_SOURCES = ["provider_reported", "estimated_heuristic"];
+var TOKEN_SOURCES = [
+  "provider_reported",
+  "provider_reported_totals_only",
+  "estimated_heuristic"
+];
 var COST_SOURCES = [
   "provider_reported",
   "derived_openrouter",
@@ -33216,7 +33225,8 @@ var SessionTokenUsageSchema = exports_external.object({
     cache_creation_5m_input_tokens: exports_external.number().nonnegative().optional(),
     cache_creation_1h_input_tokens: exports_external.number().nonnegative().optional(),
     reasoning_tokens: exports_external.number().nonnegative().optional(),
-    cost_usd: exports_external.number().nonnegative().optional()
+    cost_usd: exports_external.number().nonnegative().optional(),
+    uncomposed_total_tokens: exports_external.number().nonnegative().optional()
   })).optional(),
   context_used_percent: exports_external.number().nonnegative().max(100).optional(),
   context_window_size: exports_external.number().int().nonnegative().optional(),
@@ -33240,6 +33250,16 @@ var SessionTokenUsageSchema = exports_external.object({
     rate_limit_reached_type: exports_external.string().optional()
   })).optional()
 });
+// ../../packages/types/tone-tokens.ts
+var SKILL_REPORT_TONES = [
+  "positive",
+  "negative",
+  "warning",
+  "info",
+  "highlight",
+  "muted"
+];
+var ORPHAN_TONE_TOKEN_PATTERN = `\\{\\{(?:${SKILL_REPORT_TONES.join("|")}):`;
 // ../../packages/types/data-controls-schemas.ts
 var collectionSettingsSchema = exports_external.object({
   user_messages: exports_external.boolean(),
@@ -34039,4 +34059,4 @@ if (shouldRunDaemonEntrypoint()) {
   runDaemonEntrypoint();
 }
 
-//# debugId=6586DACF3F6D919064756E2164756E21
+//# debugId=194AB23FC8AD4B9764756E2164756E21
