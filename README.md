@@ -1,8 +1,11 @@
-# Zest Codex Plugin
+# Zest for Codex
 
-Zest for Codex connects Codex sessions to Zest so AI workflow activity can be collected, synced, and used for team visibility and standups.
+Track your Codex sessions in Zest: automatic standups, token and cost
+analytics, and a picture of how your team actually works across every AI tool.
 
-This repository is the public Git marketplace mirror for the Zest Codex plugin. It contains the built plugin bundle that Codex installs from the `zest` marketplace.
+This repository is the public marketplace mirror for the Zest Codex plugin. It
+carries the built bundle that Codex installs; the source lives in the Zest
+monorepo and this tree is regenerated on every release.
 
 ## Install
 
@@ -15,68 +18,75 @@ Source: Winding-Labs/zest-codex
 Git ref: main
 ```
 
-Leave sparse paths empty. This repository is intentionally small, so a full checkout is the recommended path.
-
-After adding the marketplace, install or enable the `Zest` plugin, then fully restart Codex.
+Leave sparse paths empty. This repository is intentionally small, so a full
+checkout is the recommended path. Install the `Zest` plugin, then fully restart
+Codex.
 
 ### Codex CLI
 
-Add the Zest marketplace from your terminal:
+    codex plugin marketplace add Winding-Labs/zest-codex --ref main
 
-```bash
-codex plugin marketplace add Winding-Labs/zest-codex --ref main
-```
+Then restart Codex so the skills and the MCP server are reloaded.
 
-Then restart Codex so the plugin skills and MCP server are reloaded.
+A ZIP with `install.sh` is attached to every release as a fallback for
+environments that cannot add a marketplace.
 
-## First-Time Setup
+Full instructions: https://app.meetzest.com/docs/install/codex
 
-Once the plugin is installed, ask Codex:
+## First run
 
-```text
-Log me into Zest
-```
+Ask Codex `Log me into Zest`, follow the browser login, then come back and ask
+`Check my Zest status`.
 
-Follow the browser login flow, then return to Codex.
+## Skills
 
-To check whether everything is ready:
+| Skill | What it does |
+|---|---|
+| `login` | Connect Codex to your Zest workspace |
+| `logout` | Sign out without losing queued data |
+| `status` | Auth, workspace, sync state and health |
+| `sync` | Force a sync now |
+| `standup` | Generate today's standup |
+| `enable-background-sync` | Enable background sync |
+| `disable-background-sync` | Disable background sync |
+| `enable-remote-sync` | Enable remote upload to Zest |
+| `disable-remote-sync` | Disable remote upload (keep capturing locally) |
+| `workspace` | View or change workspace binding |
+| `privacy` | Inspect privacy filtering |
+| `ignore` | Stop tracking a folder |
+| `unignore` | Resume tracking a folder |
+| `health` | Check Zest plugin health |
+| `debug` | Create a local support bundle |
+| `cleanup-legacy-alpha` | Remove old Zest Alpha install |
 
-```text
-Check my Zest status
-```
+## What it captures
+
+Sessions, messages, tool calls, models, per-turn token usage and context
+pressure. Everything is redacted on your machine before it is sent, using
+the same privacy pipeline every Zest plugin uses.
 
 ## Updating
 
-When a new version is published, update the marketplace from Codex:
+    codex plugin marketplace upgrade zest
 
-```bash
-codex plugin marketplace upgrade zest
-```
+The plugin also checks passively on most Zest MCP tool calls and returns the
+same command when a newer version is available.
 
-The plugin also performs a passive update check on most Zest MCP tool calls and may return the same upgrade command when a newer version is available.
+## Requirements
 
-## Repository Layout
+Node >= 22.13 (the plugin's hooks, MCP server, and daemon run under Node;
+Node 20 reached end of life 2026-04-30). This is a breaking floor: Node
+20, 21, and 22.0–22.12 fail closed at every Codex entry point after this
+update. Upgrade Node before installing.
 
-```text
-.agents/plugins/marketplace.json  Codex marketplace definition
-plugins/zest/                     Built Zest plugin bundle
-INSTALLATION.md                   Detailed install and troubleshooting guide
-install.sh                        Legacy ZIP fallback installer
-package.json                      Published version metadata
-```
+## Coming from Zest Alpha
 
-## For Alpha Users
+Install this marketplace, restart Codex, and if both `Zest` and `Zest Alpha`
+still show up, ask Codex `Clean up old Zest Alpha install`.
 
-If you used the previous `Zest Alpha` Codex plugin, install the new `Zest` marketplace from this repository, then restart Codex.
+## License
 
-If Codex still shows both `Zest` and `Zest Alpha`, ask Codex:
+Proprietary — see LICENSE.md. Third-party components included in this
+distribution are listed in THIRD-PARTY-NOTICES.md.
 
-```text
-Clean up old Zest Alpha install
-```
-
-This removes the old alpha marketplace/cache entries and keeps the new `Zest` plugin.
-
-## Troubleshooting
-
-See [INSTALLATION.md](./INSTALLATION.md) for detailed install, update, cleanup, and troubleshooting steps.
+Questions: hi@winding.ai
