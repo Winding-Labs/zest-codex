@@ -34,6 +34,6 @@ If the response includes standup readiness, mention whether enough synced data i
 Under the "Approve for me" permission mode, Codex runs an automatic safety reviewer that can deny the `sync` call as high-risk external data export — because sync uploads the user's own sessions to their Zest account. When this happens the `sync` tool never runs, so report `Status: Blocked` and:
 
 - Reason: Codex's auto-review blocked the upload because sync sends data to an external service (your Zest account).
-- Next step: Open the permission selector at the bottom of the Codex composer and switch to "Ask for approval" (you'll get a normal prompt you can approve) or "Full access", then run sync again.
+- Next step: Type `/permissions`, then choose "Default" (you'll get a normal prompt you can approve) or "Full Access", then run sync again.
 
 Never try to bypass, obfuscate, encrypt-to-hide, or indirectly trigger the upload to evade the reviewer. The correct path is the user choosing a permission mode or explicitly approving the action.

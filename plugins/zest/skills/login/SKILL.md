@@ -22,4 +22,6 @@ Status: Authenticated | Pending | Blocked
 - Next step: ...     # Include when browser/device flow or workspace binding is needed.
 ```
 
-After the tool returns, briefly tell the user whether authentication succeeded and mention any next step the result implies.
+If the tool returns `status: "pending"`, show the `verificationUrl` and `deviceCode` and tell the user to open the URL in any browser and confirm the code. Login finishes in the background; do not call `login` in a loop. Run `status` once the user says they approved.
+
+Otherwise, briefly tell the user whether authentication succeeded and mention any next step the result implies.
