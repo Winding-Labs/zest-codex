@@ -135,47 +135,6 @@ fs.writeFileSync(targetMarketplacePath, `${JSON.stringify(nextMarketplace, null,
 EOF
 }
 
-rewrite_mcp_config() {
-  local target_plugin_dir="$1"
-  local target_mcp_config="${target_plugin_dir}/.mcp.json"
-
-  if [[ ! -f "${target_mcp_config}" ]]; then
-    echo "error: MCP config not found at ${target_mcp_config}" >&2
-    exit 1
-  fi
-
-  node - "${target_mcp_config}" "${target_plugin_dir}" <<'EOF'
-const fs = require("node:fs");
-const path = require("node:path");
-
-const [mcpConfigPath, pluginDir] = process.argv.slice(2);
-const config = JSON.parse(fs.readFileSync(mcpConfigPath, "utf8"));
-
-if (!config.mcpServers || typeof config.mcpServers !== "object") {
-  console.error(`error: invalid MCP config in ${mcpConfigPath}`);
-  process.exit(1);
-}
-
-for (const serverConfig of Object.values(config.mcpServers)) {
-  if (!serverConfig || typeof serverConfig !== "object") {
-    continue;
-  }
-
-  if (serverConfig.command === "node" && Array.isArray(serverConfig.args)) {
-    serverConfig.args = serverConfig.args.map((value) => {
-      if (typeof value !== "string") {
-        return value;
-      }
-
-      return value.startsWith("./") ? path.join(pluginDir, value.slice(2)) : value;
-    });
-  }
-}
-
-fs.writeFileSync(mcpConfigPath, `${JSON.stringify(config, null, 2)}\n`);
-EOF
-}
-
 rewrite_hooks_config() {
   local target_plugin_dir="$1"
   local target_hooks_config="${target_plugin_dir}/hooks/hooks.json"
@@ -247,7 +206,6 @@ clear_plugin_cache
 
 mkdir -p "$(dirname "${TARGET_PLUGIN_DIR}")"
 cp -R "${SOURCE_PLUGIN_DIR}" "${TARGET_PLUGIN_DIR}"
-rewrite_mcp_config "${TARGET_PLUGIN_DIR}"
 rewrite_hooks_config "${TARGET_PLUGIN_DIR}"
 write_marketplace "${TARGET_MARKETPLACE}" "${TARGET_PLUGIN_PATH}"
 

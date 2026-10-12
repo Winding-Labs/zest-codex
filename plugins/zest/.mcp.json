@@ -1,11 +1,12 @@
 {
   "mcpServers": {
     "zest": {
-      "command": "sh",
+      "command": "node",
       "args": [
-        "-c",
-        "if ! command -v node >/dev/null 2>&1; then echo 'Zest: Node >= 22.13 required. Install from https://nodejs.org' >&2; exit 1; fi; _zv=$(node --version); _zmaj=${_zv%%.*}; _zmaj=${_zmaj#v}; _zrest=${_zv#*.}; _zmin=${_zrest%%.*}; if [ \"$_zmaj\" -lt 22 ] 2>/dev/null || { [ \"$_zmaj\" -eq 22 ] && [ \"$_zmin\" -lt 13 ]; } 2>/dev/null; then echo 'Zest: Node >= 22.13 required. Install from https://nodejs.org' >&2; exit 1; fi; exec node \"$HOME/.codex/plugins/cache/zest/zest/0.2.1/dist/mcp/server.js\""
+        "dist/launch.cjs",
+        "mcp/server.js"
       ],
+      "cwd": ".",
       "type": "stdio"
     }
   }
