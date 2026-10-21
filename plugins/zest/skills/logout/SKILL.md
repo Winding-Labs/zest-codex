@@ -22,3 +22,5 @@ Status: Signed out | Warning
 ```
 
 Summarize that auth was cleared and explicitly mention that workspace binding and queued payload state were preserved when the tool reports that.
+
+When `serverSessionEnded` is false, use Status: Warning and say Zest could not confirm the session ended on the server (offline, or it had already expired); the credentials are still deleted on this machine.
