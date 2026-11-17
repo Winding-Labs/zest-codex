@@ -31,7 +31,7 @@ Then restart Codex so the skills and the MCP server are reloaded.
 A ZIP with `install.sh` is attached to every release as a fallback for
 environments that cannot add a marketplace.
 
-Full instructions: https://app.meetzest.com/docs/install/codex
+Full instructions: https://meetzest.com/docs/plugins/codex/
 
 ## First run
 
@@ -89,4 +89,4 @@ still show up, ask Codex `Clean up old Zest Alpha install`.
 Proprietary — see LICENSE.md. Third-party components included in this
 distribution are listed in THIRD-PARTY-NOTICES.md.
 
-Questions: hi@winding.ai
+Questions: support@winding.ai

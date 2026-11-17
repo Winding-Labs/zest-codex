@@ -7,7 +7,7 @@ metadata:
 
 Run the `workspace` MCP tool.
 
-If the user gave a workspace id, pass it as `workspaceId`.
+If the user named a workspace (an id, its number in the list, or its name), pass it as `workspaceId`.
 
 Respond in this dashboard format:
 
@@ -23,4 +23,4 @@ Status: Bound | Not bound | Updated | Blocked
 - Next step: ...     # Include only when there is an action to take.
 ```
 
-Summarize whether the workspace is bound and, when available, include the active workspace name first and fall back to the workspace id only if the name is unavailable. Mention whether the binding was updated.
+Summarize whether the workspace is bound and, when available, include the active workspace name first and fall back to the workspace id only if the name is unavailable. Mention whether the binding was updated. When the result includes `workspaces`, list them numbered so the user can pick one by number or name.
