@@ -1,7 +1,8 @@
 # Zest for Codex
 
-Track your Codex sessions in Zest: automatic standups, token and cost
-analytics, and a picture of how your team actually works across every AI tool.
+A Codex usage dashboard for you and your team. Zest records your Codex sessions,
+models and tokens and shows each engineer's usage next to their other agents
+and merged pull requests, with automatic standups and token and cost analytics.
 
 This repository is the public marketplace mirror for the Zest Codex plugin. It
 carries the built bundle that Codex installs; the source lives in the Zest
@@ -31,7 +32,7 @@ Then restart Codex so the skills and the MCP server are reloaded.
 A ZIP with `install.sh` is attached to every release as a fallback for
 environments that cannot add a marketplace.
 
-Full instructions: https://meetzest.com/docs/plugins/codex/
+Full instructions: https://meetzest.com/docs/plugins/codex/?utm_source=github.com&utm_medium=referral&utm_campaign=plugin-readme
 
 ## First run
 
